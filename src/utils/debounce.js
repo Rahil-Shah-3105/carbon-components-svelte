@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 /**
  * Debounce `fn` until `delay` ms after the last call. Exposes `cancel()` and
@@ -9,6 +10,7 @@
  * @returns {((...args: Parameters<Fn>) => void) & { cancel: () => void; flush: () => void }}
  */
 export function debounce(fn, delay) {
+logger.debug(`>>> Entering debounce(fn=${fn},delay=${delay})`);
   /** @type {ReturnType<typeof setTimeout> | undefined} */
   let timeoutId;
   /** @type {Parameters<Fn> | undefined} */
@@ -16,6 +18,7 @@ export function debounce(fn, delay) {
 
   /** @param {Parameters<Fn>} args */
   function debounced(...args) {
+	logger.debug(`>>> Entering debounced(args=${args})`);
     pendingArgs = args;
     clearTimeout(timeoutId);
     timeoutId = setTimeout(() => {
@@ -24,6 +27,7 @@ export function debounce(fn, delay) {
       pendingArgs = undefined;
       if (args) fn(...args);
     }, delay);
+	logger.debug(`<<< Exiting debounced(args=${args})`);
   }
 
   debounced.cancel = () => {
@@ -41,5 +45,6 @@ export function debounce(fn, delay) {
     if (args) fn(...args);
   };
 
+logger.debug(`<<< Exiting debounce(fn=${fn},delay=${delay})`);
   return debounced;
 }

@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 import {
@@ -21,6 +22,7 @@ import {
  * @returns {{ update: (params: import("./dismiss.js").DismissParams) => void, destroy: () => void }}
  */
 export function dismiss(_node, params) {
+logger.debug(`>>> Entering dismiss(_node=${_node},params=${params})`);
   let specs = normalize(params);
   let enabled = !!params.enabled;
   let destroyed = false;
@@ -32,6 +34,7 @@ export function dismiss(_node, params) {
   let registered = [];
 
   function add() {
+	logger.debug('>>> Entering add()');
     if (typeof window === "undefined" || addScheduled) return;
     addScheduled = true;
     // Defer registration to the next task (not just a microtask). Enabling
@@ -51,8 +54,10 @@ export function dismiss(_node, params) {
   }
 
   function remove() {
+	logger.debug('>>> Entering remove()');
     for (const entry of registered) unregisterConsumer(entry);
     registered = [];
+	logger.debug('<<< Exiting remove()');
   }
 
   if (enabled) add();
@@ -60,8 +65,10 @@ export function dismiss(_node, params) {
   return {
     /** @param {import("./dismiss.js").DismissParams} next */
     update(next) {
+	logger.debug(`>>> Entering update(next=${next})`);
       const nextSpecs = normalize(next);
       const nextEnabled = !!next.enabled;
+	logger.debug(`update(next=${next}): nextSpecs → ${nextSpecs}`);
       const sameShape =
         registered.length === nextSpecs.length &&
         nextSpecs.every(
@@ -80,13 +87,18 @@ export function dismiss(_node, params) {
       remove();
       specs = nextSpecs;
       enabled = nextEnabled;
+	logger.debug(`update(next=${next}): specs → ${specs}`);
       if (enabled) add();
+	logger.debug(`<<< Exiting update(next=${next})`);
     },
     destroy() {
+	logger.debug('>>> Entering destroy()');
       destroyed = true;
       remove();
+	logger.debug(`destroy(): destroyed → ${destroyed}`);
     },
   };
+logger.debug(`<<< Exiting dismiss(_node=${_node},params=${params})`);
 }
 
 /**
@@ -94,6 +106,7 @@ export function dismiss(_node, params) {
  * @returns {Array<{ type: string, handler: (event: Event) => void, options: boolean | AddEventListenerOptions | undefined }>}
  */
 function normalize(params) {
+logger.debug(`>>> Entering normalize(params=${params})`);
   if (params.listeners) {
     return params.listeners.map((l) => ({
       type: l.type,
@@ -106,6 +119,7 @@ function normalize(params) {
     : params.type == null
       ? []
       : [params.type];
+logger.debug(`<<< Exiting normalize(params=${params})`);
   return types.map((type) => ({
     type,
     handler: /** @type {(event: Event) => void} */ (params.handler),

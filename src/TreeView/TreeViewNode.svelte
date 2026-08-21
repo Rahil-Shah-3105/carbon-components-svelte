@@ -13,6 +13,7 @@
    * ```
    */
   export function computeTreeLeafDepth(node) {
+	console.debug(`>>> Entering computeTreeLeafDepth(node=${node})`);
     let depth = 0;
 
     if (node == null) return depth;
@@ -33,6 +34,7 @@
       parentNode = parentNode.parentNode;
     }
 
+	console.debug(`<<< Exiting computeTreeLeafDepth(node=${node})`);
     return depth;
   }
 
@@ -41,6 +43,7 @@
    * @type {(node: HTMLElement | null) => null | HTMLElement}
    */
   export function findParentTreeNode(node) {
+	console.debug(`>>> Entering findParentTreeNode(node=${node})`);
     if (node == null || !(node instanceof HTMLElement)) return null;
     if (node.classList.contains("bx--tree-parent-node")) return node;
     if (node.classList.contains("bx--tree-node-link-parent")) {
@@ -48,6 +51,7 @@
     }
     if (node.classList.contains("bx--tree")) return null;
     if (node.parentNode instanceof HTMLElement) {
+	console.debug(`<<< Exiting findParentTreeNode(node=${node})`);
       return findParentTreeNode(node.parentNode);
     }
     return null;

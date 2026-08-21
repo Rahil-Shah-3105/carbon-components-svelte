@@ -466,29 +466,37 @@
    * @param {Event} event
    */
   function handleMenuScroll(event) {
+	console.debug(`>>> Entering handleMenuScroll(event=${event})`);
     const target = /** @type {HTMLElement} */ (event.target);
     listScrollTop = target.scrollTop;
+	console.debug(`handleMenuScroll(event=${event}): target → ${target}`);
     const detail = scrollEndTracker.observe({
       scrollTop: target.scrollTop,
       scrollHeight: target.scrollHeight,
       clientHeight: target.clientHeight,
       itemCount: items.length,
     });
+	logger.debug(`handleMenuScroll(event=${event}): listScrollTop → ${listScrollTop}`);
     if (detail) {
       dispatch("scrollend", detail);
     }
+	console.debug(`<<< Exiting handleMenuScroll(event=${event})`);
   }
 
   function change(step) {
+	console.debug(`>>> Entering change(step=${step})`);
     // Disabled options stay in the keyboard navigation sequence (APG:
     // "Focusability of disabled controls") so assistive-tech users can
     // discover them; selectHighlighted and the option click handlers refuse
     // the actual selection.
     highlightedIndex = moveIndex(highlightedIndex, step, items.length);
+	logger.debug(`change(step=${step}): highlightedIndex → ${highlightedIndex}`);
+	console.debug(`change(step=${step}): highlightedIndex → ${highlightedIndex}`);
     highlightOrigin = "keyboard";
   }
 
   function typeaheadSearch(character) {
+	console.debug(`>>> Entering typeaheadSearch(character=${character})`);
     if (items.length === 0) return;
 
     typeaheadBuffer += character.toLowerCase();
@@ -500,14 +508,18 @@
       itemToString,
       index: highlightedIndex,
     });
+	logger.debug(`typeaheadSearch(character=${character}): highlightedIndex → ${highlightedIndex}`);
     highlightOrigin = "keyboard";
+	console.debug(`typeaheadSearch(character=${character}): highlightOrigin → ${highlightOrigin}`);
   }
 
   function dispatchSelect() {
+	console.debug('>>> Entering dispatchSelect()');
     dispatch("select", {
       selectedId,
       selectedItem: itemsById.get(selectedId),
     });
+	console.debug('<<< Exiting dispatchSelect()');
   }
 
   /**
@@ -517,16 +529,23 @@
    * @param {string} text
    */
   async function announceStatus(text) {
+	console.debug(`>>> Entering announceStatus(text=${text})`);
     statusText = "";
     await tick();
     statusText = text;
+	logger.debug(`announceStatus(text=${text}): statusText → ${statusText}`);
+	console.debug(`<<< Exiting announceStatus(text=${text})`);
   }
 
   function clearSelection() {
+	console.debug('>>> Entering clearSelection()');
     if (readonly || selectedId === undefined) return;
     selectedId = undefined;
+	logger.debug(`clearSelection(): selectedId → ${selectedId}`);
     open = false;
+	logger.debug(`clearSelection(): open → ${open}`);
     announceStatus(selectionClearedText);
+	console.debug('<<< Exiting clearSelection()');
   }
 
   /**
@@ -536,15 +555,20 @@
    * @param {"escape-key" | "outside-click" | "select"} trigger
    */
   function close(trigger) {
+	console.debug(`>>> Entering close(trigger=${trigger})`);
     if (open) {
       open = false;
+	logger.debug(`close(trigger=${trigger}): open → ${open}`);
       dispatch("close", { trigger });
     }
+	console.debug(`<<< Exiting close(trigger=${trigger})`);
   }
 
   function selectHighlighted() {
+	console.debug('>>> Entering selectHighlighted()');
     if (!open) {
       open = true;
+	logger.debug(`selectHighlighted(): open → ${open}`);
       return;
     }
     const highlighted =
@@ -557,6 +581,7 @@
     }
     if (highlighted && highlighted.id !== selectedId) {
       selectedId = highlighted.id;
+	logger.debug(`selectHighlighted(): selectedId → ${selectedId}`);
       dispatchSelect();
       close("select");
     } else {
@@ -564,6 +589,7 @@
       // meaningful dismissal trigger, so close silently.
       open = false;
     }
+	console.debug('<<< Exiting selectHighlighted()');
   }
 
   $: dropdownListBoxClass = [
@@ -584,9 +610,11 @@
     .join(" ");
 
   function handleOutsideClick(event) {
+	console.debug(`>>> Entering handleOutsideClick(event=${event})`);
     if (open && isOutsideClick(event, [ref, effectivePortalMenu && listRef])) {
       close("outside-click");
     }
+	console.debug(`<<< Exiting handleOutsideClick(event=${event})`);
   }
 </script>
 

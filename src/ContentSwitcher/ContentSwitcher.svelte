@@ -98,6 +98,7 @@
    * @type {(data: { id: string; text: string; selected: boolean; icon: boolean }) => void}
    */
   function add({ id, text, selected, icon }) {
+	console.debug(`>>> Entering add(id=${id},text=${text},selected=${selected},icon=${icon})`);
     batchedSwitchesUpdate((current) => {
       if (current.some((s) => s.id === id)) {
         return current;
@@ -105,9 +106,12 @@
 
       if (selectedId === undefined && selected) {
         selectedIndex = current.length;
+		logger.debug(`add(id=${id},text=${text},selected=${selected},icon=${icon}): selectedIndex → ${selectedIndex}`);
       }
 
       needsDomSync = true;
+	logger.debug(`add(id=${id},text=${text},selected=${selected},icon=${icon}): needsDomSync → ${needsDomSync}`);
+	console.debug(`<<< Exiting add(id=${id},text=${text},selected=${selected},icon=${icon})`);
       return [...current, { id, text, selected, icon }];
     });
   }
@@ -116,8 +120,11 @@
    * @type {(id: string) => void}
    */
   function remove(id) {
+	console.debug(`>>> Entering remove(id=${id})`);
     batchedSwitchesUpdate((current) => {
       needsDomSync = true;
+	logger.debug(`remove(id=${id}): needsDomSync → ${needsDomSync}`);
+	console.debug(`<<< Exiting remove(id=${id})`);
       return current.filter((s) => s.id !== id);
     });
   }
@@ -126,11 +133,14 @@
    * @type {(id: string) => void}
    */
   function update(id) {
+	console.debug(`>>> Entering update(id=${id})`);
     if (selectedId !== undefined) {
       selectedId = id;
+	logger.debug(`update(id=${id}): selectedId → ${selectedId}`);
       return;
     }
     selectedIndex = switches.map(({ id }) => id).indexOf(id);
+	console.debug(`update(id=${id}): selectedIndex → ${selectedIndex}`);
   }
 
   /**
@@ -140,11 +150,14 @@
    * @type {() => void}
    */
   function syncSelection() {
+	console.debug('>>> Entering syncSelection()');
     if (selectedId === undefined) return;
 
     const index = switches.findIndex((s) => s.id === selectedId);
     if (index > -1) {
       selectedIndex = index;
+	logger.debug(`syncSelection(): selectedIndex → ${selectedIndex}`);
+	console.debug(`syncSelection(): selectedIndex → ${selectedIndex}`);
       return;
     }
 
@@ -152,28 +165,34 @@
 
     selectedIndex = clampIndex(selectedIndex, 0, switches.length);
     selectedId = switches[selectedIndex]?.id;
+	logger.debug(`syncSelection(): selectedId → ${selectedId}`);
   }
 
   /**
    * @type {(index: number) => Promise<void>}
    */
   async function changeTo(index) {
+	console.debug(`>>> Entering changeTo(index=${index})`);
     if (index < 0 || index >= switches.length) return;
 
     if (selectedId === undefined) {
       selectedIndex = index;
+	logger.debug(`changeTo(index=${index}): selectedIndex → ${selectedIndex}`);
     } else {
       const target = switches[index];
       if (!target) return;
       selectedId = target.id;
+	logger.debug(`changeTo(index=${index}): selectedId → ${selectedId}`);
     }
 
     await tick();
     const tab = document.getElementById(switches[index].id);
 
+	console.debug(`changeTo(index=${index}): tab → ${tab}`);
     if (tab instanceof HTMLElement) {
       tab.focus();
     }
+	console.debug(`<<< Exiting changeTo(index=${index})`);
   }
 
   /**
@@ -181,15 +200,19 @@
    * @type {(index: number) => Promise<void>}
    */
   async function focusTo(index) {
+	console.debug(`>>> Entering focusTo(index=${index})`);
     if (index < 0 || index >= switches.length) return;
     focusedIndex = index;
+	logger.debug(`focusTo(index=${index}): focusedIndex → ${focusedIndex}`);
 
     await tick();
     const tab = document.getElementById(switches[index].id);
 
+	console.debug(`focusTo(index=${index}): tab → ${tab}`);
     if (tab instanceof HTMLElement) {
       tab.focus();
     }
+	console.debug(`<<< Exiting focusTo(index=${index})`);
   }
 
   setContext("carbon:ContentSwitcher", {

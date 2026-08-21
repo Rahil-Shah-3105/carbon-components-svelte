@@ -140,8 +140,10 @@
    * @type {(event: MouseEvent) => void}
    */
   function toggle(event) {
+	console.debug(`>>> Entering toggle(event=${event})`);
     const wasOpen = open;
     open = !open;
+	logger.debug(`toggle(event=${event}): open → ${open}`);
     // A keyboard-activated click (Enter/Space) reports detail 0; a real mouse
     // click reports 1+. Blur only after a mouse-driven close, so the trigger
     // doesn't linger with a visible focus ring - keyboard users still see
@@ -149,6 +151,7 @@
     if (wasOpen && event.detail !== 0) {
       ref?.blur();
     }
+	console.debug(`<<< Exiting toggle(event=${event})`);
   }
 </script>
 

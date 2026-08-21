@@ -6,8 +6,10 @@
   let email = "";
 
   function handleSubmit() {
+	console.debug('>>> Entering handleSubmit()');
     console.log("Form submitted:", { name, email });
     open = false;
+	logger.debug(`handleSubmit(): open → ${open}`);
   }
 </script>
 

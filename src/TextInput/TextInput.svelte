@@ -99,19 +99,25 @@
   const dispatch = createEventDispatcher();
 
   function parse(raw) {
+	console.debug(`>>> Entering parse(raw=${raw})`);
     if ($$restProps.type !== "number") return raw;
+	console.debug(`<<< Exiting parse(raw=${raw})`);
     return raw === "" ? null : Number(raw);
   }
 
   /** @type {(e: Event) => void} */
   function onInput(event) {
+	console.debug(`>>> Entering onInput(event=${event})`);
     value = parse(event.target.value);
     dispatch("input", value);
+	console.debug(`onInput(event=${event}): value → ${value}`);
   }
 
   /** @type {(e: Event) => void} */
   function onChange(event) {
+	console.debug(`>>> Entering onChange(event=${event})`);
     dispatch("change", parse(event.target.value));
+	console.debug(`<<< Exiting onChange(event=${event})`);
   }
 
   $: showInvalid = invalid && !disabled && !readonly;

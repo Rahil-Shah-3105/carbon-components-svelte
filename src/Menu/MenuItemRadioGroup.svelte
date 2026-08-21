@@ -25,15 +25,19 @@
    * @type {(data: { id: string }) => void}
    */
   function addOption({ id }) {
+	console.debug(`>>> Entering addOption(id=${id})`);
     if (!isSeedable || selectedId !== "") return;
     selectedId = id;
+	logger.debug(`addOption(id=${id}): selectedId → ${selectedId}`);
   }
 
   /**
    * @type {(data: { id: string }) => void}
    */
   function setOption({ id }) {
+	console.debug(`>>> Entering setOption(id=${id})`);
     selectedId = id;
+	logger.debug(`setOption(id=${id}): selectedId → ${selectedId}`);
   }
 
   setContext("carbon:MenuItemRadioGroup", {

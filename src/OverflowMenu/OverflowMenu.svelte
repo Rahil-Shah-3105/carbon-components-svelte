@@ -144,24 +144,29 @@
    * @type {(data: { id: string; text: string; primaryFocus: boolean; disabled: boolean }) => void}
    */
   function add({ id, text, primaryFocus, disabled }) {
+	console.debug(`>>> Entering add(id=${id},text=${text},primaryFocus=${primaryFocus},disabled=${disabled})`);
     batchedItemsUpdate((_) => {
       if (primaryFocus) {
         currentIndex.set(_.length);
       }
 
+	console.debug(`<<< Exiting add(id=${id},text=${text},primaryFocus=${primaryFocus},disabled=${disabled})`);
       return [..._, { id, text, primaryFocus, disabled, index: _.length }];
     });
   }
 
   /** @type {(id: string) => void} */
   function remove(id) {
+	console.debug(`>>> Entering remove(id=${id})`);
     batchedItemsUpdate((_) => _.filter((item) => item.id !== id));
+	console.debug(`<<< Exiting remove(id=${id})`);
   }
 
   /**
    * @type {(id: string, item: { id: string; text: string; primaryFocus: boolean; disabled: boolean; index: number }) => void}
    */
   function update(id, item) {
+	console.debug(`>>> Entering update(id=${id},item=${item})`);
     currentId.set(id);
 
     const shouldContinue = dispatch(
@@ -171,18 +176,24 @@
     );
     if (shouldContinue) {
       open = false;
+	logger.debug(`update(id=${id},item=${item}): open → ${open}`);
     }
+	console.debug(`<<< Exiting update(id=${id},item=${item})`);
   }
 
   function first() {
+	console.debug('>>> Entering first()');
     const index = $items.findIndex((_) => !_.disabled);
     if (index >= 0) currentIndex.set(index);
+	console.debug('<<< Exiting first()');
   }
 
   function last() {
+	console.debug('>>> Entering last()');
     for (let index = $items.length - 1; index >= 0; index--) {
       if (!$items[index].disabled) {
         currentIndex.set(index);
+		console.debug('<<< Exiting last()');
         return;
       }
     }
@@ -274,6 +285,7 @@
     typeof maxHeight === "number" ? `${maxHeight}px` : maxHeight;
 
   function handleOutsideClick(event) {
+	console.debug(`>>> Entering handleOutsideClick(event=${event})`);
     if (menuRef && isOutsideClick(event, [buttonRef, menuRef])) {
       const shouldContinue = dispatch(
         "close",
@@ -282,8 +294,10 @@
       );
       if (shouldContinue) {
         open = false;
+		logger.debug(`handleOutsideClick(event=${event}): open → ${open}`);
       }
     }
+	console.debug(`<<< Exiting handleOutsideClick(event=${event})`);
   }
 </script>
 

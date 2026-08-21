@@ -167,20 +167,28 @@
     $activeButtonTooltip === tooltipId;
 
   function claimActiveTooltip() {
+	console.debug('>>> Entering claimActiveTooltip()');
     activeButtonTooltip.set(tooltipId);
+	console.debug('<<< Exiting claimActiveTooltip()');
   }
 
   function releaseActiveTooltip() {
+	console.debug('>>> Entering releaseActiveTooltip()');
     if (get(activeButtonTooltip) === tooltipId) {
       activeButtonTooltip.set(null);
     }
+	console.debug('<<< Exiting releaseActiveTooltip()');
   }
 
   function dismissPortalTooltip() {
+	console.debug('>>> Entering dismissPortalTooltip()');
     clearTimeout(portalTimeout);
     hovered = false;
+	logger.debug(`dismissPortalTooltip(): hovered → ${hovered}`);
     focused = false;
+	logger.debug(`dismissPortalTooltip(): focused → ${focused}`);
     releaseActiveTooltip();
+	console.debug('<<< Exiting dismissPortalTooltip()');
   }
 
   // Re-attach the portal observer so the tooltip dismisses when an
@@ -202,17 +210,22 @@
     $activeButtonTooltip !== tooltipId;
 
   function handleMouseEnter() {
+	console.debug('>>> Entering handleMouseEnter()');
     if (hasTooltip) {
       claimActiveTooltip();
     }
+	console.debug('<<< Exiting handleMouseEnter()');
   }
 
   function handleMouseLeave() {
+	console.debug('>>> Entering handleMouseLeave()');
     if (usePortal) return;
     releaseActiveTooltip();
+	console.debug('<<< Exiting handleMouseLeave()');
   }
 
   function handlePortalMouseEnter() {
+	console.debug('>>> Entering handlePortalMouseEnter()');
     if (!usePortal || disabled) return;
     clearTimeout(portalTimeout);
     // Warm handoff: if another icon-only tooltip is already showing, skip the
@@ -222,32 +235,45 @@
       get(activeButtonTooltip) !== tooltipId;
     portalTimeout = setTimeout(
       () => {
+		logger.debug(`handlePortalMouseEnter(): portalTimeout → ${portalTimeout}`);
         hovered = true;
+		logger.debug(`handlePortalMouseEnter(): hovered → ${hovered}`);
         claimActiveTooltip();
       },
       warmHandoff ? 0 : ENTER_DELAY_MS,
     );
+	console.debug('<<< Exiting handlePortalMouseEnter()');
   }
 
   function handlePortalMouseLeave() {
+	console.debug('>>> Entering handlePortalMouseLeave()');
     if (!usePortal) return;
     clearTimeout(portalTimeout);
     portalTimeout = setTimeout(() => {
+	logger.debug(`handlePortalMouseLeave(): portalTimeout → ${portalTimeout}`);
       hovered = false;
+	logger.debug(`handlePortalMouseLeave(): hovered → ${hovered}`);
       if (!focused) releaseActiveTooltip();
     }, LEAVE_DELAY_MS);
+	console.debug('<<< Exiting handlePortalMouseLeave()');
   }
 
   function handlePortalFocus() {
+	console.debug('>>> Entering handlePortalFocus()');
     if (!usePortal || disabled) return;
     focused = true;
+	logger.debug(`handlePortalFocus(): focused → ${focused}`);
     claimActiveTooltip();
+	console.debug('<<< Exiting handlePortalFocus()');
   }
 
   function handlePortalBlur() {
+	console.debug('>>> Entering handlePortalBlur()');
     if (!usePortal) return;
     focused = false;
+	logger.debug(`handlePortalBlur(): focused → ${focused}`);
     if (!hovered) releaseActiveTooltip();
+	console.debug('<<< Exiting handlePortalBlur()');
   }
 
   const PORTAL_HORIZONTAL_GAP_LEFT_PX = 2;

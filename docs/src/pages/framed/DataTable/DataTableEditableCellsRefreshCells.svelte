@@ -15,6 +15,8 @@
   ];
 
   function snapshotQty() {
+	console.debug('>>> Entering snapshotQty()');
+	console.debug('<<< Exiting snapshotQty()');
     return Object.fromEntries(rows.map((row) => [row.id, row.qty]));
   }
 
@@ -22,12 +24,17 @@
   let hasEdits = false;
 
   function syncHasEdits() {
+	console.debug('>>> Entering syncHasEdits()');
     hasEdits = rows.some((row) => row.qty !== savedQtyById[row.id]);
+	console.debug(`syncHasEdits(): hasEdits → ${hasEdits}`);
   }
 
   function updateTotals() {
+	console.debug('>>> Entering updateTotals()');
     dataTable.refreshCells();
     savedQtyById = snapshotQty();
+	logger.debug(`updateTotals(): savedQtyById → ${savedQtyById}`);
+	console.debug(`updateTotals(): savedQtyById → ${savedQtyById}`);
     hasEdits = false;
   }
 </script>

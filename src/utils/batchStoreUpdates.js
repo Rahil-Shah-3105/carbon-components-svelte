@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 /**
@@ -13,22 +14,28 @@
  * @returns {(fn: (value: T) => T) => void}
  */
 export function batchStoreUpdates(store) {
+logger.debug(`>>> Entering batchStoreUpdates(store=${store})`);
   /** @type {Array<(value: T) => T>} */
   let pending = [];
   let scheduled = false;
 
   function flush() {
+	logger.debug('>>> Entering flush()');
     scheduled = false;
     const ops = pending;
     pending = [];
     store.update((value) => ops.reduce((acc, fn) => fn(acc), value));
+	logger.debug(`flush(): pending → ${pending}`);
   }
 
   return function batchedUpdate(fn) {
+logger.debug(`>>> Entering batchedUpdate(fn=${fn})`);
     pending.push(fn);
+	logger.debug(`<<< Exiting batchedUpdate(fn=${fn})`);
     if (!scheduled) {
       scheduled = true;
       Promise.resolve().then(flush);
     }
   };
+logger.debug(`<<< Exiting batchStoreUpdates(store=${store})`);
 }

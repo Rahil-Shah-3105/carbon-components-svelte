@@ -93,16 +93,20 @@
    * center for start/end alignment. Center alignment needs no nudge.
    */
   function caretNudgeStyle(pAlign) {
+	console.debug(`>>> Entering caretNudgeStyle(pAlign=${pAlign})`);
     if (pAlign.endsWith("-left")) return `margin-left: -${CARET_NUDGE_PX}px;`;
     if (pAlign.endsWith("-right")) return `margin-right: -${CARET_NUDGE_PX}px;`;
     if (pAlign.endsWith("-top")) return `margin-top: -${CARET_NUDGE_PX}px;`;
     if (pAlign.endsWith("-bottom"))
+	console.debug(`<<< Exiting caretNudgeStyle(pAlign=${pAlign})`);
       return `margin-bottom: -${CARET_NUDGE_PX}px;`;
     return "";
   }
 
   /** Inline style for the underlying popover (caret offset + nudge). */
   function popoverStyleFor(pAlign) {
+	console.debug(`>>> Entering popoverStyleFor(pAlign=${pAlign})`);
+	console.debug(`<<< Exiting popoverStyleFor(pAlign=${pAlign})`);
     return `${CARET_OFFSET_STYLE} ${caretNudgeStyle(pAlign)}`.trim();
   }
 
@@ -117,8 +121,10 @@
   // Translate the Carbon `direction` + `align` pair into the underlying
   // popover's combined alignment modifier (e.g. "bottom" + "start" -> "bottom-left").
   function toPopoverAlign(dir, intrinsic) {
+	console.debug(`>>> Entering toPopoverAlign(dir=${dir},intrinsic=${intrinsic})`);
     if (intrinsic === "center") return dir;
     if (dir === "top" || dir === "bottom") {
+	console.debug(`<<< Exiting toPopoverAlign(dir=${dir},intrinsic=${intrinsic})`);
       return `${dir}-${intrinsic === "start" ? "left" : "right"}`;
     }
     return `${dir}-${intrinsic === "start" ? "top" : "bottom"}`;
@@ -136,19 +142,25 @@
   let enableFrame;
 
   function toggle() {
+	console.debug('>>> Entering toggle()');
     open = !open;
+	logger.debug(`toggle(): open → ${open}`);
   }
 
   function close() {
+	console.debug('>>> Entering close()');
     open = false;
+	logger.debug(`close(): open → ${open}`);
   }
 
   function onKeydown(event) {
+	console.debug(`>>> Entering onKeydown(event=${event})`);
     if (open && event.key === "Escape") {
       event.stopPropagation();
       close();
       ref?.focus();
     }
+	console.debug(`<<< Exiting onKeydown(event=${event})`);
   }
 
   // The portalled content lives outside `toggletipRef`, so treat it as "inside"
@@ -156,22 +168,30 @@
   $: insideElements = [toggletipRef, portalRef];
 
   function containsTarget(target) {
+	console.debug(`>>> Entering containsTarget(target=${target})`);
+	console.debug(`<<< Exiting containsTarget(target=${target})`);
     return insideElements.some((el) => el?.contains(target));
   }
 
   function onFocusOut(event) {
+	console.debug(`>>> Entering onFocusOut(event=${event})`);
     // Keep open when focus moves to the toggletip content itself (relatedTarget
     // is null on some browsers when clicking non-focusable content).
     if (open && event.relatedTarget === null) return;
     if (!containsTarget(event.relatedTarget)) close();
+	console.debug(`<<< Exiting onFocusOut(event=${event})`);
   }
 
   function handleOutsideClick(event) {
+	console.debug(`>>> Entering handleOutsideClick(event=${event})`);
     if (open && isOutsideClick(event, insideElements)) close();
+	console.debug(`<<< Exiting handleOutsideClick(event=${event})`);
   }
 
   function handleWindowBlur() {
+	console.debug('>>> Entering handleWindowBlur()');
     if (open) close();
+	console.debug('<<< Exiting handleWindowBlur()');
   }
 
   // Close when an ancestor modal closes so the portalled content does not linger.

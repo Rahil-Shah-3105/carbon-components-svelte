@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 /**
  * @typedef {string | number} TreeCheckboxNodeId
@@ -28,9 +29,11 @@
  * @returns {void}
  */
 function visit(nodes, visitor) {
+logger.debug(`>>> Entering visit(nodes=${nodes},visitor=${visitor})`);
   for (const node of nodes) {
     visitor(node);
     if (Array.isArray(node.nodes)) visit(node.nodes, visitor);
+	logger.debug(`<<< Exiting visit(nodes=${nodes},visitor=${visitor})`);
   }
 }
 
@@ -41,18 +44,22 @@ function visit(nodes, visitor) {
  * @returns {Array<TreeCheckboxNodeId>}
  */
 function cascadableIds(node) {
+logger.debug(`>>> Entering cascadableIds(node=${node})`);
   /** @type {Array<TreeCheckboxNodeId>} */
   const ids = [];
 
   /** @param {TreeCheckboxNode} current */
   function walk(current) {
+	logger.debug(`>>> Entering walk(current=${current})`);
     if (current.disabled) return;
     ids.push(current.id);
     if (!Array.isArray(current.nodes)) return;
+	logger.debug(`<<< Exiting walk(current=${current})`);
     for (const child of current.nodes) walk(child);
   }
 
   walk(node);
+logger.debug(`<<< Exiting cascadableIds(node=${node})`);
   return ids;
 }
 
@@ -62,9 +69,11 @@ function cascadableIds(node) {
  * @returns {Array<TreeCheckboxNodeId>}
  */
 function subtreeIds(node) {
+logger.debug(`>>> Entering subtreeIds(node=${node})`);
   /** @type {Array<TreeCheckboxNodeId>} */
   const ids = [];
   visit([node], (current) => ids.push(current.id));
+logger.debug(`<<< Exiting subtreeIds(node=${node})`);
   return ids;
 }
 
@@ -75,6 +84,7 @@ function subtreeIds(node) {
  * @returns {Array<TreeCheckboxNode> | null}
  */
 function findPath(nodes, id) {
+logger.debug(`>>> Entering findPath(nodes=${nodes},id=${id})`);
   for (const node of nodes) {
     if (node.id === id) return [node];
     if (!Array.isArray(node.nodes)) continue;
@@ -94,8 +104,10 @@ function findPath(nodes, id) {
  * @returns {Array<TreeCheckboxNodeId>}
  */
 function retainKnownIds(nodes, checkedIds) {
+logger.debug(`>>> Entering retainKnownIds(nodes=${nodes},checkedIds=${checkedIds})`);
   /** @type {Set<TreeCheckboxNodeId>} */
   const knownIds = new Set();
+logger.debug(`retainKnownIds(nodes=${nodes},checkedIds=${checkedIds}): knownIds → ${knownIds}`);
   visit(nodes, (node) => knownIds.add(node.id));
 
   /** @type {Array<TreeCheckboxNodeId>} */
@@ -108,6 +120,7 @@ function retainKnownIds(nodes, checkedIds) {
       retained.push(id);
     }
   }
+logger.debug(`retainKnownIds(nodes=${nodes},checkedIds=${checkedIds}): seen → ${seen}`);
   return retained;
 }
 
@@ -127,6 +140,7 @@ function retainKnownIds(nodes, checkedIds) {
  * @returns {TreeCheckboxState} Checked and indeterminate ids, in document order
  */
 export function resolveCheckboxState(nodes, checkedIds, options = {}) {
+logger.debug(`>>> Entering resolveCheckboxState(nodes=${nodes},checkedIds=${checkedIds},options=${options})`);
   const { cascade = true } = options;
 
   if (!cascade) {
@@ -137,10 +151,13 @@ export function resolveCheckboxState(nodes, checkedIds, options = {}) {
   }
 
   const seed = new Set(checkedIds);
+logger.debug(`resolveCheckboxState(nodes=${nodes},checkedIds=${checkedIds},options=${options}): seed → ${seed}`);
   /** @type {Set<TreeCheckboxNodeId>} */
   const checked = new Set();
+logger.debug(`resolveCheckboxState(nodes=${nodes},checkedIds=${checkedIds},options=${options}): checked → ${checked}`);
   /** @type {Set<TreeCheckboxNodeId>} */
   const indeterminate = new Set();
+logger.debug(`resolveCheckboxState(nodes=${nodes},checkedIds=${checkedIds},options=${options}): indeterminate → ${indeterminate}`);
 
   /**
    * @param {TreeCheckboxNode} node
@@ -148,15 +165,20 @@ export function resolveCheckboxState(nodes, checkedIds, options = {}) {
    * @returns {{ checked: boolean; indeterminate: boolean } | null} `null` when the node is pruned
    */
   function walk(node, inherited) {
+	logger.debug(`>>> Entering walk(node=${node},inherited=${inherited})`);
     if (node.disabled) return null;
 
     const isChecked = inherited || seed.has(node.id);
+	logger.debug(`walk(node=${node},inherited=${inherited}): isChecked → ${isChecked}`);
     const children = Array.isArray(node.nodes) ? node.nodes : [];
+	logger.debug(`walk(node=${node},inherited=${inherited}): children → ${children}`);
     /** @type {Array<{ checked: boolean; indeterminate: boolean }>} */
     const results = [];
+	logger.debug(`walk(node=${node},inherited=${inherited}): results → ${results}`);
 
     for (const child of children) {
       const result = walk(child, isChecked);
+	logger.debug(`walk(node=${node},inherited=${inherited}): result → ${result}`);
       if (result) results.push(result);
     }
 
@@ -174,6 +196,7 @@ export function resolveCheckboxState(nodes, checkedIds, options = {}) {
 
     if (results.some((result) => result.checked || result.indeterminate)) {
       indeterminate.add(node.id);
+	logger.debug(`<<< Exiting walk(node=${node},inherited=${inherited})`);
       return { checked: false, indeterminate: true };
     }
 
@@ -191,6 +214,7 @@ export function resolveCheckboxState(nodes, checkedIds, options = {}) {
     if (indeterminate.has(node.id)) nextIndeterminateIds.push(node.id);
   });
 
+logger.debug(`<<< Exiting resolveCheckboxState(nodes=${nodes},checkedIds=${checkedIds},options=${options})`);
   return {
     checkedIds: nextCheckedIds,
     indeterminateIds: nextIndeterminateIds,

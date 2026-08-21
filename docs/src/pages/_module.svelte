@@ -97,6 +97,7 @@
 
   /** Build highlighted label HTML from `segments`. */
   function toHtml(segments: { text: string; match: boolean }[]) {
+	console.debug(`<<< Exiting toHtml(segments=${segments})`);
     return segments
       .map((s) => {
         const escaped = s.text
@@ -118,24 +119,32 @@
    * present in this particular field at all.
    */
   function matchQuery(text: string, query: string) {
+	console.debug(`>>> Entering matchQuery(text=${text},query=${query})`);
     const terms = query.trim().split(/\s+/).filter(Boolean);
     if (terms.length === 0) return { matched: true, indices: [] as number[] };
+	console.debug(`matchQuery(text=${text},query=${query}): terms → ${terms}`);
     const indices = new Set<number>();
     let matched = false;
+	console.debug(`matchQuery(text=${text},query=${query}): indices → ${indices}`);
+	console.debug(`matchQuery(text=${text},query=${query}): matched → ${matched}`);
     for (const term of terms) {
       const result = fuzzyMatch(text, term);
       if (result.matched) {
+		console.debug(`matchQuery(text=${text},query=${query}): result → ${result}`);
         matched = true;
         for (const i of result.indices) indices.add(i);
       }
     }
+	console.debug(`<<< Exiting matchQuery(text=${text},query=${query})`);
     return { matched, indices: [...indices].sort((a, b) => a - b) };
   }
 
   /** Highlight the current query in arbitrary text (e.g. a description). */
   function highlightHtml(text: string | undefined) {
+	console.debug(`>>> Entering highlightHtml(text=${text})`);
     if (!text) return "";
     const { matched, indices } = matchQuery(text, value);
+	console.debug(`<<< Exiting highlightHtml(text=${text})`);
     return toHtml(highlightSegments(text, matched ? indices : []));
   }
 
@@ -183,6 +192,8 @@
   });
 
   function subheadingClass(index: number) {
+	console.debug(`>>> Entering subheadingClass(index=${index})`);
+	console.debug(`<<< Exiting subheadingClass(index=${index})`);
     return index === 0
       ? "sidenav-subheading sidenav-subheading-first"
       : "sidenav-subheading";

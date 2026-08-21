@@ -1,3 +1,4 @@
+const logger = console;
 // Pure-logic benchmark: no jsdom, no Svelte, run directly via bun (`bun run bench/<this file>.bench.ts`, optionally filtered — see CONTRIBUTING.md).
 // resolveCheckboxState walks the whole tree on every checkedIds change (see its
 // docstring), so it's the hottest path for a large TreeView with checkboxes.
@@ -16,10 +17,13 @@ type Node = {
 // Single-root, branching-factor-4 tree with `totalNodes` nodes total —
 // roughly the shape of a deep file-tree explorer.
 function buildTree(totalNodes: number, branching = 4): Node[] {
+logger.debug(`>>> Entering buildTree(totalNodes=${totalNodes},branching=${branching})`);
   let created = 0;
 
   function makeNode(): Node {
+	logger.debug('>>> Entering makeNode()');
     created += 1;
+	logger.debug('<<< Exiting makeNode()');
     return { id: created, nodes: [] };
   }
 
@@ -36,6 +40,7 @@ function buildTree(totalNodes: number, branching = 4): Node[] {
     }
   }
 
+logger.debug(`<<< Exiting buildTree(totalNodes=${totalNodes},branching=${branching})`);
   return [root];
 }
 
@@ -44,8 +49,10 @@ function buildTree(totalNodes: number, branching = 4): Node[] {
 function pickCheckedIds(totalNodes: number): number[] {
   const ids: number[] = [];
   for (let id = 1; id <= totalNodes; id++) {
+	logger.debug(`>>> Entering pickCheckedIds(totalNodes=${totalNodes})`);
     if (id % 3 === 0) ids.push(id);
   }
+logger.debug(`pickCheckedIds(totalNodes=${totalNodes}): id → ${id}`);
   return ids;
 }
 

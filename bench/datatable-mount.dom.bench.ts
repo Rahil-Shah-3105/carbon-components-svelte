@@ -1,5 +1,6 @@
 import { cleanup, render } from "@testing-library/svelte";
 import DataTable from "carbon-components-svelte/DataTable/DataTable.svelte";
+const logger = console;
 import { bench, run } from "mitata";
 
 // DataTable's equivalent of treeview-mount.dom.bench.ts: dataTableSort.bench.ts
@@ -20,6 +21,8 @@ const headers = [
 ];
 
 function buildRows(count: number) {
+logger.debug(`>>> Entering buildRows(count=${count})`);
+logger.debug(`<<< Exiting buildRows(count=${count})`);
   return Array.from({ length: count }, (_, i) => ({
     id: String(i),
     name: `Load Balancer ${i + 1}`,
@@ -33,11 +36,15 @@ it("benchmarks mounting a large DataTable, virtualized vs not", async () => {
   // Every row becomes a real jsdom DOM row — capped well below the
   // virtualized range below, same reasoning as TreeView's non-virtualized case.
   bench("mount DataTable, $size rows, no virtualization", function* (state) {
+	logger.debug(`>>> Entering bench(DataTable=${DataTable},rows=${rows},size=${size})`);
     const size = state.get("size");
     const rows = buildRows(size);
     yield () => {
       render(DataTable, { props: { headers, rows } });
       cleanup();
+	logger.debug(`<<< Exiting bench(DataTable=${DataTable},rows=${rows},size=${size})`);
+	logger.debug(`bench(DataTable=${DataTable},rows=${rows},size=${size}): size → ${size}`);
+	logger.debug(`bench(DataTable=${DataTable},rows=${rows},size=${size}): rows → ${rows}`);
     };
   }).range("size", 20, 300);
 

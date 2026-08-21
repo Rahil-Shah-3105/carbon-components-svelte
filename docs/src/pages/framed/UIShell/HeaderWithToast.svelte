@@ -16,6 +16,7 @@
   let queuePosition = "top-right";
 
   const triggerToast = (position) => {
+	console.debug(`>>> Entering triggerToast(position=${position})`);
     queuePosition = position;
     queue.add({
       kind: "success",
@@ -23,6 +24,7 @@
       subtitle: "Your Kubernetes cluster is now provisioning.",
       timeout: 5000,
     });
+	logger.debug(`triggerToast(position=${position}): queuePosition → ${queuePosition}`);
   };
 </script>
 

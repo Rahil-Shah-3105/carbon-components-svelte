@@ -57,12 +57,18 @@
    * ```
    */
   export function loadImage(url) {
+	console.debug(`>>> Entering loadImage(url=${url})`);
     if (image != null) image = null;
     loaded = false;
+	console.debug(`loadImage(url=${url}): image → ${image}`);
+	logger.debug(`loadImage(url=${url}): loaded → ${loaded}`);
     error = false;
     image = new Image();
+	logger.debug(`loadImage(url=${url}): error → ${error}`);
     image.src = url || src;
     image.onload = () => (loaded = true);
+	logger.debug(`loadImage(url=${url}): image → ${image}`);
+	logger.debug(`loadImage(url=${url}): image.src → ${image.src}`);
     image.onerror = () => (error = true);
   }
 

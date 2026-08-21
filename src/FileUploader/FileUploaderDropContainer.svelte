@@ -89,6 +89,7 @@
 
   /** @param {ReadonlyArray<File>} incoming */
   function processIncoming(incoming) {
+	console.debug(`>>> Entering processIncoming(incoming=${incoming})`);
     const { accepted, rejected: builtInRejected } = filterIncomingFiles(
       incoming,
       {
@@ -99,6 +100,8 @@
     );
     const validated = validateFiles(accepted);
     const acceptedSet = new Set(validated);
+	console.debug(`processIncoming(incoming=${incoming}): validated → ${validated}`);
+	console.debug(`processIncoming(incoming=${incoming}): acceptedSet → ${acceptedSet}`);
     /** @type {Array<{ file: File; reason: "size" | "duplicate" | "invalid" }>} */
     const rejected = [
       ...builtInRejected,
@@ -108,8 +111,10 @@
     ];
     if (rejected.length > 0) dispatch("rejected", rejected);
     files = multiple ? [...files, ...validated] : validated;
+	logger.debug(`processIncoming(incoming=${incoming}): files → ${files}`);
     dispatch("add", files);
     dispatch("change", files);
+	console.debug(`<<< Exiting processIncoming(incoming=${incoming})`);
   }
 </script>
 

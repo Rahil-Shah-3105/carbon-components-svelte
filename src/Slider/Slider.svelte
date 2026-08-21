@@ -123,41 +123,59 @@
 
   /** @type {(label: string, numericValue: number) => string | number} */
   function formatRangeLabel(label, numericValue) {
+	console.debug(`>>> Entering formatRangeLabel(label=${label},numericValue=${numericValue})`);
     if (label) return label;
     if (formatValue) return formatValue(numericValue);
+	console.debug(`<<< Exiting formatRangeLabel(label=${label},numericValue=${numericValue})`);
     return label ?? numericValue;
   }
 
   /** @type {(numericValue: number) => string | undefined} */
   function getValueText(numericValue) {
+	console.debug(`>>> Entering getValueText(numericValue=${numericValue})`);
+	console.debug(`<<< Exiting getValueText(numericValue=${numericValue})`);
     return formatValue ? formatValue(numericValue) : undefined;
   }
 
   function startInteraction(event) {
+	console.debug(`>>> Entering startInteraction(event=${event})`);
     if (disabled || readonly) return;
     currentEvent = event;
+	logger.debug(`startInteraction(event=${event}): currentEvent → ${currentEvent}`);
     holding = true;
+	logger.debug(`startInteraction(event=${event}): holding → ${holding}`);
     dragging = true;
+	logger.debug(`startInteraction(event=${event}): dragging → ${dragging}`);
   }
 
   function stopHolding() {
+	console.debug('>>> Entering stopHolding()');
     const wasHolding = holding;
     holding = false;
+	logger.debug(`stopHolding(): holding → ${holding}`);
     dragging = false;
+	logger.debug(`stopHolding(): dragging → ${dragging}`);
     currentEvent = null;
+	logger.debug(`stopHolding(): currentEvent → ${currentEvent}`);
     if (wasHolding && !disabled && !readonly) {
       dispatch("change", value);
     }
+	console.debug('<<< Exiting stopHolding()');
   }
 
   function move(event) {
+	console.debug(`>>> Entering move(event=${event})`);
     if (holding) {
       currentEvent = event;
+	logger.debug(`move(event=${event}): currentEvent → ${currentEvent}`);
       dragging = true;
+	logger.debug(`move(event=${event}): dragging → ${dragging}`);
     }
+	console.debug(`<<< Exiting move(event=${event})`);
   }
 
   function calcValue(event) {
+	console.debug(`>>> Entering calcValue(event=${event})`);
     if (disabled || readonly || !event) return;
 
     const offsetX = event.touches ? event.touches[0].clientX : event.clientX;
@@ -173,7 +191,9 @@
     }
 
     value = nextValue;
+	logger.debug(`calcValue(event=${event}): value → ${value}`);
     dispatch("input", value);
+	console.debug(`<<< Exiting calcValue(event=${event})`);
   }
 
   $: labelId = `label-${id}`;

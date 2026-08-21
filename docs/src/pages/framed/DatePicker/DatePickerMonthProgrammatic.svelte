@@ -9,9 +9,12 @@
   let value = "03/2026";
 
   function previousMonth() {
+	console.debug('>>> Entering previousMonth()');
     var [month, year] = value.split("/").map(Number);
     var d = new Date(year, month - 2, 1);
     var mm = String(d.getMonth() + 1).padStart(2, "0");
+	console.debug(`previousMonth(): d → ${d}`);
+	console.debug(`previousMonth(): mm → ${mm}`);
     value = `${mm}/${d.getFullYear()}`;
   }
 </script>

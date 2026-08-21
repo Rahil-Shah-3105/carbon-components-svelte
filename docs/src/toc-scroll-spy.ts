@@ -1,21 +1,27 @@
+const logger = console;
 export function setupTocScrollSpy(page: ParentNode): () => void {
   const sections: { id: string; section: HTMLElement }[] = [];
   const linksById = new Map<string, HTMLAnchorElement[]>();
+logger.debug(`setupTocScrollSpy(page=${page}): linksById → ${linksById}`);
   const seen = new Set<string>();
 
   for (const link of page.querySelectorAll<HTMLAnchorElement>(
     '.toc-nav a[href^="#"]',
   )) {
+	logger.debug(`setupTocScrollSpy(page=${page}): seen → ${seen}`);
     const id = link.getAttribute("href")?.slice(1);
+	logger.debug(`setupTocScrollSpy(page=${page}): id → ${id}`);
     if (!id) continue;
 
     const list = linksById.get(id) ?? [];
+	logger.debug(`setupTocScrollSpy(page=${page}): list → ${list}`);
     list.push(link);
     linksById.set(id, list);
 
     if (seen.has(id)) continue;
 
     const section = page.querySelector<HTMLElement>(`#${CSS.escape(id)}`);
+	logger.debug(`setupTocScrollSpy(page=${page}): section → ${section}`);
     if (!section) continue;
 
     seen.add(id);
@@ -25,8 +31,10 @@ export function setupTocScrollSpy(page: ParentNode): () => void {
   if (sections.length === 0) return () => {};
 
   let currentActiveId = "";
+logger.debug(`setupTocScrollSpy(page=${page}): currentActiveId → ${currentActiveId}`);
 
   function setActive(activeId: string) {
+	logger.debug(`>>> Entering setActive(activeId=${activeId})`);
     if (activeId === currentActiveId) return;
     currentActiveId = activeId;
 
@@ -37,6 +45,7 @@ export function setupTocScrollSpy(page: ParentNode): () => void {
         link.classList.toggle("is-active", active);
         if (active) link.setAttribute("aria-current", "location");
         else link.removeAttribute("aria-current");
+		logger.debug(`<<< Exiting setActive(activeId=${activeId})`);
       }
     }
   }
@@ -52,11 +61,13 @@ export function setupTocScrollSpy(page: ParentNode): () => void {
   let raf = 0;
 
   function update() {
+	logger.debug('>>> Entering update()');
     const tops = sections.map(
       ({ section }) => section.getBoundingClientRect().top,
     );
 
     let activeId = sections[0].id;
+	logger.debug(`update(): activeId → ${activeId}`);
 
     for (let i = 0; i < sections.length; i++) {
       if (tops[i] <= OFFSET) {
@@ -80,11 +91,14 @@ export function setupTocScrollSpy(page: ParentNode): () => void {
     }
 
     setActive(activeId);
+	logger.debug('<<< Exiting update()');
   }
 
   function scheduleUpdate() {
+	logger.debug('>>> Entering scheduleUpdate()');
     cancelAnimationFrame(raf);
     raf = requestAnimationFrame(update);
+	logger.debug('<<< Exiting scheduleUpdate()');
   }
 
   const clickHandlers: { link: HTMLAnchorElement; handler: () => void }[] = [];

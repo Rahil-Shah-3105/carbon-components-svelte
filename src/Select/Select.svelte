@@ -108,6 +108,7 @@
    * @type {(id: string, value: string | number) => void}
    */
   function setDefaultValue(id, value) {
+	console.debug(`>>> Entering setDefaultValue(id=${id},value=${value})`);
     if ($defaultValue === null) {
       defaultSelectId.set(id);
       defaultValue.set(value);
@@ -121,6 +122,7 @@
       ...types,
       [value]: typeof value,
     }));
+	console.debug(`<<< Exiting setDefaultValue(id=${id},value=${value})`);
   }
 
   setContext("carbon:Select", {
@@ -130,30 +132,37 @@
   });
 
   function handleChange(event) {
+	console.debug(`>>> Entering handleChange(event=${event})`);
     let value = event.target.value;
 
+	console.debug(`handleChange(event=${event}): value → ${value}`);
     if ($itemTypesByValue[value] === "number") {
       value = Number(value);
     }
 
     selectedValue.set(value);
+	console.debug(`<<< Exiting handleChange(event=${event})`);
   }
 
   const selectReadOnlyKeys = ["ArrowDown", "ArrowUp", " "];
 
   /** @type {(e: MouseEvent) => void} */
   function onMouseDown(event) {
+	console.debug(`>>> Entering onMouseDown(event=${event})`);
     if (readonly) {
       event.preventDefault();
       event.currentTarget.focus();
     }
+	console.debug(`<<< Exiting onMouseDown(event=${event})`);
   }
 
   /** @type {(e: KeyboardEvent) => void} */
   function onKeyDown(event) {
+	console.debug(`>>> Entering onKeyDown(event=${event})`);
     if (readonly && selectReadOnlyKeys.includes(event.key)) {
       event.preventDefault();
     }
+	console.debug(`<<< Exiting onKeyDown(event=${event})`);
   }
 
   let prevSelected = null;
@@ -174,13 +183,16 @@
   // selectedIndex -1 comes back as value "", indistinguishable from an
   // empty-valued option being selected, so it must be re-asserted explicitly.
   function syncNativeSelectValue() {
+	console.debug('>>> Entering syncNativeSelectValue()');
     tick().then(() => {
       if (!ref) return;
       const nextValue = $selectedValue == null ? "" : String($selectedValue);
       if (ref.selectedIndex === -1 || ref.value !== nextValue) {
         ref.value = nextValue;
+		logger.debug(`syncNativeSelectValue(): ref.value → ${ref.value}`);
       }
     });
+	console.debug('<<< Exiting syncNativeSelectValue()');
   }
 
   $: errorId = `error-${id}`;

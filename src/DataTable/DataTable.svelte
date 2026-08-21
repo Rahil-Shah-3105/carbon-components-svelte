@@ -406,7 +406,9 @@
     container.style.maxHeight = `${calculatedContainerHeight}px`;
     container.style.overflowY = "auto";
     function handleScroll() {
+	console.debug('>>> Entering handleScroll()');
       tableBodyScrollTop = container.scrollTop || 0;
+	logger.debug(`handleScroll(): tableBodyScrollTop → ${tableBodyScrollTop}`);
     }
     container.addEventListener("scroll", handleScroll, { passive: true });
     scrollListenerCleanup = () => {
@@ -451,20 +453,28 @@
    * @type {(searchValue: string, customFilter?: (row: Row, value: string) => boolean) => ReadonlyArray<Row["id"]>}
    */
   function filterRows(searchValue, customFilter) {
+	console.debug(`>>> Entering filterRows(searchValue=${searchValue},customFilter=${customFilter})`);
     lastSearchValue = searchValue;
     lastCustomFilter = customFilter;
+	logger.debug(`filterRows(searchValue=${searchValue},customFilter=${customFilter}): lastSearchValue → ${lastSearchValue}`);
+	logger.debug(`filterRows(searchValue=${searchValue},customFilter=${customFilter}): lastCustomFilter → ${lastCustomFilter}`);
     const value = searchValue.trim().toLowerCase();
 
+	console.debug(`filterRows(searchValue=${searchValue},customFilter=${customFilter}): value → ${value}`);
     if (value.length === 0) {
       // Reset to original rows.
       const ids = originalRows.map((row) => row.id);
       matchedRowIdsSet = new Set(ids);
+	console.debug(`filterRows(searchValue=${searchValue},customFilter=${customFilter}): ids → ${ids}`);
+	console.debug(`filterRows(searchValue=${searchValue},customFilter=${customFilter}): matchedRowIdsSet → ${matchedRowIdsSet}`);
+	logger.debug(`filterRows(searchValue=${searchValue},customFilter=${customFilter}): matchedRowIdsSet → ${matchedRowIdsSet}`);
       tableRows.set(originalRows);
       return ids;
     }
 
     let filteredRows = [];
 
+	console.debug(`filterRows(searchValue=${searchValue},customFilter=${customFilter}): filteredRows → ${filteredRows}`);
     if (typeof customFilter === "function") {
       // Apply custom filter if provided.
       filteredRows = originalRows.filter((row) => customFilter(row, value));
@@ -495,6 +505,7 @@
     // "hide" mode keeps every row mounted and drives visibility via `matchedRowIdsSet`;
     // otherwise shrink the rendered set as before.
     tableRows.set(hideMode ? originalRows : filteredRows);
+	console.debug(`<<< Exiting filterRows(searchValue=${searchValue},customFilter=${customFilter})`);
     return ids;
   }
 
@@ -524,8 +535,11 @@
    * @type {() => void}
    */
   function resetSelectedRowIds() {
+	console.debug('>>> Entering resetSelectedRowIds()');
     selectAll = false;
     selectedRowIds = [];
+	logger.debug(`resetSelectedRowIds(): selectAll → ${selectAll}`);
+	logger.debug(`resetSelectedRowIds(): selectedRowIds → ${selectedRowIds}`);
     lastSelectedRowId = null;
   }
 
@@ -539,6 +553,7 @@
    * @type {(targetIndex: number, checked: boolean) => boolean}
    */
   function selectRowRange(targetIndex, checked) {
+	console.debug(`>>> Entering selectRowRange(targetIndex=${targetIndex},checked=${checked})`);
     const anchorIndex = rowsToVirtualize.findIndex(
       (row) => row.id === lastSelectedRowId,
     );
@@ -547,6 +562,8 @@
     const start = Math.min(anchorIndex, targetIndex);
     const end = Math.max(anchorIndex, targetIndex);
     const next = new Set(selectedRowIds);
+	console.debug(`selectRowRange(targetIndex=${targetIndex},checked=${checked}): end → ${end}`);
+	console.debug(`selectRowRange(targetIndex=${targetIndex},checked=${checked}): next → ${next}`);
     for (const row of rowsToVirtualize.slice(start, end + 1)) {
       if (nonSelectableRowIdsSet.has(row.id)) continue;
       if (checked) {
@@ -556,6 +573,8 @@
       }
     }
     selectedRowIds = [...next];
+	logger.debug(`selectRowRange(targetIndex=${targetIndex},checked=${checked}): selectedRowIds → ${selectedRowIds}`);
+	console.debug(`<<< Exiting selectRowRange(targetIndex=${targetIndex},checked=${checked})`);
     return true;
   }
 
@@ -620,11 +639,14 @@
   };
 
   function formatAlignClass(columnAlign) {
+	console.debug(`>>> Entering formatAlignClass(columnAlign=${columnAlign})`);
+	console.debug(`<<< Exiting formatAlignClass(columnAlign=${columnAlign})`);
     return alignClasses[columnAlign];
   }
 
   /** Build cell objects for one row. Always new objects so `display` columns re-run. */
   function computeRowCells(row) {
+	console.debug(`>>> Entering computeRowCells(row=${row})`);
     const cells = [];
 
     // Index into `headers` rather than the visible subset so hiding a preceding
@@ -641,6 +663,7 @@
       });
     });
 
+	console.debug(`<<< Exiting computeRowCells(row=${row})`);
     return cells;
   }
 
@@ -654,12 +677,15 @@
    * ```
    */
   export function refreshRow(id) {
+	console.debug(`>>> Entering refreshRow(id=${id})`);
     const row = rows.find((row) => row.id === id);
     if (!row) return;
+	console.debug(`refreshRow(id=${id}): row → ${row}`);
     tableCellsByRowId = {
       ...tableCellsByRowId,
       [id]: computeRowCells(row),
     };
+	logger.debug(`refreshRow(id=${id}): tableCellsByRowId → ${tableCellsByRowId}`);
   }
 
   /**
@@ -673,7 +699,9 @@
    * ```
    */
   export function refreshCells() {
+	console.debug('>>> Entering refreshCells()');
     tableCellsByRowId = buildCellsForPaintedRows(rowsToRender ?? [], {});
+	console.debug(`refreshCells(): tableCellsByRowId → ${tableCellsByRowId}`);
   }
 
   /**
@@ -681,11 +709,13 @@
    * @param {ReadonlyArray<Row> | undefined} b
    */
   function paintedRowListChanged(a, b) {
+	console.debug(`>>> Entering paintedRowListChanged(a=${a},b=${b})`);
     if (a === b) return false;
     if (!a || !b || a.length !== b.length) return true;
     for (let i = 0; i < a.length; i++) {
       if (a[i].id !== b[i].id) return true;
     }
+	console.debug(`<<< Exiting paintedRowListChanged(a=${a},b=${b})`);
     return false;
   }
 
@@ -696,11 +726,13 @@
    * @param {Record<string, ReturnType<typeof computeRowCells>>} cache
    */
   function buildCellsForPaintedRows(paintedRows, cache) {
+	console.debug(`>>> Entering buildCellsForPaintedRows(paintedRows=${paintedRows},cache=${cache})`);
     const next = {};
     for (const row of paintedRows) {
       const prevCells = cache[row.id];
       const newCells = computeRowCells(row);
 
+	console.debug(`buildCellsForPaintedRows(paintedRows=${paintedRows},cache=${cache}): newCells → ${newCells}`);
       if (prevCells && prevCells.length === newCells.length) {
         let allEqual = true;
         for (let i = 0; i < newCells.length; i++) {
@@ -724,6 +756,7 @@
         next[row.id] = newCells;
       }
     }
+	console.debug(`<<< Exiting buildCellsForPaintedRows(paintedRows=${paintedRows},cache=${cache})`);
     return next;
   }
 

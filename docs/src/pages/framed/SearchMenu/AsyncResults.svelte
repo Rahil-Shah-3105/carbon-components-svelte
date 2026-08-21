@@ -20,6 +20,8 @@
   // Simulate a server endpoint. The boolean predicate is the server-side match
   // decision -- swap the body for a real `fetch()`.
   function fetchResults(query) {
+	console.debug(`>>> Entering fetchResults(query=${query})`);
+	console.debug(`<<< Exiting fetchResults(query=${query})`);
     return new Promise((resolve) => {
       setTimeout(() => {
         const q = query.toLowerCase();
@@ -33,18 +35,24 @@
   $: queryResults(value);
 
   function queryResults(query) {
+	console.debug(`>>> Entering queryResults(query=${query})`);
     clearTimeout(timeout);
     const trimmed = query.trim();
     if (trimmed === "") {
+	console.debug(`queryResults(query=${query}): trimmed → ${trimmed}`);
       results = [];
+	logger.debug(`queryResults(query=${query}): results → ${results}`);
       loading = false;
+	logger.debug(`queryResults(query=${query}): loading → ${loading}`);
       return;
     }
     loading = true;
     timeout = setTimeout(async () => {
+	logger.info(`queryResults(query=${query}): timeout → ${timeout}`);
       results = await fetchResults(trimmed);
       loading = false;
     }, 300);
+	console.debug(`<<< Exiting queryResults(query=${query})`);
   }
 </script>
 

@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 import { get, writable } from "svelte/store";
 
@@ -23,6 +24,7 @@ const groups = new Map();
  * }}
  */
 export function registerRadioButton(name, key, checked) {
+logger.debug(`>>> Entering registerRadioButton(name=${name},key=${key},checked=${checked})`);
   // For SSR, return a standalone store that doesn't sync
   if (typeof window === "undefined") {
     return {
@@ -39,6 +41,7 @@ export function registerRadioButton(name, key, checked) {
   }
 
   const group = /** @type {RadioGroup} */ (groups.get(name));
+logger.debug(`registerRadioButton(name=${name},key=${key},checked=${checked}): group → ${group}`);
   group.members.add(key);
 
   // If this button is initially checked, set it as selected
@@ -46,6 +49,7 @@ export function registerRadioButton(name, key, checked) {
     group.selectedKey.set(key);
   }
 
+logger.debug(`<<< Exiting registerRadioButton(name=${name},key=${key},checked=${checked})`);
   return {
     selectedKey: group.selectedKey,
     unregister: () => unregisterRadioButton(name, key),
@@ -59,12 +63,17 @@ export function registerRadioButton(name, key, checked) {
  * @param {InstanceKey} key - Unique instance key for this component
  */
 function unregisterRadioButton(name, key) {
+logger.debug(`>>> Entering unregisterRadioButton(name=${name},key=${key})`);
   const group = groups.get(name);
   if (!group) return;
+logger.debug(`unregisterRadioButton(name=${name},key=${key}): group → ${group}`);
+const __log_start = Date.now();
 
   group.members.delete(key);
+logger.info(`unregisterRadioButton(name,key)=${name},${key}: delete operation took ${Date.now() - __log_start} ms`);
 
   const currentSelected = get(group.selectedKey);
+logger.debug(`unregisterRadioButton(name=${name},key=${key}): currentSelected → ${currentSelected}`);
 
   if (currentSelected === key) {
     group.selectedKey.set(undefined);
@@ -72,6 +81,7 @@ function unregisterRadioButton(name, key) {
 
   if (group.members.size === 0) {
     groups.delete(name);
+	logger.debug(`<<< Exiting unregisterRadioButton(name=${name},key=${key})`);
   }
 }
 
@@ -83,9 +93,12 @@ function unregisterRadioButton(name, key) {
  * @param {InstanceKey} key - The key of the newly selected instance
  */
 export function updateGroupSelection(name, key) {
+logger.debug(`>>> Entering updateGroupSelection(name=${name},key=${key})`);
   const group = groups.get(name);
   if (group) {
+	logger.debug(`updateGroupSelection(name=${name},key=${key}): group → ${group}`);
     group.selectedKey.set(key);
+	logger.debug(`<<< Exiting updateGroupSelection(name=${name},key=${key})`);
   }
 }
 
@@ -95,9 +108,13 @@ export function updateGroupSelection(name, key) {
  * @returns {RadioGroup | undefined}
  */
 export function getGroup(name) {
+logger.debug(`>>> Entering getGroup(name=${name})`);
+logger.debug(`<<< Exiting getGroup(name=${name})`);
   return groups.get(name);
 }
 
 export function clearAllGroups() {
+logger.debug('>>> Entering clearAllGroups()');
   groups.clear();
+logger.debug('<<< Exiting clearAllGroups()');
 }

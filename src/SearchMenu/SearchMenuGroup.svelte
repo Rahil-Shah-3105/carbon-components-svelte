@@ -39,12 +39,16 @@
     divider,
     filter: filterStore,
     registerItem(id) {
+	console.debug(`>>> Entering registerItem(id=${id})`);
       childIds.add(id);
       childIds = childIds;
+	logger.debug(`registerItem(id=${id}): childIds → ${childIds}`);
     },
     unregisterItem(id) {
+	console.debug(`>>> Entering unregisterItem(id=${id})`);
       childIds.delete(id);
       childIds = childIds;
+	logger.debug(`unregisterItem(id=${id}): childIds → ${childIds}`);
     },
   });
 </script>

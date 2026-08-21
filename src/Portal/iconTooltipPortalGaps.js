@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 // Caret spacing + alignment nudges for an icon tooltip rendered through
@@ -22,8 +23,10 @@ const PORTAL_VERTICAL_ALIGN_OFFSET_RIGHT_END_PX = 1;
  * }}
  */
 export function iconTooltipPortalGaps(tooltipPosition, tooltipAlignment) {
+logger.debug(`>>> Entering iconTooltipPortalGaps(tooltipPosition=${tooltipPosition},tooltipAlignment=${tooltipAlignment})`);
   const horizontal = tooltipPosition === "left" || tooltipPosition === "right";
   const vertical = tooltipPosition === "top" || tooltipPosition === "bottom";
+logger.debug(`<<< Exiting iconTooltipPortalGaps(tooltipPosition=${tooltipPosition},tooltipAlignment=${tooltipAlignment})`);
   return {
     horizontalGapLeft: horizontal ? PORTAL_HORIZONTAL_GAP_PX : 0,
     horizontalGapRight: horizontal ? PORTAL_HORIZONTAL_GAP_PX : 0,

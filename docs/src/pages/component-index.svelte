@@ -64,22 +64,31 @@
   let lastUrlQuery = "";
 
   function normalizeCategories(raw: string): string {
+	console.debug(`>>> Entering normalizeCategories(raw=${raw})`);
+	console.debug(`<<< Exiting normalizeCategories(raw=${raw})`);
     return serializeCategoryFilterParam(parseCategoryFilterParam(raw || null));
   }
 
   function applyUrlCategories(raw: string) {
+	console.debug(`>>> Entering applyUrlCategories(raw=${raw})`);
     const labels = parseCategoryFilterParam(raw || null);
     const normalized = serializeCategoryFilterParam(labels);
+	console.debug(`applyUrlCategories(raw=${raw}): labels → ${labels}`);
     if (normalized === lastUrlCategories) return;
+	console.debug(`applyUrlCategories(raw=${raw}): normalized → ${normalized}`);
     lastUrlCategories = normalized;
     categorySelectedIds = labels;
+	logger.debug(`applyUrlCategories(raw=${raw}): lastUrlCategories → ${lastUrlCategories}`);
   }
 
   function applyUrlQuery(raw: string) {
+	console.debug(`>>> Entering applyUrlQuery(raw=${raw})`);
     const normalized = raw.trim();
     if (normalized === lastUrlQuery) return;
+	console.debug(`applyUrlQuery(raw=${raw}): normalized → ${normalized}`);
     lastUrlQuery = normalized;
     query = normalized;
+	logger.debug(`applyUrlQuery(raw=${raw}): query → ${query}`);
   }
 
   $: applyUrlCategories($params[CATEGORY_FILTER_PARAM] ?? "");
@@ -136,8 +145,11 @@
   });
 
   function clearFilters() {
+	console.debug('>>> Entering clearFilters()');
     query = "";
     categorySelectedIds = [];
+	console.debug(`clearFilters(): query → ${query}`);
+	logger.debug(`clearFilters(): query → ${query}`);
     searchRef?.focus();
   }
 
@@ -154,12 +166,17 @@
   };
 
   function toggleSort(key: SortKey) {
+	console.debug(`>>> Entering toggleSort(key=${key})`);
     if (sortKey === key) {
       sortDirection = sortDirection === "asc" ? "desc" : "asc";
     } else {
+	console.debug(`toggleSort(key=${key}): sortDirection → ${sortDirection}`);
+	logger.debug(`toggleSort(key=${key}): sortDirection → ${sortDirection}`);
       sortKey = key;
+	logger.debug(`toggleSort(key=${key}): sortKey → ${sortKey}`);
       sortDirection = defaultDirection[key];
     }
+	console.debug(`<<< Exiting toggleSort(key=${key})`);
   }
 
   $: selectedCategories =

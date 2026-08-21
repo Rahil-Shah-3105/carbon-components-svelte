@@ -238,28 +238,38 @@
 
   /** @type {(char: string) => boolean} */
   function isValidChar(char) {
+	console.debug(`>>> Entering isValidChar(char=${char})`);
+	console.debug(`<<< Exiting isValidChar(char=${char})`);
     return charPattern.test(char);
   }
 
   /** @type {(index: number, char: string) => void} */
   function setChar(index, char) {
+	console.debug(`>>> Entering setChar(index=${index},char=${char})`);
     const next = code.slice();
     next[index] = char;
+	console.debug(`setChar(index=${index},char=${char}): next → ${next}`);
     code = next;
+	logger.debug(`setChar(index=${index},char=${char}): code → ${code}`);
     dispatch("change", { value: code.join(""), code });
+	console.debug(`<<< Exiting setChar(index=${index},char=${char})`);
   }
 
   /** @type {(index: number, options?: { selectTextOnFocus?: boolean }) => void} */
   function focusInput(index, options = {}) {
+	console.debug(`>>> Entering focusInput(index=${index},options=${options})`);
     const input = inputs[index];
     if (input) {
       focusedIndex = index;
+	logger.debug(`focusInput(index=${index},options=${options}): focusedIndex → ${focusedIndex}`);
       const shouldSelect = options.selectTextOnFocus ?? selectTextOnFocus;
       skipSelectOnFocus = true;
+	logger.debug(`focusInput(index=${index},options=${options}): skipSelectOnFocus → ${skipSelectOnFocus}`);
       input.focus();
       if (shouldSelect) input.select();
       skipSelectOnFocus = false;
     }
+	console.debug(`<<< Exiting focusInput(index=${index},options=${options})`);
   }
 
   /**
@@ -268,8 +278,10 @@
    * @type {(index: number, chars: string[]) => void}
    */
   function fillFromChars(index, chars) {
+	console.debug(`>>> Entering fillFromChars(index=${index},chars=${chars})`);
     const next = code.slice();
     if (chars.length === count) {
+	console.debug(`fillFromChars(index=${index},chars=${chars}): next → ${next}`);
       for (let i = 0; i < count; i++) next[i] = chars[i];
     } else {
       let cursor = index;
@@ -279,17 +291,22 @@
       }
     }
     code = next;
+	logger.debug(`fillFromChars(index=${index},chars=${chars}): code → ${code}`);
     dispatch("change", { value: code.join(""), code });
 
     const firstEmpty = code.findIndex((char) => !char);
     focusInput(firstEmpty === -1 ? count - 1 : firstEmpty);
+	console.debug(`fillFromChars(index=${index},chars=${chars}): firstEmpty → ${firstEmpty}`);
   }
 
   /** @type {(index: number, event: Event) => void} */
   function handleInput(index, event) {
+	console.debug(`>>> Entering handleInput(index=${index},event=${event})`);
     const input = /** @type {HTMLInputElement} */ (event.target);
     if (readonly || disabled) {
+	console.debug(`handleInput(index=${index},event=${event}): input → ${input}`);
       input.value = code[index] ?? "";
+	logger.debug(`handleInput(index=${index},event=${event}): input.value → ${input.value}`);
       return;
     }
 
@@ -298,6 +315,7 @@
     if (raw.length > 1) {
       const chars = raw.split("").filter(isValidChar);
       if (chars.length === 0) {
+		console.debug(`handleInput(index=${index},event=${event}): chars → ${chars}`);
         input.value = code[index] ?? "";
         return;
       }
@@ -313,10 +331,12 @@
 
     setChar(index, char);
     if (char && index < count - 1) focusInput(index + 1);
+	console.debug(`<<< Exiting handleInput(index=${index},event=${event})`);
   }
 
   /** @type {(index: number, event: KeyboardEvent) => void} */
   function handleKeydown(index, event) {
+	console.debug(`>>> Entering handleKeydown(index=${index},event=${event})`);
     switch (event.key) {
       case "Backspace":
         if (readonly || disabled) break;
@@ -343,10 +363,12 @@
         setChar(index, "");
         break;
     }
+	console.debug(`<<< Exiting handleKeydown(index=${index},event=${event})`);
   }
 
   /** @type {(index: number, event: ClipboardEvent) => void} */
   function handlePaste(index, event) {
+	console.debug(`>>> Entering handlePaste(index=${index},event=${event})`);
     event.preventDefault();
     if (readonly || disabled) return;
     const text = (event.clipboardData?.getData("text") ?? "").replace(
@@ -354,26 +376,34 @@
       "",
     );
     const chars = text.split("").filter(isValidChar);
+	console.debug(`handlePaste(index=${index},event=${event}): text → ${text}`);
+	console.debug(`handlePaste(index=${index},event=${event}): chars → ${chars}`);
     if (chars.length === 0) return;
 
     dispatch("paste", { value: text });
     fillFromChars(index, chars);
+	console.debug(`<<< Exiting handlePaste(index=${index},event=${event})`);
   }
 
   /** @type {(event: KeyboardEvent) => void} */
   function handleLegendKeydown(event) {
+	console.debug(`>>> Entering handleLegendKeydown(event=${event})`);
     if (event.key === "Enter" || event.key === " ") {
       event.preventDefault();
       focusNextEmptyInput();
     }
+	console.debug(`<<< Exiting handleLegendKeydown(event=${event})`);
   }
 
   function handleLegendClick() {
+	console.debug('>>> Entering handleLegendClick()');
     focusNextEmptyInput();
+	console.debug('<<< Exiting handleLegendClick()');
   }
 
   /** @type {(event: FocusEvent) => void} */
   function handleFocus(event) {
+	console.debug(`>>> Entering handleFocus(event=${event})`);
     const index = inputs.indexOf(
       /** @type {HTMLInputElement} */ (event.target),
     );
@@ -383,6 +413,7 @@
     if (selectTextOnFocus) {
       /** @type {HTMLInputElement} */ (event.target).select();
     }
+	console.debug(`<<< Exiting handleFocus(event=${event})`);
   }
 
   /**
@@ -390,7 +421,9 @@
    * @param {{ selectTextOnFocus?: boolean }} [options]
    */
   export function focusFirstInput(options = {}) {
+	console.debug(`>>> Entering focusFirstInput(options=${options})`);
     focusInput(0, options);
+	console.debug(`<<< Exiting focusFirstInput(options=${options})`);
   }
 
   /**
@@ -398,7 +431,9 @@
    * @param {{ selectTextOnFocus?: boolean }} [options]
    */
   export function focusLastInput(options = {}) {
+	console.debug(`>>> Entering focusLastInput(options=${options})`);
     focusInput(count - 1, options);
+	console.debug(`<<< Exiting focusLastInput(options=${options})`);
   }
 
   /**
@@ -406,8 +441,10 @@
    * @param {{ selectTextOnFocus?: boolean }} [options]
    */
   export function focusNextEmptyInput(options = {}) {
+	console.debug(`>>> Entering focusNextEmptyInput(options=${options})`);
     const firstEmpty = code.findIndex((char) => !char);
     focusInput(firstEmpty === -1 ? count - 1 : firstEmpty, options);
+	console.debug(`focusNextEmptyInput(options=${options}): firstEmpty → ${firstEmpty}`);
   }
 
   /**
@@ -416,6 +453,7 @@
    * @param {{ selectTextOnFocus?: boolean }} [options]
    */
   export function focusNext(options = {}) {
+	console.debug(`>>> Entering focusNext(options=${options})`);
     let activeIndex = inputs.indexOf(
       /** @type {HTMLInputElement} */ (document.activeElement),
     );
@@ -427,6 +465,7 @@
     if (activeIndex < count - 1) {
       focusInput(activeIndex + 1, options);
     }
+	console.debug(`<<< Exiting focusNext(options=${options})`);
   }
 
   /**
@@ -435,11 +474,15 @@
    * @param {{ focus?: boolean }} [options]
    */
   export function clear(options = {}) {
+	console.debug(`>>> Entering clear(options=${options})`);
     code = Array.from({ length: count }, () => "");
     dispatch("change", { value: "", code });
+	console.debug(`clear(options=${options}): code → ${code}`);
+	logger.debug(`clear(options=${options}): code → ${code}`);
     if (options.focus === true) {
       focusInput(0);
     }
+	console.debug(`<<< Exiting clear(options=${options})`);
   }
 
   onMount(() => {

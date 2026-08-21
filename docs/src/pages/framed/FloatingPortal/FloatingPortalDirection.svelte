@@ -29,28 +29,43 @@
     "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
 
   function handleDragStartBottom(e) {
+	console.debug(`>>> Entering handleDragStartBottom(e=${e})`);
     const rect = anchorBottom.getBoundingClientRect();
     offsetX = e.clientX - rect.left;
+	console.debug(`handleDragStartBottom(e=${e}): rect → ${rect}`);
+	logger.debug(`handleDragStartBottom(e=${e}): offsetX → ${offsetX}`);
     offsetY = e.clientY - rect.top;
     startXBottom = xBottom;
+	logger.debug(`handleDragStartBottom(e=${e}): offsetY → ${offsetY}`);
+	logger.debug(`handleDragStartBottom(e=${e}): startXBottom → ${startXBottom}`);
     startYBottom = yBottom;
     e.dataTransfer.setDragImage(emptyImage, 0, 0);
+	logger.debug(`handleDragStartBottom(e=${e}): startYBottom → ${startYBottom}`);
     e.dataTransfer.effectAllowed = "move";
     e.dataTransfer.setData("text/plain", "");
+	console.debug(`<<< Exiting handleDragStartBottom(e=${e})`);
   }
 
   function handleDragStartTop(e) {
+	console.debug(`>>> Entering handleDragStartTop(e=${e})`);
     const rect = anchorTop.getBoundingClientRect();
     offsetX = e.clientX - rect.left;
+	console.debug(`handleDragStartTop(e=${e}): rect → ${rect}`);
+	logger.debug(`handleDragStartTop(e=${e}): offsetX → ${offsetX}`);
     offsetY = e.clientY - rect.top;
     startXTop = xTop;
+	logger.debug(`handleDragStartTop(e=${e}): offsetY → ${offsetY}`);
+	logger.debug(`handleDragStartTop(e=${e}): startXTop → ${startXTop}`);
     startYTop = yTop;
     e.dataTransfer.setDragImage(emptyImage, 0, 0);
+	logger.debug(`handleDragStartTop(e=${e}): startYTop → ${startYTop}`);
     e.dataTransfer.effectAllowed = "move";
     e.dataTransfer.setData("text/plain", "");
+	console.debug(`<<< Exiting handleDragStartTop(e=${e})`);
   }
 
   function handleDragBottom(e) {
+	console.debug(`>>> Entering handleDragBottom(e=${e})`);
     if ((e.clientX !== 0 || e.clientY !== 0) && containerBottom) {
       const parentRect = containerBottom.getBoundingClientRect();
       if (
@@ -59,13 +74,18 @@
         e.clientY >= parentRect.top &&
         e.clientY <= parentRect.bottom
       ) {
+		console.debug(`handleDragBottom(e=${e}): parentRect → ${parentRect}`);
         xBottom = e.clientX - offsetX - parentRect.left;
+		logger.debug(`handleDragBottom(e=${e}): xBottom → ${xBottom}`);
         yBottom = e.clientY - offsetY - parentRect.top;
+		logger.debug(`handleDragBottom(e=${e}): yBottom → ${yBottom}`);
       }
     }
+	console.debug(`<<< Exiting handleDragBottom(e=${e})`);
   }
 
   function handleDragTop(e) {
+	console.debug(`>>> Entering handleDragTop(e=${e})`);
     if ((e.clientX !== 0 || e.clientY !== 0) && containerTop) {
       const parentRect = containerTop.getBoundingClientRect();
       if (
@@ -74,23 +94,31 @@
         e.clientY >= parentRect.top &&
         e.clientY <= parentRect.bottom
       ) {
+		console.debug(`handleDragTop(e=${e}): parentRect → ${parentRect}`);
         xTop = e.clientX - offsetX - parentRect.left;
+		logger.debug(`handleDragTop(e=${e}): xTop → ${xTop}`);
         yTop = e.clientY - offsetY - parentRect.top;
+		logger.debug(`handleDragTop(e=${e}): yTop → ${yTop}`);
       }
     }
+	console.debug(`<<< Exiting handleDragTop(e=${e})`);
   }
 
   function handleDragEndBottom() {
+	console.debug('>>> Entering handleDragEndBottom()');
     const moved =
       Math.abs(xBottom - startXBottom) > 5 ||
       Math.abs(yBottom - startYBottom) > 5;
     if (!moved) openBottom = !openBottom;
+	console.debug('<<< Exiting handleDragEndBottom()');
   }
 
   function handleDragEndTop() {
+	console.debug('>>> Entering handleDragEndTop()');
     const moved =
       Math.abs(xTop - startXTop) > 5 || Math.abs(yTop - startYTop) > 5;
     if (!moved) openTop = !openTop;
+	console.debug('<<< Exiting handleDragEndTop()');
   }
 </script>
 

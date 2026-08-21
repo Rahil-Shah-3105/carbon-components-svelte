@@ -2,6 +2,7 @@ import { cleanup, fireEvent, render } from "@testing-library/svelte";
 import { bench, run } from "mitata";
 import { tick } from "svelte";
 import DataTableFilterBench from "./fixtures/DataTableFilterBench.svelte";
+const logger = console;
 
 // DataTable filterMode benchmark: compare "hide" vs "remove" strategies per
 // search keystroke on a 1000-row table. Instances are rendered ONCE and
@@ -12,6 +13,8 @@ import DataTableFilterBench from "./fixtures/DataTableFilterBench.svelte";
 // so every iteration does steady, genuine filter work.
 
 function buildRows(count: number) {
+logger.debug(`>>> Entering buildRows(count=${count})`);
+logger.debug(`<<< Exiting buildRows(count=${count})`);
   return Array.from({ length: count }, (_, i) => ({
     id: String(i),
     name: `row ${i} - Load Balancer`,
@@ -30,8 +33,11 @@ it("benchmarks DataTable filter keystroke, filterMode remove vs hide", async () 
   });
 
   const getInput = (instance: typeof removeInstance) => {
+	logger.debug(`>>> Entering getInput(instance=${instance})`);
     const input = instance.container.querySelector("input");
     if (!input) throw new Error("search input not found");
+	logger.debug(`getInput(instance=${instance}): input → ${input}`);
+	logger.debug(`<<< Exiting getInput(instance=${instance})`);
     return input;
   };
 
@@ -59,12 +65,15 @@ it("benchmarks DataTable filter keystroke, filterMode remove vs hide", async () 
   ): void => {
     bench(title, function* () {
       let n = 0;
+	logger.debug(`>>> Entering bench(title=${title},n=${n})`);
       yield async () => {
         const value = n++ % 2 === 0 ? "row 8" : "row 7";
         await fireEvent.input(input, { target: { value } });
         await tick();
+		logger.debug(`<<< Exiting bench(title=${title},n=${n})`);
       };
     });
+	logger.debug(`<<< Exiting registerKeystrokeCase(title=${title},input=${input})`);
   };
 
   registerKeystrokeCase(

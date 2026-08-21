@@ -6,11 +6,14 @@
   let saved = true;
 
   function toggle(setter) {
+	console.debug(`>>> Entering toggle(setter=${setter})`);
+	console.debug(`<<< Exiting toggle(setter=${setter})`);
     return (e) => {
       // Keep the menu open while editing settings.
       e.preventDefault();
       setter();
       saved = false;
+	logger.debug(`toggle(setter=${setter}): saved → ${saved}`);
     };
   }
 </script>

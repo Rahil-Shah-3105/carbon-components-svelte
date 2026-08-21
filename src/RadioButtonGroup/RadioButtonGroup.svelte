@@ -89,17 +89,21 @@
    * @type {(data: { checked: boolean; value: Value }) => void}
    */
   function add({ checked, value }) {
+	console.debug(`>>> Entering add(checked=${checked},value=${value})`);
     if (checked) {
       selectedValue.set(value);
     }
+	console.debug(`<<< Exiting add(checked=${checked},value=${value})`);
   }
 
   /**
    * @type {(value: Value) => void}
    */
   function update(value) {
+	console.debug(`>>> Entering update(value=${value})`);
     if (readonly) return;
     selected = value;
+	logger.debug(`update(value=${value}): selected → ${selected}`);
   }
 
   setContext("carbon:RadioButtonGroup", {

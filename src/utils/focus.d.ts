@@ -1,3 +1,4 @@
+const logger = console;
 export function initialFocus(options: {
   container: Element | null | undefined;
   selectorPrimaryFocus?: string | null;

@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 /**
@@ -77,10 +78,15 @@ export function isInSafeTriangle(
  * @returns {boolean}
  */
 function isPointInTriangle(px, py, x1, y1, x2, y2, x3, y3) {
+logger.debug(`>>> Entering isPointInTriangle(px=${px},py=${py},x1=${x1},y1=${y1},x2=${x2},y2=${y2},x3=${x3},y3=${y3})`);
   const denominator = (y2 - y3) * (x1 - x3) + (x3 - x2) * (y1 - y3);
   const a = ((y2 - y3) * (px - x3) + (x3 - x2) * (py - y3)) / denominator;
+logger.debug(`isPointInTriangle(px=${px},py=${py},x1=${x1},y1=${y1},x2=${x2},y2=${y2},x3=${x3},y3=${y3}): denominator → ${denominator}`);
+logger.debug(`isPointInTriangle(px=${px},py=${py},x1=${x1},y1=${y1},x2=${x2},y2=${y2},x3=${x3},y3=${y3}): a → ${a}`);
   const b = ((y3 - y1) * (px - x3) + (x1 - x3) * (py - y3)) / denominator;
   const c = 1 - a - b;
+logger.debug(`isPointInTriangle(px=${px},py=${py},x1=${x1},y1=${y1},x2=${x2},y2=${y2},x3=${x3},y3=${y3}): b → ${b}`);
 
+logger.debug(`<<< Exiting isPointInTriangle(px=${px},py=${py},x1=${x1},y1=${y1},x2=${x2},y2=${y2},x3=${x3},y3=${y3})`);
   return a >= 0 && a <= 1 && b >= 0 && b <= 1 && c >= 0 && c <= 1;
 }

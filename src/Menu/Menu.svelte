@@ -123,10 +123,13 @@
    * @type {(trigger: "escape-key" | "outside-click" | "select") => void}
    */
   function close(trigger) {
+	console.debug(`>>> Entering close(trigger=${trigger})`);
     if (!open) return;
     open = false;
+	logger.debug(`close(trigger=${trigger}): open → ${open}`);
     if (trigger === "escape-key") anchor?.focus({ preventScroll: true });
     dispatch("close", { trigger });
+	console.debug(`<<< Exiting close(trigger=${trigger})`);
   }
 
   setContext("carbon:Menu", { close });
@@ -157,13 +160,16 @@
    * @param {HTMLElement} item
    */
   function focusMenuItem(item) {
+	console.debug(`>>> Entering focusMenuItem(item=${item})`);
     // `preventScroll` keeps a portaled menu from scrolling the document;
     // scroll the item into view within the menu's own scroll container.
     item.focus({ preventScroll: true });
     scrollIntoViewWithinMenu(item, '[role="menu"]');
+	console.debug(`<<< Exiting focusMenuItem(item=${item})`);
   }
 
   function handleOutsideClick(event) {
+	console.debug(`>>> Entering handleOutsideClick(event=${event})`);
     if (!open) return;
     // Clicks inside any menu (this one or a portalled submenu) are not outside
     // clicks. A submenu's <ul> isn't a DOM descendant of this menu even though
@@ -171,9 +177,12 @@
     const target = event.target;
     if (target instanceof Element && target.closest("[role='menu']")) return;
     if (isOutsideClick(event, [anchor, ref])) close("outside-click");
+	console.debug(`<<< Exiting handleOutsideClick(event=${event})`);
   }
   function handleEscape(event) {
+	console.debug(`>>> Entering handleEscape(event=${event})`);
     if (open && event.key === "Escape") close("escape-key");
+	console.debug(`<<< Exiting handleEscape(event=${event})`);
   }
 </script>
 

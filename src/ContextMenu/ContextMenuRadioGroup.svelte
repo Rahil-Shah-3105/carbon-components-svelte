@@ -24,16 +24,20 @@
    * @type {(data: { id: string }) => void}
    */
   function addOption({ id }) {
+	console.debug(`>>> Entering addOption(id=${id})`);
     if (!$radioIds.includes(id)) {
       radioIds.update((_) => [..._, id]);
     }
+	console.debug(`<<< Exiting addOption(id=${id})`);
   }
 
   /**
    * @type {(data: { id: string }) => void}
    */
   function setOption({ id }) {
+	console.debug(`>>> Entering setOption(id=${id})`);
     selectedId = id;
+	logger.debug(`setOption(id=${id}): selectedId → ${selectedId}`);
   }
 
   setContext("carbon:ContextMenuRadioGroup", {

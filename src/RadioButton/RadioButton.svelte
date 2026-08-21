@@ -97,38 +97,51 @@
    * Initialize registry for standalone mode with name.
    */
   function initRegistry(radioName) {
+	console.debug(`>>> Entering initRegistry(radioName=${radioName})`);
     // Clean up previous registration if any
     cleanupRegistry();
 
     if (isStandalone && radioName) {
       const registration = registerRadioButton(radioName, instanceKey, checked);
       registryStore = registration.selectedKey;
+	console.debug(`initRegistry(radioName=${radioName}): registration → ${registration}`);
+	logger.debug(`initRegistry(radioName=${radioName}): registryStore → ${registryStore}`);
       unregister = registration.unregister;
 
+	logger.debug(`initRegistry(radioName=${radioName}): unregister → ${unregister}`);
       // Subscribe to uncheck this radio when a sibling is selected.
       // Only set checked=false when another instance is selected, not checked=true for self.
       // This allows parent components (like DataTable) to control the checked state.
       registryUnsubscribe = registryStore.subscribe((selectedKey) => {
+		logger.debug(`initRegistry(radioName=${radioName}): registryUnsubscribe → ${registryUnsubscribe}`);
         if (selectedKey !== undefined && selectedKey !== instanceKey) {
           checked = false;
+		logger.debug(`initRegistry(radioName=${radioName}): checked → ${checked}`);
         }
       });
 
       previousName = radioName;
+	logger.debug(`initRegistry(radioName=${radioName}): previousName → ${previousName}`);
     }
+	console.debug(`<<< Exiting initRegistry(radioName=${radioName})`);
   }
 
   function cleanupRegistry() {
+	console.debug('>>> Entering cleanupRegistry()');
     if (registryUnsubscribe) {
       registryUnsubscribe();
       registryUnsubscribe = null;
+	logger.debug(`cleanupRegistry(): registryUnsubscribe → ${registryUnsubscribe}`);
     }
     if (unregister) {
       unregister();
       unregister = null;
+	logger.debug(`cleanupRegistry(): unregister → ${unregister}`);
     }
     registryStore = null;
+	logger.debug(`cleanupRegistry(): registryStore → ${registryStore}`);
     previousName = undefined;
+	logger.debug(`cleanupRegistry(): previousName → ${previousName}`);
   }
 
   // Handle name prop changes reactively

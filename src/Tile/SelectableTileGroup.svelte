@@ -57,24 +57,29 @@
    * @type {(data: { selected: boolean; value: T }) => void}
    */
   function add({ selected: isSelected, value }) {
+	console.debug(`>>> Entering add(isSelected=${isSelected},value=${value})`);
     if (isSelected && !$selectedValues.includes(value)) {
       selectedValues.update((values) => [...values, value]);
     }
+	console.debug(`<<< Exiting add(isSelected=${isSelected},value=${value})`);
   }
 
   /**
    * @type {(value: T) => void}
    */
   function remove(value) {
+	console.debug(`>>> Entering remove(value=${value})`);
     if ($selectedValues.includes(value)) {
       selectedValues.update((values) => values.filter((v) => v !== value));
     }
+	console.debug(`<<< Exiting remove(value=${value})`);
   }
 
   /**
    * @type {(data: { value: T; selected: boolean }) => void}
    */
   function update({ value, selected: isSelected }) {
+	console.debug(`>>> Entering update(value=${value},isSelected=${isSelected})`);
     if (isSelected) {
       if (!$selectedValues.includes(value)) {
         selectedValues.update((values) => [...values, value]);
@@ -86,6 +91,7 @@
         dispatch("deselect", value);
       }
     }
+	console.debug(`<<< Exiting update(value=${value},isSelected=${isSelected})`);
   }
 
   setContext("carbon:SelectableTileGroup", {

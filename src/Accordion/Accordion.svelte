@@ -50,9 +50,11 @@
   const openId = writable(null);
 
   function notifyOpen(id) {
+	console.debug(`>>> Entering notifyOpen(id=${id})`);
     if (type === "single") {
       openId.set(id);
     }
+	console.debug(`<<< Exiting notifyOpen(id=${id})`);
   }
 
   setContext("carbon:Accordion", { disableItems, openId, notifyOpen });

@@ -12,15 +12,19 @@
   let copied = false;
 
   async function copyToClipboard() {
+	console.debug('>>> Entering copyToClipboard()');
     if (copying) return;
     copying = true;
+	logger.debug(`copyToClipboard(): copying → ${copying}`);
     copied = false;
+	logger.debug(`copyToClipboard(): copied → ${copied}`);
     await navigator.clipboard.writeText("Sample text to copy");
     copied = true;
     setTimeout(() => {
       copied = false;
     }, 2000);
     copying = false;
+	console.debug('<<< Exiting copyToClipboard()');
   }
 </script>
 

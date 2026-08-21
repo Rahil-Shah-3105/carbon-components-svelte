@@ -8,6 +8,7 @@
 
   // Simulate fetching data from a remote server.
   async function fetchItems(query) {
+	console.debug(`>>> Entering fetchItems(query=${query})`);
     if (!query) {
       return [];
     }
@@ -27,6 +28,7 @@
       { id: "9", text: "Skype" },
     ];
 
+	console.debug(`<<< Exiting fetchItems(query=${query})`);
     return allItems.filter((item) =>
       item.text.toLowerCase().includes(query.toLowerCase()),
     );

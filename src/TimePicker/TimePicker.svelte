@@ -85,7 +85,9 @@
 
   /** @type {() => () => void} */
   function registerSelect() {
+	console.debug('>>> Entering registerSelect()');
     selectCount.update((count) => count + 1);
+	console.debug('<<< Exiting registerSelect()');
     return () => {
       selectCount.update((count) => count - 1);
     };

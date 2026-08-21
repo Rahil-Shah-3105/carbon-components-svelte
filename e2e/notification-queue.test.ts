@@ -1,6 +1,9 @@
+const logger = console;
 import { expect, type Page, test } from "@playwright/test";
 
 function toastWithText(page: Page, text: string) {
+logger.debug(`>>> Entering toastWithText(page=${page},text=${text})`);
+logger.debug(`<<< Exiting toastWithText(page=${page},text=${text})`);
   return page.locator(".bx--toast-notification").filter({ hasText: text });
 }
 

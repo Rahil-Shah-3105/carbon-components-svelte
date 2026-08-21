@@ -98,22 +98,28 @@
     .join(" ");
 
   function handleOutsideClick(event) {
+	console.debug(`>>> Entering handleOutsideClick(event=${event})`);
     if (
       isOpen &&
       !preventCloseOnClickOutside &&
       isOutsideClick(event, [ref, refPanel])
     ) {
       isOpen = false;
+	logger.debug(`handleOutsideClick(event=${event}): isOpen → ${isOpen}`);
       dispatch("close", { trigger: "outside-click" });
     }
+	console.debug(`<<< Exiting handleOutsideClick(event=${event})`);
   }
 
   function handleKeydown(event) {
+	console.debug(`>>> Entering handleKeydown(event=${event})`);
     if (isOpen && event.key === "Escape") {
       isOpen = false;
+	logger.debug(`handleKeydown(event=${event}): isOpen → ${isOpen}`);
       dispatch("close", { trigger: "escape-key" });
       ref?.focus();
     }
+	console.debug(`<<< Exiting handleKeydown(event=${event})`);
   }
 </script>
 

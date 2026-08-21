@@ -127,6 +127,7 @@
   });
 
   function handleClick(event, opts = {}) {
+	console.debug(`>>> Entering handleClick(event=${event},opts=${opts})`);
     if (disabled) return;
     if (subOptions) return;
 
@@ -141,13 +142,16 @@
       }
     } else {
       selected = !selected;
+	logger.debug(`handleClick(event=${event},opts=${opts}): selected → ${selected}`);
     }
 
     const shouldClose = dispatch("click", event, { cancelable: true });
 
+	console.debug(`handleClick(event=${event},opts=${opts}): shouldClose → ${shouldClose}`);
     if (shouldClose) {
       ctx.close("select");
     }
+	console.debug(`<<< Exiting handleClick(event=${event},opts=${opts})`);
   }
 
   onMount(() => {

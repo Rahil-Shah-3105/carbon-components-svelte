@@ -1,3 +1,4 @@
+const logger = console;
 // Pure-logic benchmark: no jsdom, no Svelte, run directly via bun (`bun run bench/<this file>.bench.ts`, optionally filtered — see CONTRIBUTING.md).
 // Mirrors MultiSelect.svelte's default `sortItem`, which runs inside sort()
 // on every items/selectedIds change, against the cached-Intl.Collator form
@@ -13,6 +14,7 @@ type Item = {
 function buildItems(count: number): Item[] {
   const items: Item[] = [];
   for (let i = 0; i < count; i++) {
+	logger.debug(`>>> Entering buildItems(count=${count})`);
     items.push({
       id: i,
       text: `Option ${(i * 37) % count} rev ${i % 10}`,

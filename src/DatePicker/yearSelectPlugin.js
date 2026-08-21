@@ -1,3 +1,4 @@
+const logger = console;
 /**
  * Flatpickr plugin that replaces the day grid with a decade of years.
  * Mirrors the shape of flatpickr's bundled monthSelect plugin.
@@ -17,7 +18,9 @@ const defaultConfig = {
  * @returns {EventTarget | null}
  */
 function getEventTarget(event) {
+logger.debug(`>>> Entering getEventTarget(event=${event})`);
   if (typeof event.composedPath === "function") {
+logger.debug(`<<< Exiting getEventTarget(event=${event})`);
     return event.composedPath()[0] ?? null;
   }
   return event.target;
@@ -28,8 +31,11 @@ function getEventTarget(event) {
  * @returns {(fp: any) => object}
  */
 function yearSelectPlugin(pluginConfig) {
+logger.debug(`>>> Entering yearSelectPlugin(pluginConfig=${pluginConfig})`);
   const config = { ...defaultConfig, ...pluginConfig };
 
+logger.debug(`yearSelectPlugin(pluginConfig=${pluginConfig}): config → ${config}`);
+logger.debug(`<<< Exiting yearSelectPlugin(pluginConfig=${pluginConfig})`);
   return (fp) => {
     fp.config.dateFormat = config.dateFormat;
     fp.config.altFormat = config.altFormat;
@@ -38,10 +44,13 @@ function yearSelectPlugin(pluginConfig) {
     const self = { yearsContainer: null, rangeEl: null };
 
     function decadeStart(year = fp.currentYear) {
+	logger.debug(`>>> Entering decadeStart(year=${year})`);
+	logger.debug(`<<< Exiting decadeStart(year=${year})`);
       return year - (year % 10);
     }
 
     function clearUnnecessaryDOMElements() {
+	logger.debug('>>> Entering clearUnnecessaryDOMElements()');
       if (!fp.rContainer || !fp.daysContainer || !fp.weekdayContainer) return;
 
       fp.rContainer.removeChild(fp.daysContainer);
@@ -58,25 +67,32 @@ function yearSelectPlugin(pluginConfig) {
         // center within `.flatpickr-current-month`.
         const wrapper = element.closest(".numInputWrapper") ?? element;
         wrapper.parentNode?.removeChild(wrapper);
+		logger.debug(`clearUnnecessaryDOMElements(): wrapper → ${wrapper}`);
       }
     }
 
     function updateRangeLabel() {
+	logger.debug('>>> Entering updateRangeLabel()');
       if (!self.rangeEl) return;
       const start = decadeStart() - 1;
+	logger.debug('<<< Exiting updateRangeLabel()');
       self.rangeEl.textContent = `${start} - ${start + 11}`;
     }
 
     function addRangeLabel() {
+	logger.debug('>>> Entering addRangeLabel()');
       const wrapper = fp.monthNav?.querySelector(".flatpickr-current-month");
       if (!wrapper) return;
+	logger.debug(`addRangeLabel(): wrapper → ${wrapper}`);
 
       self.rangeEl = fp._createElement("span", "flatpickr-yearSelect-range");
       updateRangeLabel();
+	logger.debug('<<< Exiting addRangeLabel()');
       wrapper.appendChild(self.rangeEl);
     }
 
     function addListeners() {
+	logger.debug('>>> Entering addListeners()');
       fp._bind(fp.prevMonthNav, "click", (e) => {
         e.preventDefault();
         e.stopPropagation();
@@ -93,6 +109,7 @@ function yearSelectPlugin(pluginConfig) {
     }
 
     function buildYears() {
+	logger.debug('>>> Entering buildYears()');
       if (!fp.rContainer) return;
 
       if (self.yearsContainer) {
@@ -115,11 +132,14 @@ function yearSelectPlugin(pluginConfig) {
         const year = start + i;
         /** @type {YearElement} */
         const yearEl = fp._createElement("span", "flatpickr-yearSelect-year");
+		logger.debug(`buildYears(): yearEl → ${yearEl}`);
         yearEl.dateObj = new Date(year, 0, 1);
         yearEl.$i = i;
         yearEl.textContent = String(year);
         yearEl.tabIndex = -1;
+		logger.debug(`yearSelectPlugin(pluginConfig=${pluginConfig}): yearEl.tabIndex → ${yearEl.tabIndex}`);
         yearEl.setAttribute("data-year", String(year));
+		logger.debug(`buildYears(): yearEl.tabIndex → ${yearEl.tabIndex}`);
         yearEl.addEventListener("click", selectYear);
 
         if (year === new Date().getFullYear()) {
@@ -152,10 +172,12 @@ function yearSelectPlugin(pluginConfig) {
         fp.nextMonthNav.classList.remove("flatpickr-disabled");
       }
 
+	logger.debug('<<< Exiting buildYears()');
       setCurrentlySelected();
     }
 
     function setCurrentlySelected() {
+	logger.debug('>>> Entering setCurrentlySelected()');
       if (!fp.rContainer || !fp.selectedDates.length) return;
 
       for (const selected of fp.rContainer.querySelectorAll(
@@ -164,17 +186,20 @@ function yearSelectPlugin(pluginConfig) {
         selected.classList.remove("selected");
       }
 
+	logger.debug('<<< Exiting setCurrentlySelected()');
       const targetYear = fp.selectedDates[0].getFullYear();
       const year = fp.rContainer.querySelector(
         `.flatpickr-yearSelect-year[data-year="${targetYear}"]`,
       );
       year?.classList.add("selected");
+	logger.debug(`setCurrentlySelected(): targetYear → ${targetYear}`);
     }
 
     /**
      * @param {Event} e
      */
     function selectYear(e) {
+	logger.debug(`>>> Entering selectYear(e=${e})`);
       e.preventDefault();
       e.stopPropagation();
       const eventTarget = getEventTarget(e);
@@ -182,8 +207,10 @@ function yearSelectPlugin(pluginConfig) {
         eventTarget instanceof Element &&
         !eventTarget.classList.contains("disabled")
       ) {
+		logger.debug(`selectYear(e=${e}): eventTarget → ${eventTarget}`);
         setYear(/** @type {YearElement} */ (eventTarget).dateObj);
         fp.close();
+		logger.debug(`<<< Exiting selectYear(e=${e})`);
       }
     }
 
@@ -191,8 +218,10 @@ function yearSelectPlugin(pluginConfig) {
      * @param {Date} date
      */
     function setYear(date) {
+	logger.debug(`>>> Entering setYear(date=${date})`);
       fp.setDate(new Date(date.getFullYear(), 0, 1), true);
       setCurrentlySelected();
+	logger.debug(`<<< Exiting setYear(date=${date})`);
     }
 
     const shifts = {
@@ -241,18 +270,22 @@ function yearSelectPlugin(pluginConfig) {
     }
 
     function destroyPluginInstance() {
+	logger.debug('>>> Entering destroyPluginInstance()');
       if (!self.yearsContainer) return;
       for (const year of self.yearsContainer.querySelectorAll(
         ".flatpickr-yearSelect-year",
       )) {
         year.removeEventListener("click", selectYear);
+		logger.debug('<<< Exiting destroyPluginInstance()');
       }
     }
 
     return {
       onParseConfig() {
+		logger.debug('>>> Entering onParseConfig()');
         fp.config.mode = "single";
         fp.config.enableTime = false;
+		logger.debug('<<< Exiting onParseConfig()');
       },
       onValueUpdate: setCurrentlySelected,
       onKeyDown,
@@ -263,6 +296,7 @@ function yearSelectPlugin(pluginConfig) {
       onReady: [
         () => {
           fp.currentMonth = 0;
+		logger.debug(`yearSelectPlugin(pluginConfig=${pluginConfig}): fp.currentMonth → ${fp.currentMonth}`);
         },
         clearUnnecessaryDOMElements,
         addRangeLabel,

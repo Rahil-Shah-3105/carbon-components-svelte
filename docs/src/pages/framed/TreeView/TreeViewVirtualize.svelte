@@ -18,8 +18,10 @@
   import { onMount, tick } from "svelte";
 
   function iconFor(name) {
+	console.debug(`>>> Entering iconFor(name=${name})`);
     const ext = name.slice(name.lastIndexOf(".") + 1).toLowerCase();
     if (ext === "ts" || ext === "tsx" || ext === "js" || ext === "jsx") {
+	console.debug(`iconFor(name=${name}): ext → ${ext}`);
       return Code;
     }
     if (ext === "json") return Json;
@@ -28,6 +30,7 @@
       return Image;
     }
     if (ext === "md" || ext === "txt") return Document;
+	console.debug(`<<< Exiting iconFor(name=${name})`);
     return DocumentBlank;
   }
 
@@ -99,13 +102,18 @@
   let deepFile = null;
 
   function makeFolder(name, depth, fanout) {
+	console.debug(`>>> Entering makeFolder(name=${name},depth=${depth},fanout=${fanout})`);
     const node = { id: id(), text: name, icon: Folder, nodes: [] };
     for (let i = 0; i < fanout.files; i++) {
+	console.debug(`makeFolder(name=${name},depth=${depth},fanout=${fanout}): node → ${node}`);
       const fname = fileNames[(i + depth) % fileNames.length];
       const file = { id: id(), text: fname, icon: iconFor(fname) };
+	console.debug(`makeFolder(name=${name},depth=${depth},fanout=${fanout}): fname → ${fname}`);
+	console.debug(`makeFolder(name=${name},depth=${depth},fanout=${fanout}): file → ${file}`);
       node.nodes.push(file);
       if (depth === fanout.maxDepth) {
         deepFile = { id: file.id, path: `${name}/${fname}` };
+		logger.debug(`makeFolder(name=${name},depth=${depth},fanout=${fanout}): deepFile → ${deepFile}`);
       }
     }
     if (depth < fanout.maxDepth) {
@@ -115,20 +123,24 @@
         );
       }
     }
+	console.debug(`<<< Exiting makeFolder(name=${name},depth=${depth},fanout=${fanout})`);
     return node;
   }
 
   function countNodes(list) {
+	console.debug(`>>> Entering countNodes(list=${list})`);
     let n = 0;
     for (const node of list) {
       n++;
       if (node.nodes) n += countNodes(node.nodes);
     }
+	console.debug(`<<< Exiting countNodes(list=${list})`);
     return n;
   }
 
   /** Expandable ids only — leaves are no-ops for TreeView expansion. */
   function expandableIds(list) {
+	console.debug(`>>> Entering expandableIds(list=${list})`);
     const ids = [];
     for (const node of list) {
       const hasLoadedChildren =
@@ -138,6 +150,7 @@
       }
       if (hasLoadedChildren) ids.push(...expandableIds(node.nodes));
     }
+	console.debug(`<<< Exiting expandableIds(list=${list})`);
     return ids;
   }
 
@@ -184,18 +197,24 @@
   let observer = null;
 
   function attachObserver(el) {
+	console.debug(`>>> Entering attachObserver(el=${el})`);
     observer?.disconnect();
     observer = null;
+	logger.debug(`attachObserver(el=${el}): observer → ${observer}`);
     if (!el) {
       domRowCount = 0;
+	logger.debug(`attachObserver(el=${el}): domRowCount → ${domRowCount}`);
       return;
     }
     const recount = () => {
+	console.debug('>>> Entering recount()');
       domRowCount = el.querySelectorAll('[role="treeitem"]').length;
+	console.debug(`recount(): domRowCount → ${domRowCount}`);
     };
     observer = new MutationObserver(recount);
     observer.observe(el, { childList: true });
     recount();
+	console.debug(`<<< Exiting attachObserver(el=${el})`);
   }
 
   $: attachObserver(scrollContainerRef);

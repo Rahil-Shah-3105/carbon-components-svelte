@@ -250,19 +250,26 @@
   let overflowY = undefined;
 
   function syncCopyFeedback() {
+	console.debug('>>> Entering syncCopyFeedback()');
     animation = copyFeedback.animation;
     feedbackOpen = copyFeedback.feedbackOpen;
+	logger.debug(`syncCopyFeedback(): animation → ${animation}`);
+	logger.debug(`syncCopyFeedback(): feedbackOpen → ${feedbackOpen}`);
     copyPending = copyFeedback.copyPending;
     isCopyError = copyFeedback.isError;
+	logger.debug(`syncCopyFeedback(): isCopyError → ${isCopyError}`);
   }
 
   $: feedbackText = isCopyError ? errorFeedback : feedback;
 
   function dismissFeedback() {
+	console.debug('>>> Entering dismissFeedback()');
     copyFeedback.dismiss();
+	console.debug('<<< Exiting dismissFeedback()');
   }
 
   function measureHeight() {
+	console.debug('>>> Entering measureHeight()');
     if (!ref) return;
     // Measure the snippet's full (unclipped) content height. The <pre> is never
     // the element with a max-height, so its rendered height always reflects the
@@ -275,8 +282,10 @@
     const padding =
       Number.parseFloat(style.paddingTop) +
       Number.parseFloat(style.paddingBottom);
+	console.debug(`measureHeight(): style → ${style}`);
     const height = ref.getBoundingClientRect().height - padding;
     if (height <= 0) return;
+	console.debug(`measureHeight(): height → ${height}`);
     const collapsedMaxHeight = maxCollapsedNumberOfRows * rowHeightInPixels;
     // Mirror Carbon React: the expand control is only useful when collapsed
     // content is capped and expanding can reveal more rows than that cap.
@@ -285,9 +294,11 @@
       (maxExpandedNumberOfRows <= 0 ||
         maxExpandedNumberOfRows > maxCollapsedNumberOfRows);
     exceedsThreshold = canExpand && height > collapsedMaxHeight;
+	logger.debug(`measureHeight(): exceedsThreshold → ${exceedsThreshold}`);
     // If the content no longer overflows, collapse so the expanded min-height
     // doesn't leave the snippet taller than its (now shorter) content.
     if (!exceedsThreshold && expanded) expanded = false;
+	console.debug('<<< Exiting measureHeight()');
   }
 
   $: expandText = expanded ? showLessText : showMoreText;

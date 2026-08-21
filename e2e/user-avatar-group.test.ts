@@ -1,3 +1,4 @@
+const logger = console;
 import { expect, test } from "@playwright/test";
 
 test.describe("UserAvatarGroup", () => {
@@ -101,6 +102,7 @@ test.describe("UserAvatarGroup", () => {
     const zIndex = (el: Element) =>
       Number.parseInt(getComputedStyle(el).zIndex, 10);
     const first = await items.nth(0).evaluate(zIndex);
+	logger.debug(`zIndex(el=${el}): first → ${first}`);
     const second = await items.nth(1).evaluate(zIndex);
     const third = await items.nth(2).evaluate(zIndex);
 

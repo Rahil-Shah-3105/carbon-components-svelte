@@ -2,6 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { format as prettierFormat } from "prettier";
 import prettierPluginSvelte from "prettier-plugin-svelte";
+const logger = console;
 import { parse } from "svelte/compiler";
 import {
   BASE_URL,
@@ -114,18 +115,24 @@ const SVELTE_FENCE_RE = /```svelte\s*\n([\s\S]*?)```/;
 const ATX_HEADING_RE = /^(#{1,6})(\s+)(.*)$/;
 
 function splitFrontmatter(source: string) {
+logger.debug(`>>> Entering splitFrontmatter(source=${source})`);
   const match = source.match(FRONTMATTER_RE);
   if (!match) return { frontmatter: null, body: source };
+logger.debug(`splitFrontmatter(source=${source}): match → ${match}`);
+logger.debug(`<<< Exiting splitFrontmatter(source=${source})`);
   return { frontmatter: match[1], body: source.slice(match[0].length) };
 }
 
 function extractComponents(frontmatter: string | null) {
+logger.debug(`>>> Entering extractComponents(frontmatter=${frontmatter})`);
   if (!frontmatter) return [];
 
   const keyIdx = frontmatter.search(COMPONENTS_KEY_RE);
+logger.debug(`extractComponents(frontmatter=${frontmatter}): keyIdx → ${keyIdx}`);
   if (keyIdx === -1) return [];
 
   const afterKey = frontmatter.slice(keyIdx);
+logger.debug(`extractComponents(frontmatter=${frontmatter}): afterKey → ${afterKey}`);
   const bracketStart = afterKey.indexOf("[");
   if (bracketStart === -1) return [];
 
@@ -143,18 +150,24 @@ function extractComponents(frontmatter: string | null) {
     }
   }
 
+logger.debug(`extractComponents(frontmatter=${frontmatter}): bracketStart → ${bracketStart}`);
   const listText = afterKey.slice(bracketStart, i);
+logger.debug(`extractComponents(frontmatter=${frontmatter}): listText → ${listText}`);
   const out: string[] = [];
   let match = QUOTED_COMPONENT_RE.exec(listText);
+logger.debug(`extractComponents(frontmatter=${frontmatter}): match → ${match}`);
   while (match) {
     out.push(match[1] ?? match[2]);
     match = QUOTED_COMPONENT_RE.exec(listText);
   }
 
+logger.debug(`<<< Exiting extractComponents(frontmatter=${frontmatter})`);
   return out;
 }
 
 function escapeTableCell(text: unknown) {
+logger.debug(`>>> Entering escapeTableCell(text=${text})`);
+logger.debug(`<<< Exiting escapeTableCell(text=${text})`);
   return String(text ?? "")
     .replace(PIPE_RE, "\\|")
     .replace(NEWLINE_RE, "<br />")
@@ -162,27 +175,36 @@ function escapeTableCell(text: unknown) {
 }
 
 function renderMarkdownTable(headers: string[], rows: string[][]) {
+logger.debug(`>>> Entering renderMarkdownTable(headers=${headers},rows=${rows})`);
   const headerLine = `| ${headers.map(escapeTableCell).join(" | ")} |`;
   const sepLine = `| ${headers.map(() => "---").join(" | ")} |`;
   const rowLines = rows.map(
     (cells: string[]) => `| ${cells.map(escapeTableCell).join(" | ")} |`,
   );
+logger.debug(`renderMarkdownTable(headers=${headers},rows=${rows}): sepLine → ${sepLine}`);
   return [headerLine, sepLine, ...rowLines].join("\n");
 }
 
 function parseDescription(description: string) {
+logger.debug(`>>> Entering parseDescription(description=${description})`);
   if (!description) return { mainDescription: "", exampleCode: null };
 
   const exampleIndex = description.search(AT_EXAMPLE_RE);
+logger.debug(`parseDescription(description=${description}): exampleIndex → ${exampleIndex}`);
   if (exampleIndex === -1) {
     return { mainDescription: description.trim(), exampleCode: null };
   }
 
   const mainDescription = description.slice(0, exampleIndex).trim();
+logger.debug(`parseDescription(description=${description}): mainDescription → ${mainDescription}`);
   const exampleSection = description.slice(exampleIndex);
+logger.debug(`parseDescription(description=${description}): exampleSection → ${exampleSection}`);
   const codeBlockMatch = exampleSection.match(SVELTE_FENCE_RE);
+logger.debug(`parseDescription(description=${description}): codeBlockMatch → ${codeBlockMatch}`);
   const exampleCode = codeBlockMatch ? codeBlockMatch[1].trim() : null;
 
+logger.debug(`parseDescription(description=${description}): exampleCode → ${exampleCode}`);
+logger.debug(`<<< Exiting parseDescription(description=${description})`);
   return { mainDescription, exampleCode };
 }
 
@@ -334,8 +356,10 @@ function renderRestPropsSection(
 }
 
 function renderComponentApiMarkdown(moduleName: string) {
+logger.debug(`>>> Entering renderComponentApiMarkdown(moduleName=${moduleName})`);
   const entry = componentApiByModuleName.get(moduleName);
   if (!entry) {
+	logger.debug(`renderComponentApiMarkdown(moduleName=${moduleName}): entry → ${entry}`);
     throw new Error(`API data not found for component: ${moduleName}`);
   }
 
@@ -347,10 +371,13 @@ function renderComponentApiMarkdown(moduleName: string) {
     renderRestPropsSection(entry, moduleName),
   ].filter(Boolean);
 
+logger.debug(`<<< Exiting renderComponentApiMarkdown(moduleName=${moduleName})`);
   return sections.join("\n\n");
 }
 
 function escapeKbdInnerText(label: string) {
+logger.debug(`>>> Entering escapeKbdInnerText(label=${label})`);
+logger.debug(`<<< Exiting escapeKbdInnerText(label=${label})`);
   return label
     .replace(KBD_HTML_ESCAPE_AMP, "&amp;")
     .replace(KBD_HTML_ESCAPE_LT, "&lt;")
@@ -358,6 +385,7 @@ function escapeKbdInnerText(label: string) {
 }
 
 function convertDocKbdToKbdForMarkdown(body: string) {
+logger.debug(`>>> Entering convertDocKbdToKbdForMarkdown(body=${body})`);
   return body
     .replace(DOC_KBD_SELF_CLOSING_DQUOT_RE, (_m, label: string) => {
       return `<kbd>${escapeKbdInnerText(label)}</kbd>`;
@@ -368,15 +396,20 @@ function convertDocKbdToKbdForMarkdown(body: string) {
 }
 
 function lineOpensKbdMarkdownHtml(line: string) {
+logger.debug(`>>> Entering lineOpensKbdMarkdownHtml(line=${line})`);
   const t = line.trimStart();
+logger.debug(`lineOpensKbdMarkdownHtml(line=${line}): t → ${t}`);
   return MD_LINE_OPENS_KBD_RE.test(t) || MD_LINE_OPENS_KBD_CLOSE_RE.test(t);
 }
 
 function inlineFileSources(body: string) {
+logger.debug(`>>> Entering inlineFileSources(body=${body})`);
   const lines = body.split("\n");
   const out: string[] = [];
+logger.debug(`inlineFileSources(body=${body}): lines → ${lines}`);
 
   let inFence = false;
+logger.debug(`inlineFileSources(body=${body}): inFence → ${inFence}`);
   const isFence = (line: string) => line.trimStart().startsWith("```");
 
   for (const line of lines) {
@@ -411,6 +444,7 @@ function inlineFileSources(body: string) {
       const source = fs.readFileSync(filePath, "utf8");
       out.push("```svelte");
       out.push(source.trimEnd());
+	logger.debug(`inlineFileSources(body=${body}): trimmed → ${trimmed}`);
       out.push("```");
       out.push("");
     } catch {
@@ -515,17 +549,23 @@ function fenceInlineSvelte(body: string) {
   const isTagLine = (line: string) => TAG_LINE_RE.test(line);
 
   const applyTagDepth = (line: string) => {
+	logger.debug(`>>> Entering applyTagDepth(line=${line})`);
     HTML_TAG_RE.lastIndex = 0;
     let m = HTML_TAG_RE.exec(line);
+	logger.debug(`applyTagDepth(line=${line}): m → ${m}`);
     while (m) {
       const isClosing = m[1] === "/";
+	logger.debug(`applyTagDepth(line=${line}): isClosing → ${isClosing}`);
       const tagName = m[2]?.toLowerCase() ?? "";
+	logger.debug(`applyTagDepth(line=${line}): tagName → ${tagName}`);
       const isSelfClosing = m[3] === "/" || HTML_VOID_TAGS.has(tagName);
+	logger.debug(`applyTagDepth(line=${line}): isSelfClosing → ${isSelfClosing}`);
 
       if (isClosing) tagDepth = Math.max(0, tagDepth - 1);
       else if (!isSelfClosing) tagDepth += 1;
 
       m = HTML_TAG_RE.exec(line);
+	logger.debug(`<<< Exiting applyTagDepth(line=${line})`);
     }
   };
 
@@ -558,6 +598,7 @@ function fenceInlineSvelte(body: string) {
       out.push(line);
 
       const nextLine = lines[idx + 1] ?? "";
+	logger.debug(`fenceInlineSvelte(body=${body}): nextLine → ${nextLine}`);
       if (tagDepth === 0 && nextLine.trim() === "") {
         out.push("```");
         inSvelteFence = false;
@@ -585,8 +626,10 @@ type MdChunk =
     };
 
 async function formatSvelteFences(markdown: string) {
+logger.debug(`>>> Entering formatSvelteFences(markdown=${markdown})`);
   const lines = markdown.split("\n");
 
+logger.debug(`formatSvelteFences(markdown=${markdown}): lines → ${lines}`);
   const chunks: MdChunk[] = [];
   const isFenceLine = (line: string) => line.trimStart().startsWith("```");
 
@@ -715,6 +758,8 @@ function shiftMarkdownHeadings(md: string) {
   let inFence = false;
   const isFence = (line: string) => line.trimStart().startsWith("```");
 
+logger.debug(`shiftMarkdownHeadings(md=${md}): lines → ${lines}`);
+logger.debug(`shiftMarkdownHeadings(md=${md}): inFence → ${inFence}`);
   return lines
     .map((line: string) => {
       if (isFence(line)) {
@@ -729,6 +774,7 @@ function shiftMarkdownHeadings(md: string) {
 }
 
 function generateLlmTxt(componentNames: string[]) {
+logger.debug(`>>> Entering generateLlmTxt(componentNames=${componentNames})`);
   const sorted = [...componentNames].sort();
   const links = sorted.map(
     (name) => `- [${name}](${BASE_URL}/components/${name}.md)`,

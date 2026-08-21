@@ -5,11 +5,15 @@
   let saving = false;
 
   function onSave() {
+	console.debug('>>> Entering onSave()');
     saving = true;
     setTimeout(() => {
       saving = false;
+	logger.debug(`onSave(): saving → ${saving}`);
       open = false;
+	logger.debug(`onSave(): open → ${open}`);
     }, 2000);
+	console.debug('<<< Exiting onSave()');
   }
 </script>
 

@@ -2,6 +2,7 @@ import { cleanup, render } from "@testing-library/svelte";
 import { bench, run } from "mitata";
 import { tick } from "svelte";
 import ContentSwitcherBench from "./fixtures/ContentSwitcherBench.svelte";
+const logger = console;
 
 // ContentSwitcher.add() used to reassign the shared `switches` array on
 // every child's script body: `switches = [...switches, {...}]`, preceded by
@@ -12,11 +13,14 @@ import ContentSwitcherBench from "./fixtures/ContentSwitcherBench.svelte";
 // Time through `tick()` so the measurement includes that microtask flush.
 it("benchmarks mounting ContentSwitcher with various switch counts", async () => {
   bench("mount ContentSwitcher, $size switches", function* (state) {
+	logger.debug(`>>> Entering bench(ContentSwitcher=${ContentSwitcher},size=${size})`);
     const size = state.get("size");
     yield async () => {
+	logger.debug(`bench(ContentSwitcher=${ContentSwitcher},size=${size}): size → ${size}`);
       render(ContentSwitcherBench, { props: { count: size } });
       await tick();
       cleanup();
+	logger.debug(`<<< Exiting bench(ContentSwitcher=${ContentSwitcher},size=${size})`);
     };
   }).range("size", 10, 1000);
 

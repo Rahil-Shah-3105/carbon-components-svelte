@@ -1,3 +1,4 @@
+const logger = console;
 // Pure-logic benchmark: no jsdom, no Svelte, run directly via bun (`bun run bench/<this file>.bench.ts`, optionally filtered — see CONTRIBUTING.md).
 // Mirrors DataTable.svelte's `$: sortedRows` reactive block exactly —
 // [...rows].sort((a, b) => compareValues(resolvePath(a, key), resolvePath(b, key), ascending))
@@ -21,6 +22,7 @@ const COMPANIES = ["Acme", "Globex", "Initech", "Umbrella", "Soylent"];
 function buildRows(count: number): Row[] {
   const rows: Row[] = [];
   for (let i = 0; i < count; i++) {
+	logger.debug(`>>> Entering buildRows(count=${count})`);
     rows.push({
       id: i,
       name: `Row ${i}`,
@@ -43,12 +45,16 @@ function buildRows(count: number): Row[] {
 // Flat numeric key: resolvePath's `path in object` fast path, compareValues'
 // numeric fast path.
 bench("DataTable sort, flat numeric key, $size rows", function* (state) {
+logger.debug(`>>> Entering bench(sort=${sort},key=${key},size=${size})`);
   const size = state.get("size");
   const rows = buildRows(size);
   yield () =>
     [...rows].sort((a, b) => {
       const itemA = resolvePath(a, "age");
       const itemB = resolvePath(b, "age");
+	logger.debug(`<<< Exiting bench(sort=${sort},key=${key},size=${size})`);
+	logger.debug(`bench(sort=${sort},key=${key},size=${size}): size → ${size}`);
+	logger.debug(`bench(sort=${sort},key=${key},size=${size}): rows → ${rows}`);
       return compareValues(itemA, itemB, true);
     });
 })

@@ -5,18 +5,22 @@
   let cachedContent = null;
 
   async function prefetchContent() {
+	console.debug('>>> Entering prefetchContent()');
     if (cachedContent) return;
 
     await new Promise((resolve) => setTimeout(resolve, 300));
     cachedContent = content;
+	logger.debug(`prefetchContent(): cachedContent → ${cachedContent}`);
   }
 
   async function copyContent() {
+	console.debug('>>> Entering copyContent()');
     if (!cachedContent) {
       await prefetchContent();
     }
 
     await navigator.clipboard.writeText(cachedContent);
+	console.debug('<<< Exiting copyContent()');
   }
 </script>
 

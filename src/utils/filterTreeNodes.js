@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 /**
  * @typedef {Object} TreeNode
@@ -28,22 +29,27 @@ export function filterTreeNodes(
   const { includeChildren = false, includeAncestors = true } = options;
 
   function cloneNode(node) {
+	logger.debug(`>>> Entering cloneNode(node=${node})`);
     const cloned = { ...node };
     if (Array.isArray(node.nodes)) {
       cloned.nodes = node.nodes.map(cloneNode);
     }
+	logger.debug(`<<< Exiting cloneNode(node=${node})`);
     return cloned;
   }
 
   function filterNode(node) {
+	logger.debug(`>>> Entering filterNode(node=${node})`);
     const matches = predicate(node);
 
+	logger.debug(`filterNode(node=${node}): matches → ${matches}`);
     const filteredChildren = [];
     let childHasMatch = false;
 
     if (Array.isArray(node.nodes)) {
       for (const child of node.nodes) {
         const result = filterNode(child);
+		logger.debug(`filterNode(node=${node}): result → ${result}`);
         if (result.node) {
           filteredChildren.push(result.node);
           childHasMatch = true;
@@ -62,6 +68,7 @@ export function filterTreeNodes(
       } else {
         newNode.nodes = undefined;
       }
+	logger.debug(`<<< Exiting filterNode(node=${node})`);
       return { node: newNode, hasMatch: true };
     }
 
@@ -87,7 +94,9 @@ export function filterTreeNodes(
  * @returns {TreeNode[]} Filtered tree structure
  */
 export function filterTreeById(tree, id, options) {
+logger.debug(`>>> Entering filterTreeById(tree=${tree},id=${id},options=${options})`);
   const ids = Array.isArray(id) ? new Set(id) : new Set([id]);
+logger.debug(`filterTreeById(tree=${tree},id=${id},options=${options}): ids → ${ids}`);
   return filterTreeNodes(tree, (node) => ids.has(node.id), options);
 }
 
@@ -100,6 +109,8 @@ export function filterTreeById(tree, id, options) {
  */
 export function filterTreeByText(tree, text, options) {
   const searchText = text.toLowerCase();
+logger.debug(`filterTreeByText(tree=${tree},text=${text},options=${options}): searchText → ${searchText}`);
+logger.debug(`<<< Exiting filterTreeByText(tree=${tree},text=${text},options=${options})`);
   return filterTreeNodes(
     tree,
     (node) => {

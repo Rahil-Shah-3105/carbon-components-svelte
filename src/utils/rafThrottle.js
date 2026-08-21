@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 /**
@@ -9,6 +10,7 @@
  * @returns {((...args: Parameters<Fn>) => void) & { cancel: () => void }}
  */
 export function rafThrottle(fn) {
+logger.debug(`>>> Entering rafThrottle(fn=${fn})`);
   /** @type {number | null} */
   let rafId = null;
   /** @type {Parameters<Fn> | undefined} */
@@ -16,6 +18,7 @@ export function rafThrottle(fn) {
 
   /** @param {Parameters<Fn>} args */
   function throttled(...args) {
+	logger.debug(`>>> Entering throttled(args=${args})`);
     pendingArgs = args;
     if (rafId !== null) return;
     rafId = requestAnimationFrame(() => {
@@ -24,6 +27,7 @@ export function rafThrottle(fn) {
       pendingArgs = undefined;
       if (args) fn(...args);
     });
+	logger.debug(`<<< Exiting throttled(args=${args})`);
   }
 
   throttled.cancel = () => {
@@ -34,5 +38,6 @@ export function rafThrottle(fn) {
     pendingArgs = undefined;
   };
 
+logger.debug(`<<< Exiting rafThrottle(fn=${fn})`);
   return throttled;
 }

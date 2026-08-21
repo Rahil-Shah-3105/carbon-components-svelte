@@ -105,8 +105,10 @@
   };
 
   function dateFormatToPattern(fmt) {
+	console.debug(`>>> Entering dateFormatToPattern(fmt=${fmt})`);
     let result = "";
     for (let i = 0; i < fmt.length; i++) {
+	console.debug(`dateFormatToPattern(fmt=${fmt}): result → ${result}`);
       const ch = fmt[i];
       if (ch === "\\" && i + 1 < fmt.length) {
         result += fmt[++i].replace(REGEX_SPECIAL_CHARS, "\\$&");
@@ -116,6 +118,7 @@
         result += ch.replace(REGEX_SPECIAL_CHARS, "\\$&");
       }
     }
+	console.debug(`<<< Exiting dateFormatToPattern(fmt=${fmt})`);
     return result;
   }
 

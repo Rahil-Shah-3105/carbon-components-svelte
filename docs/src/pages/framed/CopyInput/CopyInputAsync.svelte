@@ -8,6 +8,7 @@
   let cachedToken = null;
 
   async function prefetchToken() {
+	console.debug('>>> Entering prefetchToken()');
     if (cachedToken) return;
 
     await new Promise((resolve) => setTimeout(resolve, 300));
@@ -15,11 +16,13 @@
   }
 
   async function copyToken() {
+	console.debug('>>> Entering copyToken()');
     if (!cachedToken) {
       await prefetchToken();
     }
 
     await navigator.clipboard.writeText(cachedToken);
+	console.debug('<<< Exiting copyToken()');
   }
 </script>
 

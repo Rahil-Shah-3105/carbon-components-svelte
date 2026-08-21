@@ -60,11 +60,13 @@
   ];
 
   function toggleColumn(key) {
+	console.debug(`>>> Entering toggleColumn(key=${key})`);
     headers = headers.map((header) =>
       header.key === key
         ? { ...header, columnHidden: !header.columnHidden }
         : header,
     );
+	logger.debug(`toggleColumn(key=${key}): headers → ${headers}`);
   }
 </script>
 

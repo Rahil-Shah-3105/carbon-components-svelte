@@ -1,3 +1,4 @@
+const logger = console;
 // Pure-logic benchmark: no jsdom, no Svelte, run directly via bun (`bun run bench/<this file>.bench.ts`, optionally filtered — see CONTRIBUTING.md).
 // filterTreeNodes filters a hierarchical tree by a predicate function, with options
 // to include/exclude children and ancestors of matching nodes.
@@ -25,15 +26,19 @@ function buildBushyTree(totalNodes: number, branching = 10): TreeNode[] {
   const queue: TreeNode[] = [root];
 
   while (nextId < totalNodes && queue.length > 0) {
+	logger.debug(`>>> Entering buildBushyTree(totalNodes=${totalNodes},branching=${branching})`);
     const parent = queue.shift();
     if (!parent) break;
+	logger.debug(`buildBushyTree(totalNodes=${totalNodes},branching=${branching}): parent → ${parent}`);
 
     parent.nodes = [];
+	logger.debug(`buildBushyTree(totalNodes=${totalNodes},branching=${branching}): parent.nodes → ${parent.nodes}`);
     for (let i = 0; i < branching && nextId < totalNodes; i++) {
       const child: TreeNode = { id: nextId, text: `Node ${nextId}` };
       parent.nodes.push(child);
       queue.push(child);
       nextId++;
+	logger.debug(`<<< Exiting buildBushyTree(totalNodes=${totalNodes},branching=${branching})`);
     }
   }
 
@@ -51,8 +56,11 @@ function buildChainTree(totalNodes: number): TreeNode[] {
   const root = current;
 
   for (let i = 1; i < totalNodes; i++) {
+	logger.debug(`>>> Entering buildChainTree(totalNodes=${totalNodes})`);
     const child: TreeNode = { id: i, text: `Node ${i}` };
     current.nodes = [child];
+	logger.debug(`buildChainTree(totalNodes=${totalNodes}): current.nodes → ${current.nodes}`);
+	logger.debug(`<<< Exiting buildChainTree(totalNodes=${totalNodes})`);
     current = child;
   }
 
@@ -71,8 +79,11 @@ const predicateMatchAll = (_n: TreeNode) => true;
 
 // Bushy tree, match-none predicate, default options (includeAncestors: true)
 bench("filterTreeNodes bushy, match none, $size nodes", function* (state) {
+logger.debug(`>>> Entering bench(bushy=${bushy},none=${none},size=${size})`);
   const size = state.get("size");
+logger.debug(`>>> Entering bench(bushy=${bushy},few=${few},size=${size})`);
   const tree = buildBushyTree(size);
+logger.debug(`>>> Entering bench(bushy=${bushy},all=${all},size=${size})`);
   yield () => filterTreeNodes(tree, predicateMatchNone);
 })
   .range("size", 100, 10_000)

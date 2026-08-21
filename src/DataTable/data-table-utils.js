@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 import { BoundedFifoCache } from "../utils/boundedFifoCache.js";
 
@@ -9,6 +10,7 @@ import { BoundedFifoCache } from "../utils/boundedFifoCache.js";
  * @returns {boolean} True if values are deeply equal, false otherwise
  */
 function deepEqual(a, b, stack = new WeakMap()) {
+logger.debug(`>>> Entering deepEqual(a=${a},b=${b},stack=${stack})`);
   // Fast path: reference equality.
   if (a === b) return true;
 
@@ -93,6 +95,7 @@ function deepEqual(a, b, stack = new WeakMap()) {
     // Cleanup is for correctness (not GC): allows same objects to be
     // compared again without false circular reference detection.
     stack.get(a)?.delete(b);
+logger.debug(`<<< Exiting deepEqual(a=${a},b=${b},stack=${stack})`);
     return true;
   }
 
@@ -110,6 +113,7 @@ function deepEqual(a, b, stack = new WeakMap()) {
  * @returns {boolean} True if row arrays are deeply equal, false otherwise
  */
 export function rowsEqual(a, b) {
+logger.debug(`>>> Entering rowsEqual(a=${a},b=${b})`);
   if (a === b) return true;
   if (a === null || b === null) return false;
   if (!Array.isArray(a) || !Array.isArray(b)) return false;
@@ -135,6 +139,7 @@ export function rowsEqual(a, b) {
     if (!deepEqual(rowA, rowB)) return false;
   }
 
+logger.debug(`<<< Exiting rowsEqual(a=${a},b=${b})`);
   return true;
 }
 
@@ -147,8 +152,10 @@ const RE_IGNORE_ROW_CLICK = /^bx--(overflow-menu|checkbox|radio-button)/;
  * @returns {boolean}
  */
 export function shouldIgnoreRowClick(target) {
+logger.debug(`>>> Entering shouldIgnoreRowClick(target=${target})`);
   if (!target || !("classList" in target)) return false;
   const el = /** @type {HTMLElement} */ (target);
+logger.debug(`shouldIgnoreRowClick(target=${target}): el → ${el}`);
   return [...el.classList].some((name) => RE_IGNORE_ROW_CLICK.test(name));
 }
 
@@ -166,9 +173,11 @@ const pathCache = new BoundedFifoCache(MAX_PATH_CACHE_SIZE);
  * @returns {unknown} The resolved value, or undefined if the path doesn't exist
  */
 export function resolvePath(object, path) {
+logger.debug(`>>> Entering resolvePath(object=${object},path=${path})`);
   if (path in object) return object[path];
 
   let segments = pathCache.get(path);
+logger.debug(`resolvePath(object=${object},path=${path}): segments → ${segments}`);
   if (!segments) {
     segments = path.split(PATH_SPLIT_REGEX).filter((p) => p);
     if (segments.length > 1) {
@@ -176,6 +185,7 @@ export function resolvePath(object, path) {
     }
   }
 
+logger.debug(`<<< Exiting resolvePath(object=${object},path=${path})`);
   return (segments ?? []).reduce(
     /**
      * @param {unknown} acc
@@ -199,7 +209,9 @@ export function resolvePath(object, path) {
  * @returns {ReadonlyArray<Row>} The paginated rows, or all rows if pagination is disabled
  */
 export function getDisplayedRows(rows, page, pageSize) {
+logger.debug(`>>> Entering getDisplayedRows(rows=${rows},page=${page},pageSize=${pageSize})`);
   if (page && pageSize) {
+logger.debug(`<<< Exiting getDisplayedRows(rows=${rows},page=${page},pageSize=${pageSize})`);
     return rows.slice((page - 1) * pageSize, page * pageSize);
   }
   return rows;
@@ -213,11 +225,13 @@ export function getDisplayedRows(rows, page, pageSize) {
  * @returns {string | undefined} The formatted style string, or undefined if no width styles
  */
 export function formatHeaderWidth(header) {
+logger.debug(`>>> Entering formatHeaderWidth(header=${header})`);
   const styles = [
     header.width && `width: ${header.width}`,
     header.minWidth && `min-width: ${header.minWidth}`,
   ].filter(Boolean);
   if (styles.length === 0) return undefined;
+logger.debug(`<<< Exiting formatHeaderWidth(header=${header})`);
   return styles.join(";");
 }
 
@@ -246,6 +260,7 @@ const collator = new Intl.Collator(undefined, {
  * @returns {number} Negative if a < b (ascending) or a > b (descending), positive if a > b (ascending) or a < b (descending), 0 if equal
  */
 export function compareValues(itemA, itemB, ascending, customSort) {
+logger.debug(`>>> Entering compareValues(itemA=${itemA},itemB=${itemB},ascending=${ascending},customSort=${customSort})`);
   if (customSort) {
     const result = customSort(itemA, itemB);
     return ascending ? result : -result;
@@ -270,6 +285,7 @@ export function compareValues(itemA, itemB, ascending, customSort) {
   }
 
   // Reverse result for descending order
+logger.debug(`<<< Exiting compareValues(itemA=${itemA},itemB=${itemB},ascending=${ascending},customSort=${customSort})`);
   return ascending ? result : -result;
 }
 
@@ -282,9 +298,11 @@ const FORMULA_PREFIX_REGEX = /^[=+\-@\t\r]/;
  * @returns {string} The value as a string; empty for null and undefined
  */
 function stringifyCsvValue(value) {
+logger.debug(`>>> Entering stringifyCsvValue(value=${value})`);
   if (value === null || value === undefined) return "";
   if (value instanceof Date) return value.toISOString();
   if (typeof value === "object") return JSON.stringify(value);
+logger.debug(`<<< Exiting stringifyCsvValue(value=${value})`);
   return String(value);
 }
 
@@ -296,6 +314,7 @@ function stringifyCsvValue(value) {
  * @returns {string} The escaped field
  */
 function escapeCsvField(field, delimiter, escapeFormulas) {
+logger.debug(`>>> Entering escapeCsvField(field=${field},delimiter=${delimiter},escapeFormulas=${escapeFormulas})`);
   const value =
     escapeFormulas && FORMULA_PREFIX_REGEX.test(field) ? `'${field}` : field;
 
@@ -305,6 +324,7 @@ function escapeCsvField(field, delimiter, escapeFormulas) {
     value.includes("\r") ||
     value.includes("\n")
   ) {
+logger.debug(`<<< Exiting escapeCsvField(field=${field},delimiter=${delimiter},escapeFormulas=${escapeFormulas})`);
     return `"${value.replaceAll('"', '""')}"`;
   }
 
@@ -338,6 +358,7 @@ function escapeCsvField(field, delimiter, escapeFormulas) {
  * @returns {string} The CSV string
  */
 export function toCsv(headers, rows, options = {}) {
+logger.debug(`>>> Entering toCsv(headers=${headers},rows=${rows},options=${options})`);
   const {
     delimiter = ",",
     includeHeaders = true,
@@ -346,6 +367,7 @@ export function toCsv(headers, rows, options = {}) {
   } = options;
 
   const columns = headers.filter((header) => !header.empty);
+logger.debug(`toCsv(headers=${headers},rows=${rows},options=${options}): columns → ${columns}`);
   /** @type {string[]} */
   const lines = [];
 
@@ -380,5 +402,6 @@ export function toCsv(headers, rows, options = {}) {
     );
   }
 
+logger.debug(`<<< Exiting toCsv(headers=${headers},rows=${rows},options=${options})`);
   return lines.join(newline);
 }

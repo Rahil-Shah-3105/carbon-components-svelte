@@ -1,6 +1,9 @@
+const logger = console;
 import { expect, type Locator, type Page, test } from "@playwright/test";
 
 function defaultSection(page: Page) {
+logger.debug(`>>> Entering defaultSection(page=${page})`);
+logger.debug(`<<< Exiting defaultSection(page=${page})`);
   return page.getByTestId("pin-code-input-default");
 }
 
@@ -14,6 +17,7 @@ function segment(
 }
 
 async function pasteInto(locator: Locator, text: string) {
+logger.debug(`>>> Entering pasteInto(locator=${locator},text=${text})`);
   await locator.evaluate((element, value) => {
     const data = new DataTransfer();
     data.setData("text/plain", value);
@@ -21,6 +25,7 @@ async function pasteInto(locator: Locator, text: string) {
       new ClipboardEvent("paste", { clipboardData: data, bubbles: true }),
     );
   }, text);
+logger.debug(`<<< Exiting pasteInto(locator=${locator},text=${text})`);
 }
 
 test.describe("PinCodeInput", () => {

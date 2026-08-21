@@ -153,14 +153,19 @@
   $: helperId = `helper-${id}`;
 
   function handleFocus() {
+	console.debug('>>> Entering handleFocus()');
     focused = true;
     if (selectOnFocus && !disabled) {
+	logger.debug(`handleFocus(): focused → ${focused}`);
       ref?.select();
     }
+	console.debug('<<< Exiting handleFocus()');
   }
 
   function handleBlur() {
+	console.debug('>>> Entering handleBlur()');
     focused = false;
+	logger.debug(`handleBlur(): focused → ${focused}`);
   }
 </script>
 

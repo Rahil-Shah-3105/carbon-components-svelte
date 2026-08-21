@@ -8,6 +8,7 @@
   const validThemes = ["white", "g10", "g80", "g90", "g100"];
 
   function applyTheme(theme) {
+	console.debug(`>>> Entering applyTheme(theme=${theme})`);
     if (validThemes.includes(theme)) {
       document.documentElement.setAttribute("theme", theme);
       document.documentElement.style.setProperty(
@@ -15,6 +16,7 @@
         ["white", "g10"].includes(theme) ? "light" : "dark",
       );
     }
+	console.debug(`<<< Exiting applyTheme(theme=${theme})`);
   }
 
   onMount(() => {
@@ -30,7 +32,9 @@
 
     // Listen for cross-document storage changes (e.g., from the parent docs page).
     function handleStorage(event) {
+	console.debug(`>>> Entering handleStorage(event=${event})`);
       if (event.key === "theme") applyTheme(event.newValue);
+	console.debug(`<<< Exiting handleStorage(event=${event})`);
     }
 
     window.addEventListener("storage", handleStorage);

@@ -14,6 +14,8 @@
   const VERIFY_DELAY_MS = 400;
 
   function normalize(value) {
+	console.debug(`>>> Entering normalize(value=${value})`);
+	console.debug(`<<< Exiting normalize(value=${value})`);
     return value.toUpperCase().replace(/\s/g, "");
   }
 
@@ -25,39 +27,57 @@
   let verified = $state(false);
 
   function clearVerificationState() {
+	console.debug('>>> Entering clearVerificationState()');
     if (verifyTimeout) clearTimeout(verifyTimeout);
     loading = false;
+	logger.debug(`clearVerificationState(): loading → ${loading}`);
     invalid = false;
+	logger.debug(`clearVerificationState(): invalid → ${invalid}`);
     invalidText = "";
+	logger.debug(`clearVerificationState(): invalidText → ${invalidText}`);
+	console.debug(`clearVerificationState(): invalidText → ${invalidText}`);
     verified = false;
   }
 
   function handleComplete(event) {
+	console.debug(`>>> Entering handleComplete(event=${event})`);
     clearVerificationState();
     loading = true;
+	logger.debug(`handleComplete(event=${event}): loading → ${loading}`);
 
     verifyTimeout = setTimeout(() => {
+	logger.debug(`handleComplete(event=${event}): verifyTimeout → ${verifyTimeout}`);
       loading = false;
 
       if (normalize(event.detail.value) === normalize(EXPECTED_CODE)) {
         verified = true;
+		logger.debug(`handleComplete(event=${event}): verified → ${verified}`);
       } else {
         invalid = true;
+		logger.debug(`handleComplete(event=${event}): invalid → ${invalid}`);
         invalidText = "The code you entered is incorrect";
+		logger.debug(`handleComplete(event=${event}): invalidText → ${invalidText}`);
       }
     }, VERIFY_DELAY_MS);
+	console.debug(`<<< Exiting handleComplete(event=${event})`);
   }
 
   function resetVerification() {
+	console.debug('>>> Entering resetVerification()');
     clearVerificationState();
     pinCodeInput?.clear({ focus: true });
+	console.debug('<<< Exiting resetVerification()');
   }
 
   function handleChange() {
+	console.debug('>>> Entering handleChange()');
     if (loading) return;
     if (!invalid && !verified) return;
     invalid = false;
+	logger.debug(`handleChange(): invalid → ${invalid}`);
     invalidText = "";
+	logger.debug(`handleChange(): invalidText → ${invalidText}`);
+	console.debug(`handleChange(): invalidText → ${invalidText}`);
     verified = false;
   }
 

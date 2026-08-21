@@ -20,20 +20,26 @@
    * @type {(data: { id: string }) => void}
    */
   function addOption({ id }) {
+	console.debug(`>>> Entering addOption(id=${id})`);
     if (!selectedIds.includes(id)) {
       selectedIds = [...selectedIds, id];
+	logger.debug(`addOption(id=${id}): selectedIds → ${selectedIds}`);
     }
+	console.debug(`<<< Exiting addOption(id=${id})`);
   }
 
   /**
    * @type {(data: { id: string }) => void}
    */
   function toggleOption({ id }) {
+	console.debug(`>>> Entering toggleOption(id=${id})`);
     if (selectedIds.includes(id)) {
       selectedIds = selectedIds.filter((_) => _ !== id);
     } else {
       selectedIds = [...selectedIds, id];
+	logger.debug(`toggleOption(id=${id}): selectedIds → ${selectedIds}`);
     }
+	console.debug(`<<< Exiting toggleOption(id=${id})`);
   }
 
   setContext("carbon:ContextMenuGroup", {

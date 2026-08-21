@@ -78,36 +78,49 @@
     hasIcon && !disabled && (hovered || focused) && $activeTooltip === id;
 
   function claim() {
+	console.debug('>>> Entering claim()');
     activeTooltip.set(id);
+	console.debug('<<< Exiting claim()');
   }
 
   function release() {
+	console.debug('>>> Entering release()');
     if (!hovered && !focused && get(activeTooltip) === id) {
       activeTooltip.set(null);
     }
+	console.debug('<<< Exiting release()');
   }
 
   function reveal() {
+	console.debug('>>> Entering reveal()');
     hovered = true;
     claim();
+	logger.debug(`reveal(): hovered → ${hovered}`);
   }
 
   function showTooltip() {
+	console.debug('>>> Entering showTooltip()');
     clearTimeout(openTimeout);
     // Skip the enter delay when another tooltip is already open (warm handoff).
     if (get(activeTooltip) !== null && get(activeTooltip) !== id) {
       reveal();
     } else {
       openTimeout = setTimeout(reveal, ENTER_DELAY_MS);
+	logger.debug(`showTooltip(): openTimeout → ${openTimeout}`);
+	console.debug(`showTooltip(): openTimeout → ${openTimeout}`);
     }
   }
 
   function hideTooltip() {
+	console.debug('>>> Entering hideTooltip()');
     clearTimeout(openTimeout);
     openTimeout = setTimeout(() => {
+	logger.debug(`hideTooltip(): openTimeout → ${openTimeout}`);
       hovered = false;
+	logger.debug(`hideTooltip(): hovered → ${hovered}`);
       release();
     }, LEAVE_DELAY_MS);
+	console.debug('<<< Exiting hideTooltip()');
   }
 
   onMount(() => {

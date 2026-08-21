@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 // Pick a stable avatar background color from a name or id. Same string, same color.
 
@@ -23,12 +24,14 @@ export const AVATAR_BACKGROUND_COLORS = [
  * @returns {number}
  */
 export function hashString(value) {
+logger.debug(`>>> Entering hashString(value=${value})`);
   let hash = 5381;
   for (let i = 0; i < value.length; i++) {
     // hash * 33 + charCode, kept within 32-bit range via `| 0`.
     hash = (hash * 33) ^ value.charCodeAt(i);
   }
   // Coerce to an unsigned 32-bit integer.
+logger.debug(`<<< Exiting hashString(value=${value})`);
   return hash >>> 0;
 }
 

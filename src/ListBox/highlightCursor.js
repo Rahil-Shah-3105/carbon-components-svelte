@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 import { writable } from "svelte/store";
 import { scrollIntoViewWithinMenu } from "../utils/scrollIntoViewWithinMenu.js";
@@ -24,22 +25,27 @@ const ACTIVE_CLASS = "bx--list-box__menu-item--active";
  * }}
  */
 export function createHighlightCursor() {
+logger.debug('>>> Entering createHighlightCursor()');
   /** @type {Map<string, HTMLElement>} */
   const nodes = new Map();
+logger.debug(`createHighlightCursor(): nodes → ${nodes}`);
   /** @type {string | null} */
   let currentId = null;
   const highlightedId = writable(/** @type {string | null} */ (null));
 
+logger.debug(`createHighlightCursor(): highlightedId → ${highlightedId}`);
   /**
    * @param {HTMLElement} node
    * @param {boolean} on
    */
   function applyClass(node, on) {
+	logger.debug(`>>> Entering applyClass(node=${node},on=${on})`);
     if (on || node.classList.contains(ACTIVE_CLASS)) {
       node.classList.add(HIGHLIGHT_CLASS);
       return;
     }
     node.classList.remove(HIGHLIGHT_CLASS);
+	logger.debug(`<<< Exiting applyClass(node=${node},on=${on})`);
   }
 
   /**
@@ -48,9 +54,11 @@ export function createHighlightCursor() {
    * @returns {() => void}
    */
   function register(id, node) {
+	logger.debug(`>>> Entering register(id=${id},node=${node})`);
     if (!id) return () => {};
     nodes.set(id, node);
     applyClass(node, currentId === id);
+	logger.debug(`<<< Exiting register(id=${id},node=${node})`);
     return () => {
       if (nodes.get(id) === node) nodes.delete(id);
     };
@@ -61,16 +69,20 @@ export function createHighlightCursor() {
    * @param {{ scroll?: boolean }} [options]
    */
   function set(id, { scroll = true } = {}) {
+	logger.debug(`>>> Entering set(id=${id},scroll=${scroll})`);
     const nextId = id || null;
     if (nextId === currentId) return;
 
     const prev = currentId ? nodes.get(currentId) : undefined;
+	logger.debug(`set(id=${id},scroll=${scroll}): prev → ${prev}`);
     const next = nextId ? nodes.get(nextId) : undefined;
+	logger.debug(`set(id=${id},scroll=${scroll}): next → ${next}`);
     if (prev) applyClass(prev, false);
     if (next) {
       applyClass(next, true);
       if (scroll && !next.matches(":hover")) {
         const inner = next.querySelector(".bx--list-box__menu-item__option");
+		logger.debug(`set(id=${id},scroll=${scroll}): inner → ${inner}`);
         scrollIntoViewWithinMenu(inner instanceof HTMLElement ? inner : next);
       }
     }
@@ -79,6 +91,7 @@ export function createHighlightCursor() {
     highlightedId.set(nextId);
   }
 
+logger.debug('<<< Exiting createHighlightCursor()');
   return {
     register,
     set,

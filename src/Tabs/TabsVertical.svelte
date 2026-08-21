@@ -114,10 +114,13 @@
   $: isOverflow = $belowMd && (canScrollBackward || canScrollForward);
 
   function updateOverflow() {
+	console.debug('>>> Entering updateOverflow()');
     if (!refTabList) return;
     const { scrollLeft, scrollWidth, clientWidth } = refTabList;
     canScrollBackward = scrollLeft > 0;
+	logger.debug(`updateOverflow(): canScrollBackward → ${canScrollBackward}`);
     canScrollForward = Math.ceil(scrollLeft + clientWidth) < scrollWidth;
+	console.debug(`updateOverflow(): canScrollForward → ${canScrollForward}`);
   }
 
   /**
@@ -125,11 +128,13 @@
    * @type {(direction: 1 | -1) => void}
    */
   function scrollTabs(direction) {
+	console.debug(`>>> Entering scrollTabs(direction=${direction})`);
     if (!refTabList) return;
     refTabList.scrollBy({
       left: direction * refTabList.clientWidth * 0.75,
       behavior: "smooth",
     });
+	console.debug(`<<< Exiting scrollTabs(direction=${direction})`);
   }
 
   /**
@@ -144,10 +149,13 @@
    * @type {(tab: HTMLElement | undefined) => void}
    */
   function scrollTabIntoView(tab) {
+	console.debug(`>>> Entering scrollTabIntoView(tab=${tab})`);
     if (!tab || !refTabList) return;
 
     const navRect = refTabList.getBoundingClientRect();
     const tabRect = tab.getBoundingClientRect();
+	console.debug(`scrollTabIntoView(tab=${tab}): navRect → ${navRect}`);
+	console.debug(`scrollTabIntoView(tab=${tab}): tabRect → ${tabRect}`);
     const leftOverflow =
       tabRect.left - (navRect.left + SCROLL_INTO_VIEW_MARGIN);
     const rightOverflow =
@@ -158,6 +166,7 @@
     } else if (rightOverflow > 0) {
       refTabList.scrollLeft += rightOverflow;
     }
+	console.debug(`<<< Exiting scrollTabIntoView(tab=${tab})`);
   }
 
   // Flag to trigger DOM reordering only when tabs change.
@@ -176,8 +185,11 @@
    * @type {(data: { id: string; label: string; disabled: boolean; hasSecondaryLabel: boolean }) => void}
    */
   function add(data) {
+	console.debug(`>>> Entering add(data=${data})`);
     batchedTabsUpdate((_) => {
       needsDomSync = true;
+	logger.debug(`add(data=${data}): needsDomSync → ${needsDomSync}`);
+	console.debug(`<<< Exiting add(data=${data})`);
       return [..._, { ...data, index: _.length }];
     });
   }
@@ -186,8 +198,11 @@
    * @type {(id: string) => void}
    */
   function remove(id) {
+	console.debug(`>>> Entering remove(id=${id})`);
     batchedTabsUpdate((_) => {
       needsDomSync = true;
+	logger.debug(`remove(id=${id}): needsDomSync → ${needsDomSync}`);
+	console.debug(`<<< Exiting remove(id=${id})`);
       return _.filter((tab) => tab.id !== id);
     });
   }
@@ -196,8 +211,11 @@
    * @type {(data: { id: string }) => void}
    */
   function addContent(data) {
+	console.debug(`>>> Entering addContent(data=${data})`);
     batchedContentUpdate((_) => {
       needsDomSync = true;
+	logger.debug(`addContent(data=${data}): needsDomSync → ${needsDomSync}`);
+	console.debug(`<<< Exiting addContent(data=${data})`);
       return [..._, { ...data, index: _.length }];
     });
   }
@@ -206,8 +224,11 @@
    * @type {(id: string) => void}
    */
   function removeContent(id) {
+	console.debug(`>>> Entering removeContent(id=${id})`);
     batchedContentUpdate((_) => {
       needsDomSync = true;
+	logger.debug(`removeContent(id=${id}): needsDomSync → ${needsDomSync}`);
+	console.debug(`<<< Exiting removeContent(id=${id})`);
       return _.filter((item) => item.id !== id);
     });
   }
@@ -216,15 +237,19 @@
    * @type {(id: string) => void}
    */
   function update(id) {
+	console.debug(`>>> Entering update(id=${id})`);
     focusedIndex = -1;
     if (selectedId !== undefined) {
+	logger.debug(`update(id=${id}): focusedIndex → ${focusedIndex}`);
       selectedId = id;
+	logger.debug(`update(id=${id}): selectedId → ${selectedId}`);
       return;
     }
     // Ignore clicks that land before this tab's batched registration flushes.
     const tab = $tabsById[id];
     if (!tab) return;
     currentIndex = tab.index;
+	logger.debug(`update(id=${id}): currentIndex → ${currentIndex}`);
   }
 
   /**
@@ -233,8 +258,11 @@
    * @type {() => void}
    */
   function syncSelection() {
+	console.debug('>>> Entering syncSelection()');
     if (selectedId === undefined) {
       currentIndex = selected;
+	logger.debug(`syncSelection(): currentIndex → ${currentIndex}`);
+	console.debug(`syncSelection(): currentIndex → ${currentIndex}`);
       return;
     }
 
@@ -248,6 +276,7 @@
 
     currentIndex = clampIndex(currentIndex, 0, $tabs.length);
     selectedId = $tabs[currentIndex].id;
+	logger.debug(`syncSelection(): selectedId → ${selectedId}`);
   }
 
   // Vertical tabs are never dismissible; this no-op satisfies the `Tab` context.
@@ -258,8 +287,10 @@
    * @type {(index: number) => Promise<void>}
    */
   async function focusTab(index) {
+	console.debug(`>>> Entering focusTab(index=${index})`);
     if (index < 0 || index >= $tabs.length) return;
     focusedIndex = index;
+	logger.debug(`focusTab(index=${index}): focusedIndex → ${focusedIndex}`);
 
     await tick();
     const activeTab = /** @type {HTMLElement | undefined} */ (
@@ -267,6 +298,7 @@
     );
     activeTab?.focus({ preventScroll: $belowMd });
     if ($belowMd) scrollTabIntoView(activeTab);
+	console.debug(`<<< Exiting focusTab(index=${index})`);
   }
 
   /**
@@ -275,18 +307,22 @@
    * @type {(index: number) => Promise<void>}
    */
   async function selectTab(index) {
+	console.debug(`>>> Entering selectTab(index=${index})`);
     if (index === currentIndex) {
       focusedIndex = -1;
+	logger.debug(`selectTab(index=${index}): focusedIndex → ${focusedIndex}`);
       return;
     }
 
     focusedIndex = -1;
     if (selectedId === undefined) {
       currentIndex = index;
+	logger.debug(`selectTab(index=${index}): currentIndex → ${currentIndex}`);
     } else {
       const tab = $tabs[index];
       if (!tab) return;
       selectedId = tab.id;
+	logger.debug(`selectTab(index=${index}): selectedId → ${selectedId}`);
     }
 
     await tick();
@@ -298,6 +334,7 @@
     // `md`+ the column relies on the browser scrolling the page to the tab.
     activeTab?.focus({ preventScroll: $belowMd });
     if ($belowMd) scrollTabIntoView(activeTab);
+	console.debug(`<<< Exiting selectTab(index=${index})`);
   }
 
   setContext("carbon:Tabs", {

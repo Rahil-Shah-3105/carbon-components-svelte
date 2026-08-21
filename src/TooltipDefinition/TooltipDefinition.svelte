@@ -80,21 +80,30 @@
   const scheduleOpen = createDelayedSetter();
 
   function setOpenDelayed(value, delay = 0) {
+	console.debug(`>>> Entering setOpenDelayed(value=${value},delay=${delay})`);
     scheduleOpen(delay, () => {
       open = value;
+	logger.debug(`setOpenDelayed(value=${value},delay=${delay}): open → ${open}`);
     });
+	console.debug(`<<< Exiting setOpenDelayed(value=${value},delay=${delay})`);
   }
 
   function hide() {
+	console.debug('>>> Entering hide()');
     open = false;
+	logger.debug(`hide(): open → ${open}`);
   }
 
   function show() {
+	console.debug('>>> Entering show()');
     open = true;
+	logger.debug(`show(): open → ${open}`);
   }
 
   function toggle() {
+	console.debug('>>> Entering toggle()');
     open = !open;
+	logger.debug(`toggle(): open → ${open}`);
   }
 
   let isInitialRender = true;
@@ -114,7 +123,9 @@
     };
   });
   function handleEscape(event) {
+	console.debug(`>>> Entering handleEscape(event=${event})`);
     if (event.key === "Escape") hide();
+	console.debug(`<<< Exiting handleEscape(event=${event})`);
   }
 </script>
 

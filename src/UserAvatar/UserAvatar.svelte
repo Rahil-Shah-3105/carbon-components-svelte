@@ -147,28 +147,36 @@
   }
 
   function claimTooltip() {
+	console.debug('>>> Entering claimTooltip()');
     if (!userAvatarGroup) return;
     clearTimeout(releaseTimeout);
     const previous = get(groupActiveTooltip);
     userAvatarGroup.activeTooltip.set(groupItemId);
+	console.debug(`claimTooltip(): previous → ${previous}`);
     // Warm handoff: if another avatar already has its tooltip open, skip the
     // enter delay (same pattern as ContentSwitcher's icon-only tooltips).
     if (previous !== null && previous !== groupItemId) {
       tooltipOpen = true;
+	logger.debug(`claimTooltip(): tooltipOpen → ${tooltipOpen}`);
     }
+	console.debug('<<< Exiting claimTooltip()');
   }
 
   function releaseTooltip() {
+	console.debug('>>> Entering releaseTooltip()');
     if (userAvatarGroup && get(groupActiveTooltip) === groupItemId) {
       userAvatarGroup.activeTooltip.set(null);
     }
+	console.debug('<<< Exiting releaseTooltip()');
   }
 
   // Defer release so moving between neighbors within 300ms skips the next
   // enter delay.
   function scheduleRelease() {
+	console.debug('>>> Entering scheduleRelease()');
     clearTimeout(releaseTimeout);
     releaseTimeout = setTimeout(releaseTooltip, 300);
+	console.debug(`scheduleRelease(): releaseTimeout → ${releaseTimeout}`);
   }
 
   if (userAvatarGroup) {
@@ -212,7 +220,9 @@
   const WHITESPACE = /\s+/;
 
   function formatInitials(value) {
+	console.debug(`>>> Entering formatInitials(value=${value})`);
     if (!value) return "";
+	console.debug(`<<< Exiting formatInitials(value=${value})`);
     return value
       .trim()
       .split(WHITESPACE)
@@ -244,8 +254,10 @@
   let failedImage = undefined;
 
   function handleImageError() {
+	console.debug('>>> Entering handleImageError()');
     failedImage = image;
     dispatch("image:error");
+	logger.debug(`handleImageError(): failedImage → ${failedImage}`);
   }
 </script>
 

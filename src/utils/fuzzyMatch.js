@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 /**
@@ -33,6 +34,8 @@ const SEPARATORS = new Set([" ", "-", "_", "/", ".", ":", "@", "&"]);
  * @returns {boolean}
  */
 function isWordBoundary(text, index) {
+logger.debug(`>>> Entering isWordBoundary(text=${text},index=${index})`);
+logger.debug(`<<< Exiting isWordBoundary(text=${text},index=${index})`);
   return index === 0 || SEPARATORS.has(text[index - 1]);
 }
 
@@ -45,8 +48,10 @@ function isWordBoundary(text, index) {
  * @returns {{ index: number, score: number } | null}
  */
 function bestSubstringMatch(lowerText, lowerQuery) {
+logger.debug(`>>> Entering bestSubstringMatch(lowerText=${lowerText},lowerQuery=${lowerQuery})`);
   let from = 0;
   let best = /** @type {{ index: number, score: number } | null} */ (null);
+logger.debug(`bestSubstringMatch(lowerText=${lowerText},lowerQuery=${lowerQuery}): best → ${best}`);
   let index = lowerText.indexOf(lowerQuery, from);
   while (index !== -1) {
     let score = 1000 - index;
@@ -56,6 +61,7 @@ function bestSubstringMatch(lowerText, lowerQuery) {
     from = index + 1;
     index = lowerText.indexOf(lowerQuery, from);
   }
+logger.debug(`<<< Exiting bestSubstringMatch(lowerText=${lowerText},lowerQuery=${lowerQuery})`);
   return best;
 }
 
@@ -67,6 +73,7 @@ function bestSubstringMatch(lowerText, lowerQuery) {
  * @returns {{ indices: number[], score: number } | null}
  */
 function subsequenceMatch(lowerText, lowerQuery) {
+logger.debug(`>>> Entering subsequenceMatch(lowerText=${lowerText},lowerQuery=${lowerQuery})`);
   const indices = [];
   let textIndex = 0;
   let score = 0;
@@ -86,6 +93,7 @@ function subsequenceMatch(lowerText, lowerQuery) {
     indices.push(found);
     prev = found;
   }
+logger.debug(`<<< Exiting subsequenceMatch(lowerText=${lowerText},lowerQuery=${lowerQuery})`);
   return { indices, score };
 }
 
@@ -98,7 +106,9 @@ function subsequenceMatch(lowerText, lowerQuery) {
  * @returns {number}
  */
 function substringQuality(haystack, pattern, index) {
+logger.debug(`>>> Entering substringQuality(haystack=${haystack},pattern=${pattern},index=${index})`);
   if (index === 0) {
+logger.debug(`<<< Exiting substringQuality(haystack=${haystack},pattern=${pattern},index=${index})`);
     return pattern.length === haystack.length ? QUALITY.exact : QUALITY.prefix;
   }
   return isWordBoundary(haystack, index)
@@ -114,12 +124,15 @@ function substringQuality(haystack, pattern, index) {
  * @returns {number}
  */
 function subsequenceQuality(indices) {
+logger.debug(`>>> Entering subsequenceQuality(indices=${indices})`);
   if (indices.length <= 1) return QUALITY.subsequenceBase;
   let adjacent = 0;
   for (let i = 1; i < indices.length; i++) {
     if (indices[i] === indices[i - 1] + 1) adjacent++;
   }
   const ratio = adjacent / (indices.length - 1);
+logger.debug(`subsequenceQuality(indices=${indices}): ratio → ${ratio}`);
+logger.debug(`<<< Exiting subsequenceQuality(indices=${indices})`);
   return QUALITY.subsequenceBase + QUALITY.subsequenceSpan * ratio;
 }
 
@@ -145,15 +158,21 @@ function subsequenceQuality(indices) {
  * @returns {FuzzyMatch}
  */
 export function fuzzyMatch(text, query, options = {}) {
+logger.debug(`>>> Entering fuzzyMatch(text=${text},query=${query},options=${options})`);
   const { threshold = 0, caseSensitive = false } = options;
   const source = text ?? "";
+logger.debug(`fuzzyMatch(text=${text},query=${query},options=${options}): source → ${source}`);
   const needle = (query ?? "").trim();
+logger.debug(`fuzzyMatch(text=${text},query=${query},options=${options}): needle → ${needle}`);
   if (needle === "") return { matched: true, score: 0, indices: [] };
 
   const haystack = caseSensitive ? source : source.toLowerCase();
+logger.debug(`fuzzyMatch(text=${text},query=${query},options=${options}): haystack → ${haystack}`);
   const pattern = caseSensitive ? needle : needle.toLowerCase();
+logger.debug(`fuzzyMatch(text=${text},query=${query},options=${options}): pattern → ${pattern}`);
 
   let score = 0;
+logger.debug(`fuzzyMatch(text=${text},query=${query},options=${options}): score → ${score}`);
   let indices = [];
 
   const substring = bestSubstringMatch(haystack, pattern);
@@ -172,6 +191,7 @@ export function fuzzyMatch(text, query, options = {}) {
     }
   }
 
+logger.debug(`fuzzyMatch(text=${text},query=${query},options=${options}): substring → ${substring}`);
   return { matched: score >= threshold, score, indices };
 }
 
@@ -184,16 +204,20 @@ export function fuzzyMatch(text, query, options = {}) {
  * @returns {Array<{ text: string, match: boolean }>}
  */
 export function highlightSegments(text, indices) {
+logger.debug(`>>> Entering highlightSegments(text=${text},indices=${indices})`);
   const source = text ?? "";
   if (!indices || indices.length === 0) {
+	logger.debug(`highlightSegments(text=${text},indices=${indices}): source → ${source}`);
     return source ? [{ text: source, match: false }] : [];
   }
   const matched = new Set(indices);
+logger.debug(`highlightSegments(text=${text},indices=${indices}): matched → ${matched}`);
   const segments = [];
   let current = "";
   let currentMatch = matched.has(0);
   for (let i = 0; i < source.length; i++) {
     const isMatch = matched.has(i);
+	logger.debug(`highlightSegments(text=${text},indices=${indices}): isMatch → ${isMatch}`);
     if (isMatch === currentMatch) {
       current += source[i];
     } else {
@@ -203,5 +227,6 @@ export function highlightSegments(text, indices) {
     }
   }
   if (current) segments.push({ text: current, match: currentMatch });
+logger.debug(`<<< Exiting highlightSegments(text=${text},indices=${indices})`);
   return segments;
 }

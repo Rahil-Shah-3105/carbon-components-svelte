@@ -27,13 +27,16 @@
   let filteredRowIds = [];
 
   function downloadCsv() {
+	console.debug('>>> Entering downloadCsv()');
     const matchedIds = new Set(filteredRowIds);
     const csv = toCsv(
       headers,
       rows.filter((row) => matchedIds.has(row.id)),
     );
+	console.debug(`downloadCsv(): matchedIds → ${matchedIds}`);
 
     downloadFile(csv, "load-balancers.csv", "text/csv;charset=utf-8");
+	console.debug('<<< Exiting downloadCsv()');
   }
 </script>
 

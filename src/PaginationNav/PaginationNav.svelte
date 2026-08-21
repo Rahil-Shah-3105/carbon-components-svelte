@@ -79,6 +79,7 @@
   // materializing a `total`-length array and slicing it down,
   // since the rendered window is bounded by `shown`.
   function computePageWindow(total, startOffset, front, back) {
+	console.debug(`>>> Entering computePageWindow(total=${total},startOffset=${startOffset},front=${front},back=${back})`);
     const start = startOffset + front;
     const end = total - back - 1;
     const window = [];
@@ -87,6 +88,7 @@
       window.push(i);
     }
 
+	console.debug(`<<< Exiting computePageWindow(total=${total},startOffset=${startOffset},front=${front},back=${back})`);
     return window;
   }
 

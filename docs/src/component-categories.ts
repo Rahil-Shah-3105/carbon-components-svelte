@@ -1,3 +1,4 @@
+const logger = console;
 export interface ComponentCategory {
   label: string;
   components: string[];
@@ -155,21 +156,28 @@ export const CATEGORY_BY_COMPONENT: Record<string, string> =
 
 export function assertCategoriesCover(componentNames: string[]): void {
   const known = new Set(componentNames);
+logger.debug(`assertCategoriesCover(componentNames=${componentNames}): known → ${known}`);
   const categorized = new Set<string>();
+logger.debug(`assertCategoriesCover(componentNames=${componentNames}): categorized → ${categorized}`);
   const duplicates: string[] = [];
 
   for (const category of COMPONENT_CATEGORIES) {
+	logger.debug(`>>> Entering assertCategoriesCover(componentNames=${componentNames})`);
     for (const name of category.components) {
       if (categorized.has(name)) duplicates.push(name);
       categorized.add(name);
+	logger.debug(`<<< Exiting assertCategoriesCover(componentNames=${componentNames})`);
     }
   }
 
   const uncategorized = componentNames.filter((name) => !categorized.has(name));
+logger.debug(`assertCategoriesCover(componentNames=${componentNames}): uncategorized → ${uncategorized}`);
   const unknown = [...categorized].filter((name) => !known.has(name));
+logger.debug(`assertCategoriesCover(componentNames=${componentNames}): unknown → ${unknown}`);
 
   if (uncategorized.length || unknown.length || duplicates.length) {
     const lines = ["[component-categories] sidebar grouping is out of sync:"];
+	logger.debug(`assertCategoriesCover(componentNames=${componentNames}): lines → ${lines}`);
     if (uncategorized.length)
       lines.push(`  • uncategorized pages: ${uncategorized.join(", ")}`);
     if (unknown.length)

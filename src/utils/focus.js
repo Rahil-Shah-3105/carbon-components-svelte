@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 const selectorFirstInput =
@@ -35,19 +36,24 @@ export function initialFocus({
  * @returns {{ save: () => void; restore: () => void }}
  */
 export function restoreFocus() {
+logger.debug('>>> Entering restoreFocus()');
   /** @type {HTMLElement | null} */
   let previouslyFocusedElement = null;
   return {
     save() {
+	logger.debug('>>> Entering save()');
       previouslyFocusedElement =
         document.activeElement instanceof HTMLElement
           ? document.activeElement
           : null;
+		logger.debug('<<< Exiting save()');
     },
     restore() {
+	logger.debug('>>> Entering restore()');
       if (previouslyFocusedElement?.isConnected) {
         previouslyFocusedElement.focus();
         previouslyFocusedElement = null;
+		logger.debug('<<< Exiting restore()');
       }
     },
   };

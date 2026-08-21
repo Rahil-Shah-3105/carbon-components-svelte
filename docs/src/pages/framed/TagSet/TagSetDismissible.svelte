@@ -9,7 +9,9 @@
   ];
 
   function handleTagClose({ detail }) {
+	console.debug(`>>> Entering handleTagClose(detail=${detail})`);
     tags = tags.filter((_, index) => index !== detail.index);
+	console.debug(`handleTagClose(detail=${detail}): tags → ${tags}`);
   }
 </script>
 

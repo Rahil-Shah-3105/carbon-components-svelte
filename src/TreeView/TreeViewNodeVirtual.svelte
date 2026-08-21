@@ -45,7 +45,9 @@
    * @returns {"true" | "false" | "mixed"}
    */
   function toAriaChecked(isSelected, isIndeterminate) {
+	console.debug(`>>> Entering toAriaChecked(isSelected=${isSelected},isIndeterminate=${isIndeterminate})`);
     if (isIndeterminate) return "mixed";
+	console.debug(`<<< Exiting toAriaChecked(isSelected=${isSelected},isIndeterminate=${isIndeterminate})`);
     return isSelected ? "true" : "false";
   }
 

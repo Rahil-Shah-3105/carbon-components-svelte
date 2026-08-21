@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 /**
@@ -8,6 +9,7 @@
  * @returns {((delay: number, fn: () => void) => void) & { cancel: () => void }}
  */
 export function createDelayedSetter() {
+logger.debug('>>> Entering createDelayedSetter()');
   /** @type {ReturnType<typeof setTimeout> | undefined} */
   let timeoutId;
 
@@ -16,11 +18,13 @@ export function createDelayedSetter() {
    * @param {() => void} fn
    */
   function schedule(delay, fn) {
+	logger.debug(`>>> Entering schedule(delay=${delay},fn=${fn})`);
     clearTimeout(timeoutId);
     if (delay > 0) {
       timeoutId = setTimeout(fn, delay);
     } else {
       fn();
+	logger.debug(`<<< Exiting schedule(delay=${delay},fn=${fn})`);
     }
   }
 
@@ -28,5 +32,6 @@ export function createDelayedSetter() {
     clearTimeout(timeoutId);
   };
 
+logger.debug('<<< Exiting createDelayedSetter()');
   return schedule;
 }

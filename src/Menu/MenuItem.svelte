@@ -118,6 +118,7 @@
   $: displayIcon = isIndented ? (selected ? Checkmark : undefined) : icon;
 
   function handleClick(event) {
+	console.debug(`>>> Entering handleClick(event=${event})`);
     if (disabled) return;
 
     // Selection runs first so preventDefault only skips the close.
@@ -127,31 +128,42 @@
       ctxRadioGroup.setOption({ id });
     } else if (isSelectable) {
       selected = !selected;
+	logger.debug(`handleClick(event=${event}): selected → ${selected}`);
     }
 
     const shouldClose = dispatch("click", event, { cancelable: true });
 
+	console.debug(`handleClick(event=${event}): shouldClose → ${shouldClose}`);
     if (shouldClose) {
       ctx.close("select");
     }
+	console.debug(`<<< Exiting handleClick(event=${event})`);
   }
 
   function openSubmenu() {
+	console.debug('>>> Entering openSubmenu()');
     if (disabled) return;
     hoverIntent.open();
+	console.debug('<<< Exiting openSubmenu()');
   }
 
   function scheduleOpenSubmenu() {
+	console.debug('>>> Entering scheduleOpenSubmenu()');
     if (disabled) return;
     hoverIntent.scheduleOpen();
+	console.debug('<<< Exiting scheduleOpenSubmenu()');
   }
 
   function scheduleCloseSubmenu() {
+	console.debug('>>> Entering scheduleCloseSubmenu()');
     hoverIntent.scheduleClose();
+	console.debug('<<< Exiting scheduleCloseSubmenu()');
   }
 
   function cancelCloseSubmenu() {
+	console.debug('>>> Entering cancelCloseSubmenu()');
     hoverIntent.cancelClose();
+	console.debug('<<< Exiting cancelCloseSubmenu()');
   }
 
   onMount(() => {

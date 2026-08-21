@@ -1,3 +1,4 @@
+const logger = console;
 // Pure-logic benchmark: no jsdom, no Svelte, run directly via bun (`bun run bench/<this file>.bench.ts`, optionally filtered — see CONTRIBUTING.md).
 // TreeView's own virtualization index (src/utils/treeVirtualIndex.js) documents
 // specific complexity claims in its module docstring:
@@ -21,10 +22,13 @@ type Node = {
 // Same shape generator as treeCheckboxState.bench.ts: single-root,
 // branching-factor-N tree with `totalNodes` nodes total.
 function buildTree(totalNodes: number, branching = 4): Node[] {
+logger.debug(`>>> Entering buildTree(totalNodes=${totalNodes},branching=${branching})`);
   let created = 0;
 
   function makeNode(): Node {
+	logger.debug('>>> Entering makeNode()');
     created += 1;
+	logger.debug('<<< Exiting makeNode()');
     return { id: created, nodes: [] };
   }
 
@@ -41,16 +45,21 @@ function buildTree(totalNodes: number, branching = 4): Node[] {
     }
   }
 
+logger.debug(`<<< Exiting buildTree(totalNodes=${totalNodes},branching=${branching})`);
   return [root];
 }
 
 function allIds(nodes: Node[]): Set<number> {
   const ids = new Set<number>();
+logger.debug(`allIds(nodes=${nodes}): ids → ${ids}`);
   const stack = [...nodes];
   while (stack.length > 0) {
+	logger.debug(`>>> Entering allIds(nodes=${nodes})`);
     const node = stack.pop();
     if (!node) continue;
+	logger.debug(`allIds(nodes=${nodes}): node → ${node}`);
     ids.add(node.id);
+	logger.debug(`<<< Exiting allIds(nodes=${nodes})`);
     if (node.nodes) stack.push(...node.nodes);
   }
   return ids;

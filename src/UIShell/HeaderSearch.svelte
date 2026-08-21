@@ -179,36 +179,53 @@
     match: matchStore,
     activeId,
     setActiveId(next) {
+	console.debug(`>>> Entering setActiveId(next=${next})`);
       activeId.set(next);
+	console.debug(`<<< Exiting setActiveId(next=${next})`);
     },
     selectItem(detail) {
+	console.debug(`>>> Entering selectItem(detail=${detail})`);
       value = detail.value ?? value;
       dispatch("select", detail);
+	logger.debug(`selectItem(detail=${detail}): value → ${value}`);
       reset();
+	console.debug(`<<< Exiting selectItem(detail=${detail})`);
       dispatch("close", { trigger: "select" });
     },
     hasPrimaryItems: hasPrimaryItemsStore,
     registerItem(itemId, filterable, inDividerGroup = false) {
+	console.debug(`>>> Entering registerItem(itemId=${itemId},filterable=${filterable},inDividerGroup=${inDividerGroup})`);
+	const __log_start = Date.now();
       itemIds.add(itemId);
       if (filterable) filterableIds.add(itemId);
       else filterableIds.delete(itemId);
+	console.info(`registerItem(itemId,filterable,inDividerGroup)=${itemId},${filterable},${inDividerGroup}: delete operation took ${Date.now() - __log_start} ms`);
       if (inDividerGroup) primaryItemIds.delete(itemId);
       else primaryItemIds.add(itemId);
       itemIds = itemIds;
+	logger.debug(`registerItem(itemId=${itemId},filterable=${filterable},inDividerGroup=${inDividerGroup}): itemIds → ${itemIds}`);
       filterableIds = filterableIds;
+	logger.debug(`registerItem(itemId=${itemId},filterable=${filterable},inDividerGroup=${inDividerGroup}): filterableIds → ${filterableIds}`);
       primaryItemIds = primaryItemIds;
+	console.debug(`<<< Exiting registerItem(itemId=${itemId},filterable=${filterable},inDividerGroup=${inDividerGroup})`);
     },
     unregisterItem(itemId) {
+	console.debug(`>>> Entering unregisterItem(itemId=${itemId})`); const __log_start = Date.now();
+	console.info(`unregisterItem(itemId)=${itemId}: delete operation took ${Date.now() - __log_start} ms`);
       itemIds.delete(itemId);
       filterableIds.delete(itemId);
       primaryItemIds.delete(itemId);
       itemIds = itemIds;
+	logger.debug(`unregisterItem(itemId=${itemId}): itemIds → ${itemIds}`);
       filterableIds = filterableIds;
+	logger.debug(`unregisterItem(itemId=${itemId}): filterableIds → ${filterableIds}`);
       primaryItemIds = primaryItemIds;
+	console.debug(`<<< Exiting unregisterItem(itemId=${itemId})`);
     },
   });
 
   function getOptionElements() {
+	console.debug('>>> Entering getOptionElements()'); const __log_start = Date.now();
     if (!menuRef) return [];
     return Array.from(menuRef.querySelectorAll('[role="option"]')).filter(
       (el) => el.getAttribute("aria-disabled") !== "true",
@@ -216,30 +233,39 @@
   }
 
   function moveActive(step) {
+	console.debug(`>>> Entering moveActive(step=${step})`);
     const els = getOptionElements();
     if (els.length === 0) {
+	console.debug(`moveActive(step=${step}): els → ${els}`);
       activeId.set(null);
       return;
     }
     const current = els.findIndex((el) => el.id === $activeId);
     let next = current + step;
+	console.debug(`moveActive(step=${step}): current → ${current}`);
     if (next < 0) next = els.length - 1;
     else if (next >= els.length) next = 0;
     activeId.set(els[next].id);
+	console.debug(`<<< Exiting moveActive(step=${step})`);
   }
 
   function setActiveEdge(edge) {
+	console.debug(`>>> Entering setActiveEdge(edge=${edge})`);
     const els = getOptionElements();
     if (els.length === 0) return;
+	console.debug(`setActiveEdge(edge=${edge}): els → ${els}`);
     activeId.set(els[edge === "first" ? 0 : els.length - 1].id);
+	console.debug(`<<< Exiting setActiveEdge(edge=${edge})`);
   }
 
   /** Keyboard navigation for the `menu` slot (`role="option"`). */
   function handleRichKeydown(event) {
+	console.debug(`>>> Entering handleRichKeydown(event=${event})`);
     switch (event.key) {
       case "ArrowDown":
         event.preventDefault();
         menuDismissed = false;
+		logger.debug(`handleRichKeydown(event=${event}): menuDismissed → ${menuDismissed}`);
         if (richMenuVisible) moveActive(1);
         break;
       case "ArrowUp":
@@ -279,22 +305,32 @@
           dispatch("close", { trigger: "escape-key" });
         } else {
           value = "";
+		logger.debug(`handleRichKeydown(event=${event}): value → ${value}`);
+		console.debug(`handleRichKeydown(event=${event}): value → ${value}`);
         }
+		console.debug(`<<< Exiting handleRichKeydown(event=${event})`);
         break;
     }
   }
 
   function reset() {
+	console.debug('>>> Entering reset()');
     active = false;
     value = "";
+	logger.info(`reset(): active → ${active}`);
+	console.debug(`reset(): value → ${value}`);
     selectedResultIndex = 0;
     menuDismissed = false;
+	logger.debug(`reset(): menuDismissed → ${menuDismissed}`);
     activeId.set(null);
+	console.debug('<<< Exiting reset()');
   }
 
   function selectResult() {
+	console.debug('>>> Entering selectResult()');
     dispatch("select", { value, selectedResultIndex, selectedResult });
     reset();
+	console.debug('<<< Exiting selectResult()');
     dispatch("close", { trigger: "select" });
   }
 
@@ -312,18 +348,24 @@
     : undefined;
 
   function handleOutsideMouseup(event) {
+	console.debug(`>>> Entering handleOutsideMouseup(event=${event})`);
     if (active && isOutsideClick(event, refSearch)) {
       active = false;
+	logger.info(`handleOutsideMouseup(event=${event}): active → ${active}`);
       activeId.set(null);
       menuDismissed = false;
+	logger.debug(`handleOutsideMouseup(event=${event}): menuDismissed → ${menuDismissed}`);
       dispatch("close", { trigger: "outside-click" });
+	console.debug(`<<< Exiting handleOutsideMouseup(event=${event})`);
     }
   }
 
   // Clicks on group headers or padding blur the input; refocus so only item
   // selection closes the menu.
   function handleMenuPointerDown() {
+	console.debug('>>> Entering handleMenuPointerDown()');
     ref?.focus();
+	console.debug('<<< Exiting handleMenuPointerDown()');
   }
 </script>
 
