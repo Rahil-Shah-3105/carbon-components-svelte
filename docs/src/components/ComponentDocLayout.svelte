@@ -4,19 +4,26 @@
   export let aside = true;
 
   function syncTableScrollHeight(node: HTMLDivElement) {
+	console.debug(`>>> Entering syncTableScrollHeight(node=${node})`);
     let raf = 0;
 
+	console.debug(`syncTableScrollHeight(node=${node}): raf → ${raf}`);
     function sync() {
+	console.debug('>>> Entering sync()');
       const table = node.closest(".table");
       if (!(table instanceof HTMLElement)) return;
+	console.debug(`sync(): table → ${table}`);
 
       const top = table.getBoundingClientRect().top;
       node.style.maxHeight = `${Math.max(window.innerHeight - top, 0)}px`;
+	console.debug(`sync(): top → ${top}`);
     }
 
     function schedule() {
+	console.debug('>>> Entering schedule()');
       cancelAnimationFrame(raf);
       raf = requestAnimationFrame(sync);
+	console.debug(`schedule(): raf → ${raf}`);
     }
 
     schedule();
@@ -25,12 +32,15 @@
 
     return {
       destroy() {
+		console.debug('>>> Entering destroy()');
         cancelAnimationFrame(raf);
         window.removeEventListener("scroll", schedule);
         window.removeEventListener("resize", schedule);
         node.style.maxHeight = "";
+		console.debug('<<< Exiting destroy()');
       },
     };
+	console.debug(`<<< Exiting syncTableScrollHeight(node=${node})`);
   }
 </script>
 

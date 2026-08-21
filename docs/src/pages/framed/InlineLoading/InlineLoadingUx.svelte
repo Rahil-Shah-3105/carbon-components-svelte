@@ -18,6 +18,7 @@
   let state = "dormant"; // "dormant" | "active" | "finished" | "inactive"
 
   function reset(incomingState) {
+	console.debug(`>>> Entering reset(incomingState=${incomingState})`);
     if (typeof timeout === "number") {
       clearTimeout(timeout);
     }
@@ -27,6 +28,7 @@
         state = incomingState;
       }, 2000);
     }
+	console.debug(`<<< Exiting reset(incomingState=${incomingState})`);
   }
 
   onMount(() => {

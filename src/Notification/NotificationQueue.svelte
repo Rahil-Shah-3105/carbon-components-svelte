@@ -50,22 +50,32 @@
   let idCounter = 0;
 
   function generateId() {
+	console.debug('>>> Entering generateId()');
+	console.debug('<<< Exiting generateId()');
     return `notification-${idCounter++}`;
   }
 
   function isTopPosition(value) {
+	console.debug(`>>> Entering isTopPosition(value=${value})`);
+	console.debug(`<<< Exiting isTopPosition(value=${value})`);
     return value.startsWith("top");
   }
 
   function isLeftPosition(value) {
+	console.debug(`>>> Entering isLeftPosition(value=${value})`);
+	console.debug(`<<< Exiting isLeftPosition(value=${value})`);
     return value.endsWith("left");
   }
 
   function isRightPosition(value) {
+	console.debug(`>>> Entering isRightPosition(value=${value})`);
+	console.debug(`<<< Exiting isRightPosition(value=${value})`);
     return value.endsWith("right");
   }
 
   function isCenterPosition(value) {
+	console.debug(`>>> Entering isCenterPosition(value=${value})`);
+	console.debug(`<<< Exiting isCenterPosition(value=${value})`);
     return value.endsWith("center");
   }
 
@@ -77,8 +87,10 @@
    * @type {(notification: NotificationData) => string}
    */
   export function add(notification) {
+	console.debug(`>>> Entering add(notification=${notification})`);
     const id = notification.id ?? generateId();
 
+	console.debug(`add(notification=${notification}): id → ${id}`);
     if (notifications.some((n) => n.id === id)) {
       return id;
     }
@@ -88,6 +100,7 @@
 
     if (isTopPosition(position)) {
       notifications = [newNotification, ...notifications];
+	logger.debug(`add(notification=${notification}): notifications → ${notifications}`);
       if (notifications.length > maxNotifications) {
         notifications.splice(maxNotifications);
       }
@@ -99,6 +112,7 @@
     }
     notifications = notifications;
 
+	console.debug(`<<< Exiting add(notification=${notification})`);
     return id;
   }
 
@@ -109,11 +123,14 @@
    * @type {(id: string, patch: Partial<NotificationData>) => boolean}
    */
   export function update(id, patch) {
+	console.debug(`>>> Entering update(id=${id},patch=${patch})`);
     const index = notifications.findIndex((n) => n.id === id);
     if (index === -1) return false;
 
     notifications[index] = { ...notifications[index], ...patch, id };
     notifications = notifications;
+	logger.debug(`update(id=${id},patch=${patch}): notifications → ${notifications}`);
+	console.debug(`<<< Exiting update(id=${id},patch=${patch})`);
     return true;
   }
 
@@ -123,11 +140,14 @@
    * @type {(id: string) => boolean}
    */
   export function remove(id) {
+	console.debug(`>>> Entering remove(id=${id})`);
     const index = notifications.findIndex((n) => n.id === id);
     if (index === -1) return false;
 
     notifications.splice(index, 1);
     notifications = notifications;
+	logger.debug(`remove(id=${id}): notifications → ${notifications}`);
+	console.debug(`<<< Exiting remove(id=${id})`);
     return true;
   }
 
@@ -135,7 +155,9 @@
    * Clear all notifications.
    */
   export function clear() {
+	console.debug('>>> Entering clear()');
     notifications = [];
+	logger.debug(`clear(): notifications → ${notifications}`);
   }
 </script>
 

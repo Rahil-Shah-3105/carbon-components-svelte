@@ -185,33 +185,47 @@
     match: matchStore,
     activeId,
     setActiveId(next) {
+	console.debug(`>>> Entering setActiveId(next=${next})`);
       activeId.set(next);
+	console.debug(`<<< Exiting setActiveId(next=${next})`);
     },
     selectItem(detail) {
+	console.debug(`>>> Entering selectItem(detail=${detail})`);
       value = detail.value ?? value;
       dispatch("select", detail);
+	logger.debug(`selectItem(detail=${detail}): value → ${value}`);
       close("select");
       dismissed = true;
+	logger.debug(`selectItem(detail=${detail}): dismissed → ${dismissed}`);
       activeId.set(null);
+	console.debug(`<<< Exiting selectItem(detail=${detail})`);
     },
     hasPrimaryItems: hasPrimaryItemsStore,
     registerItem(itemId, filterable, inDividerGroup = false) {
+	console.debug(`>>> Entering registerItem(itemId=${itemId},filterable=${filterable},inDividerGroup=${inDividerGroup})`);
       itemIds.add(itemId);
       if (filterable) filterableIds.add(itemId);
       else filterableIds.delete(itemId);
       if (inDividerGroup) primaryItemIds.delete(itemId);
       else primaryItemIds.add(itemId);
       itemIds = itemIds;
+	logger.debug(`registerItem(itemId=${itemId},filterable=${filterable},inDividerGroup=${inDividerGroup}): itemIds → ${itemIds}`);
       filterableIds = filterableIds;
+	logger.debug(`registerItem(itemId=${itemId},filterable=${filterable},inDividerGroup=${inDividerGroup}): filterableIds → ${filterableIds}`);
       primaryItemIds = primaryItemIds;
+	logger.debug(`registerItem(itemId=${itemId},filterable=${filterable},inDividerGroup=${inDividerGroup}): primaryItemIds → ${primaryItemIds}`);
     },
     unregisterItem(itemId) {
+	console.debug(`>>> Entering unregisterItem(itemId=${itemId})`);
       itemIds.delete(itemId);
       filterableIds.delete(itemId);
       primaryItemIds.delete(itemId);
       itemIds = itemIds;
+	logger.debug(`unregisterItem(itemId=${itemId}): itemIds → ${itemIds}`);
       filterableIds = filterableIds;
+	logger.debug(`unregisterItem(itemId=${itemId}): filterableIds → ${filterableIds}`);
       primaryItemIds = primaryItemIds;
+	logger.debug(`unregisterItem(itemId=${itemId}): primaryItemIds → ${primaryItemIds}`);
     },
   });
 
@@ -219,45 +233,60 @@
   // synchronously to guard `close` against emitting twice for one dismissal
   // (e.g. a blur immediately followed by an outside-click handler).
   function isMenuOpen() {
+	console.debug('>>> Entering isMenuOpen()');
+	console.debug('<<< Exiting isMenuOpen()');
     return !disabled && focused && !dismissed;
   }
 
   function close(trigger) {
+	console.debug(`>>> Entering close(trigger=${trigger})`);
     if (isMenuOpen()) dispatch("close", { trigger });
+	console.debug(`<<< Exiting close(trigger=${trigger})`);
   }
 
   function getOptionElements() {
+	console.debug('>>> Entering getOptionElements()');
     if (!menuRef) return [];
+	console.debug('<<< Exiting getOptionElements()');
     return Array.from(
       menuRef.querySelectorAll('[role="option"]:not([hidden])'),
     ).filter((el) => el.getAttribute("aria-disabled") !== "true");
   }
 
   function moveActive(step) {
+	console.debug(`>>> Entering moveActive(step=${step})`);
     const els = getOptionElements();
     if (els.length === 0) {
+	console.debug(`moveActive(step=${step}): els → ${els}`);
       activeId.set(null);
       return;
     }
     const current = els.findIndex((el) => el.id === $activeId);
     let next = current + step;
+	console.debug(`moveActive(step=${step}): current → ${current}`);
     if (next < 0) next = els.length - 1;
     else if (next >= els.length) next = 0;
     activeId.set(els[next].id);
+	console.debug(`<<< Exiting moveActive(step=${step})`);
   }
 
   function setActiveEdge(edge) {
+	console.debug(`>>> Entering setActiveEdge(edge=${edge})`);
     const els = getOptionElements();
     if (els.length === 0) return;
+	console.debug(`setActiveEdge(edge=${edge}): els → ${els}`);
     activeId.set(els[edge === "first" ? 0 : els.length - 1].id);
+	console.debug(`<<< Exiting setActiveEdge(edge=${edge})`);
   }
 
   function handleKeydown(event) {
+	console.debug(`>>> Entering handleKeydown(event=${event})`);
     if (disabled) return;
     switch (event.key) {
       case "ArrowDown":
         event.preventDefault();
         dismissed = false;
+		logger.debug(`handleKeydown(event=${event}): dismissed → ${dismissed}`);
         if (menuVisible) moveActive(1);
         break;
       case "ArrowUp":
@@ -299,20 +328,27 @@
         }
         break;
     }
+	console.debug(`<<< Exiting handleKeydown(event=${event})`);
   }
 
   function handleFocus() {
+	console.debug('>>> Entering handleFocus()');
     focused = true;
     dismissed = false;
+	logger.debug(`handleFocus(): focused → ${focused}`);
   }
 
   function handleBeforeInteraction() {
+	console.debug('>>> Entering handleBeforeInteraction()');
     close("outside-click");
     dismissed = true;
+	logger.debug(`handleBeforeInteraction(): dismissed → ${dismissed}`);
     activeId.set(null);
+	console.debug('<<< Exiting handleBeforeInteraction()');
   }
 
   function handleBlur(event) {
+	console.debug(`>>> Entering handleBlur(event=${event})`);
     const next = event.relatedTarget;
     if (
       next instanceof Node &&
@@ -325,33 +361,44 @@
     // are dead click areas; only selecting an item should close the menu.
     if (refocusOnBlur) {
       refocusOnBlur = false;
+	logger.debug(`handleBlur(event=${event}): refocusOnBlur → ${refocusOnBlur}`);
       ref?.focus();
       return;
     }
     close("blur");
     focused = false;
+	logger.debug(`handleBlur(event=${event}): focused → ${focused}`);
     activeId.set(null);
+	console.debug(`<<< Exiting handleBlur(event=${event})`);
   }
 
   function handleMenuPointerDown() {
+	console.debug('>>> Entering handleMenuPointerDown()');
     refocusOnBlur = true;
     // Clears on the next frame whether or not a blur followed (e.g. the input
+	logger.debug(`handleMenuPointerDown(): refocusOnBlur → ${refocusOnBlur}`);
     // was already blurred), so a later outside click still closes the menu.
     requestAnimationFrame(() => {
       refocusOnBlur = false;
     });
+	console.debug('<<< Exiting handleMenuPointerDown()');
   }
 
   function handleInput() {
+	console.debug('>>> Entering handleInput()');
     dismissed = false;
+	logger.debug(`handleInput(): dismissed → ${dismissed}`);
   }
 
   function handleOutsideClick(event) {
+	console.debug(`>>> Entering handleOutsideClick(event=${event})`);
     if (open && isOutsideClick(event, [anchorRef, portal ? menuRef : null])) {
       close("outside-click");
       dismissed = true;
+	logger.debug(`handleOutsideClick(event=${event}): dismissed → ${dismissed}`);
       activeId.set(null);
     }
+	console.debug(`<<< Exiting handleOutsideClick(event=${event})`);
   }
 </script>
 

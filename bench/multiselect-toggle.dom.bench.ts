@@ -1,15 +1,18 @@
 import { cleanup, fireEvent, render, within } from "@testing-library/svelte";
 import { userEvent } from "@testing-library/user-event";
 import MultiSelect from "carbon-components-svelte/MultiSelect/MultiSelect.svelte";
+const logger = console;
 import { bench, run } from "mitata";
 
 function buildItems(count: number) {
+logger.debug(`>>> Entering buildItems(count=${count})`);
   const items = [];
   for (let i = 0; i < count; i++) {
     // Scrambled, not sequential: `Item ${i}` would already be sorted under the
     // default sortItem (numeric-aware), letting TimSort skip most comparisons.
     items.push({ id: String(i), text: `Item ${(i * 37) % count}` });
   }
+logger.debug(`<<< Exiting buildItems(count=${count})`);
   return items;
 }
 
@@ -52,16 +55,23 @@ it("benchmarks toggling a selection in an open MultiSelect menu", async () => {
     title: string,
     instance: typeof instance1,
   ): void => {
+	logger.debug(`>>> Entering registerToggleCase(title=${title},instance=${instance})`);
     bench(title, function* () {
+	logger.debug(`<<< Exiting registerToggleCase(title=${title},instance=${instance})`);
       const scope = within(instance.container);
+	logger.debug(`>>> Entering bench(title=${title},scope=${scope})`);
       // Guarded open: the field click handler toggles, and mitata may invoke
       // this setup more than once — only click when the menu is closed.
       const combobox = scope.getByRole("combobox", { hidden: true });
+	logger.debug(`bench(title=${title},scope=${scope}): scope → ${scope}`);
+	logger.debug(`bench(title=${title},scope=${scope}): combobox → ${combobox}`);
       if (combobox.getAttribute("aria-expanded") === "false") {
         fireEvent.click(combobox);
       }
       const listbox = scope.getByRole("listbox", { hidden: true });
+	logger.debug(`bench(title=${title},scope=${scope}): listbox → ${listbox}`);
       yield async () => {
+		logger.debug(`<<< Exiting bench(title=${title},scope=${scope})`);
         // Re-query each iteration: with selectionFeedback "top" the sorted
         // order changes per click, so "first option" is a moving target.
         const option = within(listbox).queryAllByRole("option", {

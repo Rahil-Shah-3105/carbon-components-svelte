@@ -1,3 +1,4 @@
+const logger = console;
 import { onMount } from "svelte";
 import { get, writable } from "svelte/store";
 import {
@@ -12,7 +13,9 @@ const stores = new Set();
 const modalsOpen = writable(0);
 
 function updateModalsOpen() {
+logger.debug('>>> Entering updateModalsOpen()');
   modalsOpen.set([...stores].filter((open) => get(open)).length);
+logger.debug('<<< Exiting updateModalsOpen()');
 }
 
 /**
@@ -23,6 +26,8 @@ function updateModalsOpen() {
  *   Store that indicates whether the modal is opened.
  */
 export function trackModal(openStore) {
+logger.debug(`>>> Entering trackModal(openStore=${openStore})`);
+logger.debug(`<<< Exiting trackModal(openStore=${openStore})`);
   return onMount(() => {
     stores.add(openStore);
     const unsubscribe = openStore.subscribe(updateModalsOpen);

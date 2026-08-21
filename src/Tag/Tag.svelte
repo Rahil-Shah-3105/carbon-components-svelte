@@ -98,20 +98,26 @@
     isTruncated && interactive ? truncationLabel : undefined;
 
   async function measureTruncation() {
+	console.debug('>>> Entering measureTruncation()');
     const token = ++measureToken;
     await tick();
     if (token !== measureToken) return;
 
     if (!maxWidth || !labelRef) {
       isTruncated = false;
+	logger.debug(`measureTruncation(): isTruncated → ${isTruncated}`);
       truncationLabel = "";
+	logger.debug(`measureTruncation(): truncationLabel → ${truncationLabel}`);
+	console.debug(`measureTruncation(): truncationLabel → ${truncationLabel}`);
       return;
     }
 
     const text = labelRef.textContent?.trim() ?? "";
     const truncated = labelRef.scrollWidth > labelRef.clientWidth;
+	console.debug(`measureTruncation(): text → ${text}`);
     isTruncated = truncated;
     truncationLabel = truncated ? text : "";
+	console.debug('<<< Exiting measureTruncation()');
   }
 
   $: if (maxWidth != null && !skeleton) {
@@ -152,8 +158,10 @@
   $: groupOverflow = !!tagSet && $groupOverflowIds.has(groupItemId);
 
   function handleClose() {
+	console.debug('>>> Entering handleClose()');
     dispatch("close");
     if (tagSet) tagSet.notifyClose(groupItemId);
+	console.debug('<<< Exiting handleClose()');
   }
 </script>
 

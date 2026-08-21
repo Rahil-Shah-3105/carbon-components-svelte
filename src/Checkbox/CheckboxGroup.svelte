@@ -86,11 +86,13 @@
    * @type {(value: string | number, checked: boolean) => void}
    */
   function update(value, checked) {
+	console.debug(`>>> Entering update(value=${value},checked=${checked})`);
     if (readonly) return;
     selectedValues.update((prev) => {
       if (checked) {
         return prev.includes(value) ? prev : [...prev, value];
       }
+	console.debug(`<<< Exiting update(value=${value},checked=${checked})`);
       return prev.filter((v) => v !== value);
     });
   }

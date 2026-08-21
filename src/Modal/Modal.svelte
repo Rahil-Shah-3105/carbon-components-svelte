@@ -155,6 +155,7 @@
   let mounted = false;
 
   function focus(element) {
+	console.debug(`>>> Entering focus(element=${element})`);
     const container = element || innerModal;
     const node = initialFocus({
       container,
@@ -166,16 +167,22 @@
       ],
     });
     node?.focus();
+	console.debug(`<<< Exiting focus(element=${element})`);
   }
 
   function close(trigger) {
+	console.debug(`>>> Entering close(trigger=${trigger})`);
     closeDispatched = true;
     const shouldContinue = dispatch("close", { trigger }, { cancelable: true });
+	logger.debug(`close(trigger=${trigger}): closeDispatched → ${closeDispatched}`);
+	console.debug(`close(trigger=${trigger}): shouldContinue → ${shouldContinue}`);
+	logger.debug(`close(trigger=${trigger}): open → ${open}`);
     if (shouldContinue) {
       open = false;
     } else {
       closeDispatched = false;
     }
+	console.debug(`<<< Exiting close(trigger=${trigger})`);
   }
 
   const outsideDismiss = createOutsideDismiss(() => {

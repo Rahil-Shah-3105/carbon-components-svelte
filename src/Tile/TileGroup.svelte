@@ -67,17 +67,21 @@
    * @type {(data: { checked: boolean; value: T }) => void}
    */
   function add({ checked, value }) {
+	console.debug(`>>> Entering add(checked=${checked},value=${value})`);
     if (checked) {
       selectedValue.set(value);
     }
+	console.debug(`<<< Exiting add(checked=${checked},value=${value})`);
   }
 
   /**
    * @type {(value: T) => void}
    */
   function update(value) {
+	console.debug(`>>> Entering update(value=${value})`);
     selectedValue.set(value);
     dispatch("select", value);
+	console.debug(`<<< Exiting update(value=${value})`);
   }
 
   setContext("carbon:TileGroup", {

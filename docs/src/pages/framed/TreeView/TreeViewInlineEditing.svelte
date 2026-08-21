@@ -36,29 +36,41 @@
   ];
 
   function updateNodeText(id, text) {
+	console.debug(`>>> Entering updateNodeText(id=${id},text=${text})`);
     const findAndUpdate = (items) => {
+	console.debug(`>>> Entering findAndUpdate(items=${items})`);
       for (const item of items) {
         if (item.id === id) {
           item.text = text;
+		logger.debug(`updateNodeText(id=${id},text=${text}): item.text → ${item.text}`);
+		logger.debug(`findAndUpdate(items=${items}): item.text → ${item.text}`);
           return true;
         }
         if (item.nodes && findAndUpdate(item.nodes)) {
           return true;
         }
       }
+	console.debug(`<<< Exiting findAndUpdate(items=${items})`);
       return false;
     };
     findAndUpdate(nodes);
+	console.debug(`updateNodeText(id=${id},text=${text}): findAndUpdate → ${findAndUpdate}`);
     nodes = nodes;
+	logger.debug(`updateNodeText(id=${id},text=${text}): nodes → ${nodes}`);
   }
 
   function syncContenteditable(element, text) {
+	console.debug(`>>> Entering syncContenteditable(element=${element},text=${text})`);
     element.textContent = text;
+	logger.debug(`syncContenteditable(element=${element},text=${text}): element.textContent → ${element.textContent}`);
+	console.debug(`<<< Exiting syncContenteditable(element=${element},text=${text})`);
     return {
       update(text) {
+		console.debug(`>>> Entering update(text=${text})`);
         if (document.activeElement !== element) {
           element.textContent = text;
         }
+		logger.debug(`update(text=${text}): element.textContent → ${element.textContent}`);
       },
     };
   }

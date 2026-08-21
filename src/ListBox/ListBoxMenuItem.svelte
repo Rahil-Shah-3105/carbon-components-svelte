@@ -55,8 +55,11 @@
    * @param {boolean} isHighlighted
    */
   function bindCursor(node, optionId, isActive, isHighlighted) {
+	console.debug(`>>> Entering bindCursor(node=${node},optionId=${optionId},isActive=${isActive},isHighlighted=${isHighlighted})`);
     unregisterHighlight();
     unregisterHighlight = () => {};
+	logger.debug(`bindCursor(node=${node},optionId=${optionId},isActive=${isActive},isHighlighted=${isHighlighted}): unregisterHighlight → ${unregisterHighlight}`);
+	console.debug(`bindCursor(node=${node},optionId=${optionId},isActive=${isActive},isHighlighted=${isHighlighted}): unregisterHighlight → ${unregisterHighlight}`);
     if (!node) return;
     if (highlightCursor) {
       if (optionId) {
@@ -65,6 +68,7 @@
       return;
     }
     node.classList.toggle(HIGHLIGHT_CLASS, Boolean(isActive || isHighlighted));
+	console.debug(`<<< Exiting bindCursor(node=${node},optionId=${optionId},isActive=${isActive},isHighlighted=${isHighlighted})`);
   }
 
   onMount(() => () => unregisterHighlight());

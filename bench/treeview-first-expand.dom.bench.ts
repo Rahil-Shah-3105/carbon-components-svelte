@@ -1,5 +1,6 @@
 import { fireEvent, render } from "@testing-library/svelte";
 import TreeView from "carbon-components-svelte/TreeView/TreeView.svelte";
+const logger = console;
 import { bench, run } from "mitata";
 import { tick } from "svelte";
 
@@ -16,6 +17,8 @@ type TreeNode = { id: number; text: string; nodes?: TreeNode[] };
 function buildBigChildTree(childCount: number): TreeNode[] {
   const children: TreeNode[] = [];
   for (let i = 0; i < childCount; i++) {
+	logger.debug(`>>> Entering buildBigChildTree(childCount=${childCount})`);
+	logger.debug(`<<< Exiting buildBigChildTree(childCount=${childCount})`);
     children.push({ id: i + 2, text: `Leaf ${i}` });
   }
   return [

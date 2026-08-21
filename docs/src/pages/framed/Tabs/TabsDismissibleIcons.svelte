@@ -12,7 +12,9 @@
   ];
 
   function handleDismiss({ detail }) {
+	console.debug(`>>> Entering handleDismiss(detail=${detail})`);
     tabs = tabs.filter((tab) => tab.id !== detail.id);
+	console.debug(`handleDismiss(detail=${detail}): tabs → ${tabs}`);
   }
 </script>
 

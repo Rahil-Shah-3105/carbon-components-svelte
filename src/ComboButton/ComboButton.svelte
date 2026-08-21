@@ -110,6 +110,8 @@
    * @type {(name: string) => (event: Event) => void}
    */
   function dispatchTriggerEvent(name) {
+	console.debug(`>>> Entering dispatchTriggerEvent(name=${name})`);
+	console.debug(`<<< Exiting dispatchTriggerEvent(name=${name})`);
     return (event) => dispatch(`${name}:trigger`, event);
   }
 
@@ -117,8 +119,10 @@
    * @type {(event: MouseEvent) => void}
    */
   function toggleOpen(event) {
+	console.debug(`>>> Entering toggleOpen(event=${event})`);
     const wasOpen = open;
     open = !open;
+	logger.debug(`toggleOpen(event=${event}): open → ${open}`);
     dispatch("click:trigger", event);
     // A keyboard-activated click (Enter/Space) reports detail 0; a real mouse
     // click reports 1+. Blur only after a mouse-driven close, so the trigger
@@ -127,6 +131,7 @@
     if (wasOpen && event.detail !== 0) {
       triggerRef?.blur();
     }
+	console.debug(`<<< Exiting toggleOpen(event=${event})`);
   }
 </script>
 

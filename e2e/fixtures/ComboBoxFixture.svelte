@@ -8,7 +8,9 @@
   ];
 
   function shouldFilterItem(item, value) {
+	console.debug(`>>> Entering shouldFilterItem(item=${item},value=${value})`);
     if (!value) return true;
+	console.debug(`<<< Exiting shouldFilterItem(item=${item},value=${value})`);
     return item.text.toLowerCase().includes(value.toLowerCase());
   }
 </script>

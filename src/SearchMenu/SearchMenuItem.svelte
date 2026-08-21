@@ -91,8 +91,10 @@
   $: updateRegistration(shouldRender, isFilterable, inDividerGroup);
 
   function updateRegistration(render, filterable, footerGroup) {
+	console.debug(`>>> Entering updateRegistration(render=${render},filterable=${filterable},footerGroup=${footerGroup})`);
     if (render) {
       registered = true;
+	logger.debug(`updateRegistration(render=${render},filterable=${filterable},footerGroup=${footerGroup}): registered → ${registered}`);
       menu.registerItem(id, filterable, footerGroup);
       group?.registerItem(id);
     } else if (registered) {
@@ -100,6 +102,9 @@
       menu.unregisterItem(id);
       group?.unregisterItem(id);
     }
+	console.debug(`<<< Exiting updateRegistration(render=${render},filterable=${filterable},footerGroup=${footerGroup})`);
+	console.debug(`>>> Entering segmentsToHtml(parts=${parts})`);
+	console.debug(`<<< Exiting segmentsToHtml(parts=${parts})`);
   }
 
   onMount(() => () => updateRegistration(false, false, false));
@@ -108,6 +113,8 @@
    * Tolerate custom matchers that omit `indices` so highlighting still works.
    */
   function normalizeMatch(result) {
+	console.debug(`>>> Entering normalizeMatch(result=${result})`);
+	console.debug(`<<< Exiting normalizeMatch(result=${result})`);
     return {
       matched: Boolean(result?.matched),
       indices: result?.indices ?? [],
@@ -115,6 +122,8 @@
   }
 
   function escapeHtml(raw) {
+	console.debug(`>>> Entering escapeHtml(raw=${raw})`);
+	console.debug(`<<< Exiting escapeHtml(raw=${raw})`);
     return raw
       .replace(/&/g, "&amp;")
       .replace(/</g, "&lt;")
@@ -135,6 +144,7 @@
   }
 
   function handleClick(event) {
+	console.debug(`>>> Entering handleClick(event=${event})`);
     if (disabled) {
       event.preventDefault();
       event.stopPropagation();
@@ -147,6 +157,7 @@
     };
     dispatch("select", detail);
     menu.selectItem(detail);
+	console.debug(`<<< Exiting handleClick(event=${event})`);
   }
 
   $: if (shouldRender && highlighted && ref && !ref.matches(":hover")) {

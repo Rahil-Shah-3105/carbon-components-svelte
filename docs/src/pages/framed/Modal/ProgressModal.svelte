@@ -18,6 +18,7 @@
   let region = "";
 
   async function goNext() {
+	console.debug('>>> Entering goNext()');
     if (step < 2) {
       step++;
       await tick();
@@ -27,11 +28,15 @@
       nextInput?.focus();
     } else {
       open = false;
+	logger.debug(`goNext(): open → ${open}`);
     }
+	console.debug('<<< Exiting goNext()');
   }
 
   function handleSubmit() {
+	console.debug('>>> Entering handleSubmit()');
     goNext();
+	console.debug('<<< Exiting handleSubmit()');
   }
 </script>
 

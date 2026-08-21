@@ -1,5 +1,7 @@
 <script context="module">
   function isUnderCollapsedSubtree(el) {
+	console.debug(`>>> Entering isUnderCollapsedSubtree(el=${el})`);
+	console.debug(`<<< Exiting isUnderCollapsedSubtree(el=${el})`);
     return Boolean(el.closest("ul.bx--tree-node--hidden"));
   }
 
@@ -10,6 +12,8 @@
    * @param {KeyboardEvent} event
    */
   function isTypeAheadKey(event) {
+	console.debug(`>>> Entering isTypeAheadKey(event=${event})`);
+	console.debug(`<<< Exiting isTypeAheadKey(event=${event})`);
     return (
       event.key.length === 1 &&
       event.key !== " " &&
@@ -24,6 +28,8 @@
    * @returns {TreeWalker} A TreeWalker configured to navigate tree nodes
    */
   function createTreeWalkerInstance(root) {
+	console.debug(`>>> Entering createTreeWalkerInstance(root=${root})`);
+	console.debug(`<<< Exiting createTreeWalkerInstance(root=${root})`);
     return document.createTreeWalker(root, NodeFilter.SHOW_ELEMENT, {
       acceptNode: (node) => {
         if (!(node instanceof Element)) return NodeFilter.FILTER_SKIP;
@@ -60,6 +66,7 @@
    * @returns {Array<TNode>}
    */
   function traverse(nodes) {
+	console.debug(`>>> Entering traverse(nodes=${nodes})`);
     const out = [];
     /** @type {TNode[]} */
     const stack = [];
@@ -69,12 +76,14 @@
     while (stack.length > 0) {
       const node = stack.pop();
       out.push(node);
+	console.debug(`traverse(nodes=${nodes}): node → ${node}`);
       if (Array.isArray(node.nodes) && node.nodes.length > 0) {
         for (let i = node.nodes.length - 1; i >= 0; i--) {
           stack.push(node.nodes[i]);
         }
       }
     }
+	console.debug(`<<< Exiting traverse(nodes=${nodes})`);
     return out;
   }
 
@@ -87,6 +96,7 @@
    * @returns {Array<TNode>}
    */
   function traverseVisible(nodes, expandedIdsSet) {
+	console.debug(`>>> Entering traverseVisible(nodes=${nodes},expandedIdsSet=${expandedIdsSet})`);
     const out = [];
     /** @type {Array<{ list: ReadonlyArray<TNode>; index: number }>} */
     const stack = [{ list: nodes, index: 0 }];
@@ -106,6 +116,7 @@
         stack.push({ list: node.nodes, index: 0 });
       }
     }
+	console.debug(`<<< Exiting traverseVisible(nodes=${nodes},expandedIdsSet=${expandedIdsSet})`);
     return out;
   }
 
@@ -121,13 +132,17 @@
    * }}
    */
   function buildTreeMaps(nodes) {
+	console.debug(`>>> Entering buildTreeMaps(nodes=${nodes})`);
     /** @type {Map<TNode["id"], TNode>} */
     const nodeMap = new Map();
     /** @type {Map<TNode["id"], TNode["id"] | typeof ROOT_PARENT_ID>} */
+	console.debug(`buildTreeMaps(nodes=${nodes}): nodeMap → ${nodeMap}`);
     const parentIdById = new Map();
     /** @type {Map<TNode["id"] | typeof ROOT_PARENT_ID, Array<TNode["id"]>>} */
+	console.debug(`buildTreeMaps(nodes=${nodes}): parentIdById → ${parentIdById}`);
     const childIdsByParentId = new Map();
 
+	console.debug(`buildTreeMaps(nodes=${nodes}): childIdsByParentId → ${childIdsByParentId}`);
     const rootIds = [];
     for (const node of nodes) {
       rootIds.push(node.id);
@@ -155,6 +170,7 @@
       }
     }
 
+	console.debug(`<<< Exiting buildTreeMaps(nodes=${nodes})`);
     return { nodeMap, parentIdById, childIdsByParentId };
   }
 
@@ -167,15 +183,18 @@
    * @returns {Id[]}
    */
   function getAncestorIds(id, parentIdById) {
+	console.debug(`>>> Entering getAncestorIds(id=${id},parentIdById=${parentIdById})`);
     if (!parentIdById) return [];
     /** @type {Id[]} */
     const ancestors = [];
     let parentId = parentIdById.get(id);
     while (parentId != null && parentId !== ROOT_PARENT_ID) {
+	console.debug(`getAncestorIds(id=${id},parentIdById=${parentIdById}): parentId → ${parentId}`);
       ancestors.push(/** @type {Id} */ (parentId));
       parentId = parentIdById.get(/** @type {Id} */ (parentId));
     }
     ancestors.reverse();
+	console.debug(`<<< Exiting getAncestorIds(id=${id},parentIdById=${parentIdById})`);
     return ancestors;
   }
 
@@ -186,6 +205,7 @@
    * @returns {Array<string | number>}
    */
   function multiselectExpansionIds(node, mode) {
+	console.debug(`>>> Entering multiselectExpansionIds(node=${node},mode=${mode})`);
     if (node.disabled) return [];
     if (mode === "node") {
       return [node.id];
@@ -201,12 +221,15 @@
     const out = [];
     /** @param {TNode} n */
     function walkDeep(n) {
+	console.debug(`>>> Entering walkDeep(n=${n})`);
       if (n.disabled) return;
       out.push(n.id);
       if (!Array.isArray(n.nodes)) return;
       for (const c of n.nodes) walkDeep(c);
+	console.debug(`<<< Exiting walkDeep(n=${n})`);
     }
     walkDeep(node);
+	console.debug(`<<< Exiting multiselectExpansionIds(node=${node},mode=${mode})`);
     return out;
   }
 </script>

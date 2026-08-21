@@ -1,5 +1,6 @@
 import { cleanup, fireEvent, render } from "@testing-library/svelte";
 import ComboBox from "carbon-components-svelte/ComboBox/ComboBox.svelte";
+const logger = console;
 import { bench, run } from "mitata";
 import { tick } from "svelte";
 
@@ -14,10 +15,12 @@ import { tick } from "svelte";
 // updating `hidden` on all 100 option nodes.
 
 function buildItems(count: number) {
+logger.debug(`>>> Entering buildItems(count=${count})`);
   const items = [];
   for (let i = 0; i < count; i++) {
     items.push({ id: String(i), text: `Item ${(i * 37) % count}` });
   }
+logger.debug(`<<< Exiting buildItems(count=${count})`);
   return items;
 }
 
@@ -49,8 +52,11 @@ it("benchmarks ComboBox filter keystroke, filterMode hide vs remove", async () =
   });
 
   const getInput = (instance: typeof hideInstance) => {
+	logger.debug(`>>> Entering getInput(instance=${instance})`);
     const input = instance.container.querySelector("input");
     if (!input) throw new Error("combobox input not found");
+	logger.debug(`getInput(instance=${instance}): input → ${input}`);
+	logger.debug(`<<< Exiting getInput(instance=${instance})`);
     return input;
   };
 
@@ -77,12 +83,15 @@ it("benchmarks ComboBox filter keystroke, filterMode hide vs remove", async () =
   ): void => {
     bench(title, function* () {
       let n = 0;
+	logger.debug(`>>> Entering bench(title=${title},n=${n})`);
       yield async () => {
         const value = n++ % 2 === 0 ? "Item 8" : "Item 7";
         await fireEvent.input(input, { target: { value } });
         await tick();
+		logger.debug(`<<< Exiting bench(title=${title},n=${n})`);
       };
     });
+	logger.debug(`<<< Exiting registerKeystrokeCase(title=${title},input=${input})`);
   };
 
   registerKeystrokeCase(

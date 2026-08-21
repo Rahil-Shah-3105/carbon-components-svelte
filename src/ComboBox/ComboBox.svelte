@@ -165,6 +165,8 @@
    * @type {(item: Item, value: string) => boolean}
    */
   function defaultShouldFilter() {
+	console.debug('>>> Entering defaultShouldFilter()');
+	console.debug('<<< Exiting defaultShouldFilter()');
     return true;
   }
 
@@ -297,13 +299,17 @@
    * @returns {boolean}
    */
   function autocompleteCustomFilter(item, inputValue) {
+	console.debug(`>>> Entering autocompleteCustomFilter(item=${item},inputValue=${inputValue})`);
     if (inputValue.length === 0) {
       return true;
     }
 
     const lowercaseItem = item.text.toLowerCase();
     const lowercaseInput = inputValue.toLowerCase();
+	console.debug(`autocompleteCustomFilter(item=${item},inputValue=${inputValue}): lowercaseItem → ${lowercaseItem}`);
+	console.debug(`autocompleteCustomFilter(item=${item},inputValue=${inputValue}): lowercaseInput → ${lowercaseInput}`);
 
+	console.debug(`<<< Exiting autocompleteCustomFilter(item=${item},inputValue=${inputValue})`);
     return lowercaseItem.startsWith(lowercaseInput);
   }
 
@@ -317,26 +323,33 @@
    * @param {Event} event
    */
   function handleMenuScroll(event) {
+	console.debug(`>>> Entering handleMenuScroll(event=${event})`);
     const target = /** @type {HTMLElement} */ (event.target);
     listScrollTop = target.scrollTop;
+	console.debug(`handleMenuScroll(event=${event}): target → ${target}`);
     const detail = scrollEndTracker.observe({
       scrollTop: target.scrollTop,
       scrollHeight: target.scrollHeight,
       clientHeight: target.clientHeight,
       itemCount: filteredItems.length,
     });
+	logger.debug(`handleMenuScroll(event=${event}): listScrollTop → ${listScrollTop}`);
     if (detail) {
       dispatch("scrollend", detail);
     }
+	console.debug(`<<< Exiting handleMenuScroll(event=${event})`);
   }
 
   function change(step) {
+	console.debug(`>>> Entering change(step=${step})`);
     // Disabled options stay in the keyboard navigation sequence (APG:
     // "Focusability of disabled controls") so assistive-tech users can
     // discover them; the Enter handler and the option click handlers refuse
     // the actual selection.
     const navigableItems = filteredItems?.length ? filteredItems : items;
     highlightedIndex = moveIndex(highlightedIndex, step, navigableItems.length);
+	logger.debug(`change(step=${step}): highlightedIndex → ${highlightedIndex}`);
+	console.debug(`change(step=${step}): highlightedIndex → ${highlightedIndex}`);
     highlightOrigin = "keyboard";
   }
 
@@ -344,9 +357,13 @@
    * @param {Item} item
    */
   function selectItem(item) {
+	console.debug(`>>> Entering selectItem(item=${item})`);
     selectedId = item.id;
     close("select");
+	logger.debug(`selectItem(item=${item}): selectedId → ${selectedId}`);
+	console.debug(`selectItem(item=${item}): value → ${value}`);
     valueBeforeOpen = "";
+	logger.debug(`selectItem(item=${item}): valueBeforeOpen → ${valueBeforeOpen}`);
     value = itemToString(item);
   }
 
@@ -354,11 +371,14 @@
    * @param {Item} item
    */
   function highlightItem(item) {
+	console.debug(`>>> Entering highlightItem(item=${item})`);
     if (item.disabled) return;
     const matchIndex = filteredIndexById.get(item.id);
     if (matchIndex === undefined) return;
+	console.debug(`highlightItem(item=${item}): matchIndex → ${matchIndex}`);
     highlightedIndex = matchIndex;
     highlightOrigin = "pointer";
+	console.debug(`highlightItem(item=${item}): highlightOrigin → ${highlightOrigin}`);
   }
 
   /**
@@ -374,18 +394,28 @@
    * ```
    */
   export async function clear(options = {}) {
+	console.debug(`>>> Entering clear(options=${options})`);
     if (readonly) return;
     prevSelectedId = null;
+	logger.debug(`clear(options=${options}): prevSelectedId → ${prevSelectedId}`);
+	logger.debug(`clear(options=${options}): selectedId → ${selectedId}`);
+	logger.debug(`clear(options=${options}): open → ${open}`);
+	logger.debug(`clear(options=${options}): value → ${value}`);
+	console.debug(`clear(options=${options}): value → ${value}`);
     highlightedIndex = -1;
+	logger.debug(`clear(options=${options}): highlightedIndex → ${highlightedIndex}`);
     highlightOrigin = null;
+	logger.debug(`clear(options=${options}): highlightOrigin → ${highlightOrigin}`);
     selectedId = undefined;
     selectedItem = undefined;
+	logger.debug(`clear(options=${options}): selectedItem → ${selectedItem}`);
     open = false;
     value = "";
     // Ensure binding updates are complete before focusing.
     await tick();
     if (options?.open === true) open = true;
     if (options?.focus !== false) ref?.focus();
+	console.debug(`<<< Exiting clear(options=${options})`);
   }
 
   afterUpdate(() => {
@@ -627,6 +657,7 @@
    * @returns {boolean}
    */
   function acceptTypeaheadSuggestion() {
+	console.debug('>>> Entering acceptTypeaheadSuggestion()');
     if (!typeahead) return false;
     let item =
       highlightedIndex > -1 ? filteredItems[highlightedIndex] : undefined;
@@ -640,8 +671,12 @@
     }
     if (!item || item.disabled) return false;
     valueBeforeOpen = "";
+	logger.debug(`acceptTypeaheadSuggestion(): valueBeforeOpen → ${valueBeforeOpen}`);
+	console.debug(`acceptTypeaheadSuggestion(): valueBeforeOpen → ${valueBeforeOpen}`);
+	logger.debug(`acceptTypeaheadSuggestion(): selectedId → ${selectedId}`);
     value = itemToString(item);
     selectedId = item.id;
+	console.debug(`acceptTypeaheadSuggestion(): value → ${value}`);
     return true;
   }
 
@@ -651,6 +686,7 @@
    * @returns {boolean} Whether an item was committed.
    */
   function commitHighlightedItem() {
+	console.debug('>>> Entering commitHighlightedItem()');
     const item = filteredItems[highlightedIndex];
     if (
       open &&
@@ -661,8 +697,13 @@
       item.id !== selectedId
     ) {
       value = itemToString(item);
+	logger.debug(`commitHighlightedItem(): value → ${value}`);
+	console.debug(`commitHighlightedItem(): value → ${value}`);
+	logger.debug(`commitHighlightedItem(): selectedId → ${selectedId}`);
       selectedItem = item;
       selectedId = item.id;
+	logger.debug(`commitHighlightedItem(): selectedItem → ${selectedItem}`);
+	console.debug('<<< Exiting commitHighlightedItem()');
       return true;
     }
     return false;
@@ -675,6 +716,7 @@
    * input as focused and skip the restore.
    */
   function normalizeValue() {
+	console.debug('>>> Entering normalizeValue()');
     // Read `selectedId` from `itemsById`, not the reactive `selectedItem`.
     // A handler earlier in this same event may have just set `selectedId`,
     // and the `$:` block that derives `selectedItem` has not re-run yet.
@@ -682,9 +724,12 @@
       selectedId === undefined ? undefined : itemsById.get(selectedId);
     if (currentSelectedItem) {
       value = itemToString(currentSelectedItem);
+	logger.debug(`normalizeValue(): value → ${value}`);
+	console.debug(`normalizeValue(): value → ${value}`);
     } else if (!allowCustomValue) {
       value = "";
     }
+	console.debug('<<< Exiting normalizeValue()');
   }
 
   /**
@@ -693,19 +738,24 @@
    * @param {"escape-key" | "outside-click" | "select"} trigger
    */
   function close(trigger) {
+	console.debug(`>>> Entering close(trigger=${trigger})`);
     if (open) {
       open = false;
+	logger.debug(`close(trigger=${trigger}): open → ${open}`);
       dispatch("close", { trigger });
     }
+	console.debug(`<<< Exiting close(trigger=${trigger})`);
   }
 
   function handleOutsideClick(event) {
+	console.debug(`>>> Entering handleOutsideClick(event=${event})`);
     if (open && isOutsideClick(event, [ref, effectivePortalMenu && listRef])) {
       // Commit the inline suggestion on click-away so it matches Tab. The
       // dismissal cause is still the outside click; `select` fires reactively.
       acceptTypeaheadSuggestion();
       close("outside-click");
     }
+	console.debug(`<<< Exiting handleOutsideClick(event=${event})`);
   }
 </script>
 

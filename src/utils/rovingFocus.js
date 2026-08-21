@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 import { clampIndex } from "./clampIndex.js";
@@ -32,17 +33,22 @@ import { moveIndex, nextEnabledIndex } from "./moveIndex.js";
  * @param {RovingFocusOptions} options
  */
 export function rovingFocus(node, options) {
+logger.debug(`>>> Entering rovingFocus(node=${node},options=${options})`);
   let opts = options;
 
   /** @param {HTMLElement} el */
   function defaultIsDisabled(el) {
+	logger.debug(`>>> Entering defaultIsDisabled(el=${el})`);
+	logger.debug(`<<< Exiting defaultIsDisabled(el=${el})`);
     return (
       el.hasAttribute("disabled") || el.getAttribute("aria-disabled") === "true"
     );
   }
 
   function getItems() {
+	logger.debug('>>> Entering getItems()');
     if (opts.getItems) return opts.getItems();
+	logger.debug('<<< Exiting getItems()');
     return /** @type {HTMLElement[]} */ (
       Array.from(node.querySelectorAll(opts.selector))
     );
@@ -53,9 +59,11 @@ export function rovingFocus(node, options) {
    * @param {number} direction
    */
   function moveBy(items, direction) {
+	logger.debug(`>>> Entering moveBy(items=${items},direction=${direction})`);
     const index = opts.getActiveIndex();
     if (opts.skipDisabled) {
       const isDisabled = opts.isDisabled ?? defaultIsDisabled;
+	logger.debug(`<<< Exiting moveBy(items=${items},direction=${direction})`);
       return nextEnabledIndex({ items, index, step: direction, isDisabled });
     }
     return opts.wrap === false
@@ -68,10 +76,12 @@ export function rovingFocus(node, options) {
    * @param {1 | -1} direction - 1 for the first item, -1 for the last.
    */
   function edge(items, direction) {
+	logger.debug(`>>> Entering edge(items=${items},direction=${direction})`);
     if (!opts.skipDisabled) {
       return direction === 1 ? 0 : items.length - 1;
     }
     const isDisabled = opts.isDisabled ?? defaultIsDisabled;
+	logger.debug(`<<< Exiting edge(items=${items},direction=${direction})`);
     return nextEnabledIndex({ items, index: -1, step: direction, isDisabled });
   }
 
@@ -120,10 +130,14 @@ export function rovingFocus(node, options) {
   return {
     /** @param {RovingFocusOptions} update */
     update(update) {
+	logger.debug(`>>> Entering update(update=${update})`);
       opts = update;
     },
     destroy() {
+	logger.debug('>>> Entering destroy()');
       node.removeEventListener("keydown", handleKeydown);
+	logger.debug('<<< Exiting destroy()');
     },
   };
+logger.debug(`<<< Exiting rovingFocus(node=${node},options=${options})`);
 }

@@ -191,12 +191,16 @@
   const formContext = getContext("carbon:Form");
 
   function updateValue(isIncrementing) {
+	console.debug(`>>> Entering updateValue(isIncrementing=${isIncrementing})`);
     // When the input is empty (null) or zero and stepStartValue is set,
     // jump directly to stepStartValue on the first step.
     if ((value === null || value === 0) && stepStartValue !== undefined) {
       value = stepStartValue;
+	logger.debug(`updateValue(isIncrementing=${isIncrementing}): value → ${value}`);
       if (useTextMode) {
         inputValue = formatter ? formatter.format(value) : value.toString();
+		logger.debug(`updateValue(isIncrementing=${isIncrementing}): inputValue → ${inputValue}`);
+		console.debug(`updateValue(isIncrementing=${isIncrementing}): inputValue → ${inputValue}`);
       } else if (ref) {
         ref.value = value.toString();
       }
@@ -213,6 +217,7 @@
           : clamp(currentValue - step, min, undefined),
         step,
       );
+	console.debug(`updateValue(isIncrementing=${isIncrementing}): currentValue → ${currentValue}`);
 
       value = newValue;
       inputValue = formatter ? formatter.format(newValue) : newValue.toString();
@@ -224,6 +229,7 @@
       if (!allowEmpty && value === null) {
         const defaultValue = getDefaultValue(stepStartValue, min);
         if (ref) {
+		console.debug(`updateValue(isIncrementing=${isIncrementing}): defaultValue → ${defaultValue}`);
           ref.value = defaultValue.toString();
         }
         value = defaultValue;
@@ -239,6 +245,7 @@
       dispatch("input", value);
       dispatch("change", value);
     }
+	console.debug(`<<< Exiting updateValue(isIncrementing=${isIncrementing})`);
   }
 
   $: incrementLabel = translateWithId("increment");
@@ -314,9 +321,12 @@
   }
 
   function onInput(event) {
+	console.debug(`>>> Entering onInput(event=${event})`);
     if (useTextMode) {
       userInputActive = true;
+	logger.debug(`onInput(event=${event}): userInputActive → ${userInputActive}`);
       inputValue = event.target.value;
+	logger.debug(`onInput(event=${event}): inputValue → ${inputValue}`);
       const parsed = locale
         ? parseLocaleValue(event.target.value, groupSeparator, decimalSeparator)
         : parse(event.target.value);
@@ -328,19 +338,25 @@
         event.target.value === "-"
       ) {
         value = parsed;
+		logger.debug(`onInput(event=${event}): value → ${value}`);
+		console.debug(`onInput(event=${event}): value → ${value}`);
       }
     } else {
       value = parse(event.target.value);
     }
 
+	console.debug(`<<< Exiting onInput(event=${event})`);
     dispatch("input", value);
   }
 
   function onChange(event) {
+	console.debug(`>>> Entering onChange(event=${event})`);
     userInputActive = false;
     let parsedValue = locale
       ? parseLocaleValue(event.target.value, groupSeparator, decimalSeparator)
       : parse(event.target.value, useTextMode);
+	console.debug(`onChange(event=${event}): parsedValue → ${parsedValue}`);
+	logger.debug(`onChange(event=${event}): userInputActive → ${userInputActive}`);
 
     // If allowEmpty is false and value would be null, use default value
     // This prevents the input from staying empty when allowEmpty is false
@@ -351,7 +367,9 @@
         inputValue = formatter
           ? formatter.format(parsedValue)
           : parsedValue.toString();
+		logger.debug(`onChange(event=${event}): inputValue → ${inputValue}`);
         value = parsedValue;
+		logger.debug(`onChange(event=${event}): value → ${value}`);
       } else if (ref) {
         ref.value = parsedValue.toString();
         value = parsedValue;
@@ -367,6 +385,7 @@
       // are corrected when the user leaves the field.
       inputValue = formatter ? formatter.format(value) : value.toString();
     } else {
+	console.debug(`onChange(event=${event}): inputValue → ${inputValue}`);
       value = parsedValue;
       // Format the display value on blur when locale is set
       if (formatter && value !== null) {
@@ -374,10 +393,12 @@
       }
     }
 
+	console.debug(`<<< Exiting onChange(event=${event})`);
     dispatch("change", value);
   }
 
   function onKeyDown(event) {
+	console.debug(`>>> Entering onKeyDown(event=${event})`);
     if (
       useTextMode &&
       !readonly &&
@@ -386,20 +407,27 @@
     ) {
       event.preventDefault();
       updateValue(event.key === "ArrowUp");
+	console.debug(`<<< Exiting onKeyDown(event=${event})`);
     }
   }
 
   function handleInputFocus() {
+	console.debug('>>> Entering handleInputFocus()');
     if (isFluid) inputFocused = true;
+	console.debug('<<< Exiting handleInputFocus()');
   }
 
   function handleBlur(event) {
+	console.debug(`>>> Entering handleBlur(event=${event})`);
     if (isFluid) inputFocused = false;
     dispatch("blur", { event, value });
+	console.debug(`<<< Exiting handleBlur(event=${event})`);
   }
 
   function handleStepperBlur(event, direction) {
+	console.debug(`>>> Entering handleStepperBlur(event=${event},direction=${direction})`);
     dispatch("blur:stepper", { event, value, direction });
+	console.debug(`<<< Exiting handleStepperBlur(event=${event},direction=${direction})`);
   }
 </script>
 

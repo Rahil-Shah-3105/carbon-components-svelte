@@ -105,10 +105,14 @@
   let isCopyError = false;
 
   function syncCopyFeedback() {
+	console.debug('>>> Entering syncCopyFeedback()');
     animation = copyFeedback.animation;
     feedbackOpen = copyFeedback.feedbackOpen;
+	logger.debug(`syncCopyFeedback(): animation → ${animation}`);
+	logger.debug(`syncCopyFeedback(): feedbackOpen → ${feedbackOpen}`);
     copyPending = copyFeedback.copyPending;
     isCopyError = copyFeedback.isError;
+	logger.debug(`syncCopyFeedback(): copyPending → ${copyPending}`);
   }
 
   $: feedbackText = isCopyError ? errorFeedback : feedback;
@@ -144,16 +148,21 @@
   $: tooltipText = feedbackOpen ? feedbackText : iconDescription;
 
   function claimTooltip() {
+	console.debug('>>> Entering claimTooltip()');
     activeButtonTooltip.set(tooltipId);
+	console.debug('<<< Exiting claimTooltip()');
   }
 
   function releaseTooltip() {
+	console.debug('>>> Entering releaseTooltip()');
     if (get(activeButtonTooltip) === tooltipId) {
       activeButtonTooltip.set(null);
     }
+	console.debug('<<< Exiting releaseTooltip()');
   }
 
   function handleTooltipMouseEnter() {
+	console.debug('>>> Entering handleTooltipMouseEnter()');
     clearTimeout(tooltipTimeout);
     // Skip the enter delay when another icon tooltip is already open so moving
     // between adjacent buttons feels instant.
@@ -162,44 +171,61 @@
       get(activeButtonTooltip) !== tooltipId;
     tooltipTimeout = setTimeout(
       () => {
+		logger.debug(`handleTooltipMouseEnter(): tooltipTimeout → ${tooltipTimeout}`);
         hovered = true;
+		logger.debug(`handleTooltipMouseEnter(): hovered → ${hovered}`);
         claimTooltip();
       },
       warmHandoff ? 0 : ENTER_DELAY_MS,
     );
+	console.debug('<<< Exiting handleTooltipMouseEnter()');
   }
 
   function handleTooltipMouseLeave() {
+	console.debug('>>> Entering handleTooltipMouseLeave()');
     clearTimeout(tooltipTimeout);
     tooltipTimeout = setTimeout(() => {
+	logger.debug(`handleTooltipMouseLeave(): tooltipTimeout → ${tooltipTimeout}`);
       hovered = false;
+	logger.debug(`handleTooltipMouseLeave(): hovered → ${hovered}`);
       if (!focused) releaseTooltip();
     }, LEAVE_DELAY_MS);
+	console.debug('<<< Exiting handleTooltipMouseLeave()');
   }
 
   function handleTooltipFocus() {
+	console.debug('>>> Entering handleTooltipFocus()');
     focused = true;
     claimTooltip();
+	logger.debug(`handleTooltipFocus(): focused → ${focused}`);
   }
 
   function handleTooltipBlur() {
+	console.debug('>>> Entering handleTooltipBlur()');
     focused = false;
     if (!hovered) releaseTooltip();
+	logger.debug(`handleTooltipBlur(): focused → ${focused}`);
   }
 
   function dismissTooltip() {
+	console.debug('>>> Entering dismissTooltip()');
     clearTimeout(tooltipTimeout);
     hovered = false;
+	logger.debug(`dismissTooltip(): hovered → ${hovered}`);
     focused = false;
+	logger.debug(`dismissTooltip(): focused → ${focused}`);
     releaseTooltip();
+	console.debug('<<< Exiting dismissTooltip()');
   }
 
   // Caret spacing + alignment nudges, mirroring Button's icon tooltip.
   $: portalGaps = iconTooltipPortalGaps(tooltipPosition, tooltipAlignment);
 
   function dismissFeedback() {
+	console.debug('>>> Entering dismissFeedback()');
     copyFeedback.dismiss();
     dismissTooltip();
+	console.debug('<<< Exiting dismissFeedback()');
   }
 
   let disconnectModalObserver = () => {};

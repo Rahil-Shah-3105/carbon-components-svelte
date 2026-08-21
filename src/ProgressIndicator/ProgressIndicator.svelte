@@ -58,6 +58,7 @@
    * @type {(step: { id: string; complete: boolean; disabled: boolean }) => void}
    */
   function add(step) {
+	console.debug(`>>> Entering add(step=${step})`);
     batchedStepsUpdate((_) => {
       const index = _.findIndex((_step) => _step.id === step.id);
       if (index !== -1) {
@@ -76,36 +77,43 @@
         },
       ];
     });
+	console.debug(`<<< Exiting add(step=${step})`);
   }
 
   /**
    * @type {(id: string) => void}
    */
   function remove(id) {
+	console.debug(`>>> Entering remove(id=${id})`);
     batchedStepsUpdate((_) =>
       _.filter((step) => step.id !== id).map((step, i) => ({
         ...step,
         index: i,
       })),
     );
+	console.debug(`<<< Exiting remove(id=${id})`);
   }
 
   /**
    * @type {(index: number) => void}
    */
   function change(index) {
+	console.debug(`>>> Entering change(index=${index})`);
     if (preventChangeOnClick) return;
 
     if (selectedId === undefined) {
       currentIndex = index;
+	logger.debug(`change(index=${index}): currentIndex → ${currentIndex}`);
     } else {
       const step = $steps[index];
       if (!step) return;
       selectedId = step.id;
+	logger.debug(`change(index=${index}): selectedId → ${selectedId}`);
     }
 
     /** @event {number} change */
     dispatch("change", index);
+	console.debug(`<<< Exiting change(index=${index})`);
   }
 
   /**
@@ -115,11 +123,14 @@
    * @type {() => void}
    */
   function syncSelection() {
+	console.debug('>>> Entering syncSelection()');
     if (selectedId === undefined) return;
 
     const step = $stepsById[selectedId];
     if (step) {
       currentIndex = step.index;
+	logger.debug(`syncSelection(): currentIndex → ${currentIndex}`);
+	console.debug(`syncSelection(): currentIndex → ${currentIndex}`);
       return;
     }
 
@@ -127,6 +138,7 @@
 
     currentIndex = clampIndex(currentIndex, 0, $steps.length);
     selectedId = $steps[currentIndex]?.id;
+	logger.debug(`syncSelection(): selectedId → ${selectedId}`);
   }
 
   setContext("carbon:ProgressIndicator", {

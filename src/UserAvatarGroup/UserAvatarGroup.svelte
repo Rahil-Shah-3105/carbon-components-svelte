@@ -68,6 +68,8 @@
   const activeTooltip = writable(null);
 
   function isNegativeGap(value) {
+	console.debug('>>> Entering isNegativeGap()');
+	console.debug('<<< Exiting isNegativeGap()');
     return typeof value === "string" && value.trim().startsWith("-");
   }
 
@@ -76,6 +78,7 @@
   // the group's `> *` overlap/stacking CSS targets. Walk up to that direct
   // child so the stacking custom property lands where the CSS reads it.
   function overlapTarget(node) {
+	console.debug('>>> Entering overlapTarget()');
     let el = node;
     while (
       el?.parentElement &&
@@ -83,6 +86,7 @@
     ) {
       el = el.parentElement;
     }
+	console.debug('<<< Exiting overlapTarget()');
     return el ?? null;
   }
 
@@ -99,6 +103,8 @@
   // Sorting after a batched flush matches sorting after each registration.
   // compareDocumentPosition reads live DOM position.
   function sortByDomOrder(list) {
+	console.debug('>>> Entering sortByDomOrder()');
+	console.debug('<<< Exiting sortByDomOrder()');
     return [...list].sort((a, b) => {
       if (!a.node || !b.node) return 0;
       const position = a.node.compareDocumentPosition(b.node);

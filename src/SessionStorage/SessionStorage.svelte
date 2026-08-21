@@ -40,7 +40,9 @@
    * ```
    */
   export function clearItem() {
+	console.debug('>>> Entering clearItem()');
     storage.removeItem(key);
+	console.debug('<<< Exiting clearItem()');
   }
 
   /**
@@ -56,7 +58,9 @@
    * ```
    */
   export function clearAll() {
+	console.debug('>>> Entering clearAll()');
     storage.clear();
+	console.debug('<<< Exiting clearAll()');
   }
 
   import { createEventDispatcher, onMount, tick } from "svelte";
@@ -80,27 +84,35 @@
 
   /** @param {string} [serialized] */
   function setItem(serialized = serializeStoredValue(value)) {
+	console.debug(`>>> Entering setItem(serialized=${serialized})`);
     storage.setItem(key, serialized, (error) => {
       dispatch("error", { error });
     });
+	console.debug(`<<< Exiting setItem(serialized=${serialized})`);
   }
 
   function handleStorageChange(event) {
+	console.debug(`>>> Entering handleStorageChange(event=${event})`);
     if (event.key !== key) return;
 
     const prevValue = parseStoredValue(prevSerialized);
 
+	console.debug(`handleStorageChange(event=${event}): prevValue → ${prevValue}`);
     if (event.newValue === null) {
       // Another document removed the key (or called clear()).
       // Reset so the next local mutation does not re-persist stale state.
       value = /** @type {T} */ (undefined);
+	logger.debug(`handleStorageChange(event=${event}): value → ${value}`);
+	console.debug(`handleStorageChange(event=${event}): value → ${value}`);
       prevSerialized = serializeStoredValue(value);
     } else {
+	logger.debug(`handleStorageChange(event=${event}): prevSerialized → ${prevSerialized}`);
       value = parseStoredValue(event.newValue);
       prevSerialized = event.newValue;
     }
 
     dispatch("update", { prevValue, value });
+	console.debug(`<<< Exiting handleStorageChange(event=${event})`);
   }
 
   onMount(() => {

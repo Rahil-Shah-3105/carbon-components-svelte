@@ -66,13 +66,18 @@
   let closeDispatched = false;
 
   function close(trigger) {
+	console.debug(`>>> Entering close(trigger=${trigger})`);
     closeDispatched = true;
     const shouldContinue = dispatch("close", { trigger }, { cancelable: true });
+	logger.debug(`close(trigger=${trigger}): closeDispatched → ${closeDispatched}`);
+	console.debug(`close(trigger=${trigger}): shouldContinue → ${shouldContinue}`);
+	logger.debug(`close(trigger=${trigger}): open → ${open}`);
     if (shouldContinue) {
       open = false;
     } else {
       closeDispatched = false;
     }
+	console.debug(`<<< Exiting close(trigger=${trigger})`);
   }
 
   const outsideDismiss = createOutsideDismiss(() => {
@@ -83,36 +88,46 @@
    * @type {() => void}
    */
   function closeModal() {
+	console.debug('>>> Entering closeModal()');
     close("close-button");
+	console.debug('<<< Exiting closeModal()');
   }
 
   /**
    * @type {() => void}
    */
   function submit() {
+	console.debug('>>> Entering submit()');
     dispatch("submit");
     dispatch("click:button--primary");
+	console.debug('<<< Exiting submit()');
   }
 
   /**
    * @type {(ref: HTMLButtonElement) => void}
    */
   function declareRef(ref) {
+	console.debug(`>>> Entering declareRef(ref=${ref})`);
     buttonRef = ref;
+	logger.debug(`declareRef(ref=${ref}): buttonRef → ${buttonRef}`);
   }
 
   /**
    * @type {(value: string | undefined) => void}
    */
   function updateLabel(value) {
+	console.debug(`>>> Entering updateLabel(value=${value})`);
     label.set(value);
+	console.debug(`<<< Exiting updateLabel(value=${value})`);
   }
 
   /**
    * @type {(value: string | undefined) => void}
    */
   function updateTitle(value) {
+	console.debug(`>>> Entering updateTitle(value=${value})`);
     title.set(value);
+	console.debug(`<<< Exiting updateTitle(value=${value})`);
   }
 
   setContext("carbon:Modal", {});
@@ -129,6 +144,7 @@
   });
 
   function focus(element) {
+	console.debug(`>>> Entering focus(element=${element})`);
     const container = element || innerModal;
     const node = initialFocus({
       container,
@@ -141,6 +157,7 @@
       ],
     });
     node?.focus();
+	console.debug(`<<< Exiting focus(element=${element})`);
   }
 
   let opened = false;

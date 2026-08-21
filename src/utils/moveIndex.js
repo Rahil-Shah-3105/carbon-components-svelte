@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 /**
@@ -11,10 +12,12 @@
  * @returns {number}
  */
 export function moveIndex(index, step, length) {
+logger.debug(`>>> Entering moveIndex(index=${index},step=${step},length=${length})`);
   if (length <= 0) return -1;
   const next = index + step;
   if (next < 0) return length - 1;
   if (next >= length) return 0;
+logger.debug(`<<< Exiting moveIndex(index=${index},step=${step},length=${length})`);
   return next;
 }
 
@@ -31,14 +34,18 @@ export function moveIndex(index, step, length) {
  * @returns {number}
  */
 export function nextEnabledIndex({ items, index, step, isDisabled }) {
+logger.debug(`>>> Entering nextEnabledIndex(items=${items},index=${index},step=${step},isDisabled=${isDisabled})`);
   const length = items.length;
   if (length === 0) return index;
   const disabled = isDisabled ?? ((item) => Boolean(item?.disabled));
+logger.debug(`nextEnabledIndex(items=${items},index=${index},step=${step},isDisabled=${isDisabled}): disabled → ${disabled}`);
   let candidate = moveIndex(index, step, length);
+logger.debug(`nextEnabledIndex(items=${items},index=${index},step=${step},isDisabled=${isDisabled}): candidate → ${candidate}`);
   let attempts = 0;
   while (disabled(items[candidate]) && attempts < length) {
     candidate = moveIndex(candidate, step, length);
     attempts++;
   }
+logger.debug(`<<< Exiting nextEnabledIndex(items=${items},index=${index},step=${step},isDisabled=${isDisabled})`);
   return disabled(items[candidate]) ? index : candidate;
 }

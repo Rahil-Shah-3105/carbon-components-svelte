@@ -1,3 +1,4 @@
+const logger = console;
 /**
  * Virtualization helpers for TreeView: iterative visible flatten (oracle /
  * small trees), and a size-cache index that avoids materializing a full
@@ -22,6 +23,8 @@ export { isExpandableNode } from "./isExpandableNode.js";
  * @returns {boolean}
  */
 function hasLoadedChildren(node) {
+logger.debug(`>>> Entering hasLoadedChildren(node=${node})`);
+logger.debug(`<<< Exiting hasLoadedChildren(node=${node})`);
   return Array.isArray(node.nodes) && node.nodes.length > 0;
 }
 
@@ -35,6 +38,7 @@ function hasLoadedChildren(node) {
  * @returns {Array<{ node: T; depth: number; parentId: string | number | null; posInSet: number; setSize: number; hasChildren: boolean }>}
  */
 export function flattenVisibleRows(nodes, expandedIdsSet) {
+logger.debug(`>>> Entering flattenVisibleRows(nodes=${nodes},expandedIdsSet=${expandedIdsSet})`);
   /** @type {Array<{ node: T; depth: number; parentId: string | number | null; posInSet: number; setSize: number; hasChildren: boolean }>} */
   const out = [];
   /** @type {Array<{ list: ReadonlyArray<T>; depth: number; parentId: string | number | null; index: number }>} */
@@ -50,6 +54,7 @@ export function flattenVisibleRows(nodes, expandedIdsSet) {
     const i = frame.index++;
     const node = frame.list[i];
     const loaded = hasLoadedChildren(node);
+	logger.debug(`flattenVisibleRows(nodes=${nodes},expandedIdsSet=${expandedIdsSet}): loaded → ${loaded}`);
     const hasChildren = loaded || node.hasChildren === true;
     out.push({
       node,
@@ -70,6 +75,7 @@ export function flattenVisibleRows(nodes, expandedIdsSet) {
     }
   }
 
+logger.debug(`<<< Exiting flattenVisibleRows(nodes=${nodes},expandedIdsSet=${expandedIdsSet})`);
   return out;
 }
 
@@ -89,17 +95,21 @@ export function flattenVisibleRows(nodes, expandedIdsSet) {
  * }}
  */
 export function createTreeVirtualIndex(nodes, expandedIdsSet) {
+logger.debug(`>>> Entering createTreeVirtualIndex(nodes=${nodes},expandedIdsSet=${expandedIdsSet})`);
   /** @type {Map<string | number, number>} */
   const sizeById = new Map();
 
+logger.debug(`createTreeVirtualIndex(nodes=${nodes},expandedIdsSet=${expandedIdsSet}): sizeById → ${sizeById}`);
   /**
    * Visible row count for `node` including itself.
    * @param {T} node
    * @returns {number}
    */
   function visibleSize(node) {
+	logger.debug(`>>> Entering visibleSize(node=${node})`);
     const cached = sizeById.get(node.id);
     if (cached != null) return cached;
+	logger.debug(`visibleSize(node=${node}): cached → ${cached}`);
 
     let size = 1;
     if (hasLoadedChildren(node) && expandedIdsSet.has(node.id)) {
@@ -108,6 +118,7 @@ export function createTreeVirtualIndex(nodes, expandedIdsSet) {
       }
     }
     sizeById.set(node.id, size);
+	logger.debug(`<<< Exiting visibleSize(node=${node})`);
     return size;
   }
 
@@ -125,13 +136,16 @@ export function createTreeVirtualIndex(nodes, expandedIdsSet) {
    * @returns {{ node: T; depth: number; parentId: string | number | null; posInSet: number; setSize: number; hasChildren: boolean } | null}
    */
   function rowAtInList(list, depth, parentId, targetIndex, indexOffset) {
+	logger.debug(`>>> Entering rowAtInList(list=${list},depth=${depth},parentId=${parentId},targetIndex=${targetIndex},indexOffset=${indexOffset})`);
     let offset = indexOffset;
     const setSize = list.length;
     for (let i = 0; i < list.length; i++) {
       const node = list[i];
       const size = sizeById.get(node.id) ?? 1;
+	logger.debug(`rowAtInList(list=${list},depth=${depth},parentId=${parentId},targetIndex=${targetIndex},indexOffset=${indexOffset}): size → ${size}`);
       if (targetIndex < offset + size) {
         const loaded = hasLoadedChildren(node);
+		logger.debug(`rowAtInList(list=${list},depth=${depth},parentId=${parentId},targetIndex=${targetIndex},indexOffset=${indexOffset}): loaded → ${loaded}`);
         const hasChildren = loaded || node.hasChildren === true;
         if (targetIndex === offset) {
           return {
@@ -156,6 +170,7 @@ export function createTreeVirtualIndex(nodes, expandedIdsSet) {
       }
       offset += size;
     }
+	logger.debug(`<<< Exiting rowAtInList(list=${list},depth=${depth},parentId=${parentId},targetIndex=${targetIndex},indexOffset=${indexOffset})`);
     return null;
   }
 
@@ -163,7 +178,9 @@ export function createTreeVirtualIndex(nodes, expandedIdsSet) {
    * @param {number} index
    */
   function getRowAt(index) {
+	logger.debug(`>>> Entering getRowAt(index=${index})`);
     if (index < 0 || index >= totalCount) return null;
+	logger.debug(`<<< Exiting getRowAt(index=${index})`);
     return rowAtInList(nodes, 0, null, index, 0);
   }
 
@@ -174,8 +191,10 @@ export function createTreeVirtualIndex(nodes, expandedIdsSet) {
    * @param {number} endIndex
    */
   function collectRows(startIndex, endIndex) {
+	logger.debug(`>>> Entering collectRows(startIndex=${startIndex},endIndex=${endIndex})`);
     const start = Math.max(0, startIndex);
     const end = Math.min(totalCount, endIndex);
+	logger.debug(`collectRows(startIndex=${startIndex},endIndex=${endIndex}): end → ${end}`);
     /** @type {Array<{ node: T; depth: number; parentId: string | number | null; posInSet: number; setSize: number; hasChildren: boolean }>} */
     const rows = [];
     if (start >= end) return rows;
@@ -195,6 +214,7 @@ export function createTreeVirtualIndex(nodes, expandedIdsSet) {
       const i = frame.index;
       const node = frame.list[i];
       const size = sizeById.get(node.id) ?? 1;
+	logger.debug(`collectRows(startIndex=${startIndex},endIndex=${endIndex}): size → ${size}`);
       const nodeStart = frame.offset;
       const nodeEnd = nodeStart + size;
 
@@ -202,12 +222,14 @@ export function createTreeVirtualIndex(nodes, expandedIdsSet) {
         // Entire subtree is before the window — skip it.
         frame.index++;
         frame.offset = nodeEnd;
+		logger.debug(`collectRows(startIndex=${startIndex},endIndex=${endIndex}): frame.offset → ${frame.offset}`);
         continue;
       }
 
       if (nodeStart >= end) break;
 
       const loaded = hasLoadedChildren(node);
+	logger.debug(`collectRows(startIndex=${startIndex},endIndex=${endIndex}): loaded → ${loaded}`);
       const hasChildren = loaded || node.hasChildren === true;
 
       if (nodeStart >= start && nodeStart < end) {
@@ -241,6 +263,7 @@ export function createTreeVirtualIndex(nodes, expandedIdsSet) {
       }
     }
 
+	logger.debug(`<<< Exiting collectRows(startIndex=${startIndex},endIndex=${endIndex})`);
     return rows;
   }
 
@@ -249,6 +272,7 @@ export function createTreeVirtualIndex(nodes, expandedIdsSet) {
    * @returns {number} visible index, or -1 if not currently visible
    */
   function findIndexById(id) {
+	logger.debug(`>>> Entering findIndexById(id=${id})`);
     const needle = String(id);
     /**
      * @param {ReadonlyArray<T>} list
@@ -256,6 +280,7 @@ export function createTreeVirtualIndex(nodes, expandedIdsSet) {
      * @returns {number}
      */
     function findInList(list, indexOffset) {
+	logger.debug(`>>> Entering findInList(list=${list},indexOffset=${indexOffset})`);
       let offset = indexOffset;
       for (let i = 0; i < list.length; i++) {
         const node = list[i];
@@ -266,13 +291,18 @@ export function createTreeVirtualIndex(nodes, expandedIdsSet) {
           expandedIdsSet.has(node.id) &&
           size > 1
         ) {
+		logger.debug(`findInList(list=${list},indexOffset=${indexOffset}): size → ${size}`);
           const found = findInList(node.nodes, offset + 1);
+		logger.debug(`findInList(list=${list},indexOffset=${indexOffset}): found → ${found}`);
           if (found >= 0) return found;
         }
         offset += size;
       }
+	logger.debug(`<<< Exiting findInList(list=${list},indexOffset=${indexOffset})`);
+	logger.debug(`<<< Exiting findIndexById(id=${id})`);
       return -1;
     }
+logger.debug(`<<< Exiting createTreeVirtualIndex(nodes=${nodes},expandedIdsSet=${expandedIdsSet})`);
     return findInList(nodes, 0);
   }
 

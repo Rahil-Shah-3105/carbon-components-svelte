@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 /**
@@ -10,9 +11,11 @@
 export class BoundedFifoCache {
   /** @param {number} maxSize */
   constructor(maxSize) {
+	logger.debug(`>>> Entering constructor(maxSize=${maxSize})`);
     this.maxSize = maxSize;
     /** @type {Map<K, V>} */
     this.map = new Map();
+	logger.debug(`constructor(maxSize=${maxSize}): this.maxSize → ${this.maxSize}`);
   }
 
   /**
@@ -20,6 +23,8 @@ export class BoundedFifoCache {
    * @returns {V | undefined}
    */
   get(key) {
+	logger.debug(`>>> Entering get(key=${key})`);
+	logger.debug(`<<< Exiting get(key=${key})`);
     return this.map.get(key);
   }
 
@@ -28,6 +33,7 @@ export class BoundedFifoCache {
    * @param {V} value
    */
   set(key, value) {
+	logger.debug(`>>> Entering set(key=${key},value=${value})`);
     if (this.map.size >= this.maxSize && !this.map.has(key)) {
       const oldestKey = this.map.keys().next().value;
       if (oldestKey !== undefined) {
@@ -38,6 +44,8 @@ export class BoundedFifoCache {
   }
 
   get size() {
+	logger.debug('>>> Entering size()');
+	logger.debug('<<< Exiting size()');
     return this.map.size;
   }
 }

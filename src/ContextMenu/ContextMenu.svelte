@@ -89,18 +89,25 @@
    * @type {(trigger: "escape-key" | "outside-click" | "select") => void}
    */
   function close(trigger) {
+	console.debug(`>>> Entering close(trigger=${trigger})`);
     if (!open) return;
     open = false;
+	logger.debug(`close(trigger=${trigger}): open → ${open}`);
     x = 0;
     y = 0;
     prevX = 0;
+	logger.debug(`close(trigger=${trigger}): prevX → ${prevX}`);
     prevY = 0;
+	logger.debug(`close(trigger=${trigger}): prevY → ${prevY}`);
     focusIndex = -1;
+	logger.debug(`close(trigger=${trigger}): focusIndex → ${focusIndex}`);
     dispatch("close", { trigger });
+	console.debug(`<<< Exiting close(trigger=${trigger})`);
   }
 
   /** @type {(e: MouseEvent) => void} */
   function openMenu(event) {
+	console.debug(`>>> Entering openMenu(event=${event})`);
     event.preventDefault();
     const { height, width } = ref.getBoundingClientRect();
 
@@ -123,7 +130,9 @@
     }
     position.set([x, y]);
     open = true;
+	logger.debug(`openMenu(event=${event}): open → ${open}`);
     openDetail = event.target;
+	logger.debug(`openMenu(event=${event}): openDetail → ${openDetail}`);
   }
 
   /** @type {Array<HTMLElement | null>} */
@@ -152,7 +161,9 @@
    * @type {(popup: boolean) => void}
    */
   function setPopup(popup) {
+	console.debug(`>>> Entering setPopup(popup=${popup})`);
     hasPopup.set(popup);
+	console.debug(`<<< Exiting setPopup(popup=${popup})`);
   }
 
   setContext("carbon:ContextMenu", {
@@ -185,10 +196,14 @@
   $: menuAriaLabel = ($$props["aria-label"] ?? labelText) || undefined;
 
   function handleOutsideClick(event) {
+	console.debug(`>>> Entering handleOutsideClick(event=${event})`);
     if (open && isOutsideClick(event, ref)) close("outside-click");
+	console.debug(`<<< Exiting handleOutsideClick(event=${event})`);
   }
   function handleEscape(event) {
+	console.debug(`>>> Entering handleEscape(event=${event})`);
     if (open && event.key === "Escape") close("escape-key");
+	console.debug(`<<< Exiting handleEscape(event=${event})`);
   }
 </script>
 

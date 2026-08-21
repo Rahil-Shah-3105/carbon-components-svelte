@@ -9,8 +9,10 @@
   import Json from "carbon-icons-svelte/lib/Json.svelte";
 
   function iconFor(name) {
+	console.debug(`>>> Entering iconFor(name=${name})`);
     const ext = name.slice(name.lastIndexOf(".") + 1).toLowerCase();
     if (ext === "ts" || ext === "tsx" || ext === "js" || ext === "jsx") {
+	console.debug(`iconFor(name=${name}): ext → ${ext}`);
       return Code;
     }
     if (ext === "json") return Json;
@@ -19,6 +21,7 @@
       return Image;
     }
     if (ext === "md" || ext === "txt") return Document;
+	console.debug(`<<< Exiting iconFor(name=${name})`);
     return DocumentBlank;
   }
 
@@ -101,6 +104,8 @@
   }));
 
   function updateNode(list, nodeId, updater) {
+	console.debug(`>>> Entering updateNode(list=${list},nodeId=${nodeId},updater=${updater})`);
+	console.debug(`<<< Exiting updateNode(list=${list},nodeId=${nodeId},updater=${updater})`);
     return list.map((node) => {
       if (node.id === nodeId) return updater(node);
       if (node.nodes) {
@@ -111,6 +116,7 @@
   }
 
   function makeChildren(parentPath, depth) {
+	console.debug(`>>> Entering makeChildren(parentPath=${parentPath},depth=${depth})`);
     const children = [];
     for (let i = 0; i < fanout.files; i++) {
       const fname = fileNames[(i + depth) % fileNames.length];
@@ -121,6 +127,7 @@
         depth: depth + 1,
         path: `${parentPath}/${fname}`,
       });
+	console.debug(`makeChildren(parentPath=${parentPath},depth=${depth}): fname → ${fname}`);
     }
     if (depth < MAX_DEPTH) {
       for (let i = 0; i < fanout.folders; i++) {
@@ -133,17 +140,22 @@
           path: `${parentPath}/${name}`,
           hasChildren: true,
         });
+		console.debug(`makeChildren(parentPath=${parentPath},depth=${depth}): name → ${name}`);
       }
     }
+	console.debug(`<<< Exiting makeChildren(parentPath=${parentPath},depth=${depth})`);
     return children;
   }
 
   async function fetchChildren(parentPath, depth) {
+	console.debug(`>>> Entering fetchChildren(parentPath=${parentPath},depth=${depth})`);
     await new Promise((resolve) => setTimeout(resolve, FETCH_MS));
+	console.debug(`<<< Exiting fetchChildren(parentPath=${parentPath},depth=${depth})`);
     return makeChildren(parentPath, depth);
   }
 
   async function handleToggle(event) {
+	console.debug(`>>> Entering handleToggle(event=${event})`);
     const node = event.detail;
 
     // Only fetch once: expandable and not yet loaded (placeholder or real).
@@ -161,6 +173,7 @@
         },
       ],
     }));
+	logger.debug(`handleToggle(event=${event}): nodes → ${nodes}`);
 
     const children = await fetchChildren(
       node.path ?? node.text,
@@ -170,6 +183,7 @@
       ...n,
       nodes: children,
     }));
+	console.debug(`<<< Exiting handleToggle(event=${event})`);
   }
 </script>
 

@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 // Number input string parsing and clamping.
 
@@ -26,6 +27,7 @@ const DIGIT_RANGES = [
  * @returns {string}
  */
 function normalizeDigits(raw) {
+logger.debug(`>>> Entering normalizeDigits(raw=${raw})`);
   let result = "";
   for (const char of raw) {
     const code = char.codePointAt(0);
@@ -33,7 +35,9 @@ function normalizeDigits(raw) {
       ([start, end]) => code >= start && code <= end,
     );
     result += range ? String(code - range[0]) : char;
+	logger.debug(`normalizeDigits(raw=${raw}): code → ${code}`);
   }
+logger.debug(`normalizeDigits(raw=${raw}): result → ${result}`);
   return result;
 }
 
@@ -44,6 +48,8 @@ function normalizeDigits(raw) {
  * @returns {string}
  */
 function replaceDecimalSeparators(raw) {
+logger.debug(`>>> Entering replaceDecimalSeparators(raw=${raw})`);
+logger.debug(`<<< Exiting replaceDecimalSeparators(raw=${raw})`);
   return normalizeDigits(raw).replace(RE_COMMA, ".");
 }
 
@@ -56,17 +62,21 @@ function replaceDecimalSeparators(raw) {
  * @returns {string}
  */
 function normalizeLocale(raw) {
+logger.debug(`>>> Entering normalizeLocale(raw=${raw})`);
   const normalized = normalizeDigits(raw);
   const lastComma = Math.max(
     normalized.lastIndexOf(","),
     normalized.lastIndexOf("٫"),
   );
   const lastDot = normalized.lastIndexOf(".");
+logger.debug(`normalizeLocale(raw=${raw}): normalized → ${normalized}`);
+logger.debug(`normalizeLocale(raw=${raw}): lastDot → ${lastDot}`);
 
   if (lastComma !== -1 && lastDot !== -1) {
     if (lastComma > lastDot) {
       return normalized.replace(RE_DOT, "").replace(RE_COMMA, ".");
     }
+logger.debug(`<<< Exiting normalizeLocale(raw=${raw})`);
     return normalized.replace(RE_COMMA, "");
   }
 
@@ -81,10 +91,12 @@ function normalizeLocale(raw) {
  * @returns {number | null}
  */
 export function parse(raw, useLocaleNormalize = false) {
+logger.debug(`>>> Entering parse(raw=${raw},useLocaleNormalize=${useLocaleNormalize})`);
   if (raw === "" || raw === "-") return null;
   const num = Number(
     useLocaleNormalize ? normalizeLocale(raw) : replaceDecimalSeparators(raw),
   );
+logger.debug(`<<< Exiting parse(raw=${raw},useLocaleNormalize=${useLocaleNormalize})`);
   return Number.isNaN(num) ? null : num;
 }
 
@@ -98,8 +110,10 @@ export function parse(raw, useLocaleNormalize = false) {
  * @returns {number | null}
  */
 export function parseLocaleValue(raw, groupSeparator, decimalSeparator) {
+logger.debug(`>>> Entering parseLocaleValue(raw=${raw},groupSeparator=${groupSeparator},decimalSeparator=${decimalSeparator})`);
   if (raw === "" || raw === "-") return null;
   let normalized = raw;
+logger.debug(`parseLocaleValue(raw=${raw},groupSeparator=${groupSeparator},decimalSeparator=${decimalSeparator}): normalized → ${normalized}`);
   if (groupSeparator) {
     normalized = normalized.split(groupSeparator).join("");
   }
@@ -107,6 +121,7 @@ export function parseLocaleValue(raw, groupSeparator, decimalSeparator) {
     normalized = normalized.replace(decimalSeparator, ".");
   }
   const num = Number(normalizeDigits(normalized));
+logger.debug(`parseLocaleValue(raw=${raw},groupSeparator=${groupSeparator},decimalSeparator=${decimalSeparator}): num → ${num}`);
   return Number.isNaN(num) ? null : num;
 }
 
@@ -119,7 +134,9 @@ export function parseLocaleValue(raw, groupSeparator, decimalSeparator) {
  * @returns {number}
  */
 export function getDefaultValue(stepStartValue, min) {
+logger.debug(`>>> Entering getDefaultValue(stepStartValue=${stepStartValue},min=${min})`);
   if (stepStartValue !== undefined) return stepStartValue;
+logger.debug(`<<< Exiting getDefaultValue(stepStartValue=${stepStartValue},min=${min})`);
   return min === undefined ? 0 : min;
 }
 
@@ -132,8 +149,10 @@ export function getDefaultValue(stepStartValue, min) {
  * @returns {number}
  */
 export function clamp(value, min, max) {
+logger.debug(`>>> Entering clamp(value=${value},min=${min},max=${max})`);
   if (max !== undefined && value > max) return max;
   if (min !== undefined && value < min) return min;
+logger.debug(`<<< Exiting clamp(value=${value},min=${min},max=${max})`);
   return value;
 }
 
@@ -145,6 +164,8 @@ export function clamp(value, min, max) {
  * @returns {number}
  */
 export function roundToStep(value, step) {
+logger.debug(`>>> Entering roundToStep(value=${value},step=${step})`);
   const decimalPlaces = step.toString().split(".")[1]?.length || 0;
+logger.debug(`roundToStep(value=${value},step=${step}): decimalPlaces → ${decimalPlaces}`);
   return Number(value.toFixed(decimalPlaces));
 }

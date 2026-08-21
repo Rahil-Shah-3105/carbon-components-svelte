@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 /**
@@ -12,17 +13,22 @@
  * @returns {{ pressInside: () => void, release: () => void }}
  */
 export function createOutsideDismiss(onDismiss) {
+logger.debug(`>>> Entering createOutsideDismiss(onDismiss=${onDismiss})`);
   let pressedInside = false;
 
   return {
     /** Wire to the dialog container's `on:mousedown`. */
     pressInside() {
+	logger.debug('>>> Entering pressInside()');
       pressedInside = true;
+	logger.debug('<<< Exiting pressInside()');
     },
     /** Wire to the surface's `on:mouseup`; dismisses only if the press began outside. */
     release() {
+	logger.debug('>>> Entering release()');
       if (!pressedInside) onDismiss();
       pressedInside = false;
+	logger.debug('<<< Exiting release()');
     },
   };
 }

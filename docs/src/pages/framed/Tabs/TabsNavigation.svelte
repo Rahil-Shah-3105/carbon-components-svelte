@@ -8,8 +8,10 @@
   ];
 
   function interceptNavigation(e, href) {
+	console.debug(`>>> Entering interceptNavigation(e=${e},href=${href})`);
     e.preventDefault();
     console.log("Navigate to:", href);
+	console.debug(`<<< Exiting interceptNavigation(e=${e},href=${href})`);
   }
 </script>
 

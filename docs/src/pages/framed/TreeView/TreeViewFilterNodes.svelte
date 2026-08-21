@@ -59,18 +59,23 @@
   let expandedIds = [];
 
   function filterByExtension() {
+	console.debug('>>> Entering filterByExtension()');
     filteredNodes = filterTreeNodes(
       allNodes,
       (node) => node.text?.endsWith(".pdf") || node.text?.endsWith(".docx"),
     );
+	logger.debug(`filterByExtension(): filteredNodes → ${filteredNodes}`);
     expandedIds = ["1", "1-1", "1-1-1", "1-2", "1-2-1"];
+	console.debug(`filterByExtension(): expandedIds → ${expandedIds}`);
   }
 
   function filterLeafNodes() {
+	console.debug('>>> Entering filterLeafNodes()');
     filteredNodes = filterTreeNodes(
       allNodes,
       (node) => !node.nodes || node.nodes.length === 0,
     );
+	logger.debug(`filterLeafNodes(): filteredNodes → ${filteredNodes}`);
     expandedIds = [
       "1",
       "1-1",
@@ -88,18 +93,23 @@
       "3-1-1",
       "3-1-2",
     ];
+	logger.debug(`filterLeafNodes(): expandedIds → ${expandedIds}`);
   }
 
   function filterWithChildren() {
+	console.debug('>>> Entering filterWithChildren()');
     filteredNodes = filterTreeNodes(allNodes, (node) => node.id === "1-1", {
       includeChildren: true,
     });
     expandedIds = ["1", "1-1", "1-1-1", "1-1-2", "1-1-3"];
+	console.debug(`filterWithChildren(): expandedIds → ${expandedIds}`);
   }
 
   function resetFilter() {
+	console.debug('>>> Entering resetFilter()');
     filteredNodes = allNodes;
     expandedIds = [];
+	logger.debug(`resetFilter(): expandedIds → ${expandedIds}`);
   }
 </script>
 

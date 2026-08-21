@@ -73,37 +73,54 @@
   let dropFillSelectedId = "orwell";
 
   function load() {
+	console.debug('>>> Entering load()');
     cbFillItems = make();
     selFillItems = make();
+	console.debug(`load(): cbFillItems → ${cbFillItems}`);
+	console.debug(`load(): selFillItems → ${selFillItems}`);
     msFillItems = make();
     dropFillItems = make();
+	console.debug(`load(): msFillItems → ${msFillItems}`);
   }
 
   function reload() {
+	console.debug('>>> Entering reload()');
     cbSwapItems = make();
     selSwapItems = make();
+	console.debug(`reload(): cbSwapItems → ${cbSwapItems}`);
+	console.debug(`reload(): selSwapItems → ${selSwapItems}`);
     msSwapItems = make();
   }
 
   function reloadWithoutOrwell() {
+	console.debug('>>> Entering reloadWithoutOrwell()');
     cbRemoveItems = makeWithoutOrwell();
+	console.debug(`reloadWithoutOrwell(): cbRemoveItems → ${cbRemoveItems}`);
   }
 
   // Remove a non-selected option from each component while the selection stays present.
   function removeNonSelected() {
+	console.debug('>>> Entering removeNonSelected()');
     selRemoveItems = makeWithoutAusten();
     cbKeepItems = makeWithoutAusten();
+	console.debug(`removeNonSelected(): selRemoveItems → ${selRemoveItems}`);
+	console.debug(`removeNonSelected(): cbKeepItems → ${cbKeepItems}`);
     msRemoveItems = makeWithoutAusten();
   }
 
   function clearFill() {
+	console.debug('>>> Entering clearFill()');
     cbFillItems = [];
     selFillItems = [];
+	logger.debug(`clearFill(): cbFillItems → ${cbFillItems}`);
+	logger.debug(`clearFill(): selFillItems → ${selFillItems}`);
     msFillItems = [];
   }
 
   function toggleNoSelectionOption() {
+	console.debug('>>> Entering toggleNoSelectionOption()');
     selNoSelectionExtra = !selNoSelectionExtra;
+	logger.debug(`toggleNoSelectionOption(): selNoSelectionExtra → ${selNoSelectionExtra}`);
   }
 </script>
 

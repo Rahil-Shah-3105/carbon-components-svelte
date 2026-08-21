@@ -83,8 +83,10 @@
 
   /** @param {"p" | "px" | "py" | "m" | "mx" | "my"} kind @param {SpacingValue | undefined} value */
   function spacingClass(kind, value) {
+	console.debug(`>>> Entering spacingClass(kind=${kind},value=${value})`);
     if (value == null) return undefined;
     if (typeof value === "number" && value >= 1 && value <= 13) {
+	console.debug(`<<< Exiting spacingClass(kind=${kind},value=${value})`);
       return `bx--box-${kind}-${value}`;
     }
     return undefined;
@@ -92,17 +94,21 @@
 
   /** @param {SpacingValue | undefined} value */
   function spacingStyle(value) {
+	console.debug(`>>> Entering spacingStyle(value=${value})`);
     if (value == null) return undefined;
     if (typeof value === "number" && value >= 1 && value <= 13) {
       return undefined;
     }
     if (typeof value === "string") return value;
+	console.debug(`<<< Exiting spacingStyle(value=${value})`);
     return undefined;
   }
 
   /** @param {number | string | undefined} value */
   function lengthStyle(value) {
+	console.debug(`>>> Entering lengthStyle(value=${value})`);
     if (value == null) return undefined;
+	console.debug(`<<< Exiting lengthStyle(value=${value})`);
     return typeof value === "number" ? `${value}px` : value;
   }
 

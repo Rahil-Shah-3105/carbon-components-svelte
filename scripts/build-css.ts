@@ -2,6 +2,7 @@ import { createHash } from "node:crypto";
 import { access, mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import browserslist from "browserslist";
+const logger = console;
 import { Glob } from "bun";
 import { browserslistToTargets, transform } from "lightningcss";
 import { initAsyncCompiler } from "sass-embedded";
@@ -18,12 +19,14 @@ const BROWSERSLIST = [
 const targets = browserslistToTargets(browserslist([...BROWSERSLIST]));
 
 function postprocessCss(css: string, outFile: string): Uint8Array {
+logger.debug(`>>> Entering postprocessCss(css=${css},outFile=${outFile})`);
   const { code } = transform({
     filename: outFile,
     code: Buffer.from(css, "utf8"),
     targets,
     minify: true,
   });
+logger.debug(`<<< Exiting postprocessCss(css=${css},outFile=${outFile})`);
   return code;
 }
 
@@ -49,8 +52,12 @@ const scss = Array.from(glob.scanSync({ cwd: "css" }))
   .map((file) => path.parse(file));
 
 async function readPartialContents(): Promise<string> {
+logger.debug('>>> Entering readPartialContents()');
   const partialGlob = new Glob("_*.scss");
+logger.debug(`readPartialContents(): partialGlob → ${partialGlob}`);
   const partials = Array.from(partialGlob.scanSync({ cwd: "css" })).sort();
+logger.debug(`readPartialContents(): partials → ${partials}`);
+logger.debug('<<< Exiting readPartialContents()');
   return (
     await Promise.all(partials.map((file) => readFile(`css/${file}`, "utf8")))
   ).join("\0");
@@ -58,11 +65,14 @@ async function readPartialContents(): Promise<string> {
 
 async function vendorHash(): Promise<string> {
   const vendorGlob = new Glob("vendor/**/*.scss");
+logger.debug(`vendorHash(): vendorGlob → ${vendorGlob}`);
   const files = Array.from(vendorGlob.scanSync({ cwd: "css" })).sort();
   const contents = await Promise.all(
     files.map((file) => readFile(`css/${file}`)),
   );
   const hash = createHash("sha256");
+logger.debug(`vendorHash(): files → ${files}`);
+logger.debug('>>> Entering vendorHash()');
   files.forEach((file, i) => {
     hash.update(file);
     hash.update(contents[i]);
@@ -71,6 +81,7 @@ async function vendorHash(): Promise<string> {
 }
 
 async function sharedInputs(): Promise<string> {
+logger.debug('>>> Entering sharedInputs()');
   const packageJson = JSON.parse(await readFile("package.json", "utf8")) as {
     devDependencies?: {
       lightningcss?: string;
@@ -78,6 +89,8 @@ async function sharedInputs(): Promise<string> {
     };
   };
 
+logger.debug(`sharedInputs(): packageJson → ${packageJson}`);
+logger.debug('<<< Exiting sharedInputs()');
   return [
     await readPartialContents(),
     await vendorHash(),
@@ -89,9 +102,11 @@ async function sharedInputs(): Promise<string> {
 }
 
 function inputHash(entryContents: string, shared: string): string {
+logger.debug(`>>> Entering inputHash(entryContents=${entryContents},shared=${shared})`);
   const hash = createHash("sha256");
   hash.update(entryContents);
   hash.update(shared);
+logger.debug(`<<< Exiting inputHash(entryContents=${entryContents},shared=${shared})`);
   return hash.digest("hex");
 }
 

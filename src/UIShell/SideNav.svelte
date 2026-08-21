@@ -57,10 +57,13 @@
   } from "./nav-store";
 
   function handleEscape(event) {
+	console.debug(`>>> Entering handleEscape(event=${event})`);
     if (isOpen && !fixed && $isSideNavMobile && event.key === "Escape") {
       isOpen = false;
+	logger.debug(`handleEscape(event=${event}): isOpen → ${isOpen}`);
       $hamburgerMenuRef?.focus();
     }
+	console.debug(`<<< Exiting handleEscape(event=${event})`);
   }
 
   const dispatch = createEventDispatcher();

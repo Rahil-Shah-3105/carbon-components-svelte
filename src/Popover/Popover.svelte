@@ -50,9 +50,11 @@
   // click. Flatpickr stamps the input with `_flatpickr`; walk the popover's
   // own inputs to check whether the clicked calendar belongs to one of them.
   function isDatePickerCalendarClick(target) {
+	console.debug(`>>> Entering isDatePickerCalendarClick(target=${target})`);
     if (!ref || !(target instanceof Element)) return false;
     const calendar = target.closest(".flatpickr-calendar");
     if (!calendar) return false;
+	console.debug(`isDatePickerCalendarClick(target=${target}): calendar → ${calendar}`);
     for (const input of ref.querySelectorAll("input")) {
       if (
         /** @type {any} */ (input)._flatpickr?.calendarContainer === calendar
@@ -60,10 +62,12 @@
         return true;
       }
     }
+	console.debug(`<<< Exiting isDatePickerCalendarClick(target=${target})`);
     return false;
   }
 
   function handleOutsideClick(event) {
+	console.debug(`>>> Entering handleOutsideClick(event=${event})`);
     if (
       open &&
       isOutsideClick(event, ref) &&
@@ -72,9 +76,11 @@
       dispatch("click:outside", { target: event.target });
       if (closeOnOutsideClick) {
         open = false;
+		logger.debug(`handleOutsideClick(event=${event}): open → ${open}`);
         dispatch("close", { trigger: "outside-click" });
       }
     }
+	console.debug(`<<< Exiting handleOutsideClick(event=${event})`);
   }
 </script>
 

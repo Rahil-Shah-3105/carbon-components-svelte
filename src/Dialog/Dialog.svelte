@@ -43,6 +43,7 @@
    * again on a redundant re-run while the dialog is already open.
    */
   function dialogAction(node, params) {
+	console.debug(`>>> Entering dialogAction(node=${node},params=${params})`);
     sync(params);
 
     return {
@@ -51,6 +52,7 @@
     };
 
     function sync({ open: shouldOpen, modal: isModal }) {
+	console.debug(`>>> Entering sync(shouldOpen=${shouldOpen},isModal=${isModal})`);
       if (shouldOpen) {
         if (!node.open) {
           focusReturn.save();
@@ -61,15 +63,20 @@
           }
           dispatch("open");
         }
+		console.info(`sync(shouldOpen,isModal)=${shouldOpen},${isModal}: save operation took ${Date.now() - __log_start} ms`);
       } else if (node.open) {
         pendingTrigger = pendingTrigger ?? "programmatic";
+		logger.debug(`sync(shouldOpen=${shouldOpen},isModal=${isModal}): pendingTrigger → ${pendingTrigger}`);
+		console.debug(`sync(shouldOpen=${shouldOpen},isModal=${isModal}): pendingTrigger → ${pendingTrigger}`);
         node.close();
       }
     }
   }
 
   function handleCancel() {
+	console.debug('>>> Entering handleCancel()');
     pendingTrigger = "escape-key";
+	console.debug(`handleCancel(): pendingTrigger → ${pendingTrigger}`);
   }
 
   /**
@@ -79,19 +86,27 @@
    * @param {MouseEvent} event
    */
   function handleClick(event) {
+	console.debug(`>>> Entering handleClick(event=${event})`);
     if (!modal || preventCloseOnClickOutside) return;
     if (event.target !== event.currentTarget) return;
     /** @type {HTMLDialogElement} */
     const node = event.currentTarget;
     pendingTrigger = "backdrop";
+	logger.debug(`handleClick(event=${event}): pendingTrigger → ${pendingTrigger}`);
     node.close();
+	console.debug(`<<< Exiting handleClick(event=${event})`);
   }
 
   function handleClose() {
+	console.debug('>>> Entering handleClose()');
     const trigger = pendingTrigger ?? "close-button";
     pendingTrigger = null;
+	console.debug(`handleClose(): trigger → ${trigger}`);
+	logger.debug(`handleClose(): pendingTrigger → ${pendingTrigger}`);
     open = false;
     dispatch("close", { trigger });
+	console.debug('<<< Exiting handleClose()');
+	logger.debug(`handleClose(): open → ${open}`);
     focusReturn.restore();
   }
 </script>

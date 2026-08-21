@@ -127,15 +127,19 @@
   let scrollableAncestors = [];
 
   function addScrollListeners() {
+	console.debug('>>> Entering addScrollListeners()');
     for (const el of scrollableAncestors) {
       el.addEventListener("scroll", scheduleUpdate, { passive: true });
     }
+	console.debug('<<< Exiting addScrollListeners()');
   }
 
   function removeScrollListeners() {
+	console.debug('>>> Entering removeScrollListeners()');
     for (const el of scrollableAncestors) {
       el.removeEventListener("scroll", scheduleUpdate);
     }
+	console.debug('<<< Exiting removeScrollListeners()');
   }
 
   // Pooled `window` scroll/resize listeners: many `FloatingPortal` instances
@@ -149,23 +153,30 @@
   let unlistenWindowResize = null;
 
   function addWindowListeners() {
+	console.debug('>>> Entering addWindowListeners()');
     if (!unlistenWindowScroll) {
       unlistenWindowScroll = addPooledListener("scroll", scheduleUpdate, {
         passive: true,
       });
+	logger.debug(`addWindowListeners(): unlistenWindowScroll → ${unlistenWindowScroll}`);
     }
     if (!unlistenWindowResize) {
       unlistenWindowResize = addPooledListener("resize", scheduleUpdate, {
         passive: true,
       });
+	logger.debug(`addWindowListeners(): unlistenWindowResize → ${unlistenWindowResize}`);
     }
+	console.debug('<<< Exiting addWindowListeners()');
   }
 
   function removeWindowListeners() {
+	console.debug('>>> Entering removeWindowListeners()');
     unlistenWindowScroll?.();
     unlistenWindowScroll = null;
+	logger.debug(`removeWindowListeners(): unlistenWindowScroll → ${unlistenWindowScroll}`);
     unlistenWindowResize?.();
     unlistenWindowResize = null;
+	logger.debug(`removeWindowListeners(): unlistenWindowResize → ${unlistenWindowResize}`);
   }
 
   onMount(() => {
@@ -192,21 +203,27 @@
   let anchorObserver = null;
 
   function observeAnchor() {
+	console.debug('>>> Entering observeAnchor()');
     if (!anchor || anchorObserver) return;
     anchorObserver = new MutationObserver(scheduleUpdate);
+	logger.debug(`observeAnchor(): anchorObserver → ${anchorObserver}`);
     anchorObserver.observe(anchor, {
       attributes: true,
       attributeFilter: ["style", "class"],
       childList: false,
       subtree: false,
     });
+	console.debug(`observeAnchor(): anchorObserver → ${anchorObserver}`);
   }
 
   function unobserveAnchor() {
+	console.debug('>>> Entering unobserveAnchor()');
     if (anchorObserver && anchor) {
       anchorObserver.disconnect();
       anchorObserver = null;
+	logger.debug(`unobserveAnchor(): anchorObserver → ${anchorObserver}`);
     }
+	console.debug('<<< Exiting unobserveAnchor()');
   }
 
   /** @type {ResizeObserver | null} */
@@ -216,6 +233,7 @@
   // text swaps). Caret nudge for intrinsic `start`/`end` alignment depends on
   // the floating width, so a stale width leaves the caret off the anchor.
   function observeFloating() {
+	console.debug('>>> Entering observeFloating()');
     if (!ref || floatingObserver || typeof ResizeObserver === "undefined") {
       return;
     }
@@ -223,14 +241,21 @@
     // layout but before paint, so updating here applies the corrected position
     // in the same frame the content resized — no one-frame caret drift.
     floatingObserver = new ResizeObserver(() => updatePosition());
+	logger.debug(`observeFloating(): floatingObserver → ${floatingObserver}`);
+	console.debug(`observeFloating(): floatingObserver → ${floatingObserver}`);
     floatingObserver.observe(ref);
   }
 
   function unobserveFloating() {
+	console.debug('>>> Entering unobserveFloating()');
     if (floatingObserver) {
       floatingObserver.disconnect();
       floatingObserver = null;
+	logger.debug(`unobserveFloating(): floatingObserver → ${floatingObserver}`);
     }
+	console.debug('<<< Exiting unobserveFloating()');
+	console.debug('>>> Entering updatePosition()');
+	console.debug('<<< Exiting updatePosition()');
   }
 
   // Default portal target: nearest <dialog> or [popover] on the anchor. `target` wins.
@@ -272,6 +297,7 @@
       verticalAlignOffsetLeft,
       verticalAlignOffsetRight,
     });
+	logger.debug(`updatePosition(): pos → ${pos}`);
 
     // Latch the side only once it actually flips away from the preferred
     // direction. Until then keep recomputing, so the initial layout passes
@@ -284,6 +310,7 @@
       pos.actualDirection !== direction
     ) {
       lockedDirection = pos.actualDirection;
+	logger.debug(`updatePosition(): lockedDirection → ${lockedDirection}`);
     }
   }
 
@@ -294,9 +321,12 @@
   // `updatePosition()` itself. Locking there would latch onto the very
   // scroll/resize update that triggered the call, defeating the point.
   function lockAfterSettling() {
+	console.debug('>>> Entering lockAfterSettling()');
     if (lockDirection === "always" && lockedDirection === null) {
       lockedDirection = pos.actualDirection;
+	logger.debug(`lockAfterSettling(): lockedDirection → ${lockedDirection}`);
     }
+	console.debug('<<< Exiting lockAfterSettling()');
   }
 
   const scheduleUpdate = rafThrottle(updatePosition);

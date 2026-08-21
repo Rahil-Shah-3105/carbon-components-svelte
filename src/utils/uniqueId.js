@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 /**
@@ -7,5 +8,7 @@
  * @returns {string}
  */
 export function uniqueId(prefix = "ccs") {
+logger.debug(`>>> Entering uniqueId(prefix=${prefix})`);
+logger.debug(`<<< Exiting uniqueId(prefix=${prefix})`);
   return `${prefix}-${Math.random().toString(36).slice(2)}`;
 }

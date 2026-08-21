@@ -24,6 +24,7 @@ import "prismjs/components/prism-clike.js";
 import "prismjs/components/prism-javascript.js";
 import "prismjs/components/prism-typescript.js";
 import "prism-svelte";
+const logger = console;
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -122,10 +123,14 @@ function snippetMayNeedCarbonImportScan(source: string): boolean {
 }
 
 function createImportsUncached(source: string) {
+logger.debug(`>>> Entering createImportsUncached(source=${source})`);
   const inlineComponents = new Set<string>();
   const icons = new Set<string>();
+logger.debug(`createImportsUncached(source=${source}): inlineComponents → ${inlineComponents}`);
+logger.debug(`createImportsUncached(source=${source}): icons → ${icons}`);
   const actions = new Set<string>();
   let usesDocKbd = false;
+logger.debug(`createImportsUncached(source=${source}): actions → ${actions}`);
 
   // heuristic to guess if the inline component or expression name is a Carbon icon
   const isIcon = (text: string) =>
@@ -133,6 +138,7 @@ function createImportsUncached(source: string) {
 
   walk(parse(source) as unknown as Parameters<typeof walk>[0], {
     enter(node) {
+	logger.debug(`>>> Entering enter(node=${node})`);
       const n = node as {
         type?: string;
         name?: string;
@@ -160,6 +166,7 @@ function createImportsUncached(source: string) {
       } else if (n.type === "Action" && n.name) {
         actions.add(n.name);
       }
+	logger.debug(`<<< Exiting enter(node=${node})`);
     },
   });
 
@@ -188,6 +195,7 @@ function createImportsUncached(source: string) {
 
   if (lines.length === 0) return "";
 
+logger.debug(`<<< Exiting createImportsUncached(source=${source})`);
   return `<script>
 ${lines.join("\n")}
 </script>
@@ -196,20 +204,28 @@ ${lines.join("\n")}
 }
 
 function createImports(source: string) {
+logger.debug(`>>> Entering createImports(source=${source})`);
   const cached = createImportsCache.get(source);
   if (cached !== undefined) return cached;
+logger.debug(`createImports(source=${source}): cached → ${cached}`);
   const result = snippetMayNeedCarbonImportScan(source)
     ? createImportsUncached(source)
     : "";
   createImportsCache.set(source, result);
+logger.debug(`createImports(source=${source}): result → ${result}`);
+logger.debug(`<<< Exiting createImports(source=${source})`);
   return result;
 }
 
 async function formatAndHighlightPreviewSvelte(combinedSource: string) {
+logger.debug(`>>> Entering formatAndHighlightPreviewSvelte(combinedSource=${combinedSource})`);
   const mode = SKIP_MDSVEX_PRETTIER ? "raw" : "fmt";
   const cacheKey = `${mode}:${hashKey(combinedSource)}`;
+logger.debug(`formatAndHighlightPreviewSvelte(combinedSource=${combinedSource}): mode → ${mode}`);
+logger.debug(`formatAndHighlightPreviewSvelte(combinedSource=${combinedSource}): cacheKey → ${cacheKey}`);
   const cached = previewCodeCache.get(cacheKey);
   if (cached) return cached;
+logger.debug(`formatAndHighlightPreviewSvelte(combinedSource=${combinedSource}): cached → ${cached}`);
 
   const formattedCode = SKIP_MDSVEX_PRETTIER
     ? combinedSource
@@ -221,6 +237,7 @@ async function formatAndHighlightPreviewSvelte(combinedSource: string) {
   );
   const out = { formattedCode, highlightedCode };
   previewCodeCache.set(cacheKey, out);
+logger.debug(`<<< Exiting formatAndHighlightPreviewSvelte(combinedSource=${combinedSource})`);
   return out;
 }
 
@@ -248,6 +265,7 @@ async function formatAndHighlightFileSourceSvelte(
 }
 
 function plugin() {
+logger.debug('>>> Entering plugin()');
   /** mdsvex / remark can surface `html` nodes that carry fenced-block metadata on `lang`. */
   async function visitHtml(
     node: { lang?: string; value: string } & import("unist").Node,
@@ -259,6 +277,7 @@ function plugin() {
       !NO_PREVIEW_HTML_RE.test(node.value)
     ) {
       const scriptBlock = createImports(node.value);
+	logger.debug(`plugin(): scriptBlock → ${scriptBlock}`);
       const { formattedCode, highlightedCode } =
         await formatAndHighlightPreviewSvelte(scriptBlock + node.value);
 
@@ -267,11 +286,16 @@ function plugin() {
 
     if (node.value.startsWith("<FileSource")) {
       const srcMatch = node.value.match(FILE_SOURCE_SRC_REGEX);
+	logger.debug(`plugin(): srcMatch → ${srcMatch}`);
       const src = srcMatch ? srcMatch[1] : "";
+	logger.debug(`plugin(): src → ${src}`);
 
       const filePath = path.join(__dirname, "src/pages", `${src}.svelte`);
+	logger.debug(`plugin(): filePath → ${filePath}`);
       const sourceCode = fs.readFileSync(filePath, "utf-8");
+	logger.debug(`plugin(): sourceCode → ${sourceCode}`);
       const mtimeMs = fs.statSync(filePath).mtimeMs;
+	logger.debug(`plugin(): mtimeMs → ${mtimeMs}`);
       const { formattedCode, highlightedCode } =
         await formatAndHighlightFileSourceSvelte(src, sourceCode, mtimeMs);
 
@@ -279,6 +303,7 @@ function plugin() {
     }
   }
 
+logger.debug('<<< Exiting plugin()');
   return async (tree: Parameters<typeof visit>[0]) => {
     const jobs: Promise<void>[] = [];
     visit(tree, "html", (node) => {
@@ -368,6 +393,7 @@ function paragraphToHtml(node: Paragraph): string {
 }
 
 function heroIntro() {
+logger.debug('>>> Entering heroIntro()');
   return (
     tree: Parameters<typeof visit>[0],
     file: { path?: string; data?: { fm?: Record<string, string> } },
@@ -413,6 +439,7 @@ function heroIntro() {
       children.splice(introIndices[i], 1);
     }
   };
+logger.debug('<<< Exiting heroIntro()');
 }
 
 /** h2 intro that leads to subsections or a table—not a multi-paragraph demo block. */
@@ -452,6 +479,8 @@ function tocLinkClasses(level: number): string {
 }
 
 function carbonify() {
+logger.debug('>>> Entering carbonify()');
+logger.debug('<<< Exiting carbonify()');
   return (tree: Parameters<typeof visit>[0]) => {
     visit(tree, (node, index, parent) => {
       switch (node.type) {
@@ -611,6 +640,7 @@ export default {
     }),
     {
       markup({ content, filename }: { content: string; filename: string }) {
+		logger.debug(`>>> Entering markup(content=${content},filename=${filename})`);
         if (NODE_MODULES_REGEX.test(filename)) return null;
         if (!filename.match(PAGES_COMPONENTS_REGEX)) return null;
 
@@ -656,6 +686,7 @@ export default {
           }
         }
 
+		logger.debug(`<<< Exiting markup(content=${content},filename=${filename})`);
         return { code };
       },
     },

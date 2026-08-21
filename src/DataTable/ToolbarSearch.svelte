@@ -92,11 +92,14 @@
   }
 
   async function expandSearch() {
+	console.debug('>>> Entering expandSearch()');
     await tick();
     if (disabled || persistent || expanded) return;
     expanded = true;
+	logger.debug(`expandSearch(): expanded → ${expanded}`);
     await tick();
     ref.focus();
+	console.debug('<<< Exiting expandSearch()');
   }
 
   /**
@@ -110,8 +113,10 @@
    * ```
    */
   export function clear() {
+	console.debug('>>> Entering clear()');
     value = "";
     if (!persistent) expanded = false;
+	console.debug(`clear(): value → ${value}`);
   }
 
   $: if (!persistent) expanded = String(value ?? "").length > 0;

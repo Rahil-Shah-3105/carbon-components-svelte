@@ -1,4 +1,5 @@
 import flatpickr from "flatpickr";
+const logger = console;
 
 /**
  * Carbon-styled English locale: single-letter weekday abbreviations
@@ -26,6 +27,8 @@ const ENGLISH_LOCALE = {
  * @returns {unknown}
  */
 export function resolveLocale(locale) {
+logger.debug(`>>> Entering resolveLocale(locale=${locale})`);
+logger.debug(`<<< Exiting resolveLocale(locale=${locale})`);
   return locale === "en" ? ENGLISH_LOCALE : locale;
 }
 
@@ -50,6 +53,7 @@ export function resolveLocale(locale) {
  * @param {{ isMonth?: boolean; isYear?: boolean }} [modifiers]
  */
 function updateClasses(instance, { isMonth = false, isYear = false } = {}) {
+logger.debug(`>>> Entering updateClasses(instance=${instance},isMonth=${isMonth},isYear=${isYear})`);
   const {
     calendarContainer,
     days,
@@ -83,6 +87,7 @@ function updateClasses(instance, { isMonth = false, isYear = false } = {}) {
       node.classList.add("no-border");
     } else if (node.classList.contains("today") && selectedDates.length === 0) {
       node.classList.remove("no-border");
+	logger.debug(`<<< Exiting updateClasses(instance=${instance},isMonth=${isMonth},isYear=${isYear})`);
     }
   }
 }
@@ -101,8 +106,10 @@ function updateClasses(instance, { isMonth = false, isYear = false } = {}) {
  * @param {HTMLElement} dayElem
  */
 function markDisabledDayAriaState(_dObj, _dStr, _fp, dayElem) {
+logger.debug(`>>> Entering markDisabledDayAriaState(_dObj=${_dObj},_dStr=${_dStr},_fp=${_fp},dayElem=${dayElem})`);
   if (dayElem.classList.contains("flatpickr-disabled")) {
     dayElem.setAttribute("aria-disabled", "true");
+	logger.debug(`<<< Exiting markDisabledDayAriaState(_dObj=${_dObj},_dStr=${_dStr},_fp=${_fp},dayElem=${dayElem})`);
   }
 }
 
@@ -115,10 +122,12 @@ function markDisabledDayAriaState(_dObj, _dStr, _fp, dayElem) {
  * @param {FlatpickrInstance} instance
  */
 function markTodayMonth(instance) {
+logger.debug(`>>> Entering markTodayMonth(instance=${instance})`);
   const now = new Date();
   for (const node of instance.rContainer?.querySelectorAll(
     ".flatpickr-monthSelect-month",
   ) ?? []) {
+	logger.debug(`markTodayMonth(instance=${instance}): now → ${now}`);
     const isToday =
       node.dateObj.getFullYear() === now.getFullYear() &&
       node.dateObj.getMonth() === now.getMonth();
@@ -127,6 +136,7 @@ function markTodayMonth(instance) {
       node.setAttribute("aria-current", "date");
     } else {
       node.removeAttribute("aria-current");
+	logger.debug(`<<< Exiting markTodayMonth(instance=${instance})`);
     }
   }
 }
@@ -135,17 +145,22 @@ function markTodayMonth(instance) {
  * @param {FlatpickrInstance} instance
  */
 function updateMonthNode(instance) {
+logger.debug(`>>> Entering updateMonthNode(instance=${instance})`);
   const monthText = instance.l10n.months.longhand[instance.currentMonth];
   const staticMonthNode = instance.monthNav.querySelector(".cur-month");
+logger.debug(`updateMonthNode(instance=${instance}): staticMonthNode → ${staticMonthNode}`);
 
   if (staticMonthNode) {
     staticMonthNode.textContent = monthText;
   } else {
     const monthSelectNode = instance.monthsDropdownContainer;
     const span = document.createElement("span");
+	logger.debug(`updateMonthNode(instance=${instance}): span → ${span}`);
     span.setAttribute("class", "cur-month");
     span.textContent = monthText;
+	logger.debug(`updateMonthNode(instance=${instance}): span.textContent → ${span.textContent}`);
     monthSelectNode.parentNode?.replaceChild(span, monthSelectNode);
+	logger.debug(`<<< Exiting updateMonthNode(instance=${instance})`);
   }
 }
 
@@ -163,6 +178,7 @@ function updateMonthNode(instance) {
  * @returns {Promise<FlatpickrInstance>}
  */
 export async function createCalendar({ options, base, input, dispatch }) {
+logger.debug(`>>> Entering createCalendar(options=${options},base=${base},input=${input},dispatch=${dispatch})`);
   /** @type {((new (config: { position: string; input: HTMLInputElement }) => unknown) | undefined)} */
   let RangePlugin;
   /** @type {((config?: { shorthand?: boolean; dateFormat?: string; altFormat?: string }) => unknown) | undefined} */
@@ -175,16 +191,21 @@ export async function createCalendar({ options, base, input, dispatch }) {
     RangePlugin = importee.default;
   }
 
+logger.debug(`createCalendar(options=${options},base=${base},input=${input},dispatch=${dispatch}): RangePlugin → ${RangePlugin}`);
   if (options.mode === "month") {
     const importee = await import("flatpickr/dist/esm/plugins/monthSelect");
     monthSelectPlugin = importee.default;
   }
 
+logger.debug(`createCalendar(options=${options},base=${base},input=${input},dispatch=${dispatch}): monthSelectPlugin → ${monthSelectPlugin}`);
   if (options.mode === "year") {
     const importee = await import("./yearSelectPlugin.js");
+	logger.debug(`createCalendar(options=${options},base=${base},input=${input},dispatch=${dispatch}): importee → ${importee}`);
     yearSelectPlugin = importee.default;
   }
 
+logger.debug(`createCalendar(options=${options},base=${base},input=${input},dispatch=${dispatch}): yearSelectPlugin → ${yearSelectPlugin}`);
+const __log_start = Date.now();
   const plugins = [
     options.mode === "range" && RangePlugin
       ? new RangePlugin({ position: "left", input })
@@ -203,6 +224,7 @@ export async function createCalendar({ options, base, input, dispatch }) {
         })
       : false,
   ].filter(Boolean);
+logger.info(`createCalendar(options,base,input,dispatch)=${options},${base},${input},${dispatch}: database operation took ${Date.now() - __log_start} ms`);
 
   const userOnDayCreate = options.onDayCreate;
 
@@ -272,5 +294,6 @@ export async function createCalendar({ options, base, input, dispatch }) {
           : []),
     ],
   };
+logger.debug(`createCalendar(options=${options},base=${base},input=${input},dispatch=${dispatch}): config → ${config}`);
   return new /** @type {any} */ (flatpickr)(base, config);
 }

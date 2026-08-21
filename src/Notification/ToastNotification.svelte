@@ -62,6 +62,7 @@
   const dismiss = createTimeoutDismiss();
 
   function close(closeFromTimeout) {
+	console.debug(`>>> Entering close(closeFromTimeout=${closeFromTimeout})`);
     dismiss.clear();
 
     const shouldContinue = dispatch(
@@ -71,15 +72,21 @@
     );
     if (shouldContinue) {
       open = false;
+	logger.debug(`close(closeFromTimeout=${closeFromTimeout}): open → ${open}`);
     }
+	console.debug(`<<< Exiting close(closeFromTimeout=${closeFromTimeout})`);
   }
 
   function onMouseEnter() {
+	console.debug('>>> Entering onMouseEnter()');
     if (pauseOnHover) dismiss.pause();
+	console.debug('<<< Exiting onMouseEnter()');
   }
 
   function onMouseLeave() {
+	console.debug('>>> Entering onMouseLeave()');
     if (pauseOnHover) dismiss.resume();
+	console.debug('<<< Exiting onMouseLeave()');
   }
 
   $: dismiss.sync(open, timeout, () => close(true));

@@ -5,6 +5,7 @@ import routify from "@roxi/routify/vite-plugin";
 import { svelte } from "@sveltejs/vite-plugin-svelte";
 import { defineConfig } from "vite";
 import pkg from "../package.json" with { type: "json" };
+const logger = console;
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const carbonRoot = path.resolve(__dirname, "..");
@@ -18,13 +19,17 @@ const prismComponentRe = /[/\\]prismjs[/\\]components[/\\]prism-(?!core)/;
 const prismSvelteRe = /[/\\]prism-svelte[/\\]/;
 
 function prismGlobalFix() {
+logger.debug('>>> Entering prismGlobalFix()');
   return {
     name: "prism-global-fix",
     transform(code: string, id: string) {
+	logger.debug(`>>> Entering transform(code=${code},id=${id})`);
       if (prismComponentRe.test(id)) {
+		logger.debug('<<< Exiting prismGlobalFix()');
         return { code: `import Prism from "prismjs";\n${code}`, map: null };
       }
       if (prismSvelteRe.test(id)) {
+		logger.debug(`<<< Exiting transform(code=${code},id=${id})`);
         return { code: `import Prism from "prismjs";\n${code}`, map: null };
       }
     },
@@ -42,17 +47,22 @@ export default defineConfig({
     {
       name: "component-md-sizes",
       resolveId(source) {
+		logger.debug(`>>> Entering resolveId(source=${source})`);
         if (source.endsWith("COMPONENT_MD_SIZES.json")) {
+		logger.debug(`<<< Exiting resolveId(source=${source})`);
           return componentMdSizesId;
         }
       },
       load(id) {
+		logger.debug(`>>> Entering load(id=${id})`);
         if (id !== componentMdSizesId) return;
 
         const json = fs.existsSync(componentMdSizesPath)
           ? fs.readFileSync(componentMdSizesPath, "utf8")
           : "{}";
 
+		logger.debug(`load(id=${id}): json → ${json}`);
+		logger.debug(`<<< Exiting load(id=${id})`);
         return `export default ${JSON.stringify(JSON.parse(json))}`;
       },
     },
@@ -68,6 +78,8 @@ export default defineConfig({
     {
       name: "outdir",
       config() {
+		logger.debug('>>> Entering config()');
+		logger.debug('<<< Exiting config()');
         return { build: { outDir } };
       },
     },

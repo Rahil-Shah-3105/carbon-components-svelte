@@ -38,9 +38,12 @@
   const dispatch = createEventDispatcher();
 
   function toggle() {
+	console.debug('>>> Entering toggle()');
     if (disabled) return;
     selected = !selected;
+	logger.debug(`toggle(): selected → ${selected}`);
     dispatch("change", { selected });
+	console.debug('<<< Exiting toggle()');
   }
 </script>
 

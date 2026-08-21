@@ -1,3 +1,4 @@
+const logger = console;
 /**
  * Svelte action that truncates text on an element.
  * `lines` above 1 switches to multiline mode (end clamp only).
@@ -9,9 +10,12 @@
  * <p use:truncate={{ lines: 3 }}>...</p>
  */
 export function truncate(node, options = {}) {
+logger.debug(`>>> Entering truncate(node=${node},options=${options})`);
   const prefix = "bx--text-truncate--";
 
+logger.debug(`truncate(node=${node},options=${options}): prefix → ${prefix}`);
   function update(options = {}) {
+	logger.debug(`>>> Entering update(options=${options})`);
     const lines = options.lines ?? 1;
     const multiline = lines > 1;
 
@@ -27,13 +31,17 @@ export function truncate(node, options = {}) {
     } else {
       suffix = options.clamp === "front" ? "front" : "end";
       node.style.removeProperty("--ccs-truncate-lines");
+	logger.debug(`update(options=${options}): suffix → ${suffix}`);
     }
 
+	logger.debug(`<<< Exiting update(options=${options})`);
     node.className = `${classes} ${prefix}${suffix}`;
   }
 
+logger.debug(`truncate(node=${node},options=${options}): node.className → ${node.className}`);
   update(options);
 
+logger.debug(`<<< Exiting truncate(node=${node},options=${options})`);
   return { update };
 }
 

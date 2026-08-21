@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 /**
@@ -6,6 +7,8 @@
  * @returns {string}
  */
 export function fileIdentityKey(file) {
+logger.debug(`>>> Entering fileIdentityKey(file=${file})`);
+logger.debug(`<<< Exiting fileIdentityKey(file=${file})`);
   return `${file.name}\0${file.size}\0${file.lastModified}`;
 }
 
@@ -25,6 +28,7 @@ export function fileIdentityKey(file) {
  * }}
  */
 export function filterIncomingFiles(incoming, options = {}) {
+logger.debug(`>>> Entering filterIncomingFiles(incoming=${incoming},options=${options})`);
   const {
     maxFileSize,
     preventDuplicate = false,
@@ -34,11 +38,13 @@ export function filterIncomingFiles(incoming, options = {}) {
 
   /** @type {File[]} */
   let accepted = [...incoming];
+logger.debug(`filterIncomingFiles(incoming=${incoming},options=${options}): accepted → ${accepted}`);
   /** @type {Array<{ file: File; reason: "size" | "duplicate" }>} */
   const rejected = [];
 
   if (maxFileSize !== undefined) {
     const oversized = accepted.filter((file) => file.size > maxFileSize);
+	logger.debug(`filterIncomingFiles(incoming=${incoming},options=${options}): oversized → ${oversized}`);
     accepted = accepted.filter((file) => file.size <= maxFileSize);
     for (const file of oversized) {
       rejected.push({ file, reason: "size" });
@@ -47,7 +53,10 @@ export function filterIncomingFiles(incoming, options = {}) {
 
   if (preventDuplicate) {
     const existingKeys = new Set(existingFiles.map(fileIdentityKey));
+	logger.debug(`filterIncomingFiles(incoming=${incoming},options=${options}): existingKeys → ${existingKeys}`);
     function isDuplicate(file) {
+	logger.debug(`>>> Entering isDuplicate(file=${file})`);
+	logger.debug(`<<< Exiting isDuplicate(file=${file})`);
       return (
         !(carryRefs?.has(file) ?? false) &&
         existingKeys.has(fileIdentityKey(file))
@@ -60,5 +69,6 @@ export function filterIncomingFiles(incoming, options = {}) {
     }
   }
 
+logger.debug(`<<< Exiting filterIncomingFiles(incoming=${incoming},options=${options})`);
   return { accepted, rejected };
 }

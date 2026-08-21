@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 /**
@@ -8,13 +9,16 @@
  * @returns {void}
  */
 function copyTextWithExecCommand(text) {
+logger.debug(`>>> Entering copyTextWithExecCommand(text=${text})`);
   if (typeof document.execCommand !== "function") {
     throw new Error("Failed to copy");
   }
 
   const textarea = document.createElement("textarea");
+logger.debug(`copyTextWithExecCommand(text=${text}): textarea → ${textarea}`);
   textarea.value = text;
   textarea.setAttribute("readonly", "");
+logger.debug(`copyTextWithExecCommand(text=${text}): textarea.value → ${textarea.value}`);
   textarea.style.position = "fixed";
   textarea.style.top = "0";
   textarea.style.left = "0";
@@ -25,11 +29,13 @@ function copyTextWithExecCommand(text) {
 
   try {
     const ok = document.execCommand("copy");
+	logger.debug(`copyTextWithExecCommand(text=${text}): ok → ${ok}`);
     if (!ok) {
       throw new Error("Failed to copy");
     }
   } finally {
     document.body.removeChild(textarea);
+	logger.debug(`<<< Exiting copyTextWithExecCommand(text=${text})`);
   }
 }
 
@@ -43,11 +49,13 @@ function copyTextWithExecCommand(text) {
  * @returns {Promise<void>}
  */
 export async function copyText(text) {
+logger.debug(`>>> Entering copyText(text=${text})`);
   if (typeof navigator !== "undefined" && navigator.clipboard?.writeText) {
     try {
       await navigator.clipboard.writeText(text);
       return;
     } catch {
+	logger.error(`Exception in copyText(text=${text}): (no error binding)`);
       // Fall through to execCommand (insecure contexts, permission denied, etc.).
     }
   }

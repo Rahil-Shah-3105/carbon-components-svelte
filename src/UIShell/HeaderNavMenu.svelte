@@ -50,36 +50,45 @@
    * @type {(item: { id: string; isSelected: boolean }) => void}
    */
   function updateSelectedItems(item) {
+	console.debug(`>>> Entering updateSelectedItems(item=${item})`);
     selectedItems.update((_items) => ({
       ..._items,
       [item.id]: item.isSelected,
     }));
+	console.debug(`<<< Exiting updateSelectedItems(item=${item})`);
   }
 
   /**
    * @type {(element: HTMLElement) => void}
    */
   function registerMenuItem(element) {
+	console.debug(`>>> Entering registerMenuItem(element=${element})`);
     menuItems.update((items) => [...items, element]);
+	console.debug(`<<< Exiting registerMenuItem(element=${element})`);
   }
 
   /**
    * @type {(element: HTMLElement) => void}
    */
   function unregisterMenuItem(element) {
+	console.debug(`>>> Entering unregisterMenuItem(element=${element})`);
     menuItems.update((items) => items.filter((item) => item !== element));
+	console.debug(`<<< Exiting unregisterMenuItem(element=${element})`);
   }
 
   /**
    * @type {(trigger?: "escape-key" | "blur") => Promise<void>}
    */
   async function closeMenu(trigger) {
+	console.debug(`>>> Entering closeMenu(trigger=${trigger})`);
     if (expanded) {
       expanded = false;
+	logger.debug(`closeMenu(trigger=${trigger}): expanded → ${expanded}`);
       if (trigger) dispatch("close", { trigger });
       await tick();
       ref?.focus();
     }
+	console.debug(`<<< Exiting closeMenu(trigger=${trigger})`);
   }
 
   setContext("carbon:HeaderNavMenu", {
@@ -95,10 +104,13 @@
     Object.values($selectedItems).filter(Boolean).length > 0;
 
   function handleOutsideClick(event) {
+	console.debug(`>>> Entering handleOutsideClick(event=${event})`);
     if (expanded && isOutsideClick(event, ref)) {
       expanded = false;
+	logger.debug(`handleOutsideClick(event=${event}): expanded → ${expanded}`);
       dispatch("close", { trigger: "outside-click" });
     }
+	console.debug(`<<< Exiting handleOutsideClick(event=${event})`);
   }
 </script>
 

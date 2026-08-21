@@ -41,8 +41,11 @@
   let animation = undefined;
 
   function toggle() {
+	console.debug('>>> Entering toggle()');
     open = !open;
     animation = open ? "expanding" : "collapsing";
+	logger.debug(`toggle(): open → ${open}`);
+	console.debug(`toggle(): animation → ${animation}`);
     dispatch("toggle", open);
   }
 </script>

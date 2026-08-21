@@ -1,3 +1,4 @@
+const logger = console;
 import { onMount } from "svelte";
 import { derived, writable } from "svelte/store";
 import { breakpoints } from "./breakpoints";
@@ -13,6 +14,7 @@ import { breakpoints } from "./breakpoints";
  * @returns {() => void} Cleanup function that removes the listeners.
  */
 export function observeBreakpoint(callback) {
+logger.debug(`>>> Entering observeBreakpoint(callback=${callback})`);
   /** @type {Record<BreakpointSize, MediaQueryList>} */
   const match = {
     sm: window.matchMedia(`(max-width: ${breakpoints.md}px)`),
@@ -34,7 +36,9 @@ export function observeBreakpoint(callback) {
     )
   );
 
+logger.debug(`observeBreakpoint(callback=${callback}): matchers → ${matchers}`);
   const entry = matchers.find(([_size, queryList]) => queryList.matches);
+logger.debug(`observeBreakpoint(callback=${callback}): entry → ${entry}`);
   const size = entry?.[0];
   if (size !== undefined) callback(/** @type {BreakpointSize} */ (size));
 
@@ -53,6 +57,7 @@ export function observeBreakpoint(callback) {
   return () => {
     for (const [_size, queryList] of matchers) {
       queryList.removeEventListener("change", handleChange);
+	logger.debug(`<<< Exiting observeBreakpoint(callback=${callback})`);
     }
   };
 }
@@ -62,8 +67,10 @@ export function observeBreakpoint(callback) {
  * It also provides functions for creating derived stores used to do comparisons.
  */
 export function breakpointObserver() {
+logger.debug('>>> Entering breakpointObserver()');
   /** @type {import("svelte/store").Writable<BreakpointSize | undefined>} */
   const store = writable(undefined);
+logger.debug(`breakpointObserver(): store → ${store}`);
 
   onMount(() => observeBreakpoint((size) => store.set(size)));
 
@@ -94,12 +101,14 @@ export function breakpointObserver() {
       );
     },
   };
+logger.debug('<<< Exiting breakpointObserver()');
 }
 
 /**
  * @param {BreakpointSize} size
  */
 function checkSizeValid(size) {
+logger.debug(`>>> Entering checkSizeValid(size=${size})`);
   if (size in breakpoints === false)
     throw new Error(`"${size}" is not a valid breakpoint size.`);
 }

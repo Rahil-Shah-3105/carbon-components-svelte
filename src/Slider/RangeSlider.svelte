@@ -151,78 +151,105 @@
 
   /** @type {(label: string, numericValue: number) => string | number} */
   function formatRangeLabel(label, numericValue) {
+	console.debug(`>>> Entering formatRangeLabel(label=${label},numericValue=${numericValue})`);
     if (label) return label;
     if (formatValue) return formatValue(numericValue);
+	console.debug(`<<< Exiting formatRangeLabel(label=${label},numericValue=${numericValue})`);
     return label || numericValue;
   }
 
   /** @type {(numericValue: number) => string | undefined} */
   function getValueText(numericValue) {
+	console.debug(`>>> Entering getValueText(numericValue=${numericValue})`);
+	console.debug(`<<< Exiting getValueText(numericValue=${numericValue})`);
     return formatValue ? formatValue(numericValue) : undefined;
   }
 
   /** @type {(e: PointerLikeEvent) => number | null} */
   function getClientX(event) {
+	console.debug(`>>> Entering getClientX(event=${event})`);
     if ("touches" in event) return event.touches[0]?.clientX ?? null;
+	console.debug(`<<< Exiting getClientX(event=${event})`);
     return event.clientX;
   }
 
   /** @type {(e: PointerLikeEvent) => ActiveHandle} */
   function pickHandle(event) {
+	console.debug(`>>> Entering pickHandle(event=${event})`);
     if (event.target === lowerThumbRef) return "lower";
     if (event.target === upperThumbRef) return "upper";
     const clientX = getClientX(event);
     if (clientX == null) return activeHandle;
+	console.debug(`pickHandle(event=${event}): clientX → ${clientX}`);
     const lowerRect = lowerThumbRef?.getBoundingClientRect();
     const upperRect = upperThumbRef?.getBoundingClientRect();
+	console.debug(`pickHandle(event=${event}): lowerRect → ${lowerRect}`);
     const dLower = lowerRect
       ? Math.abs(lowerRect.left + lowerRect.width / 2 - clientX)
       : Number.POSITIVE_INFINITY;
+	console.debug(`pickHandle(event=${event}): upperRect → ${upperRect}`);
     const dUpper = upperRect
       ? Math.abs(upperRect.left + upperRect.width / 2 - clientX)
       : Number.POSITIVE_INFINITY;
+	console.debug(`<<< Exiting pickHandle(event=${event})`);
     return dLower <= dUpper ? "lower" : "upper";
   }
 
   /** @type {(e: MouseEvent | TouchEvent) => void} */
   function startInteraction(event) {
+	console.debug(`>>> Entering startInteraction(event=${event})`);
     if (disabled || readonly) return;
     activeHandle = pickHandle(event);
+	logger.debug(`startInteraction(event=${event}): activeHandle → ${activeHandle}`);
     if (activeHandle === "lower") {
+	console.debug(`startInteraction(event=${event}): activeHandle → ${activeHandle}`);
       lowerThumbRef?.focus({ preventScroll: true });
     } else {
       upperThumbRef?.focus({ preventScroll: true });
     }
     currentEvent = event;
+	logger.debug(`startInteraction(event=${event}): currentEvent → ${currentEvent}`);
     holding = true;
+	logger.debug(`startInteraction(event=${event}): holding → ${holding}`);
     dragging = true;
+	console.debug(`<<< Exiting startInteraction(event=${event})`);
   }
 
   /** @type {() => void} */
   function stopHolding() {
+	console.debug('>>> Entering stopHolding()');
     const wasHolding = holding;
     holding = false;
+	logger.debug(`stopHolding(): holding → ${holding}`);
     dragging = false;
+	logger.debug(`stopHolding(): dragging → ${dragging}`);
     currentEvent = null;
+	logger.debug(`stopHolding(): currentEvent → ${currentEvent}`);
     if (wasHolding && !disabled && !readonly) {
       dispatch("change", { value, valueUpper });
+	console.debug('<<< Exiting stopHolding()');
     }
   }
 
   /** @type {(e: PointerLikeEvent) => void} */
   function move(event) {
+	console.debug(`>>> Entering move(event=${event})`);
     if (holding) {
       currentEvent = event;
+	logger.debug(`move(event=${event}): currentEvent → ${currentEvent}`);
       dragging = true;
+	logger.debug(`move(event=${event}): dragging → ${dragging}`);
     }
   }
 
   /** @type {(e: PointerLikeEvent | null) => void} */
   function calcValue(event) {
+	console.debug(`>>> Entering calcValue(event=${event})`);
     if (disabled || readonly || !event || !trackRef) return;
 
     const offsetX = getClientX(event);
     if (offsetX == null) return;
+	console.debug(`calcValue(event=${event}): offsetX → ${offsetX}`);
     const { left, width } = trackRef.getBoundingClientRect();
     let nextValue =
       min +
@@ -237,15 +264,18 @@
     if (activeHandle === "lower") {
       if (nextValue > valueUpper) nextValue = valueUpper;
       value = nextValue;
+	logger.debug(`calcValue(event=${event}): value → ${value}`);
     } else {
       if (nextValue < value) nextValue = value;
       valueUpper = nextValue;
+	logger.debug(`calcValue(event=${event}): valueUpper → ${valueUpper}`);
     }
     dispatch("input", { value, valueUpper });
   }
 
   /** @type {(e: KeyboardEvent) => void} */
   function onKeyDown(event) {
+	console.debug(`>>> Entering onKeyDown(event=${event})`);
     if (disabled || readonly) return;
 
     if (event.key === "Home" || event.key === "End") {
@@ -278,16 +308,20 @@
     if (activeHandle === "lower") {
       let next = Math.round((value + delta) / step) * step;
       if (next < min) next = min;
+	console.debug(`onKeyDown(event=${event}): next → ${next}`);
       if (next > valueUpper) next = valueUpper;
       value = next;
     } else {
+	logger.debug(`onKeyDown(event=${event}): value → ${value}`);
       let next = Math.round((valueUpper + delta) / step) * step;
       if (next > max) next = max;
       if (next < value) next = value;
       valueUpper = next;
     }
+	logger.debug(`onKeyDown(event=${event}): valueUpper → ${valueUpper}`);
     dispatch("input", { value, valueUpper });
     dispatch("change", { value, valueUpper });
+	console.debug(`<<< Exiting onKeyDown(event=${event})`);
   }
 
   $: labelId = `label-${id}`;

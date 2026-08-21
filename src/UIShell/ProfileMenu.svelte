@@ -45,11 +45,14 @@
   let refMenu = null;
 
   function close() {
+	console.debug('>>> Entering close()');
     isOpen = false;
     dispatch("close");
+	logger.debug(`close(): isOpen → ${isOpen}`);
   }
 
   function handleOutsideClick(event) {
+	console.debug(`>>> Entering handleOutsideClick(event=${event})`);
     if (
       isOpen &&
       !preventCloseOnClickOutside &&
@@ -57,13 +60,16 @@
     ) {
       close();
     }
+	console.debug(`<<< Exiting handleOutsideClick(event=${event})`);
   }
 
   function handleKeydown(event) {
+	console.debug(`>>> Entering handleKeydown(event=${event})`);
     if (isOpen && event.key === "Escape") {
       close();
       ref?.focus();
     }
+	console.debug(`<<< Exiting handleKeydown(event=${event})`);
   }
 </script>
 

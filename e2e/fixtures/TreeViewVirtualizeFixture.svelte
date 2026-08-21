@@ -8,10 +8,13 @@
   let deepFile = null;
 
   function makeFolder(name, depth, fanout) {
+	console.debug(`>>> Entering makeFolder(name=${name},depth=${depth},fanout=${fanout})`);
     const node = { id: id(), text: name, nodes: [] };
     for (let i = 0; i < fanout.files; i++) {
+	console.debug(`makeFolder(name=${name},depth=${depth},fanout=${fanout}): node → ${node}`);
       const file = { id: id(), text: `${name}/file-${i}` };
       node.nodes.push(file);
+	console.debug(`makeFolder(name=${name},depth=${depth},fanout=${fanout}): file → ${file}`);
       if (depth === fanout.maxDepth) deepFile = file.id;
     }
     if (depth < fanout.maxDepth) {
@@ -19,6 +22,7 @@
         node.nodes.push(makeFolder(`${name}/sub-${i}`, depth + 1, fanout));
       }
     }
+	console.debug(`<<< Exiting makeFolder(name=${name},depth=${depth},fanout=${fanout})`);
     return node;
   }
 

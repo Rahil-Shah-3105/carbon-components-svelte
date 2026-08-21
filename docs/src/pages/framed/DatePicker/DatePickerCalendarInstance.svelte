@@ -10,13 +10,16 @@
   let weekendsDisabled = false;
 
   function openCalendar(e) {
+	console.debug(`>>> Entering openCalendar(e=${e})`);
     // Prevent the click from bubbling to the outside click
     // handler and closing the calendar immediately.
     e.stopPropagation();
     calendar?.open();
+	console.debug(`<<< Exiting openCalendar(e=${e})`);
   }
 
   function toggleWeekends() {
+	console.debug('>>> Entering toggleWeekends()');
     weekendsDisabled = !weekendsDisabled;
     calendar?.set(
       "disable",
@@ -24,6 +27,7 @@
         ? [(date) => date.getDay() === 0 || date.getDay() === 6]
         : [],
     );
+	logger.debug(`toggleWeekends(): weekendsDisabled → ${weekendsDisabled}`);
   }
 </script>
 

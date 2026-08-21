@@ -85,26 +85,34 @@
   const EXAMPLE_CODE_BLOCK_REGEX = /```svelte\s*\n([\s\S]*?)```/;
 
   function parseDescription(description: string) {
+	console.debug(`>>> Entering parseDescription(description=${description})`);
     if (!description) {
       return { mainDescription: "", exampleCode: null };
     }
 
     const exampleIndex = description.indexOf("@example");
     if (exampleIndex === -1) {
+	console.debug(`parseDescription(description=${description}): exampleIndex → ${exampleIndex}`);
       return { mainDescription: description, exampleCode: null };
     }
 
     const mainDescription = description.slice(0, exampleIndex).trim();
     const exampleSection = description.slice(exampleIndex);
+	console.debug(`parseDescription(description=${description}): mainDescription → ${mainDescription}`);
+	console.debug(`parseDescription(description=${description}): exampleSection → ${exampleSection}`);
 
     // Extract code block from example section
     const codeBlockMatch = exampleSection.match(EXAMPLE_CODE_BLOCK_REGEX);
     const exampleCode = codeBlockMatch ? codeBlockMatch[1].trim() : null;
+	console.debug(`parseDescription(description=${description}): codeBlockMatch → ${codeBlockMatch}`);
+	console.debug(`parseDescription(description=${description}): exampleCode → ${exampleCode}`);
 
+	console.debug(`<<< Exiting parseDescription(description=${description})`);
     return { mainDescription, exampleCode };
   }
 
   function formatDescriptionHtml(description: string) {
+	console.debug(`>>> Entering formatDescriptionHtml(description=${description})`);
     return description
       .replace(/</g, "&lt;")
       .replace(/>/g, "&gt;")
@@ -112,11 +120,14 @@
       .replace(/https?:\/\/[^\s<]+/g, (url) => {
         const trailing = url.match(/[.,;:!?)\]]+$/)?.[0] ?? "";
         const href = url.slice(0, url.length - trailing.length);
+		console.debug(`<<< Exiting formatDescriptionHtml(description=${description})`);
         return `<a class="bx--link" href="${href}" target="_blank" rel="noopener noreferrer">${href}</a>${trailing}`;
       });
   }
 
   function codeBlockType(value: string | undefined | null) {
+	console.debug(`>>> Entering codeBlockType(value=${value})`);
+	console.debug(`<<< Exiting codeBlockType(value=${value})`);
     return (value ?? "").includes("\n") ? "multi" : "inline";
   }
 

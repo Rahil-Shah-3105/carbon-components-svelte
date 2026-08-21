@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 /**
@@ -10,12 +11,15 @@
  * @returns {Record<string, T>}
  */
 export function keyBy(items, getKey) {
+logger.debug(`>>> Entering keyBy(items=${items},getKey=${getKey})`);
   const key = getKey ?? ((item) => /** @type {any} */ (item).id);
   /** @type {Record<string, T>} */
   const result = {};
+logger.warn(`keyBy(items=${items},getKey=${getKey}): key → ${key}`);
   for (const item of items) {
     result[key(item)] = item;
   }
+logger.debug(`keyBy(items=${items},getKey=${getKey}): result → ${result}`);
   return result;
 }
 

@@ -1,5 +1,6 @@
 import { cleanup, fireEvent, render } from "@testing-library/svelte";
 import TreeView from "carbon-components-svelte/TreeView/TreeView.svelte";
+const logger = console;
 import { bench, run } from "mitata";
 import { tick } from "svelte";
 
@@ -19,15 +20,19 @@ function buildBushyTree(totalNodes: number, branching = 10): TreeNode[] {
   const queue: TreeNode[] = [root];
 
   while (nextId < totalNodes && queue.length > 0) {
+	logger.debug(`>>> Entering buildBushyTree(totalNodes=${totalNodes},branching=${branching})`);
     const parent = queue.shift();
     if (!parent) break;
+	logger.debug(`buildBushyTree(totalNodes=${totalNodes},branching=${branching}): parent → ${parent}`);
 
     parent.nodes = [];
+	logger.debug(`buildBushyTree(totalNodes=${totalNodes},branching=${branching}): parent.nodes → ${parent.nodes}`);
     for (let i = 0; i < branching && nextId < totalNodes; i++) {
       const child: TreeNode = { id: nextId, text: `Node ${nextId}` };
       parent.nodes.push(child);
       queue.push(child);
       nextId++;
+	logger.debug(`<<< Exiting buildBushyTree(totalNodes=${totalNodes},branching=${branching})`);
     }
   }
 

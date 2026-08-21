@@ -24,19 +24,23 @@
   import { onMount } from "svelte";
 
   function applyActions(node, entries) {
+	console.debug(`>>> Entering applyActions(node=${node},entries=${entries})`);
     /** @type {Array<() => void>} */
     const destroyers = [];
 
     for (const entry of entries) {
       const isTuple = Array.isArray(entry);
       const action = isTuple ? entry[0] : entry;
+	console.debug(`applyActions(node=${node},entries=${entries}): isTuple → ${isTuple}`);
       const result = isTuple ? action(node, entry[1]) : action(node);
 
+	console.debug(`applyActions(node=${node},entries=${entries}): result → ${result}`);
       if (result && typeof result.destroy === "function") {
         destroyers.push(result.destroy);
       }
     }
 
+	console.debug(`<<< Exiting applyActions(node=${node},entries=${entries})`);
     return () => {
       for (const destroy of destroyers) {
         destroy();

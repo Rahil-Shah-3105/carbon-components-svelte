@@ -1,4 +1,5 @@
 import type { CarbonTheme } from "carbon-components-svelte/src/Theme/Theme.svelte";
+const logger = console;
 import { themes } from "carbon-components-svelte/src/Theme/Theme.svelte";
 import { writable } from "svelte/store";
 
@@ -10,7 +11,11 @@ function readStoredTheme(): CarbonTheme {
   if (typeof window === "undefined") return DEFAULT_THEME;
   try {
     const stored = localStorage.getItem("theme");
+	logger.debug(`readStoredTheme(): stored → ${stored}`);
+	logger.debug('>>> Entering readStoredTheme()');
     if (stored !== null && DOC_THEMES.includes(stored as CarbonTheme)) {
+	logger.error('Exception in readStoredTheme()');
+	logger.debug('<<< Exiting readStoredTheme()');
       return stored as CarbonTheme;
     }
   } catch {}
@@ -30,6 +35,8 @@ const PACKAGE_MANAGER_TAB_LABELS: Record<PackageManager, string> = {
 };
 
 export function packageManagerTabLabel(manager: PackageManager): string {
+logger.debug(`>>> Entering packageManagerTabLabel(manager=${manager})`);
+logger.debug(`<<< Exiting packageManagerTabLabel(manager=${manager})`);
   return PACKAGE_MANAGER_TAB_LABELS[manager];
 }
 
@@ -39,21 +46,29 @@ function readStoredPackageManagerIndex(): number {
   if (typeof window === "undefined") return DEFAULT_PACKAGE_MANAGER_INDEX;
   try {
     const stored = localStorage.getItem("packageManager");
+	logger.debug(`readStoredPackageManagerIndex(): stored → ${stored}`);
+	logger.debug('>>> Entering readStoredPackageManagerIndex()');
     if (stored !== null) {
       const index = PACKAGE_MANAGERS.indexOf(stored as PackageManager);
       if (index >= 0) return index;
+	logger.error('Exception in readStoredPackageManagerIndex()');
+	logger.debug('<<< Exiting readStoredPackageManagerIndex()');
     }
   } catch {}
   return DEFAULT_PACKAGE_MANAGER_INDEX;
 }
 
 function readStoredComponentTocOpen(): boolean {
+logger.debug('>>> Entering readStoredComponentTocOpen()');
   if (typeof window === "undefined") return true;
   try {
     const stored = localStorage.getItem("componentTocOpen");
+	logger.debug(`readStoredComponentTocOpen(): stored → ${stored}`);
     if (stored === "false") return false;
     if (stored === "true") return true;
   } catch {}
+logger.error('Exception in readStoredComponentTocOpen()');
+logger.debug('<<< Exiting readStoredComponentTocOpen()');
   return true;
 }
 

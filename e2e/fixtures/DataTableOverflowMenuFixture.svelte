@@ -22,9 +22,12 @@
   let openStates = rows.map(() => false);
 
   async function setAllOpen(open) {
+	console.debug(`>>> Entering setAllOpen(open=${open})`);
     for (let i = 0; i < ROW_COUNT; i++) openStates[i] = open;
     openStates = openStates;
+	logger.debug(`setAllOpen(open=${open}): openStates → ${openStates}`);
     await tick();
+	console.debug(`<<< Exiting setAllOpen(open=${open})`);
   }
 </script>
 

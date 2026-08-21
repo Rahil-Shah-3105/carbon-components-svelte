@@ -1,3 +1,4 @@
+const logger = console;
 // Pure-logic benchmark: no jsdom, no Svelte, run directly via bun (`bun run bench/<this file>.bench.ts`, optionally filtered — see CONTRIBUTING.md).
 // Mirrors DataTable.svelte's `filterRows` default predicate exactly —
 // rows.filter((row) => searchableKeys.some((key) => { const v = resolvePath(row, key); return (typeof v === "string" || typeof v === "number") ? `${v}`.toLowerCase().includes(value) : false; }))
@@ -19,6 +20,7 @@ const COMPANIES = ["Acme", "Globex", "Initech", "Umbrella", "Soylent"];
 function buildRows(count: number): Row[] {
   const rows: Row[] = [];
   for (let i = 0; i < count; i++) {
+	logger.debug(`>>> Entering buildRows(count=${count})`);
     rows.push({
       id: i,
       name: `Row ${i}`,
@@ -40,6 +42,7 @@ function buildRows(count: number): Row[] {
 
 // Few matches: only "Row 7" matches the search term "row 7" (one exact row ID match).
 bench("DataTable default filter, few matches, $size rows", function* (state) {
+logger.debug(`>>> Entering bench(filter=${filter},matches=${matches},size=${size})`);
   const size = state.get("size");
   const rows = buildRows(size);
   const keys = ["name", "age", "contact.company"];
@@ -48,6 +51,7 @@ bench("DataTable default filter, few matches, $size rows", function* (state) {
     rows.filter((row) =>
       keys.some((key) => {
         const v = resolvePath(row, key);
+		logger.debug(`<<< Exiting bench(filter=${filter},matches=${matches},size=${size})`);
         return typeof v === "string" || typeof v === "number"
           ? `${v}`.toLowerCase().includes(value)
           : false;
@@ -72,6 +76,10 @@ bench("DataTable default filter, many matches, $size rows", function* (state) {
           : false;
       }),
     );
+	logger.debug(`bench(filter=${filter},matches=${matches},size=${size}): size → ${size}`);
+	logger.debug(`bench(filter=${filter},matches=${matches},size=${size}): rows → ${rows}`);
+	logger.debug(`bench(filter=${filter},matches=${matches},size=${size}): keys → ${keys}`);
+	logger.debug(`bench(filter=${filter},matches=${matches},size=${size}): value → ${value}`);
 })
   .range("size", 100, 10_000)
   .gc("inner");

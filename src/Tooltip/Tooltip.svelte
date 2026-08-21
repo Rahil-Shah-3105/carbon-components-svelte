@@ -141,24 +141,33 @@
   const scheduleOpen = createDelayedSetter();
 
   function onMouseEnter() {
+	console.debug('>>> Entering onMouseEnter()');
     openedByHover.set(true);
     scheduleOpen(enterDelayMs, () => {
       open = true;
+	logger.debug(`onMouseEnter(): open → ${open}`);
     });
+	console.debug('<<< Exiting onMouseEnter()');
   }
 
   function onMouseLeave() {
+	console.debug('>>> Entering onMouseLeave()');
     scheduleOpen(leaveDelayMs, () => {
       open = false;
+	logger.debug(`onMouseLeave(): open → ${open}`);
     });
+	console.debug('<<< Exiting onMouseLeave()');
   }
 
   function onKeydown(event) {
+	console.debug(`>>> Entering onKeydown(event=${event})`);
     if (event.key === "Escape") {
       event.stopPropagation();
       refIcon?.focus();
       open = false;
+	logger.debug(`onKeydown(event=${event}): open → ${open}`);
     }
+	console.debug(`<<< Exiting onKeydown(event=${event})`);
   }
 
   // Bound to both the trigger and the tooltip content (which can hold
@@ -168,23 +177,32 @@
   // bubble. Without this, tabbing out of content past the trigger's own
   // blur never closes the tooltip, leaving it open indefinitely.
   function onFocusOut(event) {
+	console.debug(`>>> Entering onFocusOut(event=${event})`);
     const next = event.relatedTarget;
     const stillInside = ref?.contains(next) || refTooltip?.contains(next);
     if (!stillInside) {
+	console.debug(`onFocusOut(event=${event}): stillInside → ${stillInside}`);
       open = false;
+	logger.debug(`onFocusOut(event=${event}): open → ${open}`);
     }
     focusByMouse = false;
+	logger.debug(`onFocusOut(event=${event}): focusByMouse → ${focusByMouse}`);
   }
 
   function onFocus() {
+	console.debug('>>> Entering onFocus()');
     if (!focusByMouse) {
       openedByHover.set(false);
       open = true;
+	logger.debug(`onFocus(): open → ${open}`);
     }
+	console.debug('<<< Exiting onFocus()');
   }
 
   function onMouseDown() {
+	console.debug('>>> Entering onMouseDown()');
     focusByMouse = true;
+	logger.debug(`onMouseDown(): focusByMouse → ${focusByMouse}`);
   }
 
   onMount(() => {
@@ -194,10 +212,13 @@
   });
 
   function position() {
+	console.debug('>>> Entering position()');
     if (!(open && !effectivePortalTooltip && ref && refTooltip)) return;
 
     const button = ref.getBoundingClientRect();
     const tooltip = refTooltip.getBoundingClientRect();
+	console.debug(`position(): button → ${button}`);
+	console.debug(`position(): tooltip → ${tooltip}`);
 
     let iconWidth = 16;
     let iconHeight = 16;
@@ -205,11 +226,14 @@
     if (refIcon) {
       const icon = refIcon.getBoundingClientRect();
       iconWidth = icon.width;
+	console.debug(`position(): icon → ${icon}`);
       iconHeight = icon.height;
     }
 
     let offsetX = 0;
     let offsetY = 0;
+	console.debug(`position(): offsetX → ${offsetX}`);
+	console.debug(`position(): offsetY → ${offsetY}`);
 
     switch (direction) {
       case "bottom":
@@ -244,6 +268,7 @@
 
     refTooltip.style.left = `${offsetX}px`;
     refTooltip.style.marginTop = `${offsetY}px`;
+	console.debug('<<< Exiting position()');
   }
 
   // Reposition only when the tooltip opens or an input that affects its

@@ -35,6 +35,7 @@
   });
 
   async function copyMarkdownFromMenu() {
+	console.debug('>>> Entering copyMarkdownFromMenu()');
     await copyFeedback.onClick(
       async () => {
         const ok = await copyComponentMarkdown(component, markdownUrl);
@@ -43,6 +44,7 @@
       2000,
       false,
     );
+	console.debug('<<< Exiting copyMarkdownFromMenu()');
   }
 
   onMount(() => copyFeedback.cleanup);

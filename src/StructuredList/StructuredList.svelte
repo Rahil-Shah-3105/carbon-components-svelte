@@ -52,6 +52,7 @@
    * @type {(value: Value) => void}
    */
   function update(value) {
+	console.debug(`>>> Entering update(value=${value})`);
     if (multiple) {
       selectedValue.update((current) => {
         const list = Array.isArray(current) ? current : [];
@@ -62,6 +63,7 @@
     } else {
       selectedValue.set(value);
     }
+	console.debug(`<<< Exiting update(value=${value})`);
   }
 
   setContext("carbon:StructuredListWrapper", {

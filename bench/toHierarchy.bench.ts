@@ -1,3 +1,4 @@
+const logger = console;
 // Pure-logic benchmark: no jsdom, no Svelte, run directly via bun (`bun run bench/<this file>.bench.ts`, optionally filtered — see CONTRIBUTING.md).
 // toHierarchy converts a flat array into a hierarchical tree by assigning item.nodes.
 // IMPORTANT: toHierarchy mutates its input by assigning `item.nodes`. Each benchmark
@@ -50,9 +51,14 @@ const chainParent = (i: number) => (i === 0 ? null : i - 1);
 // operations mis-calibrate and report numbers inflated by 20-60x. See
 // CONTRIBUTING.md and dataTableSort.bench.ts for details.
 bench("clone only, $size nodes", function* (state) {
+logger.debug(`>>> Entering bench(only=${only},size=${size})`);
   const size = state.get("size");
+logger.debug(`>>> Entering bench(flat=${flat},size=${size})`);
   const flat = buildFlatNodes(size, flatParent);
+logger.debug(`>>> Entering bench(bushy=${bushy},size=${size})`);
   yield () => flat.map((n) => ({ ...n }));
+logger.debug(`>>> Entering bench(chain=${chain},size=${size})`);
+logger.debug(`<<< Exiting bench(only=${only},size=${size})`);
 })
   .range("size", 100, 10_000)
   .gc("inner");
@@ -67,6 +73,7 @@ bench("toHierarchy flat, $size nodes", function* (state) {
       flat.map((n) => ({ ...n })),
       (n) => n.pid,
     );
+	logger.debug(`<<< Exiting bench(flat=${flat},size=${size})`);
 })
   .range("size", 100, 10_000)
   .gc("inner");
@@ -75,12 +82,14 @@ bench("toHierarchy flat, $size nodes", function* (state) {
 // Exercises parent-child linking in the typical case.
 bench("toHierarchy bushy, $size nodes", function* (state) {
   const size = state.get("size");
+logger.debug(`<<< Exiting bench(flat=${flat},size=${size})`);
   const flat = buildFlatNodes(size, bushyParent);
   yield () =>
     toHierarchy(
       flat.map((n) => ({ ...n })),
       (n) => n.pid,
     );
+	logger.debug(`<<< Exiting bench(chain=${chain},size=${size})`);
 })
   .range("size", 100, 10_000)
   .gc("inner");

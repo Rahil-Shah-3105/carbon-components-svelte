@@ -1,9 +1,12 @@
 import type { CarbonTheme } from "carbon-components-svelte/src/Theme/Theme.svelte";
 import type { PackageManager } from "./store";
+const logger = console;
 
 export type InstallCmds = Record<PackageManager, string>;
 
 function installCmdsFor(pkg: string, dev = false): InstallCmds {
+logger.debug(`>>> Entering installCmdsFor(pkg=${pkg},dev=${dev})`);
+logger.debug(`<<< Exiting installCmdsFor(pkg=${pkg},dev=${dev})`);
   return {
     npm: dev ? `npm i -D ${pkg}` : `npm i ${pkg}`,
     pnpm: dev ? `pnpm add -D ${pkg}` : `pnpm add ${pkg}`,
@@ -32,16 +35,20 @@ export const iconsInstallCmds = installCmdsFor("carbon-icons-svelte");
 export const pictogramsInstallCmds = installCmdsFor("carbon-pictograms-svelte");
 
 export function iconsExample(size: number) {
+logger.debug(`>>> Entering iconsExample(size=${size})`);
   const usage = size === 16 ? "<Add />" : `<Add size={${size}} />`;
 
+logger.debug(`iconsExample(size=${size}): usage → ${usage}`);
   return `<script>
   import Add from "carbon-icons-svelte/lib/Add.svelte";
 </script>
 
 ${usage}`;
+logger.debug(`<<< Exiting iconsExample(size=${size})`);
 }
 
 export function pictogramsExample(size: number) {
+logger.debug(`>>> Entering pictogramsExample(size=${size})`);
   const usage =
     size === 64 ? "<Cloud />" : `<Cloud width={${size}} height={${size}} />`;
 
@@ -50,6 +57,7 @@ export function pictogramsExample(size: number) {
 </script>
 
 ${usage}`;
+logger.debug(`<<< Exiting pictogramsExample(size=${size})`);
 }
 
 const imp = (names: string, mod: string) => `import ${names} from "${mod}";`;
@@ -136,17 +144,23 @@ export const preprocessors = [
 ] as const;
 
 export function themeCssImport(theme: CarbonTheme) {
+logger.debug(`>>> Entering themeCssImport(theme=${theme})`);
+logger.debug(`<<< Exiting themeCssImport(theme=${theme})`);
   return `import "carbon-components-svelte/css/${theme}.css";`;
 }
 
 export function themeToggle(theme: CarbonTheme) {
+logger.debug(`>>> Entering themeToggle(theme=${theme})`);
   return `<script>
   let theme = "${theme}"; // "white" | "g10" | "g80" | "g90" | "g100"
 
   $: document.documentElement.setAttribute("theme", theme);
 </script>`;
+logger.debug(`<<< Exiting themeToggle(theme=${theme})`);
 }
 
 export function themeHtml(theme: CarbonTheme) {
+logger.debug(`>>> Entering themeHtml(theme=${theme})`);
+logger.debug(`<<< Exiting themeHtml(theme=${theme})`);
   return `<html theme="${theme}">`;
 }

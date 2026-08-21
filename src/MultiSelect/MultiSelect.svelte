@@ -357,10 +357,15 @@
   let sortCollatorLocale;
   let sortCollator;
   function getSortCollator() {
+	console.debug('>>> Entering getSortCollator()');
     if (!sortCollator || sortCollatorLocale !== locale) {
       sortCollatorLocale = locale;
+	logger.debug(`getSortCollator(): sortCollatorLocale → ${sortCollatorLocale}`);
       sortCollator = new Intl.Collator(locale, { numeric: true });
+	logger.debug(`getSortCollator(): sortCollator → ${sortCollator}`);
+	console.debug(`getSortCollator(): sortCollator → ${sortCollator}`);
     }
+	console.debug('<<< Exiting getSortCollator()');
     return sortCollator;
   }
 
@@ -382,14 +387,18 @@
    * @type {(data: { key: "field" | "selection"; ref: HTMLDivElement | HTMLButtonElement }) => void}
    */
   function declareRef({ key, ref }) {
+	console.debug('>>> Entering declareRef()');
     switch (key) {
       case "field":
         fieldRef = ref;
+		logger.debug(`declareRef(): fieldRef → ${fieldRef}`);
         break;
       case "selection":
         selectionRef = ref;
+		logger.debug(`declareRef(): selectionRef → ${selectionRef}`);
         break;
     }
+	console.debug('<<< Exiting declareRef()');
   }
 
   setContext("carbon:MultiSelect", {
@@ -402,13 +411,16 @@
    * @param {Item & { checked?: boolean }} item
    */
   function isItemDisabled(item) {
+	console.debug(`>>> Entering isItemDisabled(item=${item})`);
     if (item.disabled) return true;
     if (hasMaxSelectedItems && item.isSelectAll) return true;
     if (isAtSelectionCap && !item.checked) return true;
+	console.debug(`<<< Exiting isItemDisabled(item=${item})`);
     return false;
   }
 
   function change(step) {
+	console.debug(`>>> Entering change(step=${step})`);
     // Disabled options stay in the keyboard navigation sequence (APG:
     // "Focusability of disabled controls") so assistive-tech users can
     // discover them; selectItem and the option click handlers refuse the
@@ -421,6 +433,8 @@
     // ComboBox's `filteredItems?.length ? filteredItems : items` guard.
     const navigableItems = filteredItems.length ? filteredItems : sortedItems;
     highlightedIndex = moveIndex(highlightedIndex, step, navigableItems.length);
+	logger.debug(`change(step=${step}): highlightedIndex → ${highlightedIndex}`);
+	console.debug(`change(step=${step}): highlightedIndex → ${highlightedIndex}`);
     highlightOrigin = "keyboard";
   }
 
@@ -429,6 +443,7 @@
    * checked. Mutates `sortedItems` in place; callers reassign it afterward.
    */
   function syncSelectAllItem() {
+	console.debug('>>> Entering syncSelectAllItem()');
     if (!hasSelectAll) return;
 
     const newSelectableChecked = sortedItems.filter(
@@ -450,21 +465,27 @@
         checked: newAllSelected,
       };
     }
+	console.debug('<<< Exiting syncSelectAllItem()');
   }
 
   /** Apply `selectionFeedback: "top"` bookkeeping after a checked-state change. */
   function applyTopSelectionFeedback() {
+	console.debug('>>> Entering applyTopSelectionFeedback()');
     if (selectionFeedback !== "top") return;
 
     selectedIds = sortedItems
       .filter((sortedItem) => sortedItem.checked && !sortedItem.isSelectAll)
       .map((sortedItem) => sortedItem.id);
+	logger.debug(`applyTopSelectionFeedback(): selectedIds → ${selectedIds}`);
+	console.debug(`applyTopSelectionFeedback(): sortedItems → ${sortedItems}`);
     internalSelectedIdsRef = selectedIds;
+	logger.debug(`applyTopSelectionFeedback(): internalSelectedIdsRef → ${internalSelectedIdsRef}`);
     sortedItems = sort();
   }
 
   /** Handle selection of an item, including isSelectAll logic. */
   function selectItem(item) {
+	console.debug(`>>> Entering selectItem(item=${item})`);
     // Read-only allows opening and navigating the menu to review values, but
     // never changing them. Guarding here covers every path (click, Enter,
     // label click, select-all) so callers don't each need a readonly check.
@@ -477,9 +498,11 @@
           ? sortedItem
           : { ...sortedItem, checked: target },
       );
+	logger.debug(`selectItem(item=${item}): sortedItems → ${sortedItems}`);
     } else {
       const itemIndex = sortedItems.indexOf(item);
       if (itemIndex !== -1) {
+		console.debug(`selectItem(item=${item}): itemIndex → ${itemIndex}`);
         sortedItems[itemIndex] = { ...item, checked: !item.checked };
       }
 
@@ -488,6 +511,7 @@
     }
 
     applyTopSelectionFeedback();
+	console.debug(`<<< Exiting selectItem(item=${item})`);
   }
 
   /**
@@ -498,6 +522,7 @@
    * @type {(targetIndex: number, checked: boolean) => boolean}
    */
   function selectItemRange(targetIndex, checked) {
+	console.debug(`>>> Entering selectItemRange(targetIndex=${targetIndex},checked=${checked})`);
     if (readonly) return false;
 
     const anchorIndex = itemsToUse.findIndex(
@@ -513,16 +538,20 @@
         .filter((item) => !item.isSelectAll && !isItemDisabled(item))
         .map((item) => item.id),
     );
+	console.debug(`selectItemRange(targetIndex=${targetIndex},checked=${checked}): end → ${end}`);
+	console.debug(`selectItemRange(targetIndex=${targetIndex},checked=${checked}): rangeIds → ${rangeIds}`);
 
     sortedItems = sortedItems.map((sortedItem) =>
       rangeIds.has(sortedItem.id) && sortedItem.checked !== checked
         ? { ...sortedItem, checked }
         : sortedItem,
     );
+	logger.debug(`selectItemRange(targetIndex=${targetIndex},checked=${checked}): sortedItems → ${sortedItems}`);
 
     syncSelectAllItem();
     applyTopSelectionFeedback();
 
+	console.debug(`<<< Exiting selectItemRange(targetIndex=${targetIndex},checked=${checked})`);
     return true;
   }
 
@@ -533,9 +562,12 @@
    * @param {string} text
    */
   async function announceStatus(text) {
+	console.debug(`>>> Entering announceStatus(text=${text})`);
     statusText = "";
     await tick();
     statusText = text;
+	logger.debug(`announceStatus(text=${text}): statusText → ${statusText}`);
+	console.debug(`<<< Exiting announceStatus(text=${text})`);
   }
 
   /**
@@ -544,9 +576,14 @@
    * is selected so a bare Delete press does not announce a phantom clear.
    */
   function clearSelection() {
+	console.debug('>>> Entering clearSelection()');
     if (selectionCount === 0) return;
     selectedIds = [];
+	logger.debug(`clearSelection(): selectedIds → ${selectedIds}`);
+	logger.debug(`clearSelection(): sortedItems → ${sortedItems}`);
+	console.debug(`clearSelection(): sortedItems → ${sortedItems}`);
     lastSelectedItemId = null;
+	logger.debug(`clearSelection(): lastSelectedItemId → ${lastSelectedItemId}`);
     sortedItems = sortedItems.map((item) => ({ ...item, checked: false }));
     announceStatus(selectionClearedText);
   }
@@ -669,24 +706,32 @@
    * @param {Event} event
    */
   function handleMenuScroll(event) {
+	console.debug(`>>> Entering handleMenuScroll(event=${event})`);
     const target = /** @type {HTMLElement} */ (event.target);
     listScrollTop = target.scrollTop;
+	console.debug(`handleMenuScroll(event=${event}): target → ${target}`);
     const detail = scrollEndTracker.observe({
       scrollTop: target.scrollTop,
       scrollHeight: target.scrollHeight,
       clientHeight: target.clientHeight,
       itemCount: itemsToUse.length,
     });
+	logger.debug(`handleMenuScroll(event=${event}): listScrollTop → ${listScrollTop}`);
     if (detail) {
       dispatch("scrollend", detail);
     }
+	console.debug(`<<< Exiting handleMenuScroll(event=${event})`);
   }
 
   function sort() {
+	console.debug('>>> Entering sort()');
     const selectedIdsSet = new Set(selectedIds);
 
+	console.debug(`sort(): selectedIdsSet → ${selectedIdsSet}`);
     const regularItems = items.filter((item) => !item.isSelectAll);
     const enabledRegularItems = regularItems.filter((item) => !item.disabled);
+	console.debug(`sort(): regularItems → ${regularItems}`);
+	console.debug(`sort(): enabledRegularItems → ${enabledRegularItems}`);
     const allChecked =
       enabledRegularItems.length > 0 &&
       enabledRegularItems.every((item) => selectedIdsSet.has(item.id));
@@ -705,6 +750,7 @@
         .filter((item) => !selectedIdsSet.has(item.id))
         .map((item) => ({ ...item, checked: false }));
 
+	console.debug('<<< Exiting sort()');
       return [
         ...selectAllEntries,
         ...(checkedItems.length > 1
@@ -892,19 +938,24 @@
    * @type {(trigger: "escape-key" | "outside-click") => void}
    */
   function close(trigger) {
+	console.debug(`>>> Entering close(trigger=${trigger})`);
     if (open) {
       open = false;
+	logger.debug(`close(trigger=${trigger}): open → ${open}`);
       dispatch("close", { trigger });
     }
+	console.debug(`<<< Exiting close(trigger=${trigger})`);
   }
 
   function handleOutsideInteraction(event) {
+	console.debug(`>>> Entering handleOutsideInteraction(event=${event})`);
     if (
       open &&
       isOutsideClick(event, [multiSelectRef, effectivePortalMenu && listRef])
     ) {
       close("outside-click");
     }
+	console.debug(`<<< Exiting handleOutsideInteraction(event=${event})`);
   }
 </script>
 

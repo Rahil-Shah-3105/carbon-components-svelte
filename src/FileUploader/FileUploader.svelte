@@ -101,7 +101,9 @@
    * ```
    */
   export function clearFiles() {
+	console.debug('>>> Entering clearFiles()');
     files = [];
+	logger.debug(`clearFiles(): files → ${files}`);
   }
 
   /**
@@ -179,11 +181,15 @@
 
   /** @param {ReadonlyArray<File>} list */
   function keyFiles(list) {
+	console.debug(`>>> Entering keyFiles(list=${list})`);
     const used = new Set();
     for (const f of list) {
+	console.debug(`keyFiles(list=${list}): used → ${used}`);
       const cached = fileKeys.get(f);
       if (cached !== undefined) used.add(cached);
+	console.debug(`keyFiles(list=${list}): cached → ${cached}`);
     }
+	console.debug(`<<< Exiting keyFiles(list=${list})`);
     return list.map((file) => {
       let key = fileKeys.get(file);
       if (key === undefined) {
@@ -207,6 +213,8 @@
    * @returns {"uploading" | "edit" | "complete"}
    */
   function resolveFileStatus(file, index) {
+	console.debug(`>>> Entering resolveFileStatus(file=${file},index=${index})`);
+	console.debug(`<<< Exiting resolveFileStatus(file=${file},index=${index})`);
     return typeof fileStatus === "function" ? fileStatus(file, index) : status;
   }
 
@@ -215,6 +223,8 @@
    * @param {number} index
    */
   function resolveFileInvalid(file, index) {
+	console.debug(`>>> Entering resolveFileInvalid(file=${file},index=${index})`);
+	console.debug(`<<< Exiting resolveFileInvalid(file=${file},index=${index})`);
     return typeof fileInvalid === "function" ? fileInvalid(file, index) : false;
   }
 
@@ -223,6 +233,8 @@
    * @param {number} index
    */
   function resolveFileErrorSubject(file, index) {
+	console.debug(`>>> Entering resolveFileErrorSubject(file=${file},index=${index})`);
+	console.debug(`<<< Exiting resolveFileErrorSubject(file=${file},index=${index})`);
     return typeof fileErrorSubject === "function"
       ? fileErrorSubject(file, index)
       : "";
@@ -233,6 +245,8 @@
    * @param {number} index
    */
   function resolveFileErrorBody(file, index) {
+	console.debug(`>>> Entering resolveFileErrorBody(file=${file},index=${index})`);
+	console.debug(`<<< Exiting resolveFileErrorBody(file=${file},index=${index})`);
     return typeof fileErrorBody === "function"
       ? fileErrorBody(file, index)
       : "";

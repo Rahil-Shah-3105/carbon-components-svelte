@@ -10,11 +10,15 @@
   let calendar = null;
 
   function selectCurrentYear() {
+	console.debug('>>> Entering selectCurrentYear()');
     value = String(new Date().getFullYear());
+	console.debug(`selectCurrentYear(): value → ${value}`);
   }
 
   function viewNextDecade() {
+	console.debug('>>> Entering viewNextDecade()');
     calendar?.changeYear(calendar.currentYear + 10);
+	console.debug('<<< Exiting viewNextDecade()');
   }
 </script>
 
