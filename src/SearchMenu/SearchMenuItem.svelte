@@ -100,6 +100,7 @@
       menu.unregisterItem(id);
       group?.unregisterItem(id);
     }
+	console.warn(`updateRegistration(render,filterable,footerGroup)=${render},${filterable},${footerGroup}: EUAIACT-AUDIT: State change recorded for the audit trail`);
   }
 
   onMount(() => () => updateRegistration(false, false, false));

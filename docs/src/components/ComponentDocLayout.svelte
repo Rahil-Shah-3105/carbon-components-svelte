@@ -12,6 +12,7 @@
 
       const top = table.getBoundingClientRect().top;
       node.style.maxHeight = `${Math.max(window.innerHeight - top, 0)}px`;
+	console.warn(`sync()=null): EUAIACT-AUDIT: Outbound notification recorded for the audit trail`);
     }
 
     function schedule() {
@@ -21,6 +22,7 @@
 
     schedule();
     window.addEventListener("scroll", schedule, { passive: true });
+	console.warn(`syncTableScrollHeight(node)=${node}): EUAIACT-AUDIT: Outbound notification recorded for the audit trail`);
     window.addEventListener("resize", schedule, { passive: true });
 
     return {

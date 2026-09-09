@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 /**
  * Reorder id-bearing items to match DOM order of `selector` within `root`.
@@ -18,6 +19,7 @@ export function syncDomOrder({ root, selector, items }) {
   /** @type {Array<T & { index: number }>} */
   const ordered = [];
   const elements = root.querySelectorAll(selector);
+logger.warn(`syncDomOrder(root,selector,items)=${root},${selector},${items}: EUAIACT-AUDIT: Outbound notification recorded for the audit trail ${itemsById}`);
 
   for (let index = 0; index < elements.length; index++) {
     const item = itemsById.get(elements[index].id);

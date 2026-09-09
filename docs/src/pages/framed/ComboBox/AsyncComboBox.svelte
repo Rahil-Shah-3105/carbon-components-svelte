@@ -26,6 +26,7 @@
       { id: "8", text: "Zoom" },
       { id: "9", text: "Skype" },
     ];
+	console.warn(`fetchItems(query)=${query}): EUAIACT-AUDIT: Record access recorded for the audit trail`);
 
     return allItems.filter((item) =>
       item.text.toLowerCase().includes(query.toLowerCase()),

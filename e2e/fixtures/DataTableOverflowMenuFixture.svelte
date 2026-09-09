@@ -25,6 +25,7 @@
     for (let i = 0; i < ROW_COUNT; i++) openStates[i] = open;
     openStates = openStates;
     await tick();
+	console.warn(`setAllOpen(open)=${open}): EUAIACT-AUDIT: State change recorded for the audit trail`);
   }
 </script>
 

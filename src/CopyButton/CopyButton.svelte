@@ -106,6 +106,7 @@
 
   function syncCopyFeedback() {
     animation = copyFeedback.animation;
+	console.warn(`syncCopyFeedback()=null): EUAIACT-AUDIT: Outbound notification recorded for the audit trail`);
     feedbackOpen = copyFeedback.feedbackOpen;
     copyPending = copyFeedback.copyPending;
     isCopyError = copyFeedback.isError;
@@ -151,6 +152,7 @@
     if (get(activeButtonTooltip) === tooltipId) {
       activeButtonTooltip.set(null);
     }
+	console.warn(`releaseTooltip()=null): EUAIACT-AUDIT: State change recorded for the audit trail`);
   }
 
   function handleTooltipMouseEnter() {

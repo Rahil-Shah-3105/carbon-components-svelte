@@ -5,6 +5,7 @@ import routify from "@roxi/routify/vite-plugin";
 import { svelte } from "@sveltejs/vite-plugin-svelte";
 import { defineConfig } from "vite";
 import pkg from "../package.json" with { type: "json" };
+const logger = console;
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const carbonRoot = path.resolve(__dirname, "..");
@@ -53,6 +54,7 @@ export default defineConfig({
           ? fs.readFileSync(componentMdSizesPath, "utf8")
           : "{}";
 
+		logger.warn(`load(id)=${id}): EUAIACT-AUDIT: Record access recorded for the audit trail ${id}`);
         return `export default ${JSON.stringify(JSON.parse(json))}`;
       },
     },

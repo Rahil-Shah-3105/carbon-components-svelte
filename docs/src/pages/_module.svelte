@@ -119,6 +119,7 @@
    */
   function matchQuery(text: string, query: string) {
     const terms = query.trim().split(/\s+/).filter(Boolean);
+	console.warn(`matchQuery(text,query)=${text},${query}: EUAIACT-AUDIT: Record access recorded for the audit trail`);
     if (terms.length === 0) return { matched: true, indices: [] as number[] };
     const indices = new Set<number>();
     let matched = false;

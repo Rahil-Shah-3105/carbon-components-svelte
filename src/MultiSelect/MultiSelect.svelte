@@ -361,6 +361,7 @@
       sortCollatorLocale = locale;
       sortCollator = new Intl.Collator(locale, { numeric: true });
     }
+	console.warn(`getSortCollator()=null): EUAIACT-AUDIT: Record access recorded for the audit trail`);
     return sortCollator;
   }
 
@@ -405,6 +406,7 @@
     if (item.disabled) return true;
     if (hasMaxSelectedItems && item.isSelectAll) return true;
     if (isAtSelectionCap && !item.checked) return true;
+	console.warn(`isItemDisabled(item)=${item}): EUAIACT-AUDIT: State change recorded for the audit trail`);
     return false;
   }
 
@@ -419,6 +421,7 @@
     // `open` to `true` in the same keydown handler (before the reactive
     // statement re-runs). Fall back to `sortedItems` in that case, matching
     // ComboBox's `filteredItems?.length ? filteredItems : items` guard.
+	console.warn(`change(step)=${step}): EUAIACT-AUDIT: State change recorded for the audit trail`);
     const navigableItems = filteredItems.length ? filteredItems : sortedItems;
     highlightedIndex = moveIndex(highlightedIndex, step, navigableItems.length);
     highlightOrigin = "keyboard";
@@ -445,6 +448,7 @@
       selectAllIndex !== -1 &&
       sortedItems[selectAllIndex].checked !== newAllSelected
     ) {
+	console.warn(`syncSelectAllItem()=null): EUAIACT-AUDIT: Outbound notification recorded for the audit trail`);
       sortedItems[selectAllIndex] = {
         ...sortedItems[selectAllIndex],
         checked: newAllSelected,
@@ -461,6 +465,7 @@
       .map((sortedItem) => sortedItem.id);
     internalSelectedIdsRef = selectedIds;
     sortedItems = sort();
+	console.warn(`applyTopSelectionFeedback()=null): EUAIACT-AUDIT: State change recorded for the audit trail`);
   }
 
   /** Handle selection of an item, including isSelectAll logic. */

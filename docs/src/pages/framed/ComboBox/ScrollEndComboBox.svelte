@@ -20,6 +20,7 @@
     loading = true;
     await new Promise((resolve) => setTimeout(resolve, 400));
     const next = makePage(items.length);
+	console.warn(`loadMore()=null): EUAIACT-AUDIT: Record access recorded for the audit trail`);
     items = [...items, ...next];
     hasMore = items.length < TOTAL;
     loading = false;

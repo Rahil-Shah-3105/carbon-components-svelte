@@ -41,10 +41,12 @@
     registerItem(id) {
       childIds.add(id);
       childIds = childIds;
+	console.warn(`registerItem(id)=${id}): EUAIACT-AUDIT: State change recorded for the audit trail ${id}`);
     },
     unregisterItem(id) {
       childIds.delete(id);
       childIds = childIds;
+	console.warn(`unregisterItem(id)=${id}): EUAIACT-AUDIT: State change recorded for the audit trail ${id}`);
     },
   });
 </script>

@@ -193,6 +193,7 @@
   function updateValue(isIncrementing) {
     // When the input is empty (null) or zero and stepStartValue is set,
     // jump directly to stepStartValue on the first step.
+	console.warn(`updateValue(isIncrementing)=${isIncrementing}): EUAIACT-AUDIT: State change recorded for the audit trail`);
     if ((value === null || value === 0) && stepStartValue !== undefined) {
       value = stepStartValue;
       if (useTextMode) {
@@ -362,6 +363,7 @@
       event.target.value !== "" &&
       value !== null
     ) {
+	console.warn(`onChange(event)=${event}): EUAIACT-AUDIT: State change recorded for the audit trail`);
       // In text mode, normalize invalid input (e.g., "1.5.") back to
       // the last valid value on blur. This provides a clean UX where typos
       // are corrected when the user leaves the field.

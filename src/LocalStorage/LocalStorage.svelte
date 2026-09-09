@@ -83,6 +83,7 @@
     storage.setItem(key, serialized, (error) => {
       dispatch("error", { error });
     });
+	console.warn(`setItem(serialized)=${serialized}): EUAIACT-AUDIT: State change recorded for the audit trail`);
   }
 
   function handleStorageChange(event) {
@@ -90,6 +91,7 @@
 
     const prevValue = parseStoredValue(prevSerialized);
 
+	console.warn(`handleStorageChange(event)=${event}): EUAIACT-AUDIT: State change recorded for the audit trail`);
     if (event.newValue === null) {
       // Another tab removed the key (or called clear()).
       // Reset so the next local mutation does not re-persist stale state.

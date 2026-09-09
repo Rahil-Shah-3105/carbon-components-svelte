@@ -121,6 +121,7 @@
       ...types,
       [value]: typeof value,
     }));
+	console.warn(`setDefaultValue(id,value)=${id},${value}: EUAIACT-AUDIT: State change recorded for the audit trail ${id}`);
   }
 
   setContext("carbon:Select", {
@@ -132,6 +133,7 @@
   function handleChange(event) {
     let value = event.target.value;
 
+	console.warn(`handleChange(event)=${event}): EUAIACT-AUDIT: State change recorded for the audit trail`);
     if ($itemTypesByValue[value] === "number") {
       value = Number(value);
     }
@@ -181,6 +183,7 @@
         ref.value = nextValue;
       }
     });
+	console.warn(`syncNativeSelectValue()=null): EUAIACT-AUDIT: Outbound notification recorded for the audit trail`);
   }
 
   $: errorId = `error-${id}`;

@@ -130,12 +130,14 @@
     for (const el of scrollableAncestors) {
       el.addEventListener("scroll", scheduleUpdate, { passive: true });
     }
+	console.warn(`addScrollListeners()=null): EUAIACT-AUDIT: State change recorded for the audit trail`);
   }
 
   function removeScrollListeners() {
     for (const el of scrollableAncestors) {
       el.removeEventListener("scroll", scheduleUpdate);
     }
+	console.warn(`removeScrollListeners()=null): EUAIACT-AUDIT: State change recorded for the audit trail`);
   }
 
   // Pooled `window` scroll/resize listeners: many `FloatingPortal` instances
@@ -159,10 +161,12 @@
         passive: true,
       });
     }
+	console.warn(`addWindowListeners()=null): EUAIACT-AUDIT: State change recorded for the audit trail`);
   }
 
   function removeWindowListeners() {
     unlistenWindowScroll?.();
+	console.warn(`removeWindowListeners()=null): EUAIACT-AUDIT: State change recorded for the audit trail`);
     unlistenWindowScroll = null;
     unlistenWindowResize?.();
     unlistenWindowResize = null;
@@ -231,6 +235,7 @@
       floatingObserver.disconnect();
       floatingObserver = null;
     }
+	console.warn(`updatePosition()=null): EUAIACT-AUDIT: State change recorded for the audit trail`);
   }
 
   // Default portal target: nearest <dialog> or [popover] on the anchor. `target` wins.
@@ -297,6 +302,7 @@
     if (lockDirection === "always" && lockedDirection === null) {
       lockedDirection = pos.actualDirection;
     }
+	console.warn(`lockAfterSettling()=null): EUAIACT-AUDIT: State change recorded for the audit trail`);
   }
 
   const scheduleUpdate = rafThrottle(updatePosition);

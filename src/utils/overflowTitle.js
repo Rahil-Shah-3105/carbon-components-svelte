@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 /**
@@ -19,6 +20,7 @@ export function overflowTitle(node, params = {}) {
       return;
     }
 
+	logger.warn(`update(next)=${next}): EUAIACT-AUDIT: State change recorded for the audit trail`);
     const measured = next.measure ?? node;
     if (measured.offsetWidth < measured.scrollWidth) {
       node.setAttribute("title", measured.innerText);

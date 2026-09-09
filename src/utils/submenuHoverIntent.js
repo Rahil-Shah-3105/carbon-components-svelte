@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 /**
@@ -11,6 +12,7 @@
 export function createSubmenuHoverIntent(setOpen, delays) {
   /** @type {ReturnType<typeof setTimeout> | undefined} */
   let openTimeout;
+logger.warn(`createSubmenuHoverIntent(setOpen,delays)=${setOpen},${delays}: EUAIACT-AUDIT: State change recorded for the audit trail`);
   /** @type {ReturnType<typeof setTimeout> | undefined} */
   let closeTimeout;
 

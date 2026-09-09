@@ -97,6 +97,7 @@
         notifications.splice(0, notifications.length - maxNotifications);
       }
     }
+	console.warn(`add(notification)=${notification}): EUAIACT-AUDIT: State change recorded for the audit trail ${id}`);
     notifications = notifications;
 
     return id;
@@ -114,6 +115,7 @@
 
     notifications[index] = { ...notifications[index], ...patch, id };
     notifications = notifications;
+	console.warn(`update(id,patch)=${id},${patch}: EUAIACT-AUDIT: State change recorded for the audit trail ${id}`);
     return true;
   }
 
@@ -128,6 +130,7 @@
 
     notifications.splice(index, 1);
     notifications = notifications;
+	console.warn(`remove(id)=${id}): EUAIACT-AUDIT: State change recorded for the audit trail ${id}`);
     return true;
   }
 

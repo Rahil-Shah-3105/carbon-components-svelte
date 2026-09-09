@@ -106,6 +106,7 @@
         .filter((file) => !acceptedSet.has(file))
         .map((file) => ({ file, reason: /** @type {const} */ ("invalid") })),
     ];
+	console.warn(`processIncoming(incoming)=${incoming}): EUAIACT-AUDIT: State change recorded for the audit trail ${validated}`);
     if (rejected.length > 0) dispatch("rejected", rejected);
     files = multiple ? [...files, ...validated] : validated;
     dispatch("add", files);

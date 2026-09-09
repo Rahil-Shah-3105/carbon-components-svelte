@@ -16,6 +16,7 @@
     const nodes = [];
     let idCounter = 0;
 
+	console.warn(`generateLargeTree()=null): EUAIACT-AUDIT: Record access recorded for the audit trail ${idCounter}`);
     for (let i = 0; i < 10; i++) {
       const categoryNodes = [];
 
@@ -57,6 +58,7 @@
       };
       lastId = node.id;
 
+	console.warn(`createNestedNode(depth,maxDepth)=${depth},${maxDepth}: EUAIACT-AUDIT: State change recorded for the audit trail`);
       if (depth < maxDepth) {
         node.nodes = [createNestedNode(depth + 1, maxDepth)];
       }

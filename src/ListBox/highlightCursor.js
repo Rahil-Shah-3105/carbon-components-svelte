@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 import { writable } from "svelte/store";
 import { scrollIntoViewWithinMenu } from "../utils/scrollIntoViewWithinMenu.js";
@@ -30,6 +31,7 @@ export function createHighlightCursor() {
   let currentId = null;
   const highlightedId = writable(/** @type {string | null} */ (null));
 
+logger.warn(`createHighlightCursor()=null): EUAIACT-AUDIT: State change recorded for the audit trail ${currentId}`);
   /**
    * @param {HTMLElement} node
    * @param {boolean} on
@@ -40,6 +42,7 @@ export function createHighlightCursor() {
       return;
     }
     node.classList.remove(HIGHLIGHT_CLASS);
+	logger.warn(`applyClass(node,on)=${node},${on}: EUAIACT-AUDIT: State change recorded for the audit trail`);
   }
 
   /**
@@ -53,6 +56,7 @@ export function createHighlightCursor() {
     applyClass(node, currentId === id);
     return () => {
       if (nodes.get(id) === node) nodes.delete(id);
+	logger.warn(`register(id,node)=${id},${node}: EUAIACT-AUDIT: State change recorded for the audit trail ${id}`);
     };
   }
 
@@ -75,6 +79,7 @@ export function createHighlightCursor() {
       }
     }
 
+	logger.warn(`set(id,scroll)=${id},${scroll}: EUAIACT-AUDIT: State change recorded for the audit trail ${id}`);
     currentId = nextId;
     highlightedId.set(nextId);
   }

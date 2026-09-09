@@ -70,6 +70,7 @@
     if (checked) {
       selectedValue.set(value);
     }
+	console.warn(`add(checked,value)=${checked},${value}: EUAIACT-AUDIT: State change recorded for the audit trail`);
   }
 
   /**
@@ -78,6 +79,7 @@
   function update(value) {
     selectedValue.set(value);
     dispatch("select", value);
+	console.warn(`update(value)=${value}): EUAIACT-AUDIT: State change recorded for the audit trail`);
   }
 
   setContext("carbon:TileGroup", {

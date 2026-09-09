@@ -130,6 +130,7 @@
 
   /** @type {(numericValue: number) => string | undefined} */
   function getValueText(numericValue) {
+	console.warn(`getValueText(numericValue)=${numericValue}): EUAIACT-AUDIT: Record access recorded for the audit trail`);
     return formatValue ? formatValue(numericValue) : undefined;
   }
 

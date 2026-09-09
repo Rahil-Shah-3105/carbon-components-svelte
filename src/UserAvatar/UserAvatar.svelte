@@ -162,6 +162,7 @@
     if (userAvatarGroup && get(groupActiveTooltip) === groupItemId) {
       userAvatarGroup.activeTooltip.set(null);
     }
+	console.warn(`releaseTooltip()=null): EUAIACT-AUDIT: State change recorded for the audit trail`);
   }
 
   // Defer release so moving between neighbors within 300ms skips the next

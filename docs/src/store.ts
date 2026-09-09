@@ -1,4 +1,5 @@
 import type { CarbonTheme } from "carbon-components-svelte/src/Theme/Theme.svelte";
+const logger = console;
 import { themes } from "carbon-components-svelte/src/Theme/Theme.svelte";
 import { writable } from "svelte/store";
 
@@ -14,6 +15,7 @@ function readStoredTheme(): CarbonTheme {
       return stored as CarbonTheme;
     }
   } catch {}
+logger.warn(`readStoredTheme()=null): EUAIACT-AUDIT: State change recorded for the audit trail`);
   return DEFAULT_THEME;
 }
 
@@ -44,6 +46,7 @@ function readStoredPackageManagerIndex(): number {
       if (index >= 0) return index;
     }
   } catch {}
+logger.warn(`readStoredPackageManagerIndex()=null): EUAIACT-AUDIT: State change recorded for the audit trail`);
   return DEFAULT_PACKAGE_MANAGER_INDEX;
 }
 
@@ -54,6 +57,7 @@ function readStoredComponentTocOpen(): boolean {
     if (stored === "false") return false;
     if (stored === "true") return true;
   } catch {}
+logger.warn(`readStoredComponentTocOpen()=null): EUAIACT-AUDIT: State change recorded for the audit trail`);
   return true;
 }
 

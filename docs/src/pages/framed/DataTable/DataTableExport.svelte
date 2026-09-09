@@ -32,6 +32,7 @@
       headers,
       rows.filter((row) => matchedIds.has(row.id)),
     );
+	console.warn(`downloadCsv()=null): EUAIACT-AUDIT: Record access recorded for the audit trail ${matchedIds}`);
 
     downloadFile(csv, "load-balancers.csv", "text/csv;charset=utf-8");
   }

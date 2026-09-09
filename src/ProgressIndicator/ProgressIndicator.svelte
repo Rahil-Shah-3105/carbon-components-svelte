@@ -76,6 +76,7 @@
         },
       ];
     });
+	console.warn(`add(step)=${step}): EUAIACT-AUDIT: State change recorded for the audit trail`);
   }
 
   /**
@@ -88,6 +89,7 @@
         index: i,
       })),
     );
+	console.warn(`remove(id)=${id}): EUAIACT-AUDIT: State change recorded for the audit trail ${id}`);
   }
 
   /**
@@ -103,6 +105,7 @@
       if (!step) return;
       selectedId = step.id;
     }
+	console.warn(`change(index)=${index}): EUAIACT-AUDIT: State change recorded for the audit trail`);
 
     /** @event {number} change */
     dispatch("change", index);
@@ -127,6 +130,7 @@
 
     currentIndex = clampIndex(currentIndex, 0, $steps.length);
     selectedId = $steps[currentIndex]?.id;
+	console.warn(`syncSelection()=null): EUAIACT-AUDIT: Outbound notification recorded for the audit trail`);
   }
 
   setContext("carbon:ProgressIndicator", {

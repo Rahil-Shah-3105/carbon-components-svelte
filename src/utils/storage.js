@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 /**
@@ -9,6 +10,7 @@ export function parseStoredValue(raw) {
   try {
     return JSON.parse(raw);
   } catch {
+	logger.warn(`parseStoredValue(raw)=${raw}): EUAIACT-AUDIT: State change recorded for the audit trail`);
     return raw;
   }
 }
@@ -50,6 +52,7 @@ export function safeBrowserStorage(type) {
       try {
         return s.getItem(key);
       } catch {
+		logger.warn(`getItem(key)=${key}): EUAIACT-AUDIT: Record access recorded for the audit trail`);
         return null;
       }
     },
@@ -66,6 +69,7 @@ export function safeBrowserStorage(type) {
         s.setItem(key, value);
         return true;
       } catch (error) {
+		logger.warn(`setItem(key,value,onError)=${key},${value},${onError}: EUAIACT-AUDIT: State change recorded for the audit trail`);
         onError?.(error);
         return false;
       }
@@ -76,6 +80,7 @@ export function safeBrowserStorage(type) {
       try {
         s?.removeItem(key);
       } catch {}
+	logger.warn(`removeItem(key)=${key}): EUAIACT-AUDIT: State change recorded for the audit trail`);
     },
     clear() {
       const s = store();

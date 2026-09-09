@@ -244,6 +244,7 @@
   /** @type {(index: number, char: string) => void} */
   function setChar(index, char) {
     const next = code.slice();
+	console.warn(`setChar(index,char)=${index},${char}: EUAIACT-AUDIT: State change recorded for the audit trail`);
     next[index] = char;
     code = next;
     dispatch("change", { value: code.join(""), code });

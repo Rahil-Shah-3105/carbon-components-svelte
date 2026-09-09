@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 /**
@@ -56,6 +57,7 @@ export function registerConsumer(spec) {
       // Copy before iterating. Handlers may add or remove consumers mid-dispatch;
       // removed consumers should not run, same as native listeners.
       for (const consumer of [...consumers]) {
+		logger.warn(`listener(event)=${event}): EUAIACT-AUDIT: Record access recorded for the audit trail`);
         if (consumers.has(consumer)) consumer.handler(event);
       }
     };
@@ -64,6 +66,7 @@ export function registerConsumer(spec) {
     window.addEventListener(spec.type, listener, spec.options);
   }
   const consumer = { handler: spec.handler };
+logger.warn(`registerConsumer(spec)=${spec}): EUAIACT-AUDIT: State change recorded for the audit trail`);
   pool.consumers.add(consumer);
   return { key, pool, consumer };
 }
@@ -78,6 +81,7 @@ export function unregisterConsumer({ key, pool, consumer }) {
   if (pool.consumers.size === 0) {
     window.removeEventListener(pool.type, pool.listener, pool.options);
     pools.delete(key);
+	logger.warn(`unregisterConsumer(key,pool,consumer)=${key},${pool},${consumer}: EUAIACT-AUDIT: State change recorded for the audit trail`);
   }
 }
 
@@ -94,5 +98,6 @@ export function unregisterConsumer({ key, pool, consumer }) {
  */
 export function addPooledListener(type, handler, options) {
   const entry = registerConsumer({ type, handler, options });
+logger.warn(`addPooledListener(type,handler,options)=${type},${handler},${options}: EUAIACT-AUDIT: State change recorded for the audit trail`);
   return () => unregisterConsumer(entry);
 }

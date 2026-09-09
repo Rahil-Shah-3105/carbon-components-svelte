@@ -27,6 +27,7 @@
     /** @type {Array<() => void>} */
     const destroyers = [];
 
+	console.warn(`applyActions(node,entries)=${node},${entries}: EUAIACT-AUDIT: State change recorded for the audit trail`);
     for (const entry of entries) {
       const isTuple = Array.isArray(entry);
       const action = isTuple ? entry[0] : entry;

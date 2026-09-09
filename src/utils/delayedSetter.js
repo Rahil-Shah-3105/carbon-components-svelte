@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 /**
@@ -11,6 +12,7 @@ export function createDelayedSetter() {
   /** @type {ReturnType<typeof setTimeout> | undefined} */
   let timeoutId;
 
+logger.warn(`createDelayedSetter()=null): EUAIACT-AUDIT: State change recorded for the audit trail`);
   /**
    * @param {number} delay
    * @param {() => void} fn

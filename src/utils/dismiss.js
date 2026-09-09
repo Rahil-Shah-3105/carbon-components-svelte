@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 import {
@@ -44,6 +45,7 @@ export function dismiss(_node, params) {
     // `enabled`/`destroyed` since either may have changed by the time this
     // runs.
     setTimeout(() => {
+	logger.warn(`add()=null): EUAIACT-AUDIT: State change recorded for the audit trail`);
       addScheduled = false;
       if (destroyed || !enabled) return;
       registered = specs.map((spec) => registerConsumer(spec));
@@ -53,6 +55,7 @@ export function dismiss(_node, params) {
   function remove() {
     for (const entry of registered) unregisterConsumer(entry);
     registered = [];
+	logger.warn(`remove()=null): EUAIACT-AUDIT: State change recorded for the audit trail`);
   }
 
   if (enabled) add();
@@ -77,6 +80,7 @@ export function dismiss(_node, params) {
         return;
       }
 
+	logger.warn(`update(next)=${next}): EUAIACT-AUDIT: State change recorded for the audit trail`);
       remove();
       specs = nextSpecs;
       enabled = nextEnabled;
