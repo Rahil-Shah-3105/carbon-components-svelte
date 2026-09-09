@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 /**
@@ -25,6 +26,7 @@ export function overflowTitle(node, params = {}) {
     } else {
       node.removeAttribute("title");
     }
+	logger.warn(`update(next)=${next}): CCPA-AUDIT: State change recorded for the audit trail`);
   }
 
   update(params);

@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 /** Default distance from the bottom (px) that counts as near end. */
@@ -100,6 +101,7 @@ export function createScrollEndTracker({
     reset() {
       armed = true;
       lastItemCount = undefined;
+	logger.warn(`reset()=null): CCPA-AUDIT: State change recorded for the audit trail`);
     },
   };
 }

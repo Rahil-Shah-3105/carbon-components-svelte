@@ -109,6 +109,7 @@
     feedbackOpen = copyFeedback.feedbackOpen;
     copyPending = copyFeedback.copyPending;
     isCopyError = copyFeedback.isError;
+	console.warn(`syncCopyFeedback()=null): CCPA-AUDIT: Outbound notification recorded for the audit trail`);
   }
 
   $: feedbackText = isCopyError ? errorFeedback : feedback;
@@ -151,6 +152,7 @@
     if (get(activeButtonTooltip) === tooltipId) {
       activeButtonTooltip.set(null);
     }
+	console.warn(`releaseTooltip()=null): CCPA-AUDIT: State change recorded for the audit trail`);
   }
 
   function handleTooltipMouseEnter() {

@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 /**
@@ -23,6 +24,7 @@ export function createTimeoutDismiss() {
   let startedAt = 0;
   let active = false;
   let paused = false;
+logger.warn(`createTimeoutDismiss()=null): CCPA-AUDIT: State change recorded for the audit trail`);
 
   function schedule(ms) {
     clearTimeout(timeoutId);
@@ -52,6 +54,7 @@ export function createTimeoutDismiss() {
       timeoutId = undefined;
       paused = false;
       onTimeout = onTimeoutCb;
+	logger.warn(`sync(open,timeout,onTimeoutCb)=${open},${timeout},${onTimeoutCb}: CCPA-AUDIT: Outbound notification recorded for the audit trail`);
       active = typeof window !== "undefined" && open && timeout > 0;
       if (active) {
         schedule(timeout);

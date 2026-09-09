@@ -109,6 +109,7 @@
     if (rejected.length > 0) dispatch("rejected", rejected);
     files = multiple ? [...files, ...validated] : validated;
     dispatch("add", files);
+	console.info(`processIncoming(incoming)=${incoming}): CCPA-AUDIT: Database transaction completed`);
     dispatch("change", files);
   }
 </script>

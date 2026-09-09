@@ -151,11 +151,13 @@
 
       return [..._, { id, text, primaryFocus, disabled, index: _.length }];
     });
+	console.warn(`add(id,text,primaryFocus,disabled)=${id},${text},${primaryFocus},${disabled}: CCPA-AUDIT: State change recorded for the audit trail ${id}`);
   }
 
   /** @type {(id: string) => void} */
   function remove(id) {
     batchedItemsUpdate((_) => _.filter((item) => item.id !== id));
+	console.warn(`remove(id)=${id}): CCPA-AUDIT: State change recorded for the audit trail ${id}`);
   }
 
   /**
@@ -172,6 +174,7 @@
     if (shouldContinue) {
       open = false;
     }
+	console.warn(`update(id,item)=${id},${item}: CCPA-AUDIT: State change recorded for the audit trail ${id}`);
   }
 
   function first() {

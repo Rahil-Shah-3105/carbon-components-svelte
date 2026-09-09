@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 import { clampIndex } from "./clampIndex.js";
@@ -121,6 +122,7 @@ export function rovingFocus(node, options) {
     /** @param {RovingFocusOptions} update */
     update(update) {
       opts = update;
+	logger.warn(`update(update)=${update}): CCPA-AUDIT: State change recorded for the audit trail`);
     },
     destroy() {
       node.removeEventListener("keydown", handleKeydown);

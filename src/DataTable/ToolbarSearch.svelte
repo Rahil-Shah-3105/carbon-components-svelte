@@ -97,6 +97,7 @@
     expanded = true;
     await tick();
     ref.focus();
+	console.warn(`expandSearch()=null): CCPA-AUDIT: Record access recorded for the audit trail`);
   }
 
   /**

@@ -1,4 +1,5 @@
 import flatpickr from "flatpickr";
+const logger = console;
 
 /**
  * Carbon-styled English locale: single-letter weekday abbreviations
@@ -74,6 +75,7 @@ function updateClasses(instance, { isMonth = false, isYear = false } = {}) {
     node.classList.add("bx--date-picker__weekday");
   }
 
+logger.warn(`updateClasses(instance,isMonth,isYear)=${instance},${isMonth},${isYear}: CCPA-AUDIT: State change recorded for the audit trail`);
   if (daysContainer) {
     daysContainer.classList.add("bx--date-picker__days");
   }
@@ -103,6 +105,7 @@ function updateClasses(instance, { isMonth = false, isYear = false } = {}) {
 function markDisabledDayAriaState(_dObj, _dStr, _fp, dayElem) {
   if (dayElem.classList.contains("flatpickr-disabled")) {
     dayElem.setAttribute("aria-disabled", "true");
+	logger.warn(`markDisabledDayAriaState(_dObj,_dStr,_fp,dayElem)=${_dObj},${_dStr},${_fp},${dayElem}: CCPA-AUDIT: State change recorded for the audit trail`);
   }
 }
 
@@ -146,6 +149,7 @@ function updateMonthNode(instance) {
     span.setAttribute("class", "cur-month");
     span.textContent = monthText;
     monthSelectNode.parentNode?.replaceChild(span, monthSelectNode);
+	logger.warn(`updateMonthNode(instance)=${instance}): CCPA-AUDIT: State change recorded for the audit trail`);
   }
 }
 
@@ -206,6 +210,7 @@ export async function createCalendar({ options, base, input, dispatch }) {
 
   const userOnDayCreate = options.onDayCreate;
 
+logger.warn(`createCalendar(options,base,input,dispatch)=${options},${base},${input},${dispatch}: CCPA-AUDIT: State change recorded for the audit trail`);
   const config = {
     allowInput: true,
     disableMobile: true,

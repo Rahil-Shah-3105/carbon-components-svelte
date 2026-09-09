@@ -112,6 +112,7 @@
     const truncated = labelRef.scrollWidth > labelRef.clientWidth;
     isTruncated = truncated;
     truncationLabel = truncated ? text : "";
+	console.warn(`measureTruncation()=null): CCPA-AUDIT: State change recorded for the audit trail`);
   }
 
   $: if (maxWidth != null && !skeleton) {

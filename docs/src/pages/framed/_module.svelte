@@ -15,6 +15,7 @@
         ["white", "g10"].includes(theme) ? "light" : "dark",
       );
     }
+	console.warn(`applyTheme(theme)=${theme}): CCPA-AUDIT: State change recorded for the audit trail`);
   }
 
   onMount(() => {

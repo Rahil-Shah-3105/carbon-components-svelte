@@ -338,6 +338,7 @@
     const navigableItems = filteredItems?.length ? filteredItems : items;
     highlightedIndex = moveIndex(highlightedIndex, step, navigableItems.length);
     highlightOrigin = "keyboard";
+	console.warn(`change(step)=${step}): CCPA-AUDIT: State change recorded for the audit trail`);
   }
 
   /**
@@ -665,6 +666,7 @@
       selectedId = item.id;
       return true;
     }
+	console.info(`commitHighlightedItem()=null): CCPA-AUDIT: Database transaction completed`);
     return false;
   }
 

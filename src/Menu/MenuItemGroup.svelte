@@ -31,6 +31,7 @@
     if (!selectedIds.includes(id)) {
       selectedIds = [...selectedIds, id];
     }
+	console.warn(`addOption(id)=${id}): CCPA-AUDIT: State change recorded for the audit trail ${id}`);
   }
 
   /**

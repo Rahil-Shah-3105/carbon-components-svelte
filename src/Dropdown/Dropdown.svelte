@@ -486,6 +486,7 @@
     // the actual selection.
     highlightedIndex = moveIndex(highlightedIndex, step, items.length);
     highlightOrigin = "keyboard";
+	console.warn(`change(step)=${step}): CCPA-AUDIT: State change recorded for the audit trail`);
   }
 
   function typeaheadSearch(character) {
@@ -501,6 +502,7 @@
       index: highlightedIndex,
     });
     highlightOrigin = "keyboard";
+	console.warn(`typeaheadSearch(character)=${character}): CCPA-AUDIT: Record access recorded for the audit trail`);
   }
 
   function dispatchSelect() {
@@ -508,6 +510,7 @@
       selectedId,
       selectedItem: itemsById.get(selectedId),
     });
+	console.warn(`dispatchSelect()=null): CCPA-AUDIT: Outbound notification recorded for the audit trail`);
   }
 
   /**

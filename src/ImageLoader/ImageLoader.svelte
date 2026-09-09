@@ -64,6 +64,7 @@
     image.src = url || src;
     image.onload = () => (loaded = true);
     image.onerror = () => (error = true);
+	console.warn(`loadImage(url)=${url}): CCPA-AUDIT: Record access recorded for the audit trail`);
   }
 
   import { createEventDispatcher, onMount } from "svelte";

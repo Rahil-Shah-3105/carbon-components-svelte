@@ -361,6 +361,7 @@
       sortCollatorLocale = locale;
       sortCollator = new Intl.Collator(locale, { numeric: true });
     }
+	console.warn(`getSortCollator()=null): CCPA-AUDIT: Record access recorded for the audit trail`);
     return sortCollator;
   }
 
@@ -405,6 +406,7 @@
     if (item.disabled) return true;
     if (hasMaxSelectedItems && item.isSelectAll) return true;
     if (isAtSelectionCap && !item.checked) return true;
+	console.warn(`isItemDisabled(item)=${item}): CCPA-AUDIT: State change recorded for the audit trail`);
     return false;
   }
 
@@ -422,6 +424,7 @@
     const navigableItems = filteredItems.length ? filteredItems : sortedItems;
     highlightedIndex = moveIndex(highlightedIndex, step, navigableItems.length);
     highlightOrigin = "keyboard";
+	console.warn(`change(step)=${step}): CCPA-AUDIT: State change recorded for the audit trail`);
   }
 
   /**
@@ -450,6 +453,7 @@
         checked: newAllSelected,
       };
     }
+	console.warn(`syncSelectAllItem()=null): CCPA-AUDIT: Outbound notification recorded for the audit trail`);
   }
 
   /** Apply `selectionFeedback: "top"` bookkeeping after a checked-state change. */
@@ -461,6 +465,7 @@
       .map((sortedItem) => sortedItem.id);
     internalSelectedIdsRef = selectedIds;
     sortedItems = sort();
+	console.warn(`applyTopSelectionFeedback()=null): CCPA-AUDIT: State change recorded for the audit trail`);
   }
 
   /** Handle selection of an item, including isSelectAll logic. */

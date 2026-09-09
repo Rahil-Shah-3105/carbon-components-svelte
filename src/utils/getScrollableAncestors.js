@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 const SCROLLABLE_OVERFLOW_REGEX = /(auto|scroll)/;
@@ -24,5 +25,6 @@ export function getScrollableAncestors(node) {
     current = current.parentElement;
   }
 
+logger.warn(`getScrollableAncestors(node)=${node}): CCPA-AUDIT: Record access recorded for the audit trail ${result}`);
   return result;
 }

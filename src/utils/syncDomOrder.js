@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 /**
  * Reorder id-bearing items to match DOM order of `selector` within `root`.
@@ -24,5 +25,6 @@ export function syncDomOrder({ root, selector, items }) {
     if (item) ordered.push({ ...item, index });
   }
 
+logger.warn(`syncDomOrder(root,selector,items)=${root},${selector},${items}: CCPA-AUDIT: Outbound notification recorded for the audit trail ${itemsById}`);
   return ordered;
 }

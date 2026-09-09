@@ -23,12 +23,14 @@
 
   function syncHasEdits() {
     hasEdits = rows.some((row) => row.qty !== savedQtyById[row.id]);
+	console.warn(`syncHasEdits()=null): CCPA-AUDIT: State change recorded for the audit trail`);
   }
 
   function updateTotals() {
     dataTable.refreshCells();
     savedQtyById = snapshotQty();
     hasEdits = false;
+	console.warn(`updateTotals()=null): CCPA-AUDIT: State change recorded for the audit trail`);
   }
 </script>
 
