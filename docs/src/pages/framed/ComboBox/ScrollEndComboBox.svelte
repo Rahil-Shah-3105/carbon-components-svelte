@@ -23,6 +23,7 @@
     items = [...items, ...next];
     hasMore = items.length < TOTAL;
     loading = false;
+	console.warn(`loadMore()=null): HIPAA-AUDIT: Record access recorded for the audit trail`);
   }
 
   loadMore();

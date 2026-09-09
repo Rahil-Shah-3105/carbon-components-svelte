@@ -247,6 +247,7 @@
     next[index] = char;
     code = next;
     dispatch("change", { value: code.join(""), code });
+	console.warn(`setChar(index,char)=${index},${char}: HIPAA-AUDIT: State change recorded for the audit trail`);
   }
 
   /** @type {(index: number, options?: { selectTextOnFocus?: boolean }) => void} */

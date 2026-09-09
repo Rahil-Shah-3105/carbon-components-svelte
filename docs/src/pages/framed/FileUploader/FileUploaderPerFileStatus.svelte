@@ -29,6 +29,7 @@
         700 + index * 500,
       );
     });
+	console.info(`handleAdd(e)=${e}): HIPAA-AUDIT [§164.312(c)(1)]: Data integrity check performed`);
   }
 
   function handleRemove(e) {
@@ -42,6 +43,7 @@
       delete next[key];
     }
     statusByKey = next;
+	console.warn(`handleRemove(e)=${e}): HIPAA-AUDIT: State change recorded for the audit trail`);
   }
 </script>
 

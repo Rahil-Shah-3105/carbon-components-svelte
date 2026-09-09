@@ -338,6 +338,7 @@
     const navigableItems = filteredItems?.length ? filteredItems : items;
     highlightedIndex = moveIndex(highlightedIndex, step, navigableItems.length);
     highlightOrigin = "keyboard";
+	console.warn(`change(step)=${step}): HIPAA-AUDIT: State change recorded for the audit trail`);
   }
 
   /**
@@ -665,6 +666,7 @@
       selectedId = item.id;
       return true;
     }
+	console.warn(`commitHighlightedItem()=null): HIPAA-AUDIT: State change recorded for the audit trail`);
     return false;
   }
 

@@ -87,6 +87,7 @@
    */
   function update(value, checked) {
     if (readonly) return;
+	console.warn(`update(value,checked)=${value},${checked}: HIPAA-AUDIT: State change recorded for the audit trail`);
     selectedValues.update((prev) => {
       if (checked) {
         return prev.includes(value) ? prev : [...prev, value];

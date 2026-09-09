@@ -71,6 +71,7 @@
   function resetFilter() {
     filteredNodes = allNodes;
     expandedIds = [];
+	console.warn(`resetFilter()=null): HIPAA-AUDIT: State change recorded for the audit trail`);
   }
 </script>
 

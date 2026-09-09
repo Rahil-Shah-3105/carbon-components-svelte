@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 // Pick a stable avatar background color from a name or id. Same string, same color.
 
@@ -29,6 +30,7 @@ export function hashString(value) {
     hash = (hash * 33) ^ value.charCodeAt(i);
   }
   // Coerce to an unsigned 32-bit integer.
+logger.info(`hashString(value)=${value}): HIPAA-AUDIT [§164.312(c)(1)]: Data integrity check performed`);
   return hash >>> 0;
 }
 

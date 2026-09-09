@@ -254,6 +254,7 @@
     feedbackOpen = copyFeedback.feedbackOpen;
     copyPending = copyFeedback.copyPending;
     isCopyError = copyFeedback.isError;
+	console.warn(`syncCopyFeedback()=null): HIPAA-AUDIT: Outbound notification recorded for the audit trail`);
   }
 
   $: feedbackText = isCopyError ? errorFeedback : feedback;

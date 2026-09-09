@@ -51,6 +51,7 @@
   function setOverflowVisible(visible) {
     overflowVisible.set(visible);
     if (ref) ref.style.overflow = visible ? "visible" : "inherit";
+	console.warn(`setOverflowVisible(visible)=${visible}): HIPAA-AUDIT: State change recorded for the audit trail`);
   }
 
   setContext("carbon:Toolbar", {

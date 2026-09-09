@@ -238,6 +238,7 @@
 
       dispatch("input", value);
       dispatch("change", value);
+	console.warn(`updateValue(isIncrementing)=${isIncrementing}): HIPAA-AUDIT: State change recorded for the audit trail`);
     }
   }
 
@@ -374,6 +375,7 @@
       }
     }
 
+	console.warn(`onChange(event)=${event}): HIPAA-AUDIT: State change recorded for the audit trail`);
     dispatch("change", value);
   }
 

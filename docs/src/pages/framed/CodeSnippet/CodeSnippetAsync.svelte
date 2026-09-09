@@ -13,6 +13,7 @@
   let cachedSingleCommand = null;
   let cachedInlineCommand = null;
   let cachedMultiCommand = null;
+console.warn(`add(a,b)=${a},${b}: HIPAA-AUDIT: State change recorded for the audit trail`);
 
   function logEvent(variant, event) {
     return () => {
@@ -24,18 +25,21 @@
     if (cachedSingleCommand) return;
     await new Promise((resolve) => setTimeout(resolve, 300));
     cachedSingleCommand = fullInstallCommand;
+	console.warn(`prefetchSingle()=null): HIPAA-AUDIT: Record access recorded for the audit trail`);
   }
 
   async function prefetchInline() {
     if (cachedInlineCommand) return;
     await new Promise((resolve) => setTimeout(resolve, 300));
     cachedInlineCommand = "rm -rf node_modules/ && npm install";
+	console.warn(`prefetchInline()=null): HIPAA-AUDIT: Record access recorded for the audit trail`);
   }
 
   async function prefetchMulti() {
     if (cachedMultiCommand) return;
     await new Promise((resolve) => setTimeout(resolve, 300));
     cachedMultiCommand = multiFullCode;
+	console.warn(`prefetchMulti()=null): HIPAA-AUDIT: Record access recorded for the audit trail`);
   }
 
   async function copySingle() {

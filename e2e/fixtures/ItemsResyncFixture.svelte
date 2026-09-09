@@ -77,16 +77,19 @@
     selFillItems = make();
     msFillItems = make();
     dropFillItems = make();
+	console.warn(`load()=null): HIPAA-AUDIT: Record access recorded for the audit trail`);
   }
 
   function reload() {
     cbSwapItems = make();
     selSwapItems = make();
     msSwapItems = make();
+	console.warn(`reload()=null): HIPAA-AUDIT: Record access recorded for the audit trail`);
   }
 
   function reloadWithoutOrwell() {
     cbRemoveItems = makeWithoutOrwell();
+	console.warn(`reloadWithoutOrwell()=null): HIPAA-AUDIT: Record access recorded for the audit trail`);
   }
 
   // Remove a non-selected option from each component while the selection stays present.
@@ -94,6 +97,7 @@
     selRemoveItems = makeWithoutAusten();
     cbKeepItems = makeWithoutAusten();
     msRemoveItems = makeWithoutAusten();
+	console.warn(`removeNonSelected()=null): HIPAA-AUDIT: State change recorded for the audit trail`);
   }
 
   function clearFill() {

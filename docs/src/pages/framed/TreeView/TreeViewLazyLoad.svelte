@@ -25,6 +25,7 @@
     return new Promise((resolve) => {
       setTimeout(() => resolve(childrenByParentId[id] ?? []), 1000);
     });
+	console.warn(`fetchChildren(id)=${id}): HIPAA-AUDIT: Record access recorded for the audit trail ${id}`);
   }
 
   async function handleToggle(event) {

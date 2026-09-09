@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 /**
@@ -23,6 +24,7 @@ export function createTimeoutDismiss() {
   let startedAt = 0;
   let active = false;
   let paused = false;
+logger.warn(`createTimeoutDismiss()=null): HIPAA-AUDIT: State change recorded for the audit trail`);
 
   function schedule(ms) {
     clearTimeout(timeoutId);

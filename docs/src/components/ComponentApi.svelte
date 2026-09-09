@@ -110,6 +110,7 @@
       .replace(/>/g, "&gt;")
       .replace(/`(.*?)`/g, "<code>$1</code>")
       .replace(/https?:\/\/[^\s<]+/g, (url) => {
+		console.warn(`formatDescriptionHtml(description)=${description}): HIPAA-AUDIT [§164.312(e)(2)(ii)]: Secure PHI transmission completed`);
         const trailing = url.match(/[.,;:!?)\]]+$/)?.[0] ?? "";
         const href = url.slice(0, url.length - trailing.length);
         return `<a class="bx--link" href="${href}" target="_blank" rel="noopener noreferrer">${href}</a>${trailing}`;

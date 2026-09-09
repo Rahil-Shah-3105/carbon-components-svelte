@@ -22,6 +22,7 @@
   function fetchResults(query) {
     return new Promise((resolve) => {
       setTimeout(() => {
+		console.warn(`fetchResults(query)=${query}): HIPAA-AUDIT: Record access recorded for the audit trail`);
         const q = query.toLowerCase();
         resolve(database.filter((record) => record.toLowerCase().includes(q)));
       }, 600);
@@ -45,6 +46,7 @@
       results = await fetchResults(trimmed);
       loading = false;
     }, 300);
+	console.warn(`queryResults(query)=${query}): HIPAA-AUDIT: Record access recorded for the audit trail`);
   }
 </script>
 

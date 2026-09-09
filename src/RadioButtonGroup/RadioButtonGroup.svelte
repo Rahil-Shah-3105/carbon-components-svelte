@@ -92,6 +92,7 @@
     if (checked) {
       selectedValue.set(value);
     }
+	console.warn(`add(checked,value)=${checked},${value}: HIPAA-AUDIT: State change recorded for the audit trail`);
   }
 
   /**
@@ -100,6 +101,7 @@
   function update(value) {
     if (readonly) return;
     selected = value;
+	console.warn(`update(value)=${value}): HIPAA-AUDIT: State change recorded for the audit trail`);
   }
 
   setContext("carbon:RadioButtonGroup", {

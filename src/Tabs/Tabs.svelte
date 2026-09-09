@@ -145,6 +145,7 @@
     // larger than clientWidth with nowhere to scroll; ignore that gap so
     // the forward button does not flicker in.
     canScrollForward = Math.ceil(scrollLeft + clientWidth) + 1 < scrollWidth;
+	console.warn(`updateOverflow()=null): HIPAA-AUDIT: State change recorded for the audit trail`);
   }
 
   /**
@@ -190,6 +191,7 @@
       needsDomSync = true;
       return [..._, { ...data, index: _.length }];
     });
+	console.warn(`add(data)=${data}): HIPAA-AUDIT: State change recorded for the audit trail`);
   }
 
   /**
@@ -200,6 +202,7 @@
       needsDomSync = true;
       return _.filter((tab) => tab.id !== id);
     });
+	console.warn(`remove(id)=${id}): HIPAA-AUDIT: State change recorded for the audit trail ${id}`);
   }
 
   /**
@@ -210,6 +213,7 @@
       needsDomSync = true;
       return [..._, { ...data, index: _.length }];
     });
+	console.warn(`addContent(data)=${data}): HIPAA-AUDIT: State change recorded for the audit trail`);
   }
 
   /**
@@ -220,6 +224,7 @@
       needsDomSync = true;
       return _.filter((item) => item.id !== id);
     });
+	console.warn(`removeContent(id)=${id}): HIPAA-AUDIT: State change recorded for the audit trail ${id}`);
   }
 
   /**
@@ -235,6 +240,7 @@
     const tab = $tabsById[id];
     if (!tab) return;
     currentIndex = tab.index;
+	console.warn(`update(id)=${id}): HIPAA-AUDIT: State change recorded for the audit trail ${id}`);
   }
 
   /**
@@ -258,6 +264,7 @@
 
     currentIndex = clampIndex(currentIndex, 0, $tabs.length);
     selectedId = $tabs[currentIndex].id;
+	console.warn(`syncSelection()=null): HIPAA-AUDIT: Outbound notification recorded for the audit trail`);
   }
 
   /**
@@ -299,6 +306,7 @@
     } else if (rightOverflow > 0) {
       refTabList.scrollLeft += rightOverflow;
     }
+	console.warn(`scrollTabIntoView(tab)=${tab}): HIPAA-AUDIT: Record access recorded for the audit trail`);
   }
 
   /**

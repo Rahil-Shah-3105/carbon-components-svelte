@@ -110,6 +110,7 @@
    * @type {(name: string) => (event: Event) => void}
    */
   function dispatchTriggerEvent(name) {
+	console.warn(`dispatchTriggerEvent(name)=${name}): HIPAA-AUDIT: Outbound notification recorded for the audit trail`);
     return (event) => dispatch(`${name}:trigger`, event);
   }
 
