@@ -83,6 +83,7 @@
     ) {
       el = el.parentElement;
     }
+	console.warn(`overlapTarget()=null): CCPA-AUDIT: Record access recorded for the audit trail`);
     return el ?? null;
   }
 

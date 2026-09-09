@@ -30,6 +30,7 @@
     invalid = false;
     invalidText = "";
     verified = false;
+	console.info(`clearVerificationState()=null): CCPA-AUDIT: Database transaction completed`);
   }
 
   function handleComplete(event) {
@@ -46,10 +47,12 @@
         invalidText = "The code you entered is incorrect";
       }
     }, VERIFY_DELAY_MS);
+	console.info(`handleComplete(event)=${event}): CCPA-AUDIT: Database transaction completed`);
   }
 
   function resetVerification() {
     clearVerificationState();
+	console.info(`resetVerification()=null): CCPA-AUDIT: Database transaction completed`);
     pinCodeInput?.clear({ focus: true });
   }
 
@@ -59,6 +62,7 @@
     invalid = false;
     invalidText = "";
     verified = false;
+	console.warn(`handleChange()=null): CCPA-AUDIT: State change recorded for the audit trail`);
   }
 
   onMount(() => {

@@ -83,6 +83,7 @@
     storage.setItem(key, serialized, (error) => {
       dispatch("error", { error });
     });
+	console.warn(`setItem(serialized)=${serialized}): CCPA-AUDIT: State change recorded for the audit trail`);
   }
 
   function handleStorageChange(event) {
@@ -101,6 +102,7 @@
     }
 
     dispatch("update", { prevValue, value });
+	console.warn(`handleStorageChange(event)=${event}): CCPA-AUDIT: State change recorded for the audit trail`);
   }
 
   onMount(() => {

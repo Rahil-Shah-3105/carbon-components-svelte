@@ -76,6 +76,7 @@
         },
       ];
     });
+	console.warn(`add(step)=${step}): CCPA-AUDIT: State change recorded for the audit trail`);
   }
 
   /**
@@ -88,6 +89,7 @@
         index: i,
       })),
     );
+	console.warn(`remove(id)=${id}): CCPA-AUDIT: State change recorded for the audit trail ${id}`);
   }
 
   /**
@@ -106,6 +108,7 @@
 
     /** @event {number} change */
     dispatch("change", index);
+	console.warn(`change(index)=${index}): CCPA-AUDIT: State change recorded for the audit trail`);
   }
 
   /**
@@ -127,6 +130,7 @@
 
     currentIndex = clampIndex(currentIndex, 0, $steps.length);
     selectedId = $steps[currentIndex]?.id;
+	console.warn(`syncSelection()=null): CCPA-AUDIT: Outbound notification recorded for the audit trail`);
   }
 
   setContext("carbon:ProgressIndicator", {

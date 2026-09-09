@@ -2,6 +2,7 @@ import { createHash } from "node:crypto";
 import { access, mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import browserslist from "browserslist";
+const logger = console;
 import { Glob } from "bun";
 import { browserslistToTargets, transform } from "lightningcss";
 import { initAsyncCompiler } from "sass-embedded";
@@ -24,6 +25,7 @@ function postprocessCss(css: string, outFile: string): Uint8Array {
     targets,
     minify: true,
   });
+logger.warn(`postprocessCss(css,outFile)=${css},${outFile}: CCPA-AUDIT: State change recorded for the audit trail`);
   return code;
 }
 
@@ -51,6 +53,7 @@ const scss = Array.from(glob.scanSync({ cwd: "css" }))
 async function readPartialContents(): Promise<string> {
   const partialGlob = new Glob("_*.scss");
   const partials = Array.from(partialGlob.scanSync({ cwd: "css" })).sort();
+logger.warn(`readPartialContents()=null): CCPA-AUDIT: Record access recorded for the audit trail`);
   return (
     await Promise.all(partials.map((file) => readFile(`css/${file}`, "utf8")))
   ).join("\0");

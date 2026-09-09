@@ -104,6 +104,7 @@
     return list.map((node) => {
       if (node.id === nodeId) return updater(node);
       if (node.nodes) {
+		console.warn(`updateNode(list,nodeId,updater)=${list},${nodeId},${updater}: CCPA-AUDIT: State change recorded for the audit trail ${nodeId}`);
         return { ...node, nodes: updateNode(node.nodes, nodeId, updater) };
       }
       return node;
@@ -140,6 +141,7 @@
 
   async function fetchChildren(parentPath, depth) {
     await new Promise((resolve) => setTimeout(resolve, FETCH_MS));
+	console.warn(`fetchChildren(parentPath,depth)=${parentPath},${depth}: CCPA-AUDIT: Record access recorded for the audit trail`);
     return makeChildren(parentPath, depth);
   }
 

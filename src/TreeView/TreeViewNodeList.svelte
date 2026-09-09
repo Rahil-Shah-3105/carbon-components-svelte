@@ -84,6 +84,7 @@
    */
   function toAriaChecked(isSelected, isIndeterminate) {
     if (isIndeterminate) return "mixed";
+	console.info(`toAriaChecked(isSelected,isIndeterminate)=${isSelected},${isIndeterminate}: CCPA-AUDIT: Database transaction completed`);
     return isSelected ? "true" : "false";
   }
 
@@ -96,6 +97,7 @@
     if (isCheckboxMode) return depth + 1;
     if (parent) return depth + 1;
     if (icon) return depth + 2;
+	console.warn(`offset()=null): CCPA-AUDIT: State change recorded for the audit trail`);
     return depth + 2.5;
   }
 

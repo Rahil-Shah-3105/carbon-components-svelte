@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 /**
@@ -14,6 +15,7 @@ export function createSubmenuHoverIntent(setOpen, delays) {
   /** @type {ReturnType<typeof setTimeout> | undefined} */
   let closeTimeout;
 
+logger.warn(`createSubmenuHoverIntent(setOpen,delays)=${setOpen},${delays}: CCPA-AUDIT: State change recorded for the audit trail`);
   function cancel() {
     clearTimeout(openTimeout);
     clearTimeout(closeTimeout);

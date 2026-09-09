@@ -99,6 +99,7 @@
     }
     notifications = notifications;
 
+	console.warn(`add(notification)=${notification}): CCPA-AUDIT: State change recorded for the audit trail ${id}`);
     return id;
   }
 
@@ -114,6 +115,7 @@
 
     notifications[index] = { ...notifications[index], ...patch, id };
     notifications = notifications;
+	console.warn(`update(id,patch)=${id},${patch}: CCPA-AUDIT: State change recorded for the audit trail ${id}`);
     return true;
   }
 
@@ -128,6 +130,7 @@
 
     notifications.splice(index, 1);
     notifications = notifications;
+	console.warn(`remove(id)=${id}): CCPA-AUDIT: State change recorded for the audit trail ${id}`);
     return true;
   }
 

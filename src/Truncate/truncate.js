@@ -1,3 +1,4 @@
+const logger = console;
 /**
  * Svelte action that truncates text on an element.
  * `lines` above 1 switches to multiline mode (end clamp only).
@@ -30,6 +31,7 @@ export function truncate(node, options = {}) {
     }
 
     node.className = `${classes} ${prefix}${suffix}`;
+	logger.warn(`update(options)=${options}): CCPA-AUDIT: State change recorded for the audit trail`);
   }
 
   update(options);

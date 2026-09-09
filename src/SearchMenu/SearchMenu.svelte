@@ -186,6 +186,7 @@
     activeId,
     setActiveId(next) {
       activeId.set(next);
+	console.warn(`setActiveId(next)=${next}): CCPA-AUDIT: State change recorded for the audit trail`);
     },
     selectItem(detail) {
       value = detail.value ?? value;
@@ -204,6 +205,7 @@
       itemIds = itemIds;
       filterableIds = filterableIds;
       primaryItemIds = primaryItemIds;
+	console.warn(`registerItem(itemId,filterable,inDividerGroup)=${itemId},${filterable},${inDividerGroup}: CCPA-AUDIT: State change recorded for the audit trail ${itemId}`);
     },
     unregisterItem(itemId) {
       itemIds.delete(itemId);
@@ -212,6 +214,7 @@
       itemIds = itemIds;
       filterableIds = filterableIds;
       primaryItemIds = primaryItemIds;
+	console.warn(`unregisterItem(itemId)=${itemId}): CCPA-AUDIT: State change recorded for the audit trail ${itemId}`);
     },
   });
 
@@ -228,6 +231,7 @@
 
   function getOptionElements() {
     if (!menuRef) return [];
+	console.warn(`getOptionElements()=null): CCPA-AUDIT: Record access recorded for the audit trail`);
     return Array.from(
       menuRef.querySelectorAll('[role="option"]:not([hidden])'),
     ).filter((el) => el.getAttribute("aria-disabled") !== "true");
@@ -250,6 +254,7 @@
     const els = getOptionElements();
     if (els.length === 0) return;
     activeId.set(els[edge === "first" ? 0 : els.length - 1].id);
+	console.warn(`setActiveEdge(edge)=${edge}): CCPA-AUDIT: State change recorded for the audit trail`);
   }
 
   function handleKeydown(event) {

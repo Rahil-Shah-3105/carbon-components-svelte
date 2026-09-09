@@ -29,6 +29,7 @@
         700 + index * 500,
       );
     });
+	console.warn(`handleAdd(e)=${e}): CCPA-AUDIT: State change recorded for the audit trail`);
   }
 
   function handleRemove(e) {
@@ -42,6 +43,7 @@
       delete next[key];
     }
     statusByKey = next;
+	console.warn(`handleRemove(e)=${e}): CCPA-AUDIT: State change recorded for the audit trail`);
   }
 </script>
 

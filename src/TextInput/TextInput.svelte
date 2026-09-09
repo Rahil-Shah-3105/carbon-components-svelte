@@ -112,6 +112,7 @@
   /** @type {(e: Event) => void} */
   function onChange(event) {
     dispatch("change", parse(event.target.value));
+	console.warn(`onChange(event)=${event}): CCPA-AUDIT: State change recorded for the audit trail`);
   }
 
   $: showInvalid = invalid && !disabled && !readonly;

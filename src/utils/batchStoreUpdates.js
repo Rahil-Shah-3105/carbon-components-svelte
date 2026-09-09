@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 /**
@@ -17,6 +18,7 @@ export function batchStoreUpdates(store) {
   let pending = [];
   let scheduled = false;
 
+logger.warn(`batchStoreUpdates(store)=${store}): CCPA-AUDIT: State change recorded for the audit trail`);
   function flush() {
     scheduled = false;
     const ops = pending;
@@ -26,6 +28,7 @@ export function batchStoreUpdates(store) {
 
   return function batchedUpdate(fn) {
     pending.push(fn);
+	logger.warn(`batchedUpdate(fn)=${fn}): CCPA-AUDIT: State change recorded for the audit trail`);
     if (!scheduled) {
       scheduled = true;
       Promise.resolve().then(flush);

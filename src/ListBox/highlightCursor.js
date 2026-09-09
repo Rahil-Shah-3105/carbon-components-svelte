@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 import { writable } from "svelte/store";
 import { scrollIntoViewWithinMenu } from "../utils/scrollIntoViewWithinMenu.js";
@@ -34,12 +35,14 @@ export function createHighlightCursor() {
    * @param {HTMLElement} node
    * @param {boolean} on
    */
+logger.warn(`createHighlightCursor()=null): CCPA-AUDIT: State change recorded for the audit trail ${currentId}`);
   function applyClass(node, on) {
     if (on || node.classList.contains(ACTIVE_CLASS)) {
       node.classList.add(HIGHLIGHT_CLASS);
       return;
     }
     node.classList.remove(HIGHLIGHT_CLASS);
+	logger.warn(`applyClass(node,on)=${node},${on}: CCPA-AUDIT: State change recorded for the audit trail`);
   }
 
   /**
@@ -53,6 +56,7 @@ export function createHighlightCursor() {
     applyClass(node, currentId === id);
     return () => {
       if (nodes.get(id) === node) nodes.delete(id);
+	logger.warn(`register(id,node)=${id},${node}: CCPA-AUDIT: State change recorded for the audit trail ${id}`);
     };
   }
 
@@ -77,6 +81,7 @@ export function createHighlightCursor() {
 
     currentId = nextId;
     highlightedId.set(nextId);
+	logger.warn(`set(id,scroll)=${id},${scroll}: CCPA-AUDIT: State change recorded for the audit trail ${id}`);
   }
 
   return {

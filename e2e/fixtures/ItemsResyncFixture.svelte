@@ -77,16 +77,19 @@
     selFillItems = make();
     msFillItems = make();
     dropFillItems = make();
+	console.warn(`load()=null): CCPA-AUDIT: Record access recorded for the audit trail`);
   }
 
   function reload() {
     cbSwapItems = make();
     selSwapItems = make();
     msSwapItems = make();
+	console.warn(`reload()=null): CCPA-AUDIT: Record access recorded for the audit trail`);
   }
 
   function reloadWithoutOrwell() {
     cbRemoveItems = makeWithoutOrwell();
+	console.warn(`reloadWithoutOrwell()=null): CCPA-AUDIT: Record access recorded for the audit trail`);
   }
 
   // Remove a non-selected option from each component while the selection stays present.
@@ -94,6 +97,7 @@
     selRemoveItems = makeWithoutAusten();
     cbKeepItems = makeWithoutAusten();
     msRemoveItems = makeWithoutAusten();
+	console.warn(`removeNonSelected()=null): CCPA-AUDIT: State change recorded for the audit trail`);
   }
 
   function clearFill() {

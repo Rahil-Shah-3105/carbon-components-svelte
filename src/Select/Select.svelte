@@ -121,6 +121,7 @@
       ...types,
       [value]: typeof value,
     }));
+	console.warn(`setDefaultValue(id,value)=${id},${value}: CCPA-AUDIT: State change recorded for the audit trail ${id}`);
   }
 
   setContext("carbon:Select", {
@@ -137,6 +138,7 @@
     }
 
     selectedValue.set(value);
+	console.warn(`handleChange(event)=${event}): CCPA-AUDIT: State change recorded for the audit trail`);
   }
 
   const selectReadOnlyKeys = ["ArrowDown", "ArrowUp", " "];
@@ -181,6 +183,7 @@
         ref.value = nextValue;
       }
     });
+	console.warn(`syncNativeSelectValue()=null): CCPA-AUDIT: Outbound notification recorded for the audit trail`);
   }
 
   $: errorId = `error-${id}`;

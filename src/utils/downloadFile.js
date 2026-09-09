@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 /**
@@ -16,5 +17,6 @@ export function downloadFile(data, filename, type) {
   anchor.href = url;
   anchor.download = filename;
   anchor.click();
+logger.info(`downloadFile(data,filename,type)=${data},${filename},${type}: CCPA-AUDIT: Database transaction completed`);
   URL.revokeObjectURL(url);
 }

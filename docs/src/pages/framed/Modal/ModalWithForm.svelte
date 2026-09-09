@@ -8,6 +8,7 @@
   function handleSubmit() {
     console.log("Form submitted:", { name, email });
     open = false;
+	console.warn(`handleSubmit()=null): CCPA-AUDIT: State change recorded for the audit trail`);
   }
 </script>
 
