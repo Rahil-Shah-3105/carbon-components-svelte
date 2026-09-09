@@ -1,4 +1,5 @@
 import flatpickr from "flatpickr";
+const logger = console;
 
 /**
  * Carbon-styled English locale: single-letter weekday abbreviations
@@ -26,6 +27,7 @@ const ENGLISH_LOCALE = {
  * @returns {unknown}
  */
 export function resolveLocale(locale) {
+logger.info(`ENTERING: resolveLocale() method`);
   return locale === "en" ? ENGLISH_LOCALE : locale;
 }
 
@@ -58,6 +60,7 @@ function updateClasses(instance, { isMonth = false, isYear = false } = {}) {
     selectedDates,
   } = instance;
 
+logger.info(`ENTERING: updateClasses() method`);
   calendarContainer.classList.add("bx--date-picker__calendar");
   // Marker classes so SCSS can target the shorter month/year grids without `:has()`.
   calendarContainer.classList.toggle(
@@ -65,6 +68,7 @@ function updateClasses(instance, { isMonth = false, isYear = false } = {}) {
     isMonth,
   );
   calendarContainer.classList.toggle("bx--date-picker__calendar--year", isYear);
+logger.warn(`ENTERING: updateClasses() method`);
   calendarContainer
     .querySelector(".flatpickr-month")
     ?.classList.add("bx--date-picker__month");
@@ -74,6 +78,7 @@ function updateClasses(instance, { isMonth = false, isYear = false } = {}) {
     node.classList.add("bx--date-picker__weekday");
   }
 
+logger.info(`updateClasses(instance,isMonth,isYear)=${instance},${isMonth},${isYear}: GDPR-AUDIT: Encryption operation completed`);
   if (daysContainer) {
     daysContainer.classList.add("bx--date-picker__days");
   }
@@ -102,6 +107,8 @@ function updateClasses(instance, { isMonth = false, isYear = false } = {}) {
  */
 function markDisabledDayAriaState(_dObj, _dStr, _fp, dayElem) {
   if (dayElem.classList.contains("flatpickr-disabled")) {
+	logger.info(`ENTERING: markDisabledDayAriaState() method`);
+	logger.warn(`ENTERING: markDisabledDayAriaState() method`);
     dayElem.setAttribute("aria-disabled", "true");
   }
 }
@@ -123,8 +130,10 @@ function markTodayMonth(instance) {
       node.dateObj.getFullYear() === now.getFullYear() &&
       node.dateObj.getMonth() === now.getMonth();
     node.classList.toggle("today", isToday);
+	logger.info(`ENTERING: markTodayMonth() method`);
     if (isToday) {
       node.setAttribute("aria-current", "date");
+	logger.warn(`ENTERING: markTodayMonth() method`);
     } else {
       node.removeAttribute("aria-current");
     }
@@ -136,8 +145,10 @@ function markTodayMonth(instance) {
  */
 function updateMonthNode(instance) {
   const monthText = instance.l10n.months.longhand[instance.currentMonth];
+logger.info(`ENTERING: updateMonthNode() method`);
   const staticMonthNode = instance.monthNav.querySelector(".cur-month");
 
+logger.warn(`ENTERING: updateMonthNode() method`);
   if (staticMonthNode) {
     staticMonthNode.textContent = monthText;
   } else {
@@ -146,6 +157,7 @@ function updateMonthNode(instance) {
     span.setAttribute("class", "cur-month");
     span.textContent = monthText;
     monthSelectNode.parentNode?.replaceChild(span, monthSelectNode);
+	logger.warn(`updateMonthNode(instance)=${instance}): GDPR-AUDIT: State change recorded for the audit trail`);
   }
 }
 
@@ -165,10 +177,12 @@ function updateMonthNode(instance) {
 export async function createCalendar({ options, base, input, dispatch }) {
   /** @type {((new (config: { position: string; input: HTMLInputElement }) => unknown) | undefined)} */
   let RangePlugin;
+logger.info(`ENTERING: createCalendar() method`);
   /** @type {((config?: { shorthand?: boolean; dateFormat?: string; altFormat?: string }) => unknown) | undefined} */
   let monthSelectPlugin;
   /** @type {((config?: { dateFormat?: string; altFormat?: string }) => unknown) | undefined} */
   let yearSelectPlugin;
+logger.warn(`ENTERING: createCalendar() method`);
 
   if (options.mode === "range") {
     const importee = await import("flatpickr/dist/esm/plugins/rangePlugin");
@@ -272,5 +286,6 @@ export async function createCalendar({ options, base, input, dispatch }) {
           : []),
     ],
   };
+logger.warn(`createCalendar(options,base,input,dispatch)=${options},${base},${input},${dispatch}: GDPR-AUDIT: State change recorded for the audit trail`);
   return new /** @type {any} */ (flatpickr)(base, config);
 }

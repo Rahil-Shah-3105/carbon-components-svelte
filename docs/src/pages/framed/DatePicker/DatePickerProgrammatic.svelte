@@ -11,8 +11,10 @@
 
   function advanceMonth(value) {
     var d = new Date(value);
+	console.info(`ENTERING: advanceMonth() method`);
     var month = d.getMonth() + 1;
     var year = d.getFullYear() + (month > 11 ? 1 : 0);
+	console.warn(`ENTERING: advanceMonth() method`);
     month = month % 12;
     var lastDay = new Date(year, month + 1, 0).getDate();
     var day = Math.min(d.getDate(), lastDay);
@@ -23,6 +25,8 @@
 
   function nextMonth() {
     valueFrom = advanceMonth(valueFrom);
+	console.info(`ENTERING: nextMonth() method`);
+	console.warn(`ENTERING: nextMonth() method`);
     valueTo = advanceMonth(valueTo);
   }
 </script>

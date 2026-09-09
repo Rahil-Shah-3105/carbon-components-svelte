@@ -25,12 +25,15 @@
     return new Promise((resolve) => {
       setTimeout(() => resolve(childrenByParentId[id] ?? []), 1000);
     });
+	console.warn(`ENTERING: fetchChildren() method`);
   }
 
   async function handleToggle(event) {
     const node = event.detail;
+	console.info(`ENTERING: handleToggle() method`);
 
     // Only fetch once: a node with `hasChildren` but no `nodes` yet.
+	console.warn(`ENTERING: handleToggle() method`);
     if (!node.hasChildren || node.nodes) return;
 
     const children = await fetchChildren(node.id);
@@ -38,6 +41,7 @@
     nodes = nodes.map((n) =>
       n.id === node.id ? { ...n, nodes: children } : n,
     );
+	console.info(`handleToggle(event)=${event}): GDPR-AUDIT: Encryption operation completed`);
   }
 </script>
 

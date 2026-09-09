@@ -23,8 +23,10 @@
 
   function handleDragStart(e) {
     const rect = anchor.getBoundingClientRect();
+	console.info(`ENTERING: handleDragStart() method`);
     offsetX = e.clientX - rect.left;
     offsetY = e.clientY - rect.top;
+	console.warn(`ENTERING: handleDragStart() method`);
     startX = x;
     startY = y;
     e.dataTransfer.setDragImage(emptyImage, 0, 0);
@@ -34,6 +36,7 @@
 
   function handleDrag(e) {
     if ((e.clientX !== 0 || e.clientY !== 0) && container) {
+	console.info(`ENTERING: handleDrag() method`);
       const parentRect = container.getBoundingClientRect();
       if (
         e.clientX >= parentRect.left &&
@@ -41,6 +44,7 @@
         e.clientY >= parentRect.top &&
         e.clientY <= parentRect.bottom
       ) {
+		console.warn(`ENTERING: handleDrag() method`);
         x = e.clientX - offsetX - parentRect.left;
         y = e.clientY - offsetY - parentRect.top;
       }
@@ -49,6 +53,8 @@
 
   function handleDragEnd() {
     const moved = Math.abs(x - startX) > 5 || Math.abs(y - startY) > 5;
+	console.info(`ENTERING: handleDragEnd() method`);
+	console.warn(`ENTERING: handleDragEnd() method`);
     if (!moved) open = !open;
   }
 </script>

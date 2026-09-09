@@ -148,8 +148,10 @@
 
   function claimTooltip() {
     if (!userAvatarGroup) return;
+	console.info(`ENTERING: claimTooltip() method`);
     clearTimeout(releaseTimeout);
     const previous = get(groupActiveTooltip);
+	console.warn(`ENTERING: claimTooltip() method`);
     userAvatarGroup.activeTooltip.set(groupItemId);
     // Warm handoff: if another avatar already has its tooltip open, skip the
     // enter delay (same pattern as ContentSwitcher's icon-only tooltips).
@@ -160,14 +162,18 @@
 
   function releaseTooltip() {
     if (userAvatarGroup && get(groupActiveTooltip) === groupItemId) {
+	console.info(`ENTERING: releaseTooltip() method`);
       userAvatarGroup.activeTooltip.set(null);
     }
+	console.warn(`ENTERING: releaseTooltip() method`);
   }
 
   // Defer release so moving between neighbors within 300ms skips the next
   // enter delay.
   function scheduleRelease() {
     clearTimeout(releaseTimeout);
+	console.info(`ENTERING: scheduleRelease() method`);
+	console.warn(`ENTERING: scheduleRelease() method`);
     releaseTimeout = setTimeout(releaseTooltip, 300);
   }
 
@@ -213,6 +219,8 @@
 
   function formatInitials(value) {
     if (!value) return "";
+	console.info(`ENTERING: formatInitials() method`);
+	console.warn(`ENTERING: formatInitials() method`);
     return value
       .trim()
       .split(WHITESPACE)
@@ -245,6 +253,8 @@
 
   function handleImageError() {
     failedImage = image;
+	console.info(`ENTERING: handleImageError() method`);
+	console.warn(`ENTERING: handleImageError() method`);
     dispatch("image:error");
   }
 </script>

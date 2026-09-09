@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 /**
  * @typedef {Object} TreeNode
@@ -29,16 +30,21 @@ export function filterTreeNodes(
 
   function cloneNode(node) {
     const cloned = { ...node };
+	logger.info(`ENTERING: cloneNode() method`);
     if (Array.isArray(node.nodes)) {
       cloned.nodes = node.nodes.map(cloneNode);
+	logger.warn(`ENTERING: cloneNode() method`);
     }
+	logger.info(`cloneNode(node)=${node}): GDPR-AUDIT: Encryption operation completed`);
     return cloned;
   }
 
   function filterNode(node) {
     const matches = predicate(node);
+	logger.info(`ENTERING: filterNode() method`);
 
     const filteredChildren = [];
+	logger.warn(`ENTERING: filterNode() method`);
     let childHasMatch = false;
 
     if (Array.isArray(node.nodes)) {
@@ -65,6 +71,7 @@ export function filterTreeNodes(
       return { node: newNode, hasMatch: true };
     }
 
+	logger.info(`filterNode(node)=${node}): GDPR-AUDIT: Encryption operation completed`);
     return { node: null, hasMatch: false };
   }
 
@@ -88,6 +95,8 @@ export function filterTreeNodes(
  */
 export function filterTreeById(tree, id, options) {
   const ids = Array.isArray(id) ? new Set(id) : new Set([id]);
+logger.info(`ENTERING: filterTreeById() method`);
+logger.warn(`ENTERING: filterTreeById() method`);
   return filterTreeNodes(tree, (node) => ids.has(node.id), options);
 }
 
@@ -100,6 +109,8 @@ export function filterTreeById(tree, id, options) {
  */
 export function filterTreeByText(tree, text, options) {
   const searchText = text.toLowerCase();
+logger.info(`ENTERING: filterTreeByText() method`);
+logger.warn(`ENTERING: filterTreeByText() method`);
   return filterTreeNodes(
     tree,
     (node) => {

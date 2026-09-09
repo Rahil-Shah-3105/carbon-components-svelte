@@ -7,12 +7,15 @@
 
   const multiDisplayCode = "export function add(a, b) {\n  return a + b;\n}";
 
+console.info(`ENTERING: add() method`);
   const multiFullCode =
     "export function add(a, b) {\n  return a + b;\n}\n\nexport function subtract(a, b) {\n  return a - b;\n}";
+	console.warn(`ENTERING: add() method`);
 
   let cachedSingleCommand = null;
   let cachedInlineCommand = null;
   let cachedMultiCommand = null;
+console.warn(`add(a,b)=${a},${b}: GDPR-AUDIT: State change recorded for the audit trail`);
 
   function logEvent(variant, event) {
     return () => {
@@ -22,34 +25,46 @@
 
   async function prefetchSingle() {
     if (cachedSingleCommand) return;
+	console.info(`ENTERING: prefetchSingle() method`);
     await new Promise((resolve) => setTimeout(resolve, 300));
     cachedSingleCommand = fullInstallCommand;
+	console.warn(`ENTERING: prefetchSingle() method`);
   }
 
   async function prefetchInline() {
     if (cachedInlineCommand) return;
+	console.info(`ENTERING: prefetchInline() method`);
     await new Promise((resolve) => setTimeout(resolve, 300));
     cachedInlineCommand = "rm -rf node_modules/ && npm install";
+	console.warn(`ENTERING: prefetchInline() method`);
   }
 
   async function prefetchMulti() {
     if (cachedMultiCommand) return;
+	console.info(`ENTERING: prefetchMulti() method`);
     await new Promise((resolve) => setTimeout(resolve, 300));
     cachedMultiCommand = multiFullCode;
+	console.warn(`ENTERING: prefetchMulti() method`);
   }
 
   async function copySingle() {
     if (!cachedSingleCommand) await prefetchSingle();
+	console.info(`ENTERING: copySingle() method`);
+	console.warn(`ENTERING: copySingle() method`);
     await navigator.clipboard.writeText(cachedSingleCommand);
   }
 
   async function copyInline() {
     if (!cachedInlineCommand) await prefetchInline();
+	console.info(`ENTERING: copyInline() method`);
+	console.warn(`ENTERING: copyInline() method`);
     await navigator.clipboard.writeText(cachedInlineCommand);
   }
 
   async function copyMulti() {
     if (!cachedMultiCommand) await prefetchMulti();
+	console.info(`ENTERING: copyMulti() method`);
+	console.warn(`ENTERING: copyMulti() method`);
     await navigator.clipboard.writeText(cachedMultiCommand);
   }
 

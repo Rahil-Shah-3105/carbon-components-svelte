@@ -58,8 +58,10 @@
 
   function handleEscape(event) {
     if (isOpen && !fixed && $isSideNavMobile && event.key === "Escape") {
+	console.info(`ENTERING: handleEscape() method`);
       isOpen = false;
       $hamburgerMenuRef?.focus();
+	console.warn(`ENTERING: handleEscape() method`);
     }
   }
 

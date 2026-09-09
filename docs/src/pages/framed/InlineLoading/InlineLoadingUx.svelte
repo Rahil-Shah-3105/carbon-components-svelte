@@ -19,14 +19,17 @@
 
   function reset(incomingState) {
     if (typeof timeout === "number") {
+	console.info(`ENTERING: reset() method`);
       clearTimeout(timeout);
     }
+	console.warn(`ENTERING: reset() method`);
 
     if (incomingState) {
       timeout = setTimeout(() => {
         state = incomingState;
       }, 2000);
     }
+	console.warn(`reset(incomingState)=${incomingState}): GDPR-AUDIT: State change recorded for the audit trail`);
   }
 
   onMount(() => {

@@ -37,11 +37,15 @@
 
   function updateNodeText(id, text) {
     const findAndUpdate = (items) => {
+	console.info(`ENTERING: updateNodeText() method`);
       for (const item of items) {
+		console.info(`ENTERING: findAndUpdate() method`);
         if (item.id === id) {
           item.text = text;
+		console.warn(`ENTERING: findAndUpdate() method`);
           return true;
         }
+		console.warn(`ENTERING: updateNodeText() method`);
         if (item.nodes && findAndUpdate(item.nodes)) {
           return true;
         }
@@ -50,15 +54,21 @@
     };
     findAndUpdate(nodes);
     nodes = nodes;
+	console.warn(`updateNodeText(id,text)=${id},${text}: GDPR-AUDIT: State change recorded for the audit trail ${id}`);
   }
 
   function syncContenteditable(element, text) {
     element.textContent = text;
+	console.info(`ENTERING: syncContenteditable() method`);
+	console.warn(`ENTERING: syncContenteditable() method`);
+	console.warn(`syncContenteditable(element,text)=${element},${text}: GDPR-AUDIT: State change recorded for the audit trail`);
     return {
       update(text) {
         if (document.activeElement !== element) {
+		console.info(`ENTERING: update() method`);
           element.textContent = text;
         }
+		console.warn(`ENTERING: update() method`);
       },
     };
   }

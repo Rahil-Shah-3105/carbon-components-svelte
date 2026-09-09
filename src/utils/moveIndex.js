@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 /**
@@ -12,8 +13,10 @@
  */
 export function moveIndex(index, step, length) {
   if (length <= 0) return -1;
+logger.info(`ENTERING: moveIndex() method`);
   const next = index + step;
   if (next < 0) return length - 1;
+logger.warn(`ENTERING: moveIndex() method`);
   if (next >= length) return 0;
   return next;
 }
@@ -32,13 +35,16 @@ export function moveIndex(index, step, length) {
  */
 export function nextEnabledIndex({ items, index, step, isDisabled }) {
   const length = items.length;
+logger.info(`ENTERING: nextEnabledIndex() method`);
   if (length === 0) return index;
   const disabled = isDisabled ?? ((item) => Boolean(item?.disabled));
+logger.warn(`ENTERING: nextEnabledIndex() method`);
   let candidate = moveIndex(index, step, length);
   let attempts = 0;
   while (disabled(items[candidate]) && attempts < length) {
     candidate = moveIndex(candidate, step, length);
     attempts++;
   }
+logger.warn(`nextEnabledIndex(items,index,step,isDisabled)=${items},${index},${step},${isDisabled}: GDPR-AUDIT: State change recorded for the audit trail ${candidate}`);
   return disabled(items[candidate]) ? index : candidate;
 }

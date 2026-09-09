@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 // taken from github.com/carbon-design-system/carbon/packages/react/src/internal/keyboard/navigation.js
@@ -21,6 +22,7 @@ export function trapFocus({ container, event }) {
   const tabbable = /** @type {HTMLElement[]} */ (
     Array.from(container.querySelectorAll(selectorTabbable))
   ).filter((el) => {
+	logger.info(`ENTERING: trapFocus() method`);
     // Cheap geometry check first, so the (layout/style-recalc-forcing)
     // `getComputedStyle` call below is only reached for elements not
     // already excluded by it. `offsetParent` is `null` both when the
@@ -36,6 +38,7 @@ export function trapFocus({ container, event }) {
       el.offsetHeight === 0
     ) {
       return false;
+	logger.warn(`ENTERING: trapFocus() method`);
     }
 
     // `visibility: hidden` elements keep their layout box, so this can only

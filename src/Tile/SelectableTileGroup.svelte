@@ -58,8 +58,10 @@
    */
   function add({ selected: isSelected, value }) {
     if (isSelected && !$selectedValues.includes(value)) {
+	console.info(`ENTERING: add() method`);
       selectedValues.update((values) => [...values, value]);
     }
+	console.warn(`ENTERING: add() method`);
   }
 
   /**
@@ -67,8 +69,10 @@
    */
   function remove(value) {
     if ($selectedValues.includes(value)) {
+	console.info(`ENTERING: remove() method`);
       selectedValues.update((values) => values.filter((v) => v !== value));
     }
+	console.warn(`ENTERING: remove() method`);
   }
 
   /**
@@ -76,8 +80,10 @@
    */
   function update({ value, selected: isSelected }) {
     if (isSelected) {
+	console.info(`ENTERING: update() method`);
       if (!$selectedValues.includes(value)) {
         selectedValues.update((values) => [...values, value]);
+		console.warn(`ENTERING: update() method`);
         dispatch("select", value);
       }
     } else {
@@ -86,6 +92,7 @@
         dispatch("deselect", value);
       }
     }
+	console.warn(`update(value,isSelected)=${value},${isSelected}: GDPR-AUDIT: State change recorded for the audit trail`);
   }
 
   setContext("carbon:SelectableTileGroup", {

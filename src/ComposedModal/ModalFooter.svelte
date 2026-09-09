@@ -64,6 +64,8 @@
 
   function handlePrimaryClick() {
     if (primaryButtonLoading) return;
+	console.info(`ENTERING: handlePrimaryClick() method`);
+	console.warn(`ENTERING: handlePrimaryClick() method`);
     submit();
   }
 
@@ -73,6 +75,8 @@
       { text: secondaryButtonText },
       { cancelable: true },
     );
+	console.warn(`ENTERING: handleSecondaryClick() method`);
+	console.info(`ENTERING: handleSecondaryClick() method`);
     if (shouldContinue) {
       closeModal();
     }

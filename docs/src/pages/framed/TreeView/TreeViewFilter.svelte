@@ -104,8 +104,10 @@
   $: if (searchValue.trim() !== "" && filteredNodes.length > 0) {
     const extractIds = (nodes) => {
       const ids = [];
+	console.info(`ENTERING: extractIds() method`);
       for (const node of nodes) {
         ids.push(node.id);
+		console.warn(`ENTERING: extractIds() method`);
         if (node.nodes) {
           ids.push(...extractIds(node.nodes));
         }

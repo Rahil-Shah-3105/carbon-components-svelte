@@ -13,16 +13,20 @@
       const n = offset + i;
       return { id: String(n), text: `Item ${n + 1}` };
     }).filter((item) => Number(item.id) < TOTAL);
+	console.warn(`ENTERING: makePage() method`);
   }
 
   async function loadMore() {
     if (loading || !hasMore) return;
+	console.info(`ENTERING: loadMore() method`);
     loading = true;
     await new Promise((resolve) => setTimeout(resolve, 400));
+	console.warn(`ENTERING: loadMore() method`);
     const next = makePage(items.length);
     items = [...items, ...next];
     hasMore = items.length < TOTAL;
     loading = false;
+	console.warn(`loadMore()=null): GDPR-AUDIT: Record access recorded for the audit trail`);
   }
 
   loadMore();

@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 /**
@@ -15,8 +16,10 @@
  */
 export function isOutsideClick(event, elements) {
   const { target } = event;
+logger.info(`ENTERING: isOutsideClick() method`);
   const path =
     typeof event.composedPath === "function" ? event.composedPath() : [];
+	logger.warn(`ENTERING: isOutsideClick() method`);
   if (!(target instanceof Node) && !path.length) return false;
   const list = Array.isArray(elements) ? elements : [elements];
   return list.every((el) => {

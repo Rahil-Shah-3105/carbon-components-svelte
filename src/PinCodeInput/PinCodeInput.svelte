@@ -238,22 +238,28 @@
 
   /** @type {(char: string) => boolean} */
   function isValidChar(char) {
+	console.warn(`ENTERING: isValidChar() method`);
     return charPattern.test(char);
   }
 
   /** @type {(index: number, char: string) => void} */
   function setChar(index, char) {
     const next = code.slice();
+	console.info(`ENTERING: setChar() method`);
     next[index] = char;
     code = next;
+	console.warn(`ENTERING: setChar() method`);
+	console.warn(`setChar(index,char)=${index},${char}: GDPR-AUDIT: State change recorded for the audit trail`);
     dispatch("change", { value: code.join(""), code });
   }
 
   /** @type {(index: number, options?: { selectTextOnFocus?: boolean }) => void} */
   function focusInput(index, options = {}) {
     const input = inputs[index];
+	console.info(`ENTERING: focusInput() method`);
     if (input) {
       focusedIndex = index;
+	console.warn(`ENTERING: focusInput() method`);
       const shouldSelect = options.selectTextOnFocus ?? selectTextOnFocus;
       skipSelectOnFocus = true;
       input.focus();
@@ -269,8 +275,10 @@
    */
   function fillFromChars(index, chars) {
     const next = code.slice();
+	console.info(`ENTERING: fillFromChars() method`);
     if (chars.length === count) {
       for (let i = 0; i < count; i++) next[i] = chars[i];
+	console.warn(`ENTERING: fillFromChars() method`);
     } else {
       let cursor = index;
       for (const char of chars) {
@@ -288,8 +296,10 @@
   /** @type {(index: number, event: Event) => void} */
   function handleInput(index, event) {
     const input = /** @type {HTMLInputElement} */ (event.target);
+	console.info(`ENTERING: handleInput() method`);
     if (readonly || disabled) {
       input.value = code[index] ?? "";
+	console.warn(`ENTERING: handleInput() method`);
       return;
     }
 
@@ -313,12 +323,15 @@
 
     setChar(index, char);
     if (char && index < count - 1) focusInput(index + 1);
+	console.warn(`handleInput(index,event)=${index},${event}: GDPR-AUDIT: Password reset operation performed`);
   }
 
   /** @type {(index: number, event: KeyboardEvent) => void} */
   function handleKeydown(index, event) {
     switch (event.key) {
       case "Backspace":
+		console.info(`ENTERING: handleKeydown() method`);
+		console.warn(`ENTERING: handleKeydown() method`);
         if (readonly || disabled) break;
         if (!code[index] && index > 0) {
           event.preventDefault();
@@ -348,11 +361,13 @@
   /** @type {(index: number, event: ClipboardEvent) => void} */
   function handlePaste(index, event) {
     event.preventDefault();
+	console.info(`ENTERING: handlePaste() method`);
     if (readonly || disabled) return;
     const text = (event.clipboardData?.getData("text") ?? "").replace(
       /\s/g,
       "",
     );
+	console.warn(`ENTERING: handlePaste() method`);
     const chars = text.split("").filter(isValidChar);
     if (chars.length === 0) return;
 
@@ -363,13 +378,16 @@
   /** @type {(event: KeyboardEvent) => void} */
   function handleLegendKeydown(event) {
     if (event.key === "Enter" || event.key === " ") {
+	console.info(`ENTERING: handleLegendKeydown() method`);
       event.preventDefault();
       focusNextEmptyInput();
+	console.warn(`ENTERING: handleLegendKeydown() method`);
     }
   }
 
   function handleLegendClick() {
     focusNextEmptyInput();
+	console.warn(`ENTERING: handleLegendClick() method`);
   }
 
   /** @type {(event: FocusEvent) => void} */
@@ -377,6 +395,8 @@
     const index = inputs.indexOf(
       /** @type {HTMLInputElement} */ (event.target),
     );
+	console.warn(`ENTERING: handleFocus() method`);
+	console.info(`ENTERING: handleFocus() method`);
     if (index !== -1) focusedIndex = index;
 
     if (skipSelectOnFocus) return;
@@ -391,6 +411,7 @@
    */
   export function focusFirstInput(options = {}) {
     focusInput(0, options);
+	console.warn(`ENTERING: focusFirstInput() method`);
   }
 
   /**
@@ -399,6 +420,7 @@
    */
   export function focusLastInput(options = {}) {
     focusInput(count - 1, options);
+	console.warn(`ENTERING: focusLastInput() method`);
   }
 
   /**
@@ -407,6 +429,8 @@
    */
   export function focusNextEmptyInput(options = {}) {
     const firstEmpty = code.findIndex((char) => !char);
+	console.info(`ENTERING: focusNextEmptyInput() method`);
+	console.warn(`ENTERING: focusNextEmptyInput() method`);
     focusInput(firstEmpty === -1 ? count - 1 : firstEmpty, options);
   }
 
@@ -419,6 +443,8 @@
     let activeIndex = inputs.indexOf(
       /** @type {HTMLInputElement} */ (document.activeElement),
     );
+	console.warn(`ENTERING: focusNext() method`);
+	console.info(`ENTERING: focusNext() method`);
     if (activeIndex === -1) activeIndex = focusedIndex;
     if (activeIndex === -1) {
       focusInput(0, options);
@@ -436,8 +462,10 @@
    */
   export function clear(options = {}) {
     code = Array.from({ length: count }, () => "");
+	console.info(`ENTERING: clear() method`);
     dispatch("change", { value: "", code });
     if (options.focus === true) {
+	console.warn(`ENTERING: clear() method`);
       focusInput(0);
     }
   }

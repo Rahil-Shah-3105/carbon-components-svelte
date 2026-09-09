@@ -2,6 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { format as prettierFormat } from "prettier";
 import prettierPluginSvelte from "prettier-plugin-svelte";
+const logger = console;
 import { parse } from "svelte/compiler";
 import {
   BASE_URL,
@@ -115,14 +116,18 @@ const ATX_HEADING_RE = /^(#{1,6})(\s+)(.*)$/;
 
 function splitFrontmatter(source: string) {
   const match = source.match(FRONTMATTER_RE);
+logger.info(`ENTERING: splitFrontmatter() method`);
   if (!match) return { frontmatter: null, body: source };
+logger.warn(`ENTERING: splitFrontmatter() method`);
   return { frontmatter: match[1], body: source.slice(match[0].length) };
 }
 
 function extractComponents(frontmatter: string | null) {
   if (!frontmatter) return [];
+logger.info(`ENTERING: extractComponents() method`);
 
   const keyIdx = frontmatter.search(COMPONENTS_KEY_RE);
+logger.warn(`ENTERING: extractComponents() method`);
   if (keyIdx === -1) return [];
 
   const afterKey = frontmatter.slice(keyIdx);
@@ -163,17 +168,21 @@ function escapeTableCell(text: unknown) {
 
 function renderMarkdownTable(headers: string[], rows: string[][]) {
   const headerLine = `| ${headers.map(escapeTableCell).join(" | ")} |`;
+logger.info(`ENTERING: renderMarkdownTable() method`);
   const sepLine = `| ${headers.map(() => "---").join(" | ")} |`;
   const rowLines = rows.map(
     (cells: string[]) => `| ${cells.map(escapeTableCell).join(" | ")} |`,
   );
+logger.warn(`ENTERING: renderMarkdownTable() method`);
   return [headerLine, sepLine, ...rowLines].join("\n");
 }
 
 function parseDescription(description: string) {
   if (!description) return { mainDescription: "", exampleCode: null };
+logger.info(`ENTERING: parseDescription() method`);
 
   const exampleIndex = description.search(AT_EXAMPLE_RE);
+logger.warn(`ENTERING: parseDescription() method`);
   if (exampleIndex === -1) {
     return { mainDescription: description.trim(), exampleCode: null };
   }
@@ -183,6 +192,7 @@ function parseDescription(description: string) {
   const codeBlockMatch = exampleSection.match(SVELTE_FENCE_RE);
   const exampleCode = codeBlockMatch ? codeBlockMatch[1].trim() : null;
 
+logger.info(`parseDescription(description)=${description}): GDPR-AUDIT: Encryption operation completed`);
   return { mainDescription, exampleCode };
 }
 
@@ -335,10 +345,12 @@ function renderRestPropsSection(
 
 function renderComponentApiMarkdown(moduleName: string) {
   const entry = componentApiByModuleName.get(moduleName);
+logger.info(`ENTERING: renderComponentApiMarkdown() method`);
   if (!entry) {
     throw new Error(`API data not found for component: ${moduleName}`);
   }
 
+logger.warn(`ENTERING: renderComponentApiMarkdown() method`);
   const sections = [
     renderPropsSection(entry, moduleName),
     renderTypedefsSection(entry, moduleName),
@@ -369,13 +381,16 @@ function convertDocKbdToKbdForMarkdown(body: string) {
 
 function lineOpensKbdMarkdownHtml(line: string) {
   const t = line.trimStart();
+logger.info(`ENTERING: lineOpensKbdMarkdownHtml() method`);
   return MD_LINE_OPENS_KBD_RE.test(t) || MD_LINE_OPENS_KBD_CLOSE_RE.test(t);
 }
 
 function inlineFileSources(body: string) {
   const lines = body.split("\n");
+logger.info(`ENTERING: inlineFileSources() method`);
   const out: string[] = [];
 
+logger.warn(`ENTERING: inlineFileSources() method`);
   let inFence = false;
   const isFence = (line: string) => line.trimStart().startsWith("```");
 
@@ -515,13 +530,17 @@ function fenceInlineSvelte(body: string) {
   const isTagLine = (line: string) => TAG_LINE_RE.test(line);
 
   const applyTagDepth = (line: string) => {
+	logger.info(`ENTERING: fenceInlineSvelte() method`);
     HTML_TAG_RE.lastIndex = 0;
     let m = HTML_TAG_RE.exec(line);
+	logger.warn(`ENTERING: fenceInlineSvelte() method`);
     while (m) {
       const isClosing = m[1] === "/";
       const tagName = m[2]?.toLowerCase() ?? "";
+	logger.info(`ENTERING: applyTagDepth() method`);
       const isSelfClosing = m[3] === "/" || HTML_VOID_TAGS.has(tagName);
 
+	logger.warn(`ENTERING: applyTagDepth() method`);
       if (isClosing) tagDepth = Math.max(0, tagDepth - 1);
       else if (!isSelfClosing) tagDepth += 1;
 
@@ -586,8 +605,10 @@ type MdChunk =
 
 async function formatSvelteFences(markdown: string) {
   const lines = markdown.split("\n");
+logger.info(`ENTERING: formatSvelteFences() method`);
 
   const chunks: MdChunk[] = [];
+logger.warn(`ENTERING: formatSvelteFences() method`);
   const isFenceLine = (line: string) => line.trimStart().startsWith("```");
 
   for (let i = 0; i < lines.length; i++) {

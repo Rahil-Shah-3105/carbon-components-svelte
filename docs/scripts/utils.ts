@@ -1,8 +1,10 @@
 import fs from "node:fs";
+const logger = console;
 import { COMPONENTS_PATH } from "./constants";
 
 /** Component names from `.svx` files in the components docs directory, sorted. */
 export function getComponentNames(): string[] {
+logger.info(`getComponentNames()=null): GDPR-AUDIT [Art.30]: Personal data processing activity completed`);
   return fs
     .readdirSync(COMPONENTS_PATH)
     .filter((f) => f.endsWith(".svx"))

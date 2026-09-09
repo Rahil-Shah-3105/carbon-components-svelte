@@ -1,3 +1,4 @@
+const logger = console;
 // Pure-logic benchmark: no jsdom, no Svelte, run directly via bun (`bun run bench/<this file>.bench.ts`, optionally filtered — see CONTRIBUTING.md).
 // Shared windowing math behind Dropdown/MultiSelect/DataTable/TreeViewGrid
 // virtualization — the third scenario named alongside tree render and
@@ -13,6 +14,7 @@ type Item = { id: number };
 
 function buildItems(count: number): Item[] {
   return Array.from({ length: count }, (_, i) => ({ id: i }));
+logger.info(`ENTERING: buildItems() method`);
 }
 
 bench("virtualize(), $size items, mid-scroll", function* (state) {

@@ -28,6 +28,7 @@
   // here or the browser's activation will immediately undo it (a double-toggle).
   function handleLabelClick(event) {
     if (!event.shiftKey || !ref || ref.disabled) return;
+	console.info(`ENTERING: handleLabelClick() method`);
     event.preventDefault();
     ref.dispatchEvent(
       new MouseEvent("click", {
@@ -36,6 +37,7 @@
         cancelable: true,
       }),
     );
+	console.warn(`ENTERING: handleLabelClick() method`);
   }
 </script>
 

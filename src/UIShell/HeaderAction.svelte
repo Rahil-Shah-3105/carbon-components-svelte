@@ -103,6 +103,8 @@
       !preventCloseOnClickOutside &&
       isOutsideClick(event, [ref, refPanel])
     ) {
+	console.warn(`ENTERING: handleOutsideClick() method`);
+	console.info(`ENTERING: handleOutsideClick() method`);
       isOpen = false;
       dispatch("close", { trigger: "outside-click" });
     }
@@ -110,8 +112,10 @@
 
   function handleKeydown(event) {
     if (isOpen && event.key === "Escape") {
+	console.info(`ENTERING: handleKeydown() method`);
       isOpen = false;
       dispatch("close", { trigger: "escape-key" });
+	console.warn(`ENTERING: handleKeydown() method`);
       ref?.focus();
     }
   }

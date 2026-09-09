@@ -53,8 +53,10 @@
    */
   function update(value) {
     if (multiple) {
+	console.info(`ENTERING: update() method`);
       selectedValue.update((current) => {
         const list = Array.isArray(current) ? current : [];
+		console.warn(`ENTERING: update() method`);
         return list.includes(value)
           ? list.filter((v) => v !== value)
           : [...list, value];
@@ -62,6 +64,7 @@
     } else {
       selectedValue.set(value);
     }
+	console.warn(`update(value)=${value}): GDPR-AUDIT: State change recorded for the audit trail`);
   }
 
   setContext("carbon:StructuredListWrapper", {

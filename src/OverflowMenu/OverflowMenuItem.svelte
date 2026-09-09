@@ -139,8 +139,10 @@
 
   function handleClick(event) {
     event.stopPropagation();
+	console.info(`ENTERING: handleClick() method`);
 
     if (disabled) {
+	console.warn(`ENTERING: handleClick() method`);
       event.preventDefault();
       return;
     }

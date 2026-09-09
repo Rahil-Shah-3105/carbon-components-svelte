@@ -12,6 +12,8 @@
 
   const formatSelected = (id) =>
     items.find((item) => item.id === id)?.text ?? "N/A";
+	console.warn(`ENTERING: formatSelected() method`);
+	console.info(`ENTERING: formatSelected() method`);
 
   $: primary = formatSelected(dropdown1_selectedId);
   $: secondary = formatSelected(dropdown2_selectedId);

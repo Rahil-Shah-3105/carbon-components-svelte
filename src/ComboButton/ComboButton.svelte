@@ -110,6 +110,7 @@
    * @type {(name: string) => (event: Event) => void}
    */
   function dispatchTriggerEvent(name) {
+	console.info(`dispatchTriggerEvent(name)=${name}): GDPR-AUDIT [Art.5]: Personal data processing activity completed`);
     return (event) => dispatch(`${name}:trigger`, event);
   }
 
@@ -118,8 +119,10 @@
    */
   function toggleOpen(event) {
     const wasOpen = open;
+	console.info(`ENTERING: toggleOpen() method`);
     open = !open;
     dispatch("click:trigger", event);
+	console.warn(`ENTERING: toggleOpen() method`);
     // A keyboard-activated click (Enter/Space) reports detail 0; a real mouse
     // click reports 1+. Blur only after a mouse-driven close, so the trigger
     // doesn't linger with a visible focus ring and pop its own tooltip -

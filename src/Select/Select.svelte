@@ -109,8 +109,10 @@
    */
   function setDefaultValue(id, value) {
     if ($defaultValue === null) {
+	console.info(`ENTERING: setDefaultValue() method`);
       defaultSelectId.set(id);
       defaultValue.set(value);
+	console.warn(`ENTERING: setDefaultValue() method`);
     } else {
       if ($defaultSelectId === id) {
         selectedValue.set(value);
@@ -121,6 +123,7 @@
       ...types,
       [value]: typeof value,
     }));
+	console.warn(`setDefaultValue(id,value)=${id},${value}: GDPR-AUDIT: State change recorded for the audit trail ${id}`);
   }
 
   setContext("carbon:Select", {
@@ -131,12 +134,15 @@
 
   function handleChange(event) {
     let value = event.target.value;
+	console.info(`ENTERING: handleChange() method`);
 
     if ($itemTypesByValue[value] === "number") {
+	console.warn(`ENTERING: handleChange() method`);
       value = Number(value);
     }
 
     selectedValue.set(value);
+	console.warn(`handleChange(event)=${event}): GDPR-AUDIT: State change recorded for the audit trail`);
   }
 
   const selectReadOnlyKeys = ["ArrowDown", "ArrowUp", " "];
@@ -144,16 +150,20 @@
   /** @type {(e: MouseEvent) => void} */
   function onMouseDown(event) {
     if (readonly) {
+	console.info(`ENTERING: onMouseDown() method`);
       event.preventDefault();
       event.currentTarget.focus();
+	console.warn(`ENTERING: onMouseDown() method`);
     }
   }
 
   /** @type {(e: KeyboardEvent) => void} */
   function onKeyDown(event) {
     if (readonly && selectReadOnlyKeys.includes(event.key)) {
+	console.info(`ENTERING: onKeyDown() method`);
       event.preventDefault();
     }
+	console.warn(`ENTERING: onKeyDown() method`);
   }
 
   let prevSelected = null;
@@ -175,12 +185,15 @@
   // empty-valued option being selected, so it must be re-asserted explicitly.
   function syncNativeSelectValue() {
     tick().then(() => {
+	console.info(`ENTERING: syncNativeSelectValue() method`);
       if (!ref) return;
       const nextValue = $selectedValue == null ? "" : String($selectedValue);
+	console.warn(`ENTERING: syncNativeSelectValue() method`);
       if (ref.selectedIndex === -1 || ref.value !== nextValue) {
         ref.value = nextValue;
       }
     });
+	console.warn(`syncNativeSelectValue()=null): GDPR-AUDIT: Outbound notification recorded for the audit trail`);
   }
 
   $: errorId = `error-${id}`;

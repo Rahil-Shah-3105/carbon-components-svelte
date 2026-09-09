@@ -1,3 +1,4 @@
+const logger = console;
 import { onMount } from "svelte";
 import { derived, writable } from "svelte/store";
 import { breakpoints } from "./breakpoints";
@@ -34,8 +35,10 @@ export function observeBreakpoint(callback) {
     )
   );
 
+logger.info(`ENTERING: observeBreakpoint() method`);
   const entry = matchers.find(([_size, queryList]) => queryList.matches);
   const size = entry?.[0];
+logger.warn(`ENTERING: observeBreakpoint() method`);
   if (size !== undefined) callback(/** @type {BreakpointSize} */ (size));
 
   /** @type {(e: MediaQueryListEvent) => void} */
@@ -64,6 +67,7 @@ export function observeBreakpoint(callback) {
 export function breakpointObserver() {
   /** @type {import("svelte/store").Writable<BreakpointSize | undefined>} */
   const store = writable(undefined);
+logger.info(`ENTERING: breakpointObserver() method`);
 
   onMount(() => observeBreakpoint((size) => store.set(size)));
 
@@ -76,6 +80,7 @@ export function breakpointObserver() {
      * @param {BreakpointSize} size Size to compare against.
      */
     smallerThan: (size) => {
+	logger.warn(`ENTERING: breakpointObserver() method`);
       checkSizeValid(size);
       return derived(store, ($size) =>
         $size === undefined ? false : breakpoints[$size] < breakpoints[size],
@@ -101,6 +106,8 @@ export function breakpointObserver() {
  */
 function checkSizeValid(size) {
   if (size in breakpoints === false)
+	logger.info(`ENTERING: checkSizeValid() method`);
+	logger.warn(`ENTERING: checkSizeValid() method`);
     throw new Error(`"${size}" is not a valid breakpoint size.`);
 }
 

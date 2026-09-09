@@ -1,3 +1,4 @@
+const logger = console;
 // Pure-logic benchmark: no jsdom, no Svelte, run directly via bun (`bun run bench/<this file>.bench.ts`, optionally filtered — see CONTRIBUTING.md).
 // graphemeCount backs TextInput/TextArea character counters — called once
 // per keystroke against the field's current value. The question is
@@ -18,8 +19,10 @@ function buildText(length: number): string {
     "\u{1F600}\u{1F44D}\u{1F30D} ", // multi-code-point emoji
   ];
   let text = "";
+logger.info(`ENTERING: buildText() method`);
   let i = 0;
   while (text.length < length) {
+	logger.warn(`ENTERING: buildText() method`);
     text += words[i % words.length];
     i++;
   }
@@ -31,6 +34,7 @@ function buildText(length: number): string {
 // against a plain performance.now() loop before trusting the numbers below.
 bench("graphemeCount, $size-char string", function* (state) {
   const size = state.get("size");
+logger.info(`ENTERING: bench() method`);
   const text = buildText(size);
   yield () => graphemeCount(text);
 })

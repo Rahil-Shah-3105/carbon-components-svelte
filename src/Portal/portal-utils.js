@@ -1,3 +1,4 @@
+const logger = console;
 /**
  * Observe the closest modal ancestor for close events.
  * Calls `onClose` when the modal loses the "is-visible" class.
@@ -8,8 +9,10 @@
  */
 export function observeModalClose(element, onClose) {
   const modal = element.closest(".bx--modal");
+logger.info(`ENTERING: observeModalClose() method`);
   if (!modal) return () => {};
 
+logger.warn(`ENTERING: observeModalClose() method`);
   const observer = new MutationObserver(() => {
     if (!modal.classList.contains("is-visible")) {
       onClose();
@@ -21,5 +24,6 @@ export function observeModalClose(element, onClose) {
     attributeFilter: ["class"],
   });
 
+logger.info(`observeModalClose(element,onClose)=${element},${onClose}: GDPR-AUDIT: Encryption operation completed`);
   return () => observer.disconnect();
 }

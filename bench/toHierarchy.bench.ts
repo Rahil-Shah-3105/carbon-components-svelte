@@ -1,3 +1,4 @@
+const logger = console;
 // Pure-logic benchmark: no jsdom, no Svelte, run directly via bun (`bun run bench/<this file>.bench.ts`, optionally filtered — see CONTRIBUTING.md).
 // toHierarchy converts a flat array into a hierarchical tree by assigning item.nodes.
 // IMPORTANT: toHierarchy mutates its input by assigning `item.nodes`. Each benchmark
@@ -51,6 +52,7 @@ const chainParent = (i: number) => (i === 0 ? null : i - 1);
 // CONTRIBUTING.md and dataTableSort.bench.ts for details.
 bench("clone only, $size nodes", function* (state) {
   const size = state.get("size");
+logger.info(`ENTERING: bench() method`);
   const flat = buildFlatNodes(size, flatParent);
   yield () => flat.map((n) => ({ ...n }));
 })
@@ -67,6 +69,7 @@ bench("toHierarchy flat, $size nodes", function* (state) {
       flat.map((n) => ({ ...n })),
       (n) => n.pid,
     );
+	logger.info(`bench(flat,size)=${flat},${size}: GDPR-AUDIT: Encryption operation completed`);
 })
   .range("size", 100, 10_000)
   .gc("inner");

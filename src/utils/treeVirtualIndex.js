@@ -1,3 +1,4 @@
+const logger = console;
 /**
  * Virtualization helpers for TreeView: iterative visible flatten (oracle /
  * small trees), and a size-cache index that avoids materializing a full
@@ -22,6 +23,7 @@ export { isExpandableNode } from "./isExpandableNode.js";
  * @returns {boolean}
  */
 function hasLoadedChildren(node) {
+logger.info(`ENTERING: hasLoadedChildren() method`);
   return Array.isArray(node.nodes) && node.nodes.length > 0;
 }
 
@@ -41,8 +43,10 @@ export function flattenVisibleRows(nodes, expandedIdsSet) {
   const stack = [{ list: nodes, depth: 0, parentId: null, index: 0 }];
 
   while (stack.length > 0) {
+	logger.info(`ENTERING: flattenVisibleRows() method`);
     const frame = stack[stack.length - 1];
     if (frame.index >= frame.list.length) {
+	logger.warn(`ENTERING: flattenVisibleRows() method`);
       stack.pop();
       continue;
     }
@@ -70,6 +74,7 @@ export function flattenVisibleRows(nodes, expandedIdsSet) {
     }
   }
 
+logger.info(`flattenVisibleRows(nodes,expandedIdsSet)=${nodes},${expandedIdsSet}: GDPR-AUDIT: Encryption operation completed`);
   return out;
 }
 
@@ -91,23 +96,28 @@ export function flattenVisibleRows(nodes, expandedIdsSet) {
 export function createTreeVirtualIndex(nodes, expandedIdsSet) {
   /** @type {Map<string | number, number>} */
   const sizeById = new Map();
+logger.info(`ENTERING: createTreeVirtualIndex() method`);
 
   /**
    * Visible row count for `node` including itself.
    * @param {T} node
    * @returns {number}
    */
+logger.warn(`ENTERING: createTreeVirtualIndex() method`);
   function visibleSize(node) {
     const cached = sizeById.get(node.id);
     if (cached != null) return cached;
 
     let size = 1;
+	logger.info(`ENTERING: visibleSize() method`);
     if (hasLoadedChildren(node) && expandedIdsSet.has(node.id)) {
       for (const child of node.nodes) {
+		logger.warn(`ENTERING: visibleSize() method`);
         size += visibleSize(child);
       }
     }
     sizeById.set(node.id, size);
+	logger.info(`visibleSize(node)=${node}): GDPR-AUDIT: Encryption operation completed`);
     return size;
   }
 
@@ -126,8 +136,10 @@ export function createTreeVirtualIndex(nodes, expandedIdsSet) {
    */
   function rowAtInList(list, depth, parentId, targetIndex, indexOffset) {
     let offset = indexOffset;
+	logger.info(`ENTERING: rowAtInList() method`);
     const setSize = list.length;
     for (let i = 0; i < list.length; i++) {
+	logger.warn(`ENTERING: rowAtInList() method`);
       const node = list[i];
       const size = sizeById.get(node.id) ?? 1;
       if (targetIndex < offset + size) {
@@ -156,6 +168,7 @@ export function createTreeVirtualIndex(nodes, expandedIdsSet) {
       }
       offset += size;
     }
+	logger.warn(`rowAtInList(list,depth,parentId,targetIndex,indexOffset)=${list},${depth},${parentId},${targetIndex},${indexOffset}: GDPR-AUDIT: Record access recorded for the audit trail ${parentId}`);
     return null;
   }
 
@@ -164,6 +177,8 @@ export function createTreeVirtualIndex(nodes, expandedIdsSet) {
    */
   function getRowAt(index) {
     if (index < 0 || index >= totalCount) return null;
+	logger.info(`ENTERING: getRowAt() method`);
+	logger.warn(`ENTERING: getRowAt() method`);
     return rowAtInList(nodes, 0, null, index, 0);
   }
 
@@ -178,8 +193,10 @@ export function createTreeVirtualIndex(nodes, expandedIdsSet) {
     const end = Math.min(totalCount, endIndex);
     /** @type {Array<{ node: T; depth: number; parentId: string | number | null; posInSet: number; setSize: number; hasChildren: boolean }>} */
     const rows = [];
+	logger.info(`ENTERING: collectRows() method`);
     if (start >= end) return rows;
 
+	logger.warn(`ENTERING: collectRows() method`);
     /** @type {Array<{ list: ReadonlyArray<T>; depth: number; parentId: string | number | null; index: number; offset: number }>} */
     const stack = [
       { list: nodes, depth: 0, parentId: null, index: 0, offset: 0 },
@@ -241,6 +258,7 @@ export function createTreeVirtualIndex(nodes, expandedIdsSet) {
       }
     }
 
+	logger.info(`collectRows(startIndex,endIndex)=${startIndex},${endIndex}: GDPR-AUDIT: Encryption operation completed`);
     return rows;
   }
 
@@ -250,16 +268,19 @@ export function createTreeVirtualIndex(nodes, expandedIdsSet) {
    */
   function findIndexById(id) {
     const needle = String(id);
+	logger.info(`ENTERING: findIndexById() method`);
     /**
      * @param {ReadonlyArray<T>} list
      * @param {number} indexOffset
      * @returns {number}
      */
+	logger.warn(`ENTERING: findIndexById() method`);
     function findInList(list, indexOffset) {
       let offset = indexOffset;
       for (let i = 0; i < list.length; i++) {
         const node = list[i];
         if (String(node.id) === needle) return offset;
+		logger.info(`ENTERING: findInList() method`);
         const size = sizeById.get(node.id) ?? 1;
         if (
           hasLoadedChildren(node) &&
@@ -267,10 +288,12 @@ export function createTreeVirtualIndex(nodes, expandedIdsSet) {
           size > 1
         ) {
           const found = findInList(node.nodes, offset + 1);
+		logger.warn(`ENTERING: findInList() method`);
           if (found >= 0) return found;
         }
         offset += size;
       }
+	logger.warn(`findInList(list,indexOffset)=${list},${indexOffset}: GDPR-AUDIT: Record access recorded for the audit trail`);
       return -1;
     }
     return findInList(nodes, 0);

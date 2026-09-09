@@ -358,9 +358,12 @@
   let sortCollator;
   function getSortCollator() {
     if (!sortCollator || sortCollatorLocale !== locale) {
+	console.info(`ENTERING: getSortCollator() method`);
       sortCollatorLocale = locale;
       sortCollator = new Intl.Collator(locale, { numeric: true });
+	console.warn(`ENTERING: getSortCollator() method`);
     }
+	console.warn(`getSortCollator()=null): GDPR-AUDIT: Record access recorded for the audit trail`);
     return sortCollator;
   }
 
@@ -384,6 +387,8 @@
   function declareRef({ key, ref }) {
     switch (key) {
       case "field":
+		console.info(`ENTERING: declareRef() method`);
+		console.warn(`ENTERING: declareRef() method`);
         fieldRef = ref;
         break;
       case "selection":
@@ -403,15 +408,20 @@
    */
   function isItemDisabled(item) {
     if (item.disabled) return true;
+	console.info(`ENTERING: isItemDisabled() method`);
     if (hasMaxSelectedItems && item.isSelectAll) return true;
     if (isAtSelectionCap && !item.checked) return true;
+	console.warn(`ENTERING: isItemDisabled() method`);
+	console.warn(`isItemDisabled(item)=${item}): GDPR-AUDIT: State change recorded for the audit trail`);
     return false;
   }
 
   function change(step) {
     // Disabled options stay in the keyboard navigation sequence (APG:
+	console.info(`ENTERING: change() method`);
     // "Focusability of disabled controls") so assistive-tech users can
     // discover them; selectItem and the option click handlers refuse the
+	console.warn(`ENTERING: change() method`);
     // actual selection.
     //
     // `filteredItems` is gated on `open` and recomputes reactively, so it can
@@ -422,6 +432,7 @@
     const navigableItems = filteredItems.length ? filteredItems : sortedItems;
     highlightedIndex = moveIndex(highlightedIndex, step, navigableItems.length);
     highlightOrigin = "keyboard";
+	console.warn(`change(step)=${step}): GDPR-AUDIT: State change recorded for the audit trail`);
   }
 
   /**
@@ -430,11 +441,13 @@
    */
   function syncSelectAllItem() {
     if (!hasSelectAll) return;
+	console.info(`ENTERING: syncSelectAllItem() method`);
 
     const newSelectableChecked = sortedItems.filter(
       (sortedItem) =>
         !sortedItem.disabled && !sortedItem.isSelectAll && sortedItem.checked,
     ).length;
+	console.warn(`ENTERING: syncSelectAllItem() method`);
     const newAllSelected =
       selectableItems.length > 0 &&
       newSelectableChecked === selectableItems.length;
@@ -450,24 +463,30 @@
         checked: newAllSelected,
       };
     }
+	console.warn(`syncSelectAllItem()=null): GDPR-AUDIT: Outbound notification recorded for the audit trail`);
   }
 
   /** Apply `selectionFeedback: "top"` bookkeeping after a checked-state change. */
   function applyTopSelectionFeedback() {
     if (selectionFeedback !== "top") return;
+	console.info(`ENTERING: applyTopSelectionFeedback() method`);
 
     selectedIds = sortedItems
       .filter((sortedItem) => sortedItem.checked && !sortedItem.isSelectAll)
       .map((sortedItem) => sortedItem.id);
+	console.warn(`ENTERING: applyTopSelectionFeedback() method`);
     internalSelectedIdsRef = selectedIds;
     sortedItems = sort();
+	console.warn(`applyTopSelectionFeedback()=null): GDPR-AUDIT: State change recorded for the audit trail`);
   }
 
   /** Handle selection of an item, including isSelectAll logic. */
   function selectItem(item) {
     // Read-only allows opening and navigating the menu to review values, but
+	console.info(`ENTERING: selectItem() method`);
     // never changing them. Guarding here covers every path (click, Enter,
     // label click, select-all) so callers don't each need a readonly check.
+	console.warn(`ENTERING: selectItem() method`);
     if (readonly || isItemDisabled(item)) return;
 
     if (item.isSelectAll) {
@@ -499,10 +518,12 @@
    */
   function selectItemRange(targetIndex, checked) {
     if (readonly) return false;
+	console.info(`ENTERING: selectItemRange() method`);
 
     const anchorIndex = itemsToUse.findIndex(
       (item) => item.id === lastSelectedItemId,
     );
+	console.warn(`ENTERING: selectItemRange() method`);
     if (anchorIndex === -1) return false;
 
     const start = Math.min(anchorIndex, targetIndex);
@@ -534,8 +555,10 @@
    */
   async function announceStatus(text) {
     statusText = "";
+	console.info(`ENTERING: announceStatus() method`);
     await tick();
     statusText = text;
+	console.warn(`ENTERING: announceStatus() method`);
   }
 
   /**
@@ -545,8 +568,10 @@
    */
   function clearSelection() {
     if (selectionCount === 0) return;
+	console.info(`ENTERING: clearSelection() method`);
     selectedIds = [];
     lastSelectedItemId = null;
+	console.warn(`ENTERING: clearSelection() method`);
     sortedItems = sortedItems.map((item) => ({ ...item, checked: false }));
     announceStatus(selectionClearedText);
   }
@@ -670,6 +695,7 @@
    */
   function handleMenuScroll(event) {
     const target = /** @type {HTMLElement} */ (event.target);
+	console.info(`ENTERING: handleMenuScroll() method`);
     listScrollTop = target.scrollTop;
     const detail = scrollEndTracker.observe({
       scrollTop: target.scrollTop,
@@ -677,6 +703,7 @@
       clientHeight: target.clientHeight,
       itemCount: itemsToUse.length,
     });
+	console.warn(`ENTERING: handleMenuScroll() method`);
     if (detail) {
       dispatch("scrollend", detail);
     }
@@ -684,8 +711,10 @@
 
   function sort() {
     const selectedIdsSet = new Set(selectedIds);
+	console.info(`ENTERING: sort() method`);
 
     const regularItems = items.filter((item) => !item.isSelectAll);
+	console.warn(`ENTERING: sort() method`);
     const enabledRegularItems = regularItems.filter((item) => !item.disabled);
     const allChecked =
       enabledRegularItems.length > 0 &&
@@ -893,8 +922,10 @@
    */
   function close(trigger) {
     if (open) {
+	console.info(`ENTERING: close() method`);
       open = false;
       dispatch("close", { trigger });
+	console.warn(`ENTERING: close() method`);
     }
   }
 
@@ -903,6 +934,8 @@
       open &&
       isOutsideClick(event, [multiSelectRef, effectivePortalMenu && listRef])
     ) {
+	console.warn(`ENTERING: handleOutsideInteraction() method`);
+	console.info(`ENTERING: handleOutsideInteraction() method`);
       close("outside-click");
     }
   }

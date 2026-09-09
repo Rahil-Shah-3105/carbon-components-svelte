@@ -68,8 +68,10 @@
    */
   function add({ checked, value }) {
     if (checked) {
+	console.info(`ENTERING: add() method`);
       selectedValue.set(value);
     }
+	console.warn(`ENTERING: add() method`);
   }
 
   /**
@@ -77,6 +79,8 @@
    */
   function update(value) {
     selectedValue.set(value);
+	console.info(`ENTERING: update() method`);
+	console.warn(`ENTERING: update() method`);
     dispatch("select", value);
   }
 

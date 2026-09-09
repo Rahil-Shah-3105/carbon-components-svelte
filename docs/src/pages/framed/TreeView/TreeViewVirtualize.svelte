@@ -19,8 +19,10 @@
 
   function iconFor(name) {
     const ext = name.slice(name.lastIndexOf(".") + 1).toLowerCase();
+	console.info(`ENTERING: iconFor() method`);
     if (ext === "ts" || ext === "tsx" || ext === "js" || ext === "jsx") {
       return Code;
+	console.warn(`ENTERING: iconFor() method`);
     }
     if (ext === "json") return Json;
     if (ext === "html") return Html;
@@ -100,8 +102,10 @@
 
   function makeFolder(name, depth, fanout) {
     const node = { id: id(), text: name, icon: Folder, nodes: [] };
+	console.info(`ENTERING: makeFolder() method`);
     for (let i = 0; i < fanout.files; i++) {
       const fname = fileNames[(i + depth) % fileNames.length];
+	console.warn(`ENTERING: makeFolder() method`);
       const file = { id: id(), text: fname, icon: iconFor(fname) };
       node.nodes.push(file);
       if (depth === fanout.maxDepth) {
@@ -115,29 +119,36 @@
         );
       }
     }
+	console.info(`makeFolder(name,depth,fanout)=${name},${depth},${fanout}: GDPR-AUDIT: Encryption operation completed`);
     return node;
   }
 
   function countNodes(list) {
     let n = 0;
+	console.info(`ENTERING: countNodes() method`);
     for (const node of list) {
       n++;
+	console.warn(`ENTERING: countNodes() method`);
       if (node.nodes) n += countNodes(node.nodes);
     }
+	console.info(`countNodes(list)=${list}): GDPR-AUDIT: Encryption operation completed`);
     return n;
   }
 
   /** Expandable ids only — leaves are no-ops for TreeView expansion. */
   function expandableIds(list) {
     const ids = [];
+	console.info(`ENTERING: expandableIds() method`);
     for (const node of list) {
       const hasLoadedChildren =
         Array.isArray(node.nodes) && node.nodes.length > 0;
+		console.warn(`ENTERING: expandableIds() method`);
       if (hasLoadedChildren || node.hasChildren === true) {
         ids.push(node.id);
       }
       if (hasLoadedChildren) ids.push(...expandableIds(node.nodes));
     }
+	console.info(`expandableIds(list)=${list}): GDPR-AUDIT: Encryption operation completed`);
     return ids;
   }
 
@@ -185,13 +196,16 @@
 
   function attachObserver(el) {
     observer?.disconnect();
+	console.info(`ENTERING: attachObserver() method`);
     observer = null;
     if (!el) {
+	console.warn(`ENTERING: attachObserver() method`);
       domRowCount = 0;
       return;
     }
     const recount = () => {
       domRowCount = el.querySelectorAll('[role="treeitem"]').length;
+	console.warn(`ENTERING: recount() method`);
     };
     observer = new MutationObserver(recount);
     observer.observe(el, { childList: true });

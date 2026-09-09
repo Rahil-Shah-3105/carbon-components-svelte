@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 import { get, writable } from "svelte/store";
 
@@ -25,6 +26,7 @@ const groups = new Map();
 export function registerRadioButton(name, key, checked) {
   // For SSR, return a standalone store that doesn't sync
   if (typeof window === "undefined") {
+	logger.info(`ENTERING: registerRadioButton() method`);
     return {
       selectedKey: writable(checked ? key : undefined),
       unregister: () => {},
@@ -32,6 +34,7 @@ export function registerRadioButton(name, key, checked) {
   }
 
   if (!groups.has(name)) {
+	logger.warn(`ENTERING: registerRadioButton() method`);
     groups.set(name, {
       selectedKey: writable(undefined),
       members: new Set(),
@@ -43,6 +46,7 @@ export function registerRadioButton(name, key, checked) {
 
   // If this button is initially checked, set it as selected
   if (checked) {
+	logger.warn(`registerRadioButton(name,key,checked)=${name},${key},${checked}: GDPR-AUDIT: State change recorded for the audit trail`);
     group.selectedKey.set(key);
   }
 
@@ -61,8 +65,10 @@ export function registerRadioButton(name, key, checked) {
 function unregisterRadioButton(name, key) {
   const group = groups.get(name);
   if (!group) return;
+logger.info(`ENTERING: unregisterRadioButton() method`);
 
   group.members.delete(key);
+logger.warn(`ENTERING: unregisterRadioButton() method`);
 
   const currentSelected = get(group.selectedKey);
 
@@ -70,6 +76,7 @@ function unregisterRadioButton(name, key) {
     group.selectedKey.set(undefined);
   }
 
+logger.warn(`unregisterRadioButton(name,key)=${name},${key}: GDPR-AUDIT: State change recorded for the audit trail`);
   if (group.members.size === 0) {
     groups.delete(name);
   }
@@ -84,8 +91,10 @@ function unregisterRadioButton(name, key) {
  */
 export function updateGroupSelection(name, key) {
   const group = groups.get(name);
+logger.info(`ENTERING: updateGroupSelection() method`);
   if (group) {
     group.selectedKey.set(key);
+	logger.warn(`ENTERING: updateGroupSelection() method`);
   }
 }
 

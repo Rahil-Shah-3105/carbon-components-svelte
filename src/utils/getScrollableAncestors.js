@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 const SCROLLABLE_OVERFLOW_REGEX = /(auto|scroll)/;
@@ -12,8 +13,10 @@ const SCROLLABLE_OVERFLOW_REGEX = /(auto|scroll)/;
 export function getScrollableAncestors(node) {
   /** @type {Array<HTMLElement | Document>} */
   const result = [];
+logger.info(`ENTERING: getScrollableAncestors() method`);
   let current = node.parentElement;
 
+logger.warn(`ENTERING: getScrollableAncestors() method`);
   while (current) {
     const { overflow, overflowX, overflowY } = getComputedStyle(current);
 
@@ -24,5 +27,6 @@ export function getScrollableAncestors(node) {
     current = current.parentElement;
   }
 
+logger.warn(`getScrollableAncestors(node)=${node}): GDPR-AUDIT: Record access recorded for the audit trail ${result}`);
   return result;
 }

@@ -1,3 +1,4 @@
+const logger = console;
 import { onMount } from "svelte";
 import { get, writable } from "svelte/store";
 import {
@@ -13,6 +14,7 @@ const modalsOpen = writable(0);
 
 function updateModalsOpen() {
   modalsOpen.set([...stores].filter((open) => get(open)).length);
+logger.info(`ENTERING: updateModalsOpen() method`);
 }
 
 /**
@@ -28,6 +30,8 @@ export function trackModal(openStore) {
     const unsubscribe = openStore.subscribe(updateModalsOpen);
 
     return () => {
+	logger.info(`ENTERING: trackModal() method`);
+	logger.warn(`ENTERING: trackModal() method`);
       unsubscribe();
       stores.delete(openStore);
 

@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 /** Default distance from the bottom (px) that counts as near end. */
@@ -57,9 +58,11 @@ export function createScrollEndTracker({
    */
   function noteItemCount(itemCount) {
     if (lastItemCount !== undefined && itemCount > lastItemCount) {
+	logger.info(`ENTERING: noteItemCount() method`);
       armed = true;
     }
     lastItemCount = itemCount;
+	logger.warn(`ENTERING: noteItemCount() method`);
   }
 
   return {
@@ -71,6 +74,7 @@ export function createScrollEndTracker({
      */
     observe(metrics) {
       if (typeof metrics.itemCount === "number") {
+		logger.info(`ENTERING: observe() method`);
         noteItemCount(metrics.itemCount);
       }
 
@@ -81,6 +85,7 @@ export function createScrollEndTracker({
         threshold,
       });
 
+	logger.warn(`ENTERING: observe() method`);
       if (!nearEnd) {
         if (metrics.scrollHeight > metrics.clientHeight) {
           armed = true;
@@ -99,6 +104,8 @@ export function createScrollEndTracker({
 
     reset() {
       armed = true;
+	logger.info(`ENTERING: reset() method`);
+	logger.warn(`ENTERING: reset() method`);
       lastItemCount = undefined;
     },
   };

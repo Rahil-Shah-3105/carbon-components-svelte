@@ -51,8 +51,10 @@
 
   function notifyOpen(id) {
     if (type === "single") {
+	console.info(`ENTERING: notifyOpen() method`);
       openId.set(id);
     }
+	console.warn(`ENTERING: notifyOpen() method`);
   }
 
   setContext("carbon:Accordion", { disableItems, openId, notifyOpen });

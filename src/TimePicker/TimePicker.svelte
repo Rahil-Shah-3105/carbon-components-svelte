@@ -86,8 +86,11 @@
   /** @type {() => () => void} */
   function registerSelect() {
     selectCount.update((count) => count + 1);
+	console.info(`ENTERING: registerSelect() method`);
     return () => {
       selectCount.update((count) => count - 1);
+	console.warn(`ENTERING: registerSelect() method`);
+	console.warn(`registerSelect()=null): GDPR-AUDIT: State change recorded for the audit trail`);
     };
   }
 

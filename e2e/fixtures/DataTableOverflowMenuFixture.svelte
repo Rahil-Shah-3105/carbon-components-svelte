@@ -23,8 +23,10 @@
 
   async function setAllOpen(open) {
     for (let i = 0; i < ROW_COUNT; i++) openStates[i] = open;
+	console.info(`ENTERING: setAllOpen() method`);
     openStates = openStates;
     await tick();
+	console.warn(`ENTERING: setAllOpen() method`);
   }
 </script>
 

@@ -80,8 +80,10 @@
   // since the rendered window is bounded by `shown`.
   function computePageWindow(total, startOffset, front, back) {
     const start = startOffset + front;
+	console.info(`ENTERING: computePageWindow() method`);
     const end = total - back - 1;
     const window = [];
+	console.warn(`ENTERING: computePageWindow() method`);
 
     for (let i = start; i < end; i++) {
       window.push(i);

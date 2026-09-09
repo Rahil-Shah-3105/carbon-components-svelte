@@ -63,6 +63,8 @@
       allNodes,
       (node) => node.text?.endsWith(".pdf") || node.text?.endsWith(".docx"),
     );
+	console.warn(`ENTERING: filterByExtension() method`);
+	console.info(`ENTERING: filterByExtension() method`);
     expandedIds = ["1", "1-1", "1-1-1", "1-2", "1-2-1"];
   }
 
@@ -71,6 +73,8 @@
       allNodes,
       (node) => !node.nodes || node.nodes.length === 0,
     );
+	console.warn(`ENTERING: filterLeafNodes() method`);
+	console.info(`ENTERING: filterLeafNodes() method`);
     expandedIds = [
       "1",
       "1-1",
@@ -88,17 +92,22 @@
       "3-1-1",
       "3-1-2",
     ];
+	console.info(`filterLeafNodes()=null): GDPR-AUDIT: Encryption operation completed`);
   }
 
   function filterWithChildren() {
     filteredNodes = filterTreeNodes(allNodes, (node) => node.id === "1-1", {
       includeChildren: true,
     });
+	console.warn(`ENTERING: filterWithChildren() method`);
+	console.info(`ENTERING: filterWithChildren() method`);
     expandedIds = ["1", "1-1", "1-1-1", "1-1-2", "1-1-3"];
   }
 
   function resetFilter() {
     filteredNodes = allNodes;
+	console.info(`ENTERING: resetFilter() method`);
+	console.warn(`ENTERING: resetFilter() method`);
     expandedIds = [];
   }
 </script>

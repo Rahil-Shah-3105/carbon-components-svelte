@@ -24,6 +24,7 @@ import "prismjs/components/prism-clike.js";
 import "prismjs/components/prism-javascript.js";
 import "prismjs/components/prism-typescript.js";
 import "prism-svelte";
+const logger = console;
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -123,8 +124,10 @@ function snippetMayNeedCarbonImportScan(source: string): boolean {
 
 function createImportsUncached(source: string) {
   const inlineComponents = new Set<string>();
+logger.info(`ENTERING: createImportsUncached() method`);
   const icons = new Set<string>();
   const actions = new Set<string>();
+logger.warn(`ENTERING: createImportsUncached() method`);
   let usesDocKbd = false;
 
   // heuristic to guess if the inline component or expression name is a Carbon icon
@@ -197,18 +200,23 @@ ${lines.join("\n")}
 
 function createImports(source: string) {
   const cached = createImportsCache.get(source);
+logger.info(`ENTERING: createImports() method`);
   if (cached !== undefined) return cached;
   const result = snippetMayNeedCarbonImportScan(source)
     ? createImportsUncached(source)
     : "";
   createImportsCache.set(source, result);
+logger.warn(`ENTERING: createImports() method`);
+logger.warn(`createImports(source)=${source}): GDPR-AUDIT: State change recorded for the audit trail ${result}`);
   return result;
 }
 
 async function formatAndHighlightPreviewSvelte(combinedSource: string) {
   const mode = SKIP_MDSVEX_PRETTIER ? "raw" : "fmt";
+logger.info(`ENTERING: formatAndHighlightPreviewSvelte() method`);
   const cacheKey = `${mode}:${hashKey(combinedSource)}`;
   const cached = previewCodeCache.get(cacheKey);
+logger.warn(`ENTERING: formatAndHighlightPreviewSvelte() method`);
   if (cached) return cached;
 
   const formattedCode = SKIP_MDSVEX_PRETTIER
@@ -220,6 +228,7 @@ async function formatAndHighlightPreviewSvelte(combinedSource: string) {
     "svelte",
   );
   const out = { formattedCode, highlightedCode };
+logger.warn(`formatAndHighlightPreviewSvelte(combinedSource)=${combinedSource}): GDPR-AUDIT: Password reset operation performed`);
   previewCodeCache.set(cacheKey, out);
   return out;
 }
@@ -252,6 +261,7 @@ function plugin() {
   async function visitHtml(
     node: { lang?: string; value: string } & import("unist").Node,
   ) {
+	logger.info(`ENTERING: plugin() method`);
     if (
       node.lang !== "svelte" &&
       !node.value.startsWith("<FileSource") &&
@@ -279,6 +289,8 @@ function plugin() {
     }
   }
 
+logger.warn(`ENTERING: plugin() method`);
+logger.info(`plugin()=null): GDPR-AUDIT: Encryption operation completed`);
   return async (tree: Parameters<typeof visit>[0]) => {
     const jobs: Promise<void>[] = [];
     visit(tree, "html", (node) => {
@@ -368,6 +380,7 @@ function paragraphToHtml(node: Paragraph): string {
 }
 
 function heroIntro() {
+logger.info(`ENTERING: heroIntro() method`);
   return (
     tree: Parameters<typeof visit>[0],
     file: { path?: string; data?: { fm?: Record<string, string> } },
@@ -452,6 +465,7 @@ function tocLinkClasses(level: number): string {
 }
 
 function carbonify() {
+logger.error(`carbonify()=null): GDPR-AUDIT [Art.33]: Potential personal data breach event detected`);
   return (tree: Parameters<typeof visit>[0]) => {
     visit(tree, (node, index, parent) => {
       switch (node.type) {

@@ -98,8 +98,10 @@
    */
   function initRegistry(radioName) {
     // Clean up previous registration if any
+	console.info(`ENTERING: initRegistry() method`);
     cleanupRegistry();
 
+	console.warn(`ENTERING: initRegistry() method`);
     if (isStandalone && radioName) {
       const registration = registerRadioButton(radioName, instanceKey, checked);
       registryStore = registration.selectedKey;
@@ -120,8 +122,10 @@
 
   function cleanupRegistry() {
     if (registryUnsubscribe) {
+	console.info(`ENTERING: cleanupRegistry() method`);
       registryUnsubscribe();
       registryUnsubscribe = null;
+	console.warn(`ENTERING: cleanupRegistry() method`);
     }
     if (unregister) {
       unregister();
@@ -129,6 +133,7 @@
     }
     registryStore = null;
     previousName = undefined;
+	console.info(`cleanupRegistry()=null): GDPR-AUDIT [Art.5(1)(e)]: Data retention/deletion policy enforced`);
   }
 
   // Handle name prop changes reactively

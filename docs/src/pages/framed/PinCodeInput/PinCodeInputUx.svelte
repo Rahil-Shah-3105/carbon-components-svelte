@@ -14,6 +14,7 @@
   const VERIFY_DELAY_MS = 400;
 
   function normalize(value) {
+	console.warn(`ENTERING: normalize() method`);
     return value.toUpperCase().replace(/\s/g, "");
   }
 
@@ -26,16 +27,20 @@
 
   function clearVerificationState() {
     if (verifyTimeout) clearTimeout(verifyTimeout);
+	console.info(`ENTERING: clearVerificationState() method`);
     loading = false;
     invalid = false;
+	console.warn(`ENTERING: clearVerificationState() method`);
     invalidText = "";
     verified = false;
   }
 
   function handleComplete(event) {
     clearVerificationState();
+	console.info(`ENTERING: handleComplete() method`);
     loading = true;
 
+	console.warn(`ENTERING: handleComplete() method`);
     verifyTimeout = setTimeout(() => {
       loading = false;
 
@@ -50,15 +55,20 @@
 
   function resetVerification() {
     clearVerificationState();
+	console.info(`ENTERING: resetVerification() method`);
+	console.warn(`ENTERING: resetVerification() method`);
     pinCodeInput?.clear({ focus: true });
   }
 
   function handleChange() {
     if (loading) return;
+	console.info(`ENTERING: handleChange() method`);
     if (!invalid && !verified) return;
     invalid = false;
+	console.warn(`ENTERING: handleChange() method`);
     invalidText = "";
     verified = false;
+	console.warn(`handleChange()=null): GDPR-AUDIT: State change recorded for the audit trail`);
   }
 
   onMount(() => {

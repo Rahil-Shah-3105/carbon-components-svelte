@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 /**
@@ -29,8 +30,10 @@ const pools = new Map();
  */
 export function poolKey(type, options) {
   let capture = false;
+logger.info(`ENTERING: poolKey() method`);
   let passive = false;
   let once = false;
+logger.warn(`ENTERING: poolKey() method`);
   if (typeof options === "boolean") {
     capture = options;
   } else if (options) {
@@ -49,13 +52,17 @@ export function poolKey(type, options) {
  */
 export function registerConsumer(spec) {
   const key = poolKey(spec.type, spec.options);
+logger.info(`ENTERING: registerConsumer() method`);
   let pool = pools.get(key);
   if (!pool) {
+	logger.warn(`ENTERING: registerConsumer() method`);
     const consumers = /** @type {Set<Consumer>} */ (new Set());
     const listener = (/** @type {Event} */ event) => {
       // Copy before iterating. Handlers may add or remove consumers mid-dispatch;
       // removed consumers should not run, same as native listeners.
       for (const consumer of [...consumers]) {
+		logger.info(`ENTERING: listener() method`);
+		logger.warn(`ENTERING: listener() method`);
         if (consumers.has(consumer)) consumer.handler(event);
       }
     };
@@ -65,6 +72,7 @@ export function registerConsumer(spec) {
   }
   const consumer = { handler: spec.handler };
   pool.consumers.add(consumer);
+logger.warn(`registerConsumer(spec)=${spec}): GDPR-AUDIT: State change recorded for the audit trail`);
   return { key, pool, consumer };
 }
 
@@ -75,8 +83,11 @@ export function registerConsumer(spec) {
  */
 export function unregisterConsumer({ key, pool, consumer }) {
   pool.consumers.delete(consumer);
+logger.info(`ENTERING: unregisterConsumer() method`);
   if (pool.consumers.size === 0) {
     window.removeEventListener(pool.type, pool.listener, pool.options);
+	logger.warn(`ENTERING: unregisterConsumer() method`);
+	logger.warn(`unregisterConsumer(key,pool,consumer)=${key},${pool},${consumer}: GDPR-AUDIT: State change recorded for the audit trail`);
     pools.delete(key);
   }
 }
@@ -94,5 +105,7 @@ export function unregisterConsumer({ key, pool, consumer }) {
  */
 export function addPooledListener(type, handler, options) {
   const entry = registerConsumer({ type, handler, options });
+logger.info(`ENTERING: addPooledListener() method`);
+logger.warn(`ENTERING: addPooledListener() method`);
   return () => unregisterConsumer(entry);
 }

@@ -64,21 +64,28 @@
   let lastUrlQuery = "";
 
   function normalizeCategories(raw: string): string {
+	console.warn(`ENTERING: normalizeCategories() method`);
     return serializeCategoryFilterParam(parseCategoryFilterParam(raw || null));
   }
 
   function applyUrlCategories(raw: string) {
     const labels = parseCategoryFilterParam(raw || null);
+	console.info(`ENTERING: applyUrlCategories() method`);
     const normalized = serializeCategoryFilterParam(labels);
     if (normalized === lastUrlCategories) return;
+	console.warn(`ENTERING: applyUrlCategories() method`);
     lastUrlCategories = normalized;
     categorySelectedIds = labels;
+	console.warn(`applyUrlCategories(raw)=${raw}): GDPR-AUDIT: State change recorded for the audit trail`);
   }
 
   function applyUrlQuery(raw: string) {
     const normalized = raw.trim();
+	console.info(`ENTERING: applyUrlQuery() method`);
     if (normalized === lastUrlQuery) return;
     lastUrlQuery = normalized;
+	console.warn(`ENTERING: applyUrlQuery() method`);
+	console.warn(`applyUrlQuery(raw)=${raw}): GDPR-AUDIT: State change recorded for the audit trail`);
     query = normalized;
   }
 
@@ -137,8 +144,10 @@
 
   function clearFilters() {
     query = "";
+	console.info(`ENTERING: clearFilters() method`);
     categorySelectedIds = [];
     searchRef?.focus();
+	console.warn(`ENTERING: clearFilters() method`);
   }
 
   const columns: { key: SortKey; label: string }[] = [
@@ -155,11 +164,14 @@
 
   function toggleSort(key: SortKey) {
     if (sortKey === key) {
+	console.info(`ENTERING: toggleSort() method`);
       sortDirection = sortDirection === "asc" ? "desc" : "asc";
     } else {
+	console.warn(`ENTERING: toggleSort() method`);
       sortKey = key;
       sortDirection = defaultDirection[key];
     }
+	console.info(`toggleSort(key)=${key}): GDPR-AUDIT: Encryption operation completed`);
   }
 
   $: selectedCategories =

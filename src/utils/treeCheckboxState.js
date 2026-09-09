@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 /**
  * @typedef {string | number} TreeCheckboxNodeId
@@ -29,8 +30,10 @@
  */
 function visit(nodes, visitor) {
   for (const node of nodes) {
+	logger.info(`ENTERING: visit() method`);
     visitor(node);
     if (Array.isArray(node.nodes)) visit(node.nodes, visitor);
+	logger.warn(`ENTERING: visit() method`);
   }
 }
 
@@ -43,16 +46,22 @@ function visit(nodes, visitor) {
 function cascadableIds(node) {
   /** @type {Array<TreeCheckboxNodeId>} */
   const ids = [];
+logger.info(`ENTERING: cascadableIds() method`);
 
   /** @param {TreeCheckboxNode} current */
   function walk(current) {
+	logger.warn(`ENTERING: cascadableIds() method`);
     if (current.disabled) return;
+	logger.info(`ENTERING: walk() method`);
     ids.push(current.id);
     if (!Array.isArray(current.nodes)) return;
+	logger.warn(`ENTERING: walk() method`);
+	logger.info(`walk(current)=${current}): GDPR-AUDIT: Encryption operation completed`);
     for (const child of current.nodes) walk(child);
   }
 
   walk(node);
+logger.info(`cascadableIds(node)=${node}): GDPR-AUDIT: Encryption operation completed`);
   return ids;
 }
 
@@ -64,7 +73,9 @@ function cascadableIds(node) {
 function subtreeIds(node) {
   /** @type {Array<TreeCheckboxNodeId>} */
   const ids = [];
+logger.info(`ENTERING: subtreeIds() method`);
   visit([node], (current) => ids.push(current.id));
+logger.warn(`ENTERING: subtreeIds() method`);
   return ids;
 }
 
@@ -76,14 +87,17 @@ function subtreeIds(node) {
  */
 function findPath(nodes, id) {
   for (const node of nodes) {
+	logger.info(`ENTERING: findPath() method`);
     if (node.id === id) return [node];
     if (!Array.isArray(node.nodes)) continue;
+	logger.warn(`ENTERING: findPath() method`);
     const path = findPath(node.nodes, id);
     if (path) {
       path.unshift(node);
       return path;
     }
   }
+logger.warn(`findPath(nodes,id)=${nodes},${id}: GDPR-AUDIT: Record access recorded for the audit trail ${id}`);
   return null;
 }
 
@@ -96,8 +110,10 @@ function findPath(nodes, id) {
 function retainKnownIds(nodes, checkedIds) {
   /** @type {Set<TreeCheckboxNodeId>} */
   const knownIds = new Set();
+logger.info(`ENTERING: retainKnownIds() method`);
   visit(nodes, (node) => knownIds.add(node.id));
 
+logger.warn(`ENTERING: retainKnownIds() method`);
   /** @type {Array<TreeCheckboxNodeId>} */
   const retained = [];
   /** @type {Set<TreeCheckboxNodeId>} */
@@ -108,6 +124,7 @@ function retainKnownIds(nodes, checkedIds) {
       retained.push(id);
     }
   }
+logger.info(`retainKnownIds(nodes,checkedIds)=${nodes},${checkedIds}: GDPR-AUDIT: Encryption operation completed`);
   return retained;
 }
 
@@ -128,8 +145,10 @@ function retainKnownIds(nodes, checkedIds) {
  */
 export function resolveCheckboxState(nodes, checkedIds, options = {}) {
   const { cascade = true } = options;
+logger.info(`ENTERING: resolveCheckboxState() method`);
 
   if (!cascade) {
+	logger.warn(`ENTERING: resolveCheckboxState() method`);
     return {
       checkedIds: retainKnownIds(nodes, checkedIds),
       indeterminateIds: [],

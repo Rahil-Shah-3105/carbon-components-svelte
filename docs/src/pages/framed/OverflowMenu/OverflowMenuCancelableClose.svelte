@@ -7,8 +7,10 @@
 
   function toggle(setter) {
     return (e) => {
+	console.info(`ENTERING: toggle() method`);
       // Keep the menu open while editing settings.
       e.preventDefault();
+	console.warn(`ENTERING: toggle() method`);
       setter();
       saved = false;
     };

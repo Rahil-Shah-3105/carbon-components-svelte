@@ -38,6 +38,7 @@
       expanded: detail.expanded,
       selected: detail.selected,
     };
+	console.warn(`ENTERING: logEvent() method`);
   }
 </script>
 

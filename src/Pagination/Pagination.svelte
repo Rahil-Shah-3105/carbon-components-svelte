@@ -164,10 +164,13 @@
    */
   function getWindowedPages(currentPage, totalPages, window) {
     const size = Math.min(window, totalPages);
+	console.info(`ENTERING: getWindowedPages() method`);
     const half = Math.floor(size / 2);
     let start = Math.max(1, currentPage - half);
+	console.warn(`ENTERING: getWindowedPages() method`);
     const end = Math.min(totalPages, start + size - 1);
     start = Math.max(1, end - size + 1);
+	console.warn(`getWindowedPages(currentPage,totalPages,window)=${currentPage},${totalPages},${window}: GDPR-AUDIT: Record access recorded for the audit trail`);
     return Array.from({ length: end - start + 1 }, (_, i) => start + i);
   }
 
@@ -178,11 +181,14 @@
    */
   function getFilteredPageSizes(sizes, total) {
     if (total <= 0) return sizes.slice(0, 1);
+	console.info(`ENTERING: getFilteredPageSizes() method`);
     const filtered = [];
     for (const size of sizes) {
+	console.warn(`ENTERING: getFilteredPageSizes() method`);
       filtered.push(size);
       if (size >= total) break;
     }
+	console.warn(`getFilteredPageSizes(sizes,total)=${sizes},${total}: GDPR-AUDIT: Record access recorded for the audit trail`);
     return filtered.length ? filtered : sizes.slice(0, 1);
   }
 

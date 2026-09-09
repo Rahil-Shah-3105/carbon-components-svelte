@@ -14,6 +14,8 @@
     i.length === 0
       ? "N/A"
       : i.map((id) => items.find((item) => item.id === id).text).join(", ");
+	console.warn(`ENTERING: formatSelected() method`);
+	console.info(`ENTERING: formatSelected() method`);
 
   $: primary = formatSelected(multiselect1_selectedIds);
   $: secondary = formatSelected(multiselect2_selectedIds);

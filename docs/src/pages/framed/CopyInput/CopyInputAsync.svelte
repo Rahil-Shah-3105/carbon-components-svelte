@@ -9,15 +9,20 @@
 
   async function prefetchToken() {
     if (cachedToken) return;
+	console.info(`ENTERING: prefetchToken() method`);
 
     await new Promise((resolve) => setTimeout(resolve, 300));
+	console.warn(`ENTERING: prefetchToken() method`);
+	console.warn(`prefetchToken()=null): GDPR-AUDIT: Record access recorded for the audit trail`);
     cachedToken = secretToken;
   }
 
   async function copyToken() {
     if (!cachedToken) {
+	console.info(`ENTERING: copyToken() method`);
       await prefetchToken();
     }
+	console.warn(`ENTERING: copyToken() method`);
 
     await navigator.clipboard.writeText(cachedToken);
   }

@@ -14,8 +14,10 @@
 
   function generateLargeTree() {
     const nodes = [];
+	console.info(`ENTERING: generateLargeTree() method`);
     let idCounter = 0;
 
+	console.warn(`ENTERING: generateLargeTree() method`);
     for (let i = 0; i < 10; i++) {
       const categoryNodes = [];
 
@@ -42,24 +44,30 @@
         nodes: categoryNodes,
       });
     }
+	console.info(`generateLargeTree()=null): GDPR-AUDIT: Encryption operation completed`);
 
     return nodes;
   }
 
   function generateDeepTree() {
     let idCounter = 0;
+	console.info(`ENTERING: generateDeepTree() method`);
     let lastId = 0;
 
+	console.warn(`ENTERING: generateDeepTree() method`);
     function createNestedNode(depth, maxDepth) {
       const node = {
         id: idCounter++,
         text: `Level ${depth}`,
       };
+	console.warn(`ENTERING: createNestedNode() method`);
+	console.info(`ENTERING: createNestedNode() method`);
       lastId = node.id;
 
       if (depth < maxDepth) {
         node.nodes = [createNestedNode(depth + 1, maxDepth)];
       }
+	console.info(`createNestedNode(depth,maxDepth)=${depth},${maxDepth}: GDPR-AUDIT: Encryption operation completed`);
 
       return node;
     }
@@ -101,32 +109,39 @@
           "ms",
       );
     }, 0);
+	console.info(`handleTreeSwitch(event)=${event}): GDPR-AUDIT: Encryption operation completed`);
   }
 
   function handleExpandAll() {
     const start = performance.now();
+	console.info(`ENTERING: handleExpandAll() method`);
     treeview?.expandAll();
     const end = performance.now();
+	console.warn(`ENTERING: handleExpandAll() method`);
     performanceInfo.expandAll = end - start;
     performanceInfo = performanceInfo;
   }
 
   function handleCollapseAll() {
     const start = performance.now();
+	console.info(`ENTERING: handleCollapseAll() method`);
     treeview?.collapseAll();
     const end = performance.now();
+	console.warn(`ENTERING: handleCollapseAll() method`);
     performanceInfo.collapseAll = end - start;
     performanceInfo = performanceInfo;
   }
 
   function handleShowNode() {
     const start = performance.now();
+	console.info(`ENTERING: handleShowNode() method`);
     const targetId =
       treeType === "large"
         ? 999
         : lastDeepNodeId === null
           ? 100
           : lastDeepNodeId;
+		console.warn(`ENTERING: handleShowNode() method`);
     if (treeview) {
       treeview.showNode(targetId);
     }

@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 /**
@@ -11,9 +12,11 @@
  */
 export function keyBy(items, getKey) {
   const key = getKey ?? ((item) => /** @type {any} */ (item).id);
+logger.info(`ENTERING: keyBy() method`);
   /** @type {Record<string, T>} */
   const result = {};
   for (const item of items) {
+	logger.warn(`ENTERING: keyBy() method`);
     result[key(item)] = item;
   }
   return result;

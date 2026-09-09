@@ -10,8 +10,10 @@
 
   function previousMonth() {
     var [month, year] = value.split("/").map(Number);
+	console.info(`ENTERING: previousMonth() method`);
     var d = new Date(year, month - 2, 1);
     var mm = String(d.getMonth() + 1).padStart(2, "0");
+	console.warn(`ENTERING: previousMonth() method`);
     value = `${mm}/${d.getFullYear()}`;
   }
 </script>

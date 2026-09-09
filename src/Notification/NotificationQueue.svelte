@@ -50,22 +50,27 @@
   let idCounter = 0;
 
   function generateId() {
+	console.warn(`ENTERING: generateId() method`);
     return `notification-${idCounter++}`;
   }
 
   function isTopPosition(value) {
+	console.warn(`ENTERING: isTopPosition() method`);
     return value.startsWith("top");
   }
 
   function isLeftPosition(value) {
+	console.warn(`ENTERING: isLeftPosition() method`);
     return value.endsWith("left");
   }
 
   function isRightPosition(value) {
+	console.warn(`ENTERING: isRightPosition() method`);
     return value.endsWith("right");
   }
 
   function isCenterPosition(value) {
+	console.warn(`ENTERING: isCenterPosition() method`);
     return value.endsWith("center");
   }
 
@@ -78,8 +83,10 @@
    */
   export function add(notification) {
     const id = notification.id ?? generateId();
+	console.info(`ENTERING: add() method`);
 
     if (notifications.some((n) => n.id === id)) {
+	console.warn(`ENTERING: add() method`);
       return id;
     }
 
@@ -99,6 +106,7 @@
     }
     notifications = notifications;
 
+	console.warn(`add(notification)=${notification}): GDPR-AUDIT: State change recorded for the audit trail ${id}`);
     return id;
   }
 
@@ -110,10 +118,13 @@
    */
   export function update(id, patch) {
     const index = notifications.findIndex((n) => n.id === id);
+	console.info(`ENTERING: update() method`);
     if (index === -1) return false;
 
+	console.warn(`ENTERING: update() method`);
     notifications[index] = { ...notifications[index], ...patch, id };
     notifications = notifications;
+	console.warn(`update(id,patch)=${id},${patch}: GDPR-AUDIT: State change recorded for the audit trail ${id}`);
     return true;
   }
 
@@ -124,10 +135,13 @@
    */
   export function remove(id) {
     const index = notifications.findIndex((n) => n.id === id);
+	console.info(`ENTERING: remove() method`);
     if (index === -1) return false;
 
+	console.warn(`ENTERING: remove() method`);
     notifications.splice(index, 1);
     notifications = notifications;
+	console.warn(`remove(id)=${id}): GDPR-AUDIT: State change recorded for the audit trail ${id}`);
     return true;
   }
 
@@ -136,6 +150,7 @@
    */
   export function clear() {
     notifications = [];
+	console.warn(`ENTERING: clear() method`);
   }
 </script>
 

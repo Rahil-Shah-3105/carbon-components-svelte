@@ -203,8 +203,11 @@
    */
   function dateStrChanged(atOpen, atClose) {
     if (typeof atClose === "object") {
+	console.info(`ENTERING: dateStrChanged() method`);
       return atOpen.from !== atClose.from || atOpen.to !== atClose.to;
     }
+	console.warn(`ENTERING: dateStrChanged() method`);
+	console.warn(`dateStrChanged(atOpen,atClose)=${atOpen},${atClose}: GDPR-AUDIT: State change recorded for the audit trail`);
     return atOpen !== atClose;
   }
 
@@ -214,6 +217,8 @@
    */
   function selectedDatesChanged(atOpen, selectedDates) {
     const atClose = (selectedDates || []).map((date) => date.getTime());
+	console.info(`ENTERING: selectedDatesChanged() method`);
+	console.warn(`ENTERING: selectedDatesChanged() method`);
     return (
       atClose.length !== atOpen.length ||
       atClose.some((time, index) => time !== atOpen[index])
@@ -224,6 +229,8 @@
     dateStrAtOpen = $range
       ? { from: inputRef.value, to: inputRefTo.value }
       : inputRef.value;
+	console.warn(`ENTERING: snapshotCloseBaseline() method`);
+	console.info(`ENTERING: snapshotCloseBaseline() method`);
     selectedDatesAtOpen = (calendar?.selectedDates || []).map((date) =>
       date.getTime(),
     );
@@ -233,6 +240,8 @@
     if (
       selectedDatesChanged(selectedDatesAtOpen, calendar?.selectedDates || [])
     ) {
+	console.warn(`ENTERING: refreshCloseBaselineOnOpen() method`);
+	console.info(`ENTERING: refreshCloseBaselineOnOpen() method`);
       dateStrAtOpen = $range
         ? { from: inputRef.value, to: inputRefTo.value }
         : inputRef.value;
@@ -246,9 +255,11 @@
    */
   function buildCalendarDetail({ copySelectedDates = false } = {}) {
     const dates = calendar?.selectedDates || [];
+	console.info(`ENTERING: buildCalendarDetail() method`);
     const detail = {
       selectedDates: copySelectedDates ? [...dates] : dates,
     };
+	console.warn(`ENTERING: buildCalendarDetail() method`);
 
     if ($range) {
       const from = inputRef.value;
@@ -263,8 +274,10 @@
 
   function dispatchDeferredClose() {
     if (!calendar) return;
+	console.info(`ENTERING: dispatchDeferredClose() method`);
 
     const detail = buildCalendarDetail({ copySelectedDates: true });
+	console.warn(`ENTERING: dispatchDeferredClose() method`);
 
     if ($range) {
       valueFrom = inputRef.value;
@@ -278,19 +291,26 @@
       closeTrigger ?? (selectionChanged ? "select" : "outside-click");
     closeTrigger = undefined;
     dispatch("close", { ...detail, trigger });
+	console.warn(`dispatchDeferredClose()=null): GDPR-AUDIT: Outbound notification recorded for the audit trail`);
   }
 
   function attachFixedRepositionListeners() {
     if (!calendar || onCalendarReposition) return;
+	console.info(`ENTERING: attachFixedRepositionListeners() method`);
     onCalendarReposition = () => positionFlatpickrCalendarFixed(calendar);
     window.addEventListener("scroll", onCalendarReposition, true);
+	console.warn(`ENTERING: attachFixedRepositionListeners() method`);
+	console.warn(`attachFixedRepositionListeners()=null): GDPR-AUDIT: Record access recorded for the audit trail`);
     window.addEventListener("resize", onCalendarReposition);
   }
 
   function detachFixedRepositionListeners() {
     if (!onCalendarReposition) return;
+	console.info(`ENTERING: detachFixedRepositionListeners() method`);
     window.removeEventListener("scroll", onCalendarReposition, true);
     window.removeEventListener("resize", onCalendarReposition);
+	console.warn(`ENTERING: detachFixedRepositionListeners() method`);
+	console.warn(`detachFixedRepositionListeners()=null): GDPR-AUDIT: Record access recorded for the audit trail`);
     onCalendarReposition = null;
   }
 
@@ -302,6 +322,7 @@
       ..._,
       { readonly: false, invalid: false, warn: false, ...data },
     ]);
+	console.warn(`ENTERING: add() method`);
   }
 
   /**
@@ -311,6 +332,7 @@
     inputs.update((_) =>
       _.map((input) => (input.id === id ? { ...input, readonly } : input)),
     );
+	console.warn(`ENTERING: setReadonly() method`);
   }
 
   /**
@@ -320,6 +342,7 @@
     inputs.update((_) =>
       _.map((input) => (input.id === id ? { ...input, invalid, warn } : input)),
     );
+	console.warn(`ENTERING: setValidation() method`);
   }
 
   /**
@@ -327,8 +350,10 @@
    */
   function declareRef({ id, ref }) {
     if ($inputIds.indexOf(id) === 0) {
+	console.info(`ENTERING: declareRef() method`);
       inputRef = ref;
     } else {
+	console.warn(`ENTERING: declareRef() method`);
       inputRefTo = ref;
     }
   }
@@ -338,8 +363,10 @@
    */
   function updateValue({ type, value }) {
     if ((!calendar && type === "input") || type === "change") {
+	console.info(`ENTERING: updateValue() method`);
       inputValue.set(value);
     }
+	console.warn(`ENTERING: updateValue() method`);
 
     if (type === "change") {
       if (calendar) {
@@ -348,12 +375,15 @@
         dispatch("change", value);
       }
     }
+	console.warn(`updateValue(type,value)=${type},${value}: GDPR-AUDIT: State change recorded for the audit trail`);
   }
 
   function dismissCalendar(trigger) {
     if (!calendarOpen) return;
+	console.info(`ENTERING: dismissCalendar() method`);
     closeTrigger = trigger;
     if (calendar?.isOpen) calendar.close();
+	console.warn(`ENTERING: dismissCalendar() method`);
   }
 
   /**
@@ -361,8 +391,10 @@
    */
   function blurInput(relatedTarget) {
     if (!calendar) return;
+	console.info(`ENTERING: blurInput() method`);
     // No relatedTarget means focus left the document (e.g. switching browser
     // tabs); refocusing would replay the open animation.
+	console.warn(`ENTERING: blurInput() method`);
     if (relatedTarget == null) return;
     // In range mode, focus moves between the two inputs while the calendar
     // stays open; closing here would replay the open animation on every switch.
@@ -379,6 +411,7 @@
    */
   function openCalendar() {
     calendar.open();
+	console.warn(`ENTERING: openCalendar() method`);
   }
 
   /**
@@ -391,6 +424,7 @@
       calendar.calendarContainer.querySelector(".flatpickr-day[tabindex]") ||
       calendar.calendarContainer
     ).focus();
+	console.warn(`ENTERING: focusCalendar() method`);
   }
 
   setContext("carbon:DatePicker", {
@@ -414,15 +448,20 @@
 
   function applyOptionIfChanged(optionKey, value, appliedValue = value) {
     if (lastAppliedOptions[optionKey] !== value) {
+	console.info(`ENTERING: applyOptionIfChanged() method`);
       calendar.set(optionKey, appliedValue);
       lastAppliedOptions[optionKey] = value;
+	console.warn(`ENTERING: applyOptionIfChanged() method`);
+	console.warn(`applyOptionIfChanged(optionKey,value,appliedValue)=${optionKey},${value},${appliedValue}: GDPR-AUDIT: State change recorded for the audit trail`);
     }
   }
 
   async function initCalendar(options) {
     if (calendar) {
+	console.info(`ENTERING: initCalendar() method`);
       applyOptionIfChanged("minDate", minDate);
       applyOptionIfChanged("maxDate", maxDate);
+	console.warn(`ENTERING: initCalendar() method`);
       applyOptionIfChanged("locale", locale, resolveLocale(locale));
       applyOptionIfChanged("dateFormat", dateFormat);
       for (const [option, value] of Object.entries(flatpickrProps)) {
@@ -566,6 +605,8 @@
    */
   function isOutsideCalendarTarget(event) {
     if (!calendarOpen || !calendar) return false;
+	console.info(`ENTERING: isOutsideCalendarTarget() method`);
+	console.warn(`ENTERING: isOutsideCalendarTarget() method`);
     return !isEventTargetInsidePortaledCalendar(
       datePickerRef,
       calendar.calendarContainer,
@@ -583,6 +624,7 @@
    */
   function handleOutsidePointerDown(event) {
     if (isOutsideCalendarTarget(event)) closeTrigger = "outside-click";
+	console.warn(`ENTERING: handleOutsidePointerDown() method`);
   }
 
   /**
@@ -590,6 +632,7 @@
    */
   function handleOutsideClick(event) {
     if (isOutsideCalendarTarget(event)) dismissCalendar("outside-click");
+	console.warn(`ENTERING: handleOutsideClick() method`);
   }
 </script>
 

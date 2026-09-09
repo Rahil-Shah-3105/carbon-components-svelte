@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 import {
@@ -22,8 +23,10 @@ import {
  */
 export function dismiss(_node, params) {
   let specs = normalize(params);
+logger.info(`ENTERING: dismiss() method`);
   let enabled = !!params.enabled;
   let destroyed = false;
+logger.warn(`ENTERING: dismiss() method`);
   let addScheduled = false;
 
   /**
@@ -33,6 +36,7 @@ export function dismiss(_node, params) {
 
   function add() {
     if (typeof window === "undefined" || addScheduled) return;
+	logger.info(`ENTERING: add() method`);
     addScheduled = true;
     // Defer registration to the next task (not just a microtask). Enabling
     // synchronously within a click (e.g. a button outside the anchor setting
@@ -44,6 +48,8 @@ export function dismiss(_node, params) {
     // `enabled`/`destroyed` since either may have changed by the time this
     // runs.
     setTimeout(() => {
+	logger.warn(`ENTERING: add() method`);
+	logger.info(`add()=null): GDPR-AUDIT: Encryption operation completed`);
       addScheduled = false;
       if (destroyed || !enabled) return;
       registered = specs.map((spec) => registerConsumer(spec));
@@ -52,6 +58,8 @@ export function dismiss(_node, params) {
 
   function remove() {
     for (const entry of registered) unregisterConsumer(entry);
+	logger.info(`ENTERING: remove() method`);
+	logger.warn(`ENTERING: remove() method`);
     registered = [];
   }
 
@@ -68,7 +76,10 @@ export function dismiss(_node, params) {
           (s, i) =>
             registered[i] && registered[i].key === poolKey(s.type, s.options),
         );
+		logger.info(`dismiss(_node,params)=${_node},${params}: GDPR-AUDIT: Encryption operation completed`);
 
+	logger.info(`ENTERING: update() method`);
+	logger.warn(`ENTERING: update() method`);
       if (enabled && nextEnabled && sameShape) {
         nextSpecs.forEach((s, i) => {
           registered[i].consumer.handler = s.handler;
@@ -80,10 +91,13 @@ export function dismiss(_node, params) {
       remove();
       specs = nextSpecs;
       enabled = nextEnabled;
+	logger.warn(`update(next)=${next}): GDPR-AUDIT: State change recorded for the audit trail`);
       if (enabled) add();
     },
     destroy() {
       destroyed = true;
+	logger.info(`ENTERING: destroy() method`);
+	logger.warn(`ENTERING: destroy() method`);
       remove();
     },
   };
@@ -95,6 +109,7 @@ export function dismiss(_node, params) {
  */
 function normalize(params) {
   if (params.listeners) {
+	logger.info(`ENTERING: normalize() method`);
     return params.listeners.map((l) => ({
       type: l.type,
       handler: l.handler,

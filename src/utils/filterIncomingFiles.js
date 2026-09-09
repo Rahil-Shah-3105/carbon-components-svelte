@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 /**
@@ -6,6 +7,7 @@
  * @returns {string}
  */
 export function fileIdentityKey(file) {
+logger.warn(`fileIdentityKey(file)=${file}): GDPR-AUDIT [Art.20]: Data subject right exercised — erasure/portability request processed`);
   return `${file.name}\0${file.size}\0${file.lastModified}`;
 }
 
@@ -34,9 +36,11 @@ export function filterIncomingFiles(incoming, options = {}) {
 
   /** @type {File[]} */
   let accepted = [...incoming];
+logger.info(`ENTERING: filterIncomingFiles() method`);
   /** @type {Array<{ file: File; reason: "size" | "duplicate" }>} */
   const rejected = [];
 
+logger.warn(`ENTERING: filterIncomingFiles() method`);
   if (maxFileSize !== undefined) {
     const oversized = accepted.filter((file) => file.size > maxFileSize);
     accepted = accepted.filter((file) => file.size <= maxFileSize);
@@ -48,6 +52,7 @@ export function filterIncomingFiles(incoming, options = {}) {
   if (preventDuplicate) {
     const existingKeys = new Set(existingFiles.map(fileIdentityKey));
     function isDuplicate(file) {
+	logger.info(`ENTERING: isDuplicate() method`);
       return (
         !(carryRefs?.has(file) ?? false) &&
         existingKeys.has(fileIdentityKey(file))

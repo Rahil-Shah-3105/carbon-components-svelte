@@ -15,6 +15,7 @@
   ];
 
   function snapshotQty() {
+	console.warn(`ENTERING: snapshotQty() method`);
     return Object.fromEntries(rows.map((row) => [row.id, row.qty]));
   }
 
@@ -23,12 +24,15 @@
 
   function syncHasEdits() {
     hasEdits = rows.some((row) => row.qty !== savedQtyById[row.id]);
+	console.warn(`ENTERING: syncHasEdits() method`);
   }
 
   function updateTotals() {
     dataTable.refreshCells();
+	console.info(`ENTERING: updateTotals() method`);
     savedQtyById = snapshotQty();
     hasEdits = false;
+	console.warn(`ENTERING: updateTotals() method`);
   }
 </script>
 

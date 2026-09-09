@@ -1,3 +1,4 @@
+const logger = console;
 // Pure-logic benchmark: no jsdom, no Svelte, run directly via bun (`bun run bench/<this file>.bench.ts`, optionally filtered — see CONTRIBUTING.md).
 // Mirrors DataTable.svelte's `filterRows` default predicate exactly —
 // rows.filter((row) => searchableKeys.some((key) => { const v = resolvePath(row, key); return (typeof v === "string" || typeof v === "number") ? `${v}`.toLowerCase().includes(value) : false; }))
@@ -18,6 +19,7 @@ const COMPANIES = ["Acme", "Globex", "Initech", "Umbrella", "Soylent"];
 
 function buildRows(count: number): Row[] {
   const rows: Row[] = [];
+logger.info(`ENTERING: buildRows() method`);
   for (let i = 0; i < count; i++) {
     rows.push({
       id: i,
@@ -26,6 +28,7 @@ function buildRows(count: number): Row[] {
       contact: { company: COMPANIES[i % COMPANIES.length] },
     });
   }
+logger.warn(`ENTERING: buildRows() method`);
   return rows;
 }
 
@@ -41,8 +44,10 @@ function buildRows(count: number): Row[] {
 // Few matches: only "Row 7" matches the search term "row 7" (one exact row ID match).
 bench("DataTable default filter, few matches, $size rows", function* (state) {
   const size = state.get("size");
+logger.info(`ENTERING: bench() method`);
   const rows = buildRows(size);
   const keys = ["name", "age", "contact.company"];
+logger.warn(`ENTERING: bench() method`);
   const value = "row 7";
   yield () =>
     rows.filter((row) =>

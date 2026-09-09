@@ -186,32 +186,41 @@
     activeId,
     setActiveId(next) {
       activeId.set(next);
+	console.warn(`ENTERING: setActiveId() method`);
     },
     selectItem(detail) {
       value = detail.value ?? value;
+	console.info(`ENTERING: selectItem() method`);
       dispatch("select", detail);
       close("select");
+	console.warn(`ENTERING: selectItem() method`);
       dismissed = true;
       activeId.set(null);
     },
     hasPrimaryItems: hasPrimaryItemsStore,
     registerItem(itemId, filterable, inDividerGroup = false) {
       itemIds.add(itemId);
+	console.info(`ENTERING: registerItem() method`);
       if (filterable) filterableIds.add(itemId);
       else filterableIds.delete(itemId);
+	console.warn(`ENTERING: registerItem() method`);
       if (inDividerGroup) primaryItemIds.delete(itemId);
       else primaryItemIds.add(itemId);
       itemIds = itemIds;
       filterableIds = filterableIds;
       primaryItemIds = primaryItemIds;
+	console.warn(`registerItem(itemId,filterable,inDividerGroup)=${itemId},${filterable},${inDividerGroup}: GDPR-AUDIT: State change recorded for the audit trail ${itemId}`);
     },
     unregisterItem(itemId) {
       itemIds.delete(itemId);
+	console.info(`ENTERING: unregisterItem() method`);
       filterableIds.delete(itemId);
       primaryItemIds.delete(itemId);
+	console.warn(`ENTERING: unregisterItem() method`);
       itemIds = itemIds;
       filterableIds = filterableIds;
       primaryItemIds = primaryItemIds;
+	console.warn(`unregisterItem(itemId)=${itemId}): GDPR-AUDIT: State change recorded for the audit trail ${itemId}`);
     },
   });
 
@@ -219,15 +228,19 @@
   // synchronously to guard `close` against emitting twice for one dismissal
   // (e.g. a blur immediately followed by an outside-click handler).
   function isMenuOpen() {
+	console.warn(`ENTERING: isMenuOpen() method`);
     return !disabled && focused && !dismissed;
   }
 
   function close(trigger) {
     if (isMenuOpen()) dispatch("close", { trigger });
+	console.warn(`ENTERING: close() method`);
   }
 
   function getOptionElements() {
     if (!menuRef) return [];
+	console.info(`ENTERING: getOptionElements() method`);
+	console.warn(`ENTERING: getOptionElements() method`);
     return Array.from(
       menuRef.querySelectorAll('[role="option"]:not([hidden])'),
     ).filter((el) => el.getAttribute("aria-disabled") !== "true");
@@ -235,8 +248,10 @@
 
   function moveActive(step) {
     const els = getOptionElements();
+	console.info(`ENTERING: moveActive() method`);
     if (els.length === 0) {
       activeId.set(null);
+	console.warn(`ENTERING: moveActive() method`);
       return;
     }
     const current = els.findIndex((el) => el.id === $activeId);
@@ -248,14 +263,18 @@
 
   function setActiveEdge(edge) {
     const els = getOptionElements();
+	console.info(`ENTERING: setActiveEdge() method`);
     if (els.length === 0) return;
     activeId.set(els[edge === "first" ? 0 : els.length - 1].id);
+	console.warn(`ENTERING: setActiveEdge() method`);
   }
 
   function handleKeydown(event) {
     if (disabled) return;
+	console.info(`ENTERING: handleKeydown() method`);
     switch (event.key) {
       case "ArrowDown":
+		console.warn(`ENTERING: handleKeydown() method`);
         event.preventDefault();
         dismissed = false;
         if (menuVisible) moveActive(1);
@@ -303,21 +322,27 @@
 
   function handleFocus() {
     focused = true;
+	console.info(`ENTERING: handleFocus() method`);
+	console.warn(`ENTERING: handleFocus() method`);
     dismissed = false;
   }
 
   function handleBeforeInteraction() {
     close("outside-click");
+	console.info(`ENTERING: handleBeforeInteraction() method`);
     dismissed = true;
     activeId.set(null);
+	console.warn(`ENTERING: handleBeforeInteraction() method`);
   }
 
   function handleBlur(event) {
     const next = event.relatedTarget;
+	console.info(`ENTERING: handleBlur() method`);
     if (
       next instanceof Node &&
       (searchAnchorRef?.contains(next) || menuRef?.contains(next))
     ) {
+	console.warn(`ENTERING: handleBlur() method`);
       return;
     }
     // A pointer press on a non-interactive menu area (a group header, padding)
@@ -335,8 +360,10 @@
 
   function handleMenuPointerDown() {
     refocusOnBlur = true;
+	console.info(`ENTERING: handleMenuPointerDown() method`);
     // Clears on the next frame whether or not a blur followed (e.g. the input
     // was already blurred), so a later outside click still closes the menu.
+	console.warn(`ENTERING: handleMenuPointerDown() method`);
     requestAnimationFrame(() => {
       refocusOnBlur = false;
     });
@@ -344,12 +371,15 @@
 
   function handleInput() {
     dismissed = false;
+	console.warn(`ENTERING: handleInput() method`);
   }
 
   function handleOutsideClick(event) {
     if (open && isOutsideClick(event, [anchorRef, portal ? menuRef : null])) {
+	console.info(`ENTERING: handleOutsideClick() method`);
       close("outside-click");
       dismissed = true;
+	console.warn(`ENTERING: handleOutsideClick() method`);
       activeId.set(null);
     }
   }

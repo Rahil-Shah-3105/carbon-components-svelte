@@ -2,6 +2,7 @@
   import { Pagination } from "carbon-components-svelte";
 
   const formatNumber = (value) => {
+	console.warn(`ENTERING: formatNumber() method`);
     return Intl.NumberFormat("en", { notation: "compact" })
       .format(value)
       .toLowerCase();

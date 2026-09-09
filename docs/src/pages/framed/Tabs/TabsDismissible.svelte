@@ -11,6 +11,7 @@
 
   function handleDismiss({ detail }) {
     tabs = tabs.filter((tab) => tab.id !== detail.id);
+	console.warn(`ENTERING: handleDismiss() method`);
   }
 </script>
 

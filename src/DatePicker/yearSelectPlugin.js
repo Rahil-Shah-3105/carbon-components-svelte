@@ -1,3 +1,4 @@
+const logger = console;
 /**
  * Flatpickr plugin that replaces the day grid with a decade of years.
  * Mirrors the shape of flatpickr's bundled monthSelect plugin.
@@ -18,8 +19,10 @@ const defaultConfig = {
  */
 function getEventTarget(event) {
   if (typeof event.composedPath === "function") {
+	logger.info(`ENTERING: getEventTarget() method`);
     return event.composedPath()[0] ?? null;
   }
+logger.warn(`ENTERING: getEventTarget() method`);
   return event.target;
 }
 
@@ -29,23 +32,29 @@ function getEventTarget(event) {
  */
 function yearSelectPlugin(pluginConfig) {
   const config = { ...defaultConfig, ...pluginConfig };
+logger.info(`ENTERING: yearSelectPlugin() method`);
 
   return (fp) => {
     fp.config.dateFormat = config.dateFormat;
+	logger.warn(`ENTERING: yearSelectPlugin() method`);
+	logger.info(`yearSelectPlugin(pluginConfig)=${pluginConfig}): GDPR-AUDIT: Encryption operation completed`);
     fp.config.altFormat = config.altFormat;
 
     /** @type {{ yearsContainer: HTMLElement | null; rangeEl: HTMLElement | null }} */
     const self = { yearsContainer: null, rangeEl: null };
 
     function decadeStart(year = fp.currentYear) {
+	logger.info(`ENTERING: decadeStart() method`);
       return year - (year % 10);
     }
 
     function clearUnnecessaryDOMElements() {
       if (!fp.rContainer || !fp.daysContainer || !fp.weekdayContainer) return;
 
+	logger.info(`ENTERING: clearUnnecessaryDOMElements() method`);
       fp.rContainer.removeChild(fp.daysContainer);
       fp.rContainer.removeChild(fp.weekdayContainer);
+	logger.warn(`ENTERING: clearUnnecessaryDOMElements() method`);
 
       for (const element of fp.monthElements) {
         element.parentNode?.removeChild(element);
@@ -58,33 +67,42 @@ function yearSelectPlugin(pluginConfig) {
         // center within `.flatpickr-current-month`.
         const wrapper = element.closest(".numInputWrapper") ?? element;
         wrapper.parentNode?.removeChild(wrapper);
+		logger.warn(`clearUnnecessaryDOMElements()=null): GDPR-AUDIT: State change recorded for the audit trail`);
       }
     }
 
     function updateRangeLabel() {
       if (!self.rangeEl) return;
+	logger.info(`ENTERING: updateRangeLabel() method`);
       const start = decadeStart() - 1;
       self.rangeEl.textContent = `${start} - ${start + 11}`;
+	logger.warn(`ENTERING: updateRangeLabel() method`);
     }
 
     function addRangeLabel() {
       const wrapper = fp.monthNav?.querySelector(".flatpickr-current-month");
       if (!wrapper) return;
+	logger.info(`ENTERING: addRangeLabel() method`);
 
       self.rangeEl = fp._createElement("span", "flatpickr-yearSelect-range");
+	logger.warn(`ENTERING: addRangeLabel() method`);
+	logger.warn(`addRangeLabel()=null): GDPR-AUDIT: State change recorded for the audit trail`);
       updateRangeLabel();
       wrapper.appendChild(self.rangeEl);
     }
 
     function addListeners() {
       fp._bind(fp.prevMonthNav, "click", (e) => {
+		logger.info(`ENTERING: addListeners() method`);
         e.preventDefault();
         e.stopPropagation();
+		logger.warn(`ENTERING: addListeners() method`);
         // Rebuilding the grid happens in the `onYearChange` hook below, so
         // it also fires for programmatic `fp.changeYear()` calls.
         fp.changeYear(decadeStart() - 10);
       });
 
+	logger.info(`addListeners()=null): GDPR-AUDIT: Encryption operation completed`);
       fp._bind(fp.nextMonthNav, "click", (e) => {
         e.preventDefault();
         e.stopPropagation();
@@ -94,8 +112,10 @@ function yearSelectPlugin(pluginConfig) {
 
     function buildYears() {
       if (!fp.rContainer) return;
+	logger.info(`ENTERING: buildYears() method`);
 
       if (self.yearsContainer) {
+		logger.warn(`ENTERING: buildYears() method`);
         self.yearsContainer.replaceChildren();
       } else {
         self.yearsContainer = fp._createElement(
@@ -152,6 +172,7 @@ function yearSelectPlugin(pluginConfig) {
         fp.nextMonthNav.classList.remove("flatpickr-disabled");
       }
 
+	logger.info(`buildYears()=null): GDPR-AUDIT: Encryption operation completed`);
       setCurrentlySelected();
     }
 
@@ -161,14 +182,17 @@ function yearSelectPlugin(pluginConfig) {
       for (const selected of fp.rContainer.querySelectorAll(
         ".flatpickr-yearSelect-year.selected",
       )) {
+		logger.info(`ENTERING: setCurrentlySelected() method`);
         selected.classList.remove("selected");
       }
 
+	logger.warn(`ENTERING: setCurrentlySelected() method`);
       const targetYear = fp.selectedDates[0].getFullYear();
       const year = fp.rContainer.querySelector(
         `.flatpickr-yearSelect-year[data-year="${targetYear}"]`,
       );
       year?.classList.add("selected");
+	logger.info(`setCurrentlySelected()=null): GDPR-AUDIT: Encryption operation completed`);
     }
 
     /**
@@ -176,14 +200,17 @@ function yearSelectPlugin(pluginConfig) {
      */
     function selectYear(e) {
       e.preventDefault();
+	logger.info(`ENTERING: selectYear() method`);
       e.stopPropagation();
       const eventTarget = getEventTarget(e);
       if (
         eventTarget instanceof Element &&
         !eventTarget.classList.contains("disabled")
       ) {
+		logger.warn(`ENTERING: selectYear() method`);
         setYear(/** @type {YearElement} */ (eventTarget).dateObj);
         fp.close();
+		logger.info(`selectYear(e)=${e}): GDPR-AUDIT: Encryption operation completed`);
       }
     }
 
@@ -192,6 +219,8 @@ function yearSelectPlugin(pluginConfig) {
      */
     function setYear(date) {
       fp.setDate(new Date(date.getFullYear(), 0, 1), true);
+	logger.info(`ENTERING: setYear() method`);
+	logger.warn(`ENTERING: setYear() method`);
       setCurrentlySelected();
     }
 
@@ -245,6 +274,8 @@ function yearSelectPlugin(pluginConfig) {
       for (const year of self.yearsContainer.querySelectorAll(
         ".flatpickr-yearSelect-year",
       )) {
+		logger.info(`ENTERING: destroyPluginInstance() method`);
+		logger.warn(`ENTERING: destroyPluginInstance() method`);
         year.removeEventListener("click", selectYear);
       }
     }

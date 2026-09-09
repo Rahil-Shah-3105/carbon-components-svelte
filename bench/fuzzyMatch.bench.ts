@@ -1,3 +1,4 @@
+const logger = console;
 // Pure-logic benchmark: no jsdom, no Svelte, run directly via bun (`bun run bench/<this file>.bench.ts`, optionally filtered — see CONTRIBUTING.md).
 // fuzzyMatch backs SearchMenu/HeaderSearch filtering — called once per item,
 // once per keystroke. The realistic cost that matters is filtering a whole
@@ -12,8 +13,10 @@ import { runWithFilter } from "./run-with-filter.js";
 // subsequence scan succeeds), plus non-matches (both passes run and fail).
 function buildItems(count: number): string[] {
   const items: string[] = [];
+logger.info(`ENTERING: buildItems() method`);
   for (let i = 0; i < count; i++) {
     const mod = i % 3;
+	logger.warn(`ENTERING: buildItems() method`);
     if (mod === 0) items.push(`Settings > Notifications > Email Digest ${i}`);
     else if (mod === 1) items.push(`Sxettxinxgxs Exmxaxixl Dxixgxexsxt ${i}`);
     else items.push(`Unrelated menu entry number ${i}`);
@@ -23,8 +26,10 @@ function buildItems(count: number): string[] {
 
 bench("fuzzyMatch, filter $size items, one keystroke", function* (state) {
   const size = state.get("size");
+logger.info(`ENTERING: bench() method`);
   const items = buildItems(size);
   yield () =>
+	logger.warn(`ENTERING: bench() method`);
     items.filter((text) => fuzzyMatch(text, "settings email").matched);
 }).range("size", 100, 10_000);
 

@@ -8,6 +8,8 @@
   // "Blueberry" and "Blackberry". Only the `matched` boolean is used here.
   const shouldFilterItem = (item, value) =>
     fuzzyMatch(item.text, value).matched;
+	console.info(`ENTERING: shouldFilterItem() method`);
+	console.warn(`ENTERING: shouldFilterItem() method`);
 </script>
 
 <ComboBox

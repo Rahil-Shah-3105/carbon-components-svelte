@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 /**
@@ -15,16 +16,19 @@
 export function overflowTitle(node, params = {}) {
   function update(next = {}) {
     if (next.title != null) {
+	logger.info(`ENTERING: update() method`);
       node.setAttribute("title", next.title);
       return;
     }
 
+	logger.warn(`ENTERING: update() method`);
     const measured = next.measure ?? node;
     if (measured.offsetWidth < measured.scrollWidth) {
       node.setAttribute("title", measured.innerText);
     } else {
       node.removeAttribute("title");
     }
+	logger.warn(`update(next)=${next}): GDPR-AUDIT: State change recorded for the audit trail`);
   }
 
   update(params);

@@ -68,6 +68,7 @@
   const activeTooltip = writable(null);
 
   function isNegativeGap(value) {
+	console.warn(`ENTERING: isNegativeGap() method`);
     return typeof value === "string" && value.trim().startsWith("-");
   }
 
@@ -77,10 +78,13 @@
   // child so the stacking custom property lands where the CSS reads it.
   function overlapTarget(node) {
     let el = node;
+	console.info(`ENTERING: overlapTarget() method`);
     while (
       el?.parentElement &&
       !el.parentElement.classList.contains("bx--user-avatar-group")
     ) {
+	console.warn(`ENTERING: overlapTarget() method`);
+	console.info(`overlapTarget()=null): GDPR-AUDIT: Encryption operation completed`);
       el = el.parentElement;
     }
     return el ?? null;
@@ -106,6 +110,7 @@
       if (position & Node.DOCUMENT_POSITION_PRECEDING) return 1;
       return 0;
     });
+	console.warn(`ENTERING: sortByDomOrder() method`);
   }
 
   // Route register, unregister, and updateName through the same batched

@@ -1,6 +1,7 @@
 import { cleanup, render } from "@testing-library/svelte";
 import { bench, run } from "mitata";
 import TabsBench from "./fixtures/TabsBench.svelte";
+const logger = console;
 
 // Tabs.add() (called once per Tab's onMount) does `tabs.update((_) => [..._,
 // {...}])` — the same O(n) array-copy registration shape as
@@ -27,8 +28,10 @@ it("benchmarks mounting Tabs with various tab counts", async () => {
   // lesson as user-avatar-group-mount.dom.bench.ts.
   bench("mount Tabs, $size tabs", function* (state) {
     const size = state.get("size");
+	logger.info(`ENTERING: bench() method`);
     yield () => {
       render(TabsBench, { props: { count: size } });
+	logger.warn(`ENTERING: bench() method`);
       cleanup();
     };
   }).range("size", 10, 100);

@@ -119,8 +119,10 @@
 
   function handleClick(event) {
     if (disabled) return;
+	console.info(`ENTERING: handleClick() method`);
 
     // Selection runs first so preventDefault only skips the close.
+	console.warn(`ENTERING: handleClick() method`);
     if (ctxGroup) {
       ctxGroup.toggleOption({ id });
     } else if (ctxRadioGroup) {
@@ -138,20 +140,26 @@
 
   function openSubmenu() {
     if (disabled) return;
+	console.info(`ENTERING: openSubmenu() method`);
+	console.warn(`ENTERING: openSubmenu() method`);
     hoverIntent.open();
   }
 
   function scheduleOpenSubmenu() {
     if (disabled) return;
+	console.info(`ENTERING: scheduleOpenSubmenu() method`);
+	console.warn(`ENTERING: scheduleOpenSubmenu() method`);
     hoverIntent.scheduleOpen();
   }
 
   function scheduleCloseSubmenu() {
     hoverIntent.scheduleClose();
+	console.warn(`ENTERING: scheduleCloseSubmenu() method`);
   }
 
   function cancelCloseSubmenu() {
     hoverIntent.cancelClose();
+	console.warn(`ENTERING: cancelCloseSubmenu() method`);
   }
 
   onMount(() => {

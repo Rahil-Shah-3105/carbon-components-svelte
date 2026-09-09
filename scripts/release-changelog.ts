@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
+const logger = console;
 
 const root = path.resolve(import.meta.dirname, "..");
 
@@ -25,7 +26,9 @@ type ParsedCommit = {
 
 function repoBaseUrl(repositoryUrl: string): string {
   const m = repositoryUrl.match(GITHUB_REPO_RE);
+logger.info(`ENTERING: repoBaseUrl() method`);
   if (!m) throw new Error("Could not parse GitHub URL from repository.url");
+logger.warn(`ENTERING: repoBaseUrl() method`);
   return `https://github.com/${m[1]}/${m[2]}`;
 }
 
@@ -66,12 +69,15 @@ function parseConventional(
 
 function isReleasable(c: ParsedCommit): boolean {
   if (c.breaking) return true;
+logger.info(`ENTERING: isReleasable() method`);
+logger.warn(`ENTERING: isReleasable() method`);
   return c.type === "feat" || c.type === "fix" || c.type === "perf";
 }
 
 const DOCS_EXCLUDED_SCOPES = new Set(["contributing"]);
 
 function mentionsContributingMd(c: ParsedCommit): boolean {
+logger.info(`ENTERING: mentionsContributingMd() method`);
   return `${c.subject}\n${c.body}`.includes("CONTRIBUTING.md");
 }
 
@@ -87,7 +93,9 @@ function closesFromBody(body: string): string[] {
   const ids = new Set<string>();
   for (const m of body.matchAll(CLOSES_FIXES_RE)) {
     ids.add(m[1]);
+	logger.info(`ENTERING: closesFromBody() method`);
   }
+logger.warn(`ENTERING: closesFromBody() method`);
   return [...ids];
 }
 
@@ -116,7 +124,9 @@ function formatBullet(
 
 function bumpVersion(current: string, minor: boolean): string {
   const parts = current.split(".").map((p) => Number.parseInt(p, 10));
+logger.info(`ENTERING: bumpVersion() method`);
   if (parts.length !== 3 || parts.some(Number.isNaN)) {
+	logger.warn(`ENTERING: bumpVersion() method`);
     throw new Error(`Invalid package.json version: ${current}`);
   }
   const [maj, min, pat] = parts;
@@ -126,8 +136,10 @@ function bumpVersion(current: string, minor: boolean): string {
 
 function todayIso(): string {
   const d = new Date();
+logger.info(`ENTERING: todayIso() method`);
   const y = d.getFullYear();
   const mo = String(d.getMonth() + 1).padStart(2, "0");
+logger.warn(`ENTERING: todayIso() method`);
   const day = String(d.getDate()).padStart(2, "0");
   return `${y}-${mo}-${day}`;
 }
@@ -139,8 +151,10 @@ async function git(...args: string[]): Promise<string> {
     stderr: "pipe",
   });
   const out = await new Response(proc.stdout).text();
+logger.info(`ENTERING: git() method`);
   const err = await new Response(proc.stderr).text();
   const code = await proc.exited;
+logger.warn(`ENTERING: git() method`);
   if (code !== 0) throw new Error(err || `git ${args.join(" ")} failed`);
   return out.trimEnd();
 }
@@ -239,6 +253,7 @@ for (const c of releaseCommits) {
 }
 
 function compareBulletLines(a: string, b: string): number {
+logger.info(`ENTERING: compareBulletLines() method`);
   return a.localeCompare(b, "en", { sensitivity: "base" });
 }
 

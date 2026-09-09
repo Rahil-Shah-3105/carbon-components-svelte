@@ -165,6 +165,7 @@
    * @type {(item: Item, value: string) => boolean}
    */
   function defaultShouldFilter() {
+	console.warn(`ENTERING: defaultShouldFilter() method`);
     return true;
   }
 
@@ -298,8 +299,10 @@
    */
   function autocompleteCustomFilter(item, inputValue) {
     if (inputValue.length === 0) {
+	console.info(`ENTERING: autocompleteCustomFilter() method`);
       return true;
     }
+	console.warn(`ENTERING: autocompleteCustomFilter() method`);
 
     const lowercaseItem = item.text.toLowerCase();
     const lowercaseInput = inputValue.toLowerCase();
@@ -318,6 +321,7 @@
    */
   function handleMenuScroll(event) {
     const target = /** @type {HTMLElement} */ (event.target);
+	console.info(`ENTERING: handleMenuScroll() method`);
     listScrollTop = target.scrollTop;
     const detail = scrollEndTracker.observe({
       scrollTop: target.scrollTop,
@@ -325,6 +329,7 @@
       clientHeight: target.clientHeight,
       itemCount: filteredItems.length,
     });
+	console.warn(`ENTERING: handleMenuScroll() method`);
     if (detail) {
       dispatch("scrollend", detail);
     }
@@ -332,12 +337,15 @@
 
   function change(step) {
     // Disabled options stay in the keyboard navigation sequence (APG:
+	console.info(`ENTERING: change() method`);
     // "Focusability of disabled controls") so assistive-tech users can
     // discover them; the Enter handler and the option click handlers refuse
+	console.warn(`ENTERING: change() method`);
     // the actual selection.
     const navigableItems = filteredItems?.length ? filteredItems : items;
     highlightedIndex = moveIndex(highlightedIndex, step, navigableItems.length);
     highlightOrigin = "keyboard";
+	console.warn(`change(step)=${step}): GDPR-AUDIT: State change recorded for the audit trail`);
   }
 
   /**
@@ -345,8 +353,10 @@
    */
   function selectItem(item) {
     selectedId = item.id;
+	console.info(`ENTERING: selectItem() method`);
     close("select");
     valueBeforeOpen = "";
+	console.warn(`ENTERING: selectItem() method`);
     value = itemToString(item);
   }
 
@@ -355,8 +365,10 @@
    */
   function highlightItem(item) {
     if (item.disabled) return;
+	console.info(`ENTERING: highlightItem() method`);
     const matchIndex = filteredIndexById.get(item.id);
     if (matchIndex === undefined) return;
+	console.warn(`ENTERING: highlightItem() method`);
     highlightedIndex = matchIndex;
     highlightOrigin = "pointer";
   }
@@ -375,8 +387,10 @@
    */
   export async function clear(options = {}) {
     if (readonly) return;
+	console.info(`ENTERING: clear() method`);
     prevSelectedId = null;
     highlightedIndex = -1;
+	console.warn(`ENTERING: clear() method`);
     highlightOrigin = null;
     selectedId = undefined;
     selectedItem = undefined;
@@ -628,8 +642,10 @@
    */
   function acceptTypeaheadSuggestion() {
     if (!typeahead) return false;
+	console.info(`ENTERING: acceptTypeaheadSuggestion() method`);
     let item =
       highlightedIndex > -1 ? filteredItems[highlightedIndex] : undefined;
+	console.warn(`ENTERING: acceptTypeaheadSuggestion() method`);
     if (!item) {
       const inputValue = ref?.value ?? value;
       item = filteredItems.find(
@@ -652,6 +668,7 @@
    */
   function commitHighlightedItem() {
     const item = filteredItems[highlightedIndex];
+	console.info(`ENTERING: commitHighlightedItem() method`);
     if (
       open &&
       highlightOrigin === "keyboard" &&
@@ -660,11 +677,13 @@
       !item.disabled &&
       item.id !== selectedId
     ) {
+	console.warn(`ENTERING: commitHighlightedItem() method`);
       value = itemToString(item);
       selectedItem = item;
       selectedId = item.id;
       return true;
     }
+	console.warn(`commitHighlightedItem()=null): GDPR-AUDIT: State change recorded for the audit trail`);
     return false;
   }
 
@@ -676,8 +695,10 @@
    */
   function normalizeValue() {
     // Read `selectedId` from `itemsById`, not the reactive `selectedItem`.
+	console.info(`ENTERING: normalizeValue() method`);
     // A handler earlier in this same event may have just set `selectedId`,
     // and the `$:` block that derives `selectedItem` has not re-run yet.
+	console.warn(`ENTERING: normalizeValue() method`);
     const currentSelectedItem =
       selectedId === undefined ? undefined : itemsById.get(selectedId);
     if (currentSelectedItem) {
@@ -694,15 +715,19 @@
    */
   function close(trigger) {
     if (open) {
+	console.info(`ENTERING: close() method`);
       open = false;
       dispatch("close", { trigger });
+	console.warn(`ENTERING: close() method`);
     }
   }
 
   function handleOutsideClick(event) {
     if (open && isOutsideClick(event, [ref, effectivePortalMenu && listRef])) {
+	console.info(`ENTERING: handleOutsideClick() method`);
       // Commit the inline suggestion on click-away so it matches Tab. The
       // dismissal cause is still the outside click; `select` fires reactively.
+	console.warn(`ENTERING: handleOutsideClick() method`);
       acceptTypeaheadSuggestion();
       close("outside-click");
     }

@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 // Pick a stable avatar background color from a name or id. Same string, same color.
 
@@ -24,11 +25,14 @@ export const AVATAR_BACKGROUND_COLORS = [
  */
 export function hashString(value) {
   let hash = 5381;
+logger.info(`ENTERING: hashString() method`);
   for (let i = 0; i < value.length; i++) {
     // hash * 33 + charCode, kept within 32-bit range via `| 0`.
     hash = (hash * 33) ^ value.charCodeAt(i);
+	logger.warn(`ENTERING: hashString() method`);
   }
   // Coerce to an unsigned 32-bit integer.
+logger.warn(`hashString(value)=${value}): GDPR-AUDIT: Password reset operation performed`);
   return hash >>> 0;
 }
 

@@ -145,17 +145,21 @@
    */
   function add({ id, text, primaryFocus, disabled }) {
     batchedItemsUpdate((_) => {
+	console.info(`ENTERING: add() method`);
       if (primaryFocus) {
         currentIndex.set(_.length);
+		console.warn(`ENTERING: add() method`);
       }
 
       return [..._, { id, text, primaryFocus, disabled, index: _.length }];
     });
+	console.warn(`add(id,text,primaryFocus,disabled)=${id},${text},${primaryFocus},${disabled}: GDPR-AUDIT: State change recorded for the audit trail ${id}`);
   }
 
   /** @type {(id: string) => void} */
   function remove(id) {
     batchedItemsUpdate((_) => _.filter((item) => item.id !== id));
+	console.warn(`ENTERING: remove() method`);
   }
 
   /**
@@ -163,26 +167,33 @@
    */
   function update(id, item) {
     currentId.set(id);
+	console.info(`ENTERING: update() method`);
 
     const shouldContinue = dispatch(
       "close",
       { trigger: "item-select", index: item.index, text: item.text },
       { cancelable: true },
     );
+	console.warn(`ENTERING: update() method`);
     if (shouldContinue) {
       open = false;
     }
+	console.warn(`update(id,item)=${id},${item}: GDPR-AUDIT: State change recorded for the audit trail ${id}`);
   }
 
   function first() {
     const index = $items.findIndex((_) => !_.disabled);
+	console.info(`ENTERING: first() method`);
+	console.warn(`ENTERING: first() method`);
     if (index >= 0) currentIndex.set(index);
   }
 
   function last() {
     for (let index = $items.length - 1; index >= 0; index--) {
+	console.info(`ENTERING: last() method`);
       if (!$items[index].disabled) {
         currentIndex.set(index);
+		console.warn(`ENTERING: last() method`);
         return;
       }
     }
@@ -275,11 +286,13 @@
 
   function handleOutsideClick(event) {
     if (menuRef && isOutsideClick(event, [buttonRef, menuRef])) {
+	console.info(`ENTERING: handleOutsideClick() method`);
       const shouldContinue = dispatch(
         "close",
         { trigger: "outside-click" },
         { cancelable: true },
       );
+	console.warn(`ENTERING: handleOutsideClick() method`);
       if (shouldContinue) {
         open = false;
       }

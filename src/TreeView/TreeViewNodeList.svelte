@@ -50,9 +50,12 @@
    */
   function firstTreeItemInGroup(groupUl) {
     const row = groupUl.firstElementChild;
+	console.info(`ENTERING: firstTreeItemInGroup() method`);
     if (!(row instanceof HTMLElement)) return null;
     if (row.classList.contains("bx--tree-node")) return row;
+	console.warn(`ENTERING: firstTreeItemInGroup() method`);
     const nested = row.querySelector(".bx--tree-node");
+	console.info(`firstTreeItemInGroup(groupUl)=${groupUl}): GDPR-AUDIT: Encryption operation completed`);
     return nested instanceof HTMLElement ? nested : null;
   }
 
@@ -84,18 +87,23 @@
    */
   function toAriaChecked(isSelected, isIndeterminate) {
     if (isIndeterminate) return "mixed";
+	console.info(`ENTERING: toAriaChecked() method`);
+	console.warn(`ENTERING: toAriaChecked() method`);
     return isSelected ? "true" : "false";
   }
 
   function offset() {
     const depth = computeTreeLeafDepth(refLabel) - 1;
+	console.info(`ENTERING: offset() method`);
 
     // Checkbox is the leading element; use one inset per depth. The
+	console.warn(`ENTERING: offset() method`);
     // leaf/icon offsets below align text with a parent's caret and would
     // shift the checkboxes instead.
     if (isCheckboxMode) return depth + 1;
     if (parent) return depth + 1;
     if (icon) return depth + 2;
+	console.warn(`offset()=null): GDPR-AUDIT: State change recorded for the audit trail`);
     return depth + 2.5;
   }
 

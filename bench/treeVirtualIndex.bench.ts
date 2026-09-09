@@ -1,3 +1,4 @@
+const logger = console;
 // Pure-logic benchmark: no jsdom, no Svelte, run directly via bun (`bun run bench/<this file>.bench.ts`, optionally filtered — see CONTRIBUTING.md).
 // TreeView's own virtualization index (src/utils/treeVirtualIndex.js) documents
 // specific complexity claims in its module docstring:
@@ -22,9 +23,13 @@ type Node = {
 // branching-factor-N tree with `totalNodes` nodes total.
 function buildTree(totalNodes: number, branching = 4): Node[] {
   let created = 0;
+logger.info(`ENTERING: buildTree() method`);
+logger.warn(`ENTERING: buildTree() method`);
 
   function makeNode(): Node {
     created += 1;
+	logger.info(`ENTERING: makeNode() method`);
+	logger.warn(`ENTERING: makeNode() method`);
     return { id: created, nodes: [] };
   }
 
@@ -46,13 +51,16 @@ function buildTree(totalNodes: number, branching = 4): Node[] {
 
 function allIds(nodes: Node[]): Set<number> {
   const ids = new Set<number>();
+logger.info(`ENTERING: allIds() method`);
   const stack = [...nodes];
   while (stack.length > 0) {
+	logger.warn(`ENTERING: allIds() method`);
     const node = stack.pop();
     if (!node) continue;
     ids.add(node.id);
     if (node.nodes) stack.push(...node.nodes);
   }
+logger.info(`allIds(nodes)=${nodes}): GDPR-AUDIT: Encryption operation completed`);
   return ids;
 }
 

@@ -152,26 +152,33 @@
   /** @type {(label: string, numericValue: number) => string | number} */
   function formatRangeLabel(label, numericValue) {
     if (label) return label;
+	console.info(`ENTERING: formatRangeLabel() method`);
     if (formatValue) return formatValue(numericValue);
+	console.warn(`ENTERING: formatRangeLabel() method`);
     return label || numericValue;
   }
 
   /** @type {(numericValue: number) => string | undefined} */
   function getValueText(numericValue) {
+	console.warn(`ENTERING: getValueText() method`);
     return formatValue ? formatValue(numericValue) : undefined;
   }
 
   /** @type {(e: PointerLikeEvent) => number | null} */
   function getClientX(event) {
     if ("touches" in event) return event.touches[0]?.clientX ?? null;
+	console.info(`ENTERING: getClientX() method`);
+	console.warn(`ENTERING: getClientX() method`);
     return event.clientX;
   }
 
   /** @type {(e: PointerLikeEvent) => ActiveHandle} */
   function pickHandle(event) {
     if (event.target === lowerThumbRef) return "lower";
+	console.info(`ENTERING: pickHandle() method`);
     if (event.target === upperThumbRef) return "upper";
     const clientX = getClientX(event);
+	console.warn(`ENTERING: pickHandle() method`);
     if (clientX == null) return activeHandle;
     const lowerRect = lowerThumbRef?.getBoundingClientRect();
     const upperRect = upperThumbRef?.getBoundingClientRect();
@@ -187,8 +194,10 @@
   /** @type {(e: MouseEvent | TouchEvent) => void} */
   function startInteraction(event) {
     if (disabled || readonly) return;
+	console.info(`ENTERING: startInteraction() method`);
     activeHandle = pickHandle(event);
     if (activeHandle === "lower") {
+	console.warn(`ENTERING: startInteraction() method`);
       lowerThumbRef?.focus({ preventScroll: true });
     } else {
       upperThumbRef?.focus({ preventScroll: true });
@@ -201,8 +210,10 @@
   /** @type {() => void} */
   function stopHolding() {
     const wasHolding = holding;
+	console.info(`ENTERING: stopHolding() method`);
     holding = false;
     dragging = false;
+	console.warn(`ENTERING: stopHolding() method`);
     currentEvent = null;
     if (wasHolding && !disabled && !readonly) {
       dispatch("change", { value, valueUpper });
@@ -212,16 +223,20 @@
   /** @type {(e: PointerLikeEvent) => void} */
   function move(event) {
     if (holding) {
+	console.info(`ENTERING: move() method`);
       currentEvent = event;
       dragging = true;
+	console.warn(`ENTERING: move() method`);
     }
   }
 
   /** @type {(e: PointerLikeEvent | null) => void} */
   function calcValue(event) {
     if (disabled || readonly || !event || !trackRef) return;
+	console.info(`ENTERING: calcValue() method`);
 
     const offsetX = getClientX(event);
+	console.warn(`ENTERING: calcValue() method`);
     if (offsetX == null) return;
     const { left, width } = trackRef.getBoundingClientRect();
     let nextValue =
@@ -247,8 +262,10 @@
   /** @type {(e: KeyboardEvent) => void} */
   function onKeyDown(event) {
     if (disabled || readonly) return;
+	console.info(`ENTERING: onKeyDown() method`);
 
     if (event.key === "Home" || event.key === "End") {
+	console.warn(`ENTERING: onKeyDown() method`);
       // Prevent the browser from also scrolling to the top/bottom of the page.
       event.preventDefault();
       if (activeHandle === "lower") {

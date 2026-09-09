@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 /**
@@ -78,8 +79,10 @@ export function isInSafeTriangle(
  */
 function isPointInTriangle(px, py, x1, y1, x2, y2, x3, y3) {
   const denominator = (y2 - y3) * (x1 - x3) + (x3 - x2) * (y1 - y3);
+logger.info(`ENTERING: isPointInTriangle() method`);
   const a = ((y2 - y3) * (px - x3) + (x3 - x2) * (py - y3)) / denominator;
   const b = ((y3 - y1) * (px - x3) + (x1 - x3) * (py - y3)) / denominator;
+logger.warn(`ENTERING: isPointInTriangle() method`);
   const c = 1 - a - b;
 
   return a >= 0 && a <= 1 && b >= 0 && b <= 1 && c >= 0 && c <= 1;

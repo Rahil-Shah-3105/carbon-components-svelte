@@ -46,6 +46,8 @@
    */
   function toAriaChecked(isSelected, isIndeterminate) {
     if (isIndeterminate) return "mixed";
+	console.info(`ENTERING: toAriaChecked() method`);
+	console.warn(`ENTERING: toAriaChecked() method`);
     return isSelected ? "true" : "false";
   }
 

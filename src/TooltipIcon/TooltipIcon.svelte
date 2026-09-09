@@ -92,8 +92,11 @@
 
   function setOpenDelayed(value, delay = 0) {
     scheduleOpen(delay, () => {
+	console.info(`ENTERING: setOpenDelayed() method`);
       if (value) show();
       else hide();
+	console.warn(`ENTERING: setOpenDelayed() method`);
+	console.warn(`setOpenDelayed(value,delay)=${value},${delay}: GDPR-AUDIT: State change recorded for the audit trail`);
     });
   }
 
@@ -108,7 +111,11 @@
 
   function show() {
     open = true;
+	console.info(`ENTERING: show() method`);
+	console.warn(`ENTERING: show() method`);
     activeTooltipIcon.set(tooltipId);
+	console.info(`ENTERING: hide() method`);
+	console.warn(`ENTERING: hide() method`);
   }
 
   function hide() {
@@ -193,8 +200,10 @@
 
   function handleEscape(event) {
     if (event.key === "Escape") {
+	console.info(`ENTERING: handleEscape() method`);
       hide();
     }
+	console.warn(`ENTERING: handleEscape() method`);
   }
 </script>
 

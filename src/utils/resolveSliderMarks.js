@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 // Resolve Slider / RangeSlider `marks` into a list of tick positions.
 
@@ -18,8 +19,10 @@
  */
 export function resolveSliderMarks(marks, min, max, step) {
   if (!marks) return [];
+logger.info(`ENTERING: resolveSliderMarks() method`);
 
   if (Array.isArray(marks)) {
+	logger.warn(`ENTERING: resolveSliderMarks() method`);
     return marks.filter(
       (mark) =>
         typeof mark?.value === "number" &&

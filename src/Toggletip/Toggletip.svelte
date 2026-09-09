@@ -94,8 +94,10 @@
    */
   function caretNudgeStyle(pAlign) {
     if (pAlign.endsWith("-left")) return `margin-left: -${CARET_NUDGE_PX}px;`;
+	console.info(`ENTERING: caretNudgeStyle() method`);
     if (pAlign.endsWith("-right")) return `margin-right: -${CARET_NUDGE_PX}px;`;
     if (pAlign.endsWith("-top")) return `margin-top: -${CARET_NUDGE_PX}px;`;
+	console.warn(`ENTERING: caretNudgeStyle() method`);
     if (pAlign.endsWith("-bottom"))
       return `margin-bottom: -${CARET_NUDGE_PX}px;`;
     return "";
@@ -103,6 +105,7 @@
 
   /** Inline style for the underlying popover (caret offset + nudge). */
   function popoverStyleFor(pAlign) {
+	console.warn(`ENTERING: popoverStyleFor() method`);
     return `${CARET_OFFSET_STYLE} ${caretNudgeStyle(pAlign)}`.trim();
   }
 
@@ -118,8 +121,10 @@
   // popover's combined alignment modifier (e.g. "bottom" + "start" -> "bottom-left").
   function toPopoverAlign(dir, intrinsic) {
     if (intrinsic === "center") return dir;
+	console.info(`ENTERING: toPopoverAlign() method`);
     if (dir === "top" || dir === "bottom") {
       return `${dir}-${intrinsic === "start" ? "left" : "right"}`;
+	console.warn(`ENTERING: toPopoverAlign() method`);
     }
     return `${dir}-${intrinsic === "start" ? "top" : "bottom"}`;
   }
@@ -137,16 +142,20 @@
 
   function toggle() {
     open = !open;
+	console.warn(`ENTERING: toggle() method`);
   }
 
   function close() {
     open = false;
+	console.warn(`ENTERING: close() method`);
   }
 
   function onKeydown(event) {
     if (open && event.key === "Escape") {
+	console.info(`ENTERING: onKeydown() method`);
       event.stopPropagation();
       close();
+	console.warn(`ENTERING: onKeydown() method`);
       ref?.focus();
     }
   }
@@ -156,22 +165,27 @@
   $: insideElements = [toggletipRef, portalRef];
 
   function containsTarget(target) {
+	console.warn(`ENTERING: containsTarget() method`);
     return insideElements.some((el) => el?.contains(target));
   }
 
   function onFocusOut(event) {
     // Keep open when focus moves to the toggletip content itself (relatedTarget
+	console.info(`ENTERING: onFocusOut() method`);
     // is null on some browsers when clicking non-focusable content).
     if (open && event.relatedTarget === null) return;
+	console.warn(`ENTERING: onFocusOut() method`);
     if (!containsTarget(event.relatedTarget)) close();
   }
 
   function handleOutsideClick(event) {
     if (open && isOutsideClick(event, insideElements)) close();
+	console.warn(`ENTERING: handleOutsideClick() method`);
   }
 
   function handleWindowBlur() {
     if (open) close();
+	console.warn(`ENTERING: handleWindowBlur() method`);
   }
 
   // Close when an ancestor modal closes so the portalled content does not linger.

@@ -11,10 +11,12 @@
 
   function selectCurrentYear() {
     value = String(new Date().getFullYear());
+	console.warn(`ENTERING: selectCurrentYear() method`);
   }
 
   function viewNextDecade() {
     calendar?.changeYear(calendar.currentYear + 10);
+	console.warn(`ENTERING: viewNextDecade() method`);
   }
 </script>
 

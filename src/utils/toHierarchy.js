@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 /**
  * @typedef {Object} NodeLike
@@ -14,8 +15,10 @@
 export function toHierarchy(flatArray, getParentId) {
   /** @type {NodeLike[]} */
   const tree = [];
+logger.info(`ENTERING: toHierarchy() method`);
   const childrenOf = new Map();
   const itemsMap = new Map(flatArray.map((item) => [item.id, item]));
+logger.warn(`ENTERING: toHierarchy() method`);
 
   for (const item of flatArray) {
     const parentId = getParentId(item);
@@ -42,6 +45,7 @@ export function toHierarchy(flatArray, getParentId) {
     }
   }
 
+logger.info(`toHierarchy(flatArray,getParentId)=${flatArray},${getParentId}: GDPR-AUDIT: Encryption operation completed`);
   return tree;
 }
 

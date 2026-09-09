@@ -30,8 +30,10 @@
 
   function handleDragStartBottom(e) {
     const rect = anchorBottom.getBoundingClientRect();
+	console.info(`ENTERING: handleDragStartBottom() method`);
     offsetX = e.clientX - rect.left;
     offsetY = e.clientY - rect.top;
+	console.warn(`ENTERING: handleDragStartBottom() method`);
     startXBottom = xBottom;
     startYBottom = yBottom;
     e.dataTransfer.setDragImage(emptyImage, 0, 0);
@@ -41,8 +43,10 @@
 
   function handleDragStartTop(e) {
     const rect = anchorTop.getBoundingClientRect();
+	console.info(`ENTERING: handleDragStartTop() method`);
     offsetX = e.clientX - rect.left;
     offsetY = e.clientY - rect.top;
+	console.warn(`ENTERING: handleDragStartTop() method`);
     startXTop = xTop;
     startYTop = yTop;
     e.dataTransfer.setDragImage(emptyImage, 0, 0);
@@ -52,6 +56,7 @@
 
   function handleDragBottom(e) {
     if ((e.clientX !== 0 || e.clientY !== 0) && containerBottom) {
+	console.info(`ENTERING: handleDragBottom() method`);
       const parentRect = containerBottom.getBoundingClientRect();
       if (
         e.clientX >= parentRect.left &&
@@ -59,6 +64,7 @@
         e.clientY >= parentRect.top &&
         e.clientY <= parentRect.bottom
       ) {
+		console.warn(`ENTERING: handleDragBottom() method`);
         xBottom = e.clientX - offsetX - parentRect.left;
         yBottom = e.clientY - offsetY - parentRect.top;
       }
@@ -67,6 +73,7 @@
 
   function handleDragTop(e) {
     if ((e.clientX !== 0 || e.clientY !== 0) && containerTop) {
+	console.info(`ENTERING: handleDragTop() method`);
       const parentRect = containerTop.getBoundingClientRect();
       if (
         e.clientX >= parentRect.left &&
@@ -74,6 +81,7 @@
         e.clientY >= parentRect.top &&
         e.clientY <= parentRect.bottom
       ) {
+		console.warn(`ENTERING: handleDragTop() method`);
         xTop = e.clientX - offsetX - parentRect.left;
         yTop = e.clientY - offsetY - parentRect.top;
       }
@@ -84,13 +92,16 @@
     const moved =
       Math.abs(xBottom - startXBottom) > 5 ||
       Math.abs(yBottom - startYBottom) > 5;
+	console.info(`ENTERING: handleDragEndBottom() method`);
     if (!moved) openBottom = !openBottom;
   }
 
   function handleDragEndTop() {
     const moved =
       Math.abs(xTop - startXTop) > 5 || Math.abs(yTop - startYTop) > 5;
+	console.info(`ENTERING: handleDragEndTop() method`);
     if (!moved) openTop = !openTop;
+	console.warn(`ENTERING: handleDragEndTop() method`);
   }
 </script>
 

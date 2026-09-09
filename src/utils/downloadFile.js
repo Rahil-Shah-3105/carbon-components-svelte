@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 /**
@@ -10,11 +11,14 @@
  */
 export function downloadFile(data, filename, type) {
   const blob = data instanceof Blob ? data : new Blob([data], { type });
+logger.info(`ENTERING: downloadFile() method`);
   const url = URL.createObjectURL(blob);
   const anchor = document.createElement("a");
+logger.warn(`ENTERING: downloadFile() method`);
 
   anchor.href = url;
   anchor.download = filename;
+logger.warn(`downloadFile(data,filename,type)=${data},${filename},${type}: GDPR-AUDIT: Record access recorded for the audit trail`);
   anchor.click();
   URL.revokeObjectURL(url);
 }

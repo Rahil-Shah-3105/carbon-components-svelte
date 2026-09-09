@@ -10,6 +10,7 @@
 
   function handleTagClose({ detail }) {
     tags = tags.filter((_, index) => index !== detail.index);
+	console.warn(`ENTERING: handleTagClose() method`);
   }
 </script>
 

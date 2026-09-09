@@ -81,20 +81,25 @@
 
   function setOpenDelayed(value, delay = 0) {
     scheduleOpen(delay, () => {
+	console.info(`ENTERING: setOpenDelayed() method`);
       open = value;
     });
+	console.warn(`ENTERING: setOpenDelayed() method`);
   }
 
   function hide() {
     open = false;
+	console.warn(`ENTERING: hide() method`);
   }
 
   function show() {
     open = true;
+	console.warn(`ENTERING: show() method`);
   }
 
   function toggle() {
     open = !open;
+	console.warn(`ENTERING: toggle() method`);
   }
 
   let isInitialRender = true;
@@ -115,6 +120,7 @@
   });
   function handleEscape(event) {
     if (event.key === "Escape") hide();
+	console.warn(`ENTERING: handleEscape() method`);
   }
 </script>
 

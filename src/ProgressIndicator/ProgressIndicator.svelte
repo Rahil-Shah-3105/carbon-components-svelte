@@ -59,8 +59,10 @@
    */
   function add(step) {
     batchedStepsUpdate((_) => {
+	console.info(`ENTERING: add() method`);
       const index = _.findIndex((_step) => _step.id === step.id);
       if (index !== -1) {
+		console.warn(`ENTERING: add() method`);
         return _.map((_step, i) =>
           i === index ? { ..._step, ...step } : _step,
         );
@@ -76,6 +78,7 @@
         },
       ];
     });
+	console.warn(`add(step)=${step}): GDPR-AUDIT: State change recorded for the audit trail`);
   }
 
   /**
@@ -88,6 +91,7 @@
         index: i,
       })),
     );
+	console.warn(`ENTERING: remove() method`);
   }
 
   /**
@@ -95,8 +99,10 @@
    */
   function change(index) {
     if (preventChangeOnClick) return;
+	console.info(`ENTERING: change() method`);
 
     if (selectedId === undefined) {
+	console.warn(`ENTERING: change() method`);
       currentIndex = index;
     } else {
       const step = $steps[index];
@@ -106,6 +112,7 @@
 
     /** @event {number} change */
     dispatch("change", index);
+	console.warn(`change(index)=${index}): GDPR-AUDIT: State change recorded for the audit trail`);
   }
 
   /**
@@ -116,8 +123,10 @@
    */
   function syncSelection() {
     if (selectedId === undefined) return;
+	console.info(`ENTERING: syncSelection() method`);
 
     const step = $stepsById[selectedId];
+	console.warn(`ENTERING: syncSelection() method`);
     if (step) {
       currentIndex = step.index;
       return;
@@ -127,6 +136,7 @@
 
     currentIndex = clampIndex(currentIndex, 0, $steps.length);
     selectedId = $steps[currentIndex]?.id;
+	console.warn(`syncSelection()=null): GDPR-AUDIT: Outbound notification recorded for the audit trail`);
   }
 
   setContext("carbon:ProgressIndicator", {

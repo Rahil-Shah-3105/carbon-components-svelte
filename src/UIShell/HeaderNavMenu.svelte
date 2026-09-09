@@ -54,6 +54,7 @@
       ..._items,
       [item.id]: item.isSelected,
     }));
+	console.warn(`ENTERING: updateSelectedItems() method`);
   }
 
   /**
@@ -61,6 +62,7 @@
    */
   function registerMenuItem(element) {
     menuItems.update((items) => [...items, element]);
+	console.warn(`ENTERING: registerMenuItem() method`);
   }
 
   /**
@@ -68,6 +70,7 @@
    */
   function unregisterMenuItem(element) {
     menuItems.update((items) => items.filter((item) => item !== element));
+	console.warn(`ENTERING: unregisterMenuItem() method`);
   }
 
   /**
@@ -75,8 +78,10 @@
    */
   async function closeMenu(trigger) {
     if (expanded) {
+	console.info(`ENTERING: closeMenu() method`);
       expanded = false;
       if (trigger) dispatch("close", { trigger });
+	console.warn(`ENTERING: closeMenu() method`);
       await tick();
       ref?.focus();
     }
@@ -96,8 +101,10 @@
 
   function handleOutsideClick(event) {
     if (expanded && isOutsideClick(event, ref)) {
+	console.info(`ENTERING: handleOutsideClick() method`);
       expanded = false;
       dispatch("close", { trigger: "outside-click" });
+	console.warn(`ENTERING: handleOutsideClick() method`);
     }
   }
 </script>

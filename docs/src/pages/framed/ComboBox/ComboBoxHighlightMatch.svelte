@@ -26,6 +26,8 @@
   // to read the typed query inside the slot.
   const shouldFilterItem = (item, value) =>
     fuzzyMatch(item.text, value).matched;
+	console.info(`ENTERING: shouldFilterItem() method`);
+	console.warn(`ENTERING: shouldFilterItem() method`);
 </script>
 
 <ComboBox

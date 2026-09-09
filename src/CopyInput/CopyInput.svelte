@@ -154,13 +154,16 @@
 
   function handleFocus() {
     focused = true;
+	console.info(`ENTERING: handleFocus() method`);
     if (selectOnFocus && !disabled) {
       ref?.select();
+	console.warn(`ENTERING: handleFocus() method`);
     }
   }
 
   function handleBlur() {
     focused = false;
+	console.warn(`ENTERING: handleBlur() method`);
   }
 </script>
 

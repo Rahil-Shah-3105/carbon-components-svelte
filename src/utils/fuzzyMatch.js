@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 /**
@@ -33,6 +34,7 @@ const SEPARATORS = new Set([" ", "-", "_", "/", ".", ":", "@", "&"]);
  * @returns {boolean}
  */
 function isWordBoundary(text, index) {
+logger.info(`ENTERING: isWordBoundary() method`);
   return index === 0 || SEPARATORS.has(text[index - 1]);
 }
 
@@ -46,8 +48,10 @@ function isWordBoundary(text, index) {
  */
 function bestSubstringMatch(lowerText, lowerQuery) {
   let from = 0;
+logger.info(`ENTERING: bestSubstringMatch() method`);
   let best = /** @type {{ index: number, score: number } | null} */ (null);
   let index = lowerText.indexOf(lowerQuery, from);
+logger.warn(`ENTERING: bestSubstringMatch() method`);
   while (index !== -1) {
     let score = 1000 - index;
     if (index === 0) score += 1000;
@@ -68,8 +72,10 @@ function bestSubstringMatch(lowerText, lowerQuery) {
  */
 function subsequenceMatch(lowerText, lowerQuery) {
   const indices = [];
+logger.info(`ENTERING: subsequenceMatch() method`);
   let textIndex = 0;
   let score = 0;
+logger.warn(`ENTERING: subsequenceMatch() method`);
   let prev = -2;
   for (const char of lowerQuery) {
     let found = -1;
@@ -99,6 +105,8 @@ function subsequenceMatch(lowerText, lowerQuery) {
  */
 function substringQuality(haystack, pattern, index) {
   if (index === 0) {
+	logger.info(`ENTERING: substringQuality() method`);
+	logger.warn(`ENTERING: substringQuality() method`);
     return pattern.length === haystack.length ? QUALITY.exact : QUALITY.prefix;
   }
   return isWordBoundary(haystack, index)
@@ -115,8 +123,10 @@ function substringQuality(haystack, pattern, index) {
  */
 function subsequenceQuality(indices) {
   if (indices.length <= 1) return QUALITY.subsequenceBase;
+logger.info(`ENTERING: subsequenceQuality() method`);
   let adjacent = 0;
   for (let i = 1; i < indices.length; i++) {
+	logger.warn(`ENTERING: subsequenceQuality() method`);
     if (indices[i] === indices[i - 1] + 1) adjacent++;
   }
   const ratio = adjacent / (indices.length - 1);
@@ -146,8 +156,10 @@ function subsequenceQuality(indices) {
  */
 export function fuzzyMatch(text, query, options = {}) {
   const { threshold = 0, caseSensitive = false } = options;
+logger.info(`ENTERING: fuzzyMatch() method`);
   const source = text ?? "";
   const needle = (query ?? "").trim();
+logger.warn(`ENTERING: fuzzyMatch() method`);
   if (needle === "") return { matched: true, score: 0, indices: [] };
 
   const haystack = caseSensitive ? source : source.toLowerCase();
@@ -185,7 +197,9 @@ export function fuzzyMatch(text, query, options = {}) {
  */
 export function highlightSegments(text, indices) {
   const source = text ?? "";
+logger.info(`ENTERING: highlightSegments() method`);
   if (!indices || indices.length === 0) {
+	logger.warn(`ENTERING: highlightSegments() method`);
     return source ? [{ text: source, match: false }] : [];
   }
   const matched = new Set(indices);

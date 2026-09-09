@@ -4,6 +4,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { format } from "prettier";
 import plugin from "prettier/plugins/typescript";
+const logger = console;
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const outFile = path.join(__dirname, "../src/COMPONENT_API.json");
@@ -38,8 +39,10 @@ const stripLeadingTypeAlias = (
   source: string,
   name: "EventDetail" | "SlotProps",
 ) => {
+logger.info(`ENTERING: stripLeadingTypeAlias() method`);
   const re = new RegExp(`^\\s*type\\s+${name}\\s*=\\s*`, "i");
   let s = source;
+logger.warn(`ENTERING: stripLeadingTypeAlias() method`);
   let next = s.replace(re, "").trimStart();
   while (next !== s) {
     s = next;
@@ -49,6 +52,7 @@ const stripLeadingTypeAlias = (
 };
 
 const formatTypeScript = async (value: string) => {
+logger.info(`ENTERING: formatTypeScript() method`);
   return await format(value, {
     parser: "typescript",
     plugins: [plugin],

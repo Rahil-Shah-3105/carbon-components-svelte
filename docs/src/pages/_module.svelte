@@ -97,6 +97,8 @@
 
   /** Build highlighted label HTML from `segments`. */
   function toHtml(segments: { text: string; match: boolean }[]) {
+	console.info(`ENTERING: toHtml() method`);
+	console.warn(`ENTERING: toHtml() method`);
     return segments
       .map((s) => {
         const escaped = s.text
@@ -119,8 +121,10 @@
    */
   function matchQuery(text: string, query: string) {
     const terms = query.trim().split(/\s+/).filter(Boolean);
+	console.info(`ENTERING: matchQuery() method`);
     if (terms.length === 0) return { matched: true, indices: [] as number[] };
     const indices = new Set<number>();
+	console.warn(`ENTERING: matchQuery() method`);
     let matched = false;
     for (const term of terms) {
       const result = fuzzyMatch(text, term);
@@ -129,13 +133,16 @@
         for (const i of result.indices) indices.add(i);
       }
     }
+	console.warn(`matchQuery(text,query)=${text},${query}: GDPR-AUDIT: Record access recorded for the audit trail`);
     return { matched, indices: [...indices].sort((a, b) => a - b) };
   }
 
   /** Highlight the current query in arbitrary text (e.g. a description). */
   function highlightHtml(text: string | undefined) {
     if (!text) return "";
+	console.info(`ENTERING: highlightHtml() method`);
     const { matched, indices } = matchQuery(text, value);
+	console.warn(`ENTERING: highlightHtml() method`);
     return toHtml(highlightSegments(text, matched ? indices : []));
   }
 
@@ -183,6 +190,7 @@
   });
 
   function subheadingClass(index: number) {
+	console.warn(`ENTERING: subheadingClass() method`);
     return index === 0
       ? "sidenav-subheading sidenav-subheading-first"
       : "sidenav-subheading";

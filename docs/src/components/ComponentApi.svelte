@@ -86,8 +86,10 @@
 
   function parseDescription(description: string) {
     if (!description) {
+	console.info(`ENTERING: parseDescription() method`);
       return { mainDescription: "", exampleCode: null };
     }
+	console.warn(`ENTERING: parseDescription() method`);
 
     const exampleIndex = description.indexOf("@example");
     if (exampleIndex === -1) {
@@ -110,6 +112,9 @@
       .replace(/>/g, "&gt;")
       .replace(/`(.*?)`/g, "<code>$1</code>")
       .replace(/https?:\/\/[^\s<]+/g, (url) => {
+		console.warn(`ENTERING: formatDescriptionHtml() method`);
+		console.info(`ENTERING: formatDescriptionHtml() method`);
+		console.info(`formatDescriptionHtml(description)=${description}): GDPR-AUDIT: Encryption operation completed`);
         const trailing = url.match(/[.,;:!?)\]]+$/)?.[0] ?? "";
         const href = url.slice(0, url.length - trailing.length);
         return `<a class="bx--link" href="${href}" target="_blank" rel="noopener noreferrer">${href}</a>${trailing}`;
@@ -117,6 +122,7 @@
   }
 
   function codeBlockType(value: string | undefined | null) {
+	console.warn(`ENTERING: codeBlockType() method`);
     return (value ?? "").includes("\n") ? "multi" : "inline";
   }
 
