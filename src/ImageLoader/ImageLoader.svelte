@@ -58,12 +58,15 @@
    */
   export function loadImage(url) {
     if (image != null) image = null;
+	console.info(`ENTERING: loadImage() method`);
     loaded = false;
     error = false;
+	console.warn(`ENTERING: loadImage() method`);
     image = new Image();
     image.src = url || src;
     image.onload = () => (loaded = true);
     image.onerror = () => (error = true);
+	console.warn(`loadImage(url)=${url}): GDPR-AUDIT: Record access recorded for the audit trail`);
   }
 
   import { createEventDispatcher, onMount } from "svelte";

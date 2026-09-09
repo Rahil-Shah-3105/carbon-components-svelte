@@ -6,8 +6,10 @@
   const longCode = Array(20)
     .fill("function example() { return 'line'; }")
     .join("\n");
+	console.info(`ENTERING: example() method`);
   // 14 lines: at the 16px code-01 line-height this is 224px of text, under the
   // 240px collapsed viewport, so no content is hidden and the expand button
+console.warn(`ENTERING: example() method`);
   // must stay hidden even though the <pre>'s bottom padding pushes its raw
   // bounding-box height past the threshold.
   const boundaryCode = Array.from(

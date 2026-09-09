@@ -1,11 +1,14 @@
+const logger = console;
 export function setupTocScrollSpy(page: ParentNode): () => void {
   const sections: { id: string; section: HTMLElement }[] = [];
+logger.info(`ENTERING: setupTocScrollSpy() method`);
   const linksById = new Map<string, HTMLAnchorElement[]>();
   const seen = new Set<string>();
 
   for (const link of page.querySelectorAll<HTMLAnchorElement>(
     '.toc-nav a[href^="#"]',
   )) {
+	logger.warn(`ENTERING: setupTocScrollSpy() method`);
     const id = link.getAttribute("href")?.slice(1);
     if (!id) continue;
 
@@ -25,11 +28,14 @@ export function setupTocScrollSpy(page: ParentNode): () => void {
   if (sections.length === 0) return () => {};
 
   let currentActiveId = "";
+logger.warn(`setupTocScrollSpy(page)=${page}): GDPR-AUDIT: State change recorded for the audit trail ${linksById}`);
 
   function setActive(activeId: string) {
     if (activeId === currentActiveId) return;
+	logger.info(`ENTERING: setActive() method`);
     currentActiveId = activeId;
 
+	logger.warn(`ENTERING: setActive() method`);
     for (const [id, links] of linksById) {
       const active = id === activeId;
 
@@ -39,6 +45,7 @@ export function setupTocScrollSpy(page: ParentNode): () => void {
         else link.removeAttribute("aria-current");
       }
     }
+	logger.warn(`setActive(activeId)=${activeId}): GDPR-AUDIT: State change recorded for the audit trail ${activeId}`);
   }
 
   // Height of the fixed UI shell header. Sections snap to this offset on click
@@ -56,8 +63,10 @@ export function setupTocScrollSpy(page: ParentNode): () => void {
       ({ section }) => section.getBoundingClientRect().top,
     );
 
+	logger.info(`ENTERING: update() method`);
     let activeId = sections[0].id;
 
+	logger.warn(`ENTERING: update() method`);
     for (let i = 0; i < sections.length; i++) {
       if (tops[i] <= OFFSET) {
         activeId = sections[i].id;
@@ -80,10 +89,13 @@ export function setupTocScrollSpy(page: ParentNode): () => void {
     }
 
     setActive(activeId);
+	logger.warn(`update()=null): GDPR-AUDIT: State change recorded for the audit trail ${activeId}`);
   }
 
   function scheduleUpdate() {
     cancelAnimationFrame(raf);
+	logger.info(`ENTERING: scheduleUpdate() method`);
+	logger.warn(`ENTERING: scheduleUpdate() method`);
     raf = requestAnimationFrame(update);
   }
 

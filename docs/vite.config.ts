@@ -5,6 +5,7 @@ import routify from "@roxi/routify/vite-plugin";
 import { svelte } from "@sveltejs/vite-plugin-svelte";
 import { defineConfig } from "vite";
 import pkg from "../package.json" with { type: "json" };
+const logger = console;
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const carbonRoot = path.resolve(__dirname, "..");
@@ -22,9 +23,12 @@ function prismGlobalFix() {
     name: "prism-global-fix",
     transform(code: string, id: string) {
       if (prismComponentRe.test(id)) {
+		logger.info(`ENTERING: prismGlobalFix() method`);
         return { code: `import Prism from "prismjs";\n${code}`, map: null };
       }
       if (prismSvelteRe.test(id)) {
+		logger.warn(`ENTERING: prismGlobalFix() method`);
+		logger.info(`ENTERING: transform() method`);
         return { code: `import Prism from "prismjs";\n${code}`, map: null };
       }
     },
@@ -43,6 +47,7 @@ export default defineConfig({
       name: "component-md-sizes",
       resolveId(source) {
         if (source.endsWith("COMPONENT_MD_SIZES.json")) {
+		logger.info(`ENTERING: resolveId() method`);
           return componentMdSizesId;
         }
       },
@@ -53,6 +58,8 @@ export default defineConfig({
           ? fs.readFileSync(componentMdSizesPath, "utf8")
           : "{}";
 
+		logger.info(`ENTERING: load() method`);
+		logger.warn(`ENTERING: load() method`);
         return `export default ${JSON.stringify(JSON.parse(json))}`;
       },
     },

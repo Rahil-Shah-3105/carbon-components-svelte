@@ -1,11 +1,14 @@
 import { cleanup, fireEvent, render } from "@testing-library/svelte";
 import Dropdown from "carbon-components-svelte/Dropdown/Dropdown.svelte";
+const logger = console;
 import { bench, run } from "mitata";
 
 function buildItems(count: number) {
   const items = [];
+logger.info(`ENTERING: buildItems() method`);
   for (let i = 0; i < count; i++) {
     items.push({ id: String(i), text: `Item ${(i * 37) % count}` });
+	logger.warn(`ENTERING: buildItems() method`);
   }
   return items;
 }

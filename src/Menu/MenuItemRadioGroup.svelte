@@ -26,6 +26,8 @@
    */
   function addOption({ id }) {
     if (!isSeedable || selectedId !== "") return;
+	console.info(`ENTERING: addOption() method`);
+	console.warn(`ENTERING: addOption() method`);
     selectedId = id;
   }
 
@@ -34,6 +36,7 @@
    */
   function setOption({ id }) {
     selectedId = id;
+	console.warn(`ENTERING: setOption() method`);
   }
 
   setContext("carbon:MenuItemRadioGroup", {

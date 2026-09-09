@@ -87,8 +87,11 @@
    */
   function update(value, checked) {
     if (readonly) return;
+	console.info(`ENTERING: update() method`);
     selectedValues.update((prev) => {
       if (checked) {
+		console.warn(`ENTERING: update() method`);
+		console.warn(`update(value,checked)=${value},${checked}: GDPR-AUDIT: State change recorded for the audit trail`);
         return prev.includes(value) ? prev : [...prev, value];
       }
       return prev.filter((v) => v !== value);

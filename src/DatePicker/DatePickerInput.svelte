@@ -106,8 +106,10 @@
 
   function dateFormatToPattern(fmt) {
     let result = "";
+	console.info(`ENTERING: dateFormatToPattern() method`);
     for (let i = 0; i < fmt.length; i++) {
       const ch = fmt[i];
+	console.warn(`ENTERING: dateFormatToPattern() method`);
       if (ch === "\\" && i + 1 < fmt.length) {
         result += fmt[++i].replace(REGEX_SPECIAL_CHARS, "\\$&");
       } else if (dateFormatTokens[ch]) {

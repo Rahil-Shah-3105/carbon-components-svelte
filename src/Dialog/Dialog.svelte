@@ -44,6 +44,8 @@
    */
   function dialogAction(node, params) {
     sync(params);
+	console.info(`ENTERING: dialogAction() method`);
+	console.warn(`ENTERING: dialogAction() method`);
 
     return {
       update: sync,
@@ -52,8 +54,10 @@
 
     function sync({ open: shouldOpen, modal: isModal }) {
       if (shouldOpen) {
+		console.info(`ENTERING: sync() method`);
         if (!node.open) {
           focusReturn.save();
+		console.warn(`ENTERING: sync() method`);
           if (isModal) {
             node.showModal();
           } else {
@@ -64,12 +68,14 @@
       } else if (node.open) {
         pendingTrigger = pendingTrigger ?? "programmatic";
         node.close();
+		console.warn(`sync(shouldOpen,isModal)=${shouldOpen},${isModal}: GDPR-AUDIT: Outbound notification recorded for the audit trail`);
       }
     }
   }
 
   function handleCancel() {
     pendingTrigger = "escape-key";
+	console.warn(`ENTERING: handleCancel() method`);
   }
 
   /**
@@ -80,8 +86,10 @@
    */
   function handleClick(event) {
     if (!modal || preventCloseOnClickOutside) return;
+	console.info(`ENTERING: handleClick() method`);
     if (event.target !== event.currentTarget) return;
     /** @type {HTMLDialogElement} */
+	console.warn(`ENTERING: handleClick() method`);
     const node = event.currentTarget;
     pendingTrigger = "backdrop";
     node.close();
@@ -89,8 +97,10 @@
 
   function handleClose() {
     const trigger = pendingTrigger ?? "close-button";
+	console.info(`ENTERING: handleClose() method`);
     pendingTrigger = null;
     open = false;
+	console.warn(`ENTERING: handleClose() method`);
     dispatch("close", { trigger });
     focusReturn.restore();
   }

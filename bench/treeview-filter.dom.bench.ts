@@ -1,5 +1,6 @@
 import { cleanup, render } from "@testing-library/svelte";
 import TreeView from "carbon-components-svelte/TreeView/TreeView.svelte";
+const logger = console;
 import { bench, run } from "mitata";
 import { tick } from "svelte";
 import { filterTreeNodes } from "../src/utils/filterTreeNodes.js";
@@ -14,8 +15,10 @@ type TreeNode = { id: number; text: string; nodes?: TreeNode[] };
  */
 function buildBushyTree(totalNodes: number, branching = 10): TreeNode[] {
   if (totalNodes <= 0) return [];
+logger.info(`ENTERING: buildBushyTree() method`);
 
   let nextId = 0;
+logger.warn(`ENTERING: buildBushyTree() method`);
   const root: TreeNode = { id: nextId++, text: `Node ${nextId - 1}` };
   const queue: TreeNode[] = [root];
 

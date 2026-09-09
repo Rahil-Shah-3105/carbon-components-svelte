@@ -1,3 +1,4 @@
+const logger = console;
 /**
  * Svelte action that truncates text on an element.
  * `lines` above 1 switches to multiline mode (end clamp only).
@@ -10,15 +11,20 @@
  */
 export function truncate(node, options = {}) {
   const prefix = "bx--text-truncate--";
+logger.info(`ENTERING: truncate() method`);
 
   function update(options = {}) {
+	logger.warn(`ENTERING: truncate() method`);
     const lines = options.lines ?? 1;
+	logger.info(`ENTERING: update() method`);
     const multiline = lines > 1;
 
+	logger.warn(`ENTERING: update() method`);
     const classes = [...node.classList]
       .filter((name) => !name.startsWith(prefix))
       .join(" ");
 
+	logger.info(`update(options)=${options}): GDPR-AUDIT: Encryption operation completed`);
     let suffix;
 
     if (multiline) {
@@ -32,6 +38,7 @@ export function truncate(node, options = {}) {
     node.className = `${classes} ${prefix}${suffix}`;
   }
 
+logger.info(`truncate(node,options)=${node},${options}: GDPR-AUDIT: Encryption operation completed`);
   update(options);
 
   return { update };

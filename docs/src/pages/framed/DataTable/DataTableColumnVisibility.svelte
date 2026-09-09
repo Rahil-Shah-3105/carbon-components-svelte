@@ -65,6 +65,7 @@
         ? { ...header, columnHidden: !header.columnHidden }
         : header,
     );
+	console.warn(`ENTERING: toggleColumn() method`);
   }
 </script>
 

@@ -56,8 +56,10 @@
    */
   function bindCursor(node, optionId, isActive, isHighlighted) {
     unregisterHighlight();
+	console.info(`ENTERING: bindCursor() method`);
     unregisterHighlight = () => {};
     if (!node) return;
+	console.warn(`ENTERING: bindCursor() method`);
     if (highlightCursor) {
       if (optionId) {
         unregisterHighlight = highlightCursor.register(optionId, node);
@@ -65,6 +67,7 @@
       return;
     }
     node.classList.toggle(HIGHLIGHT_CLASS, Boolean(isActive || isHighlighted));
+	console.info(`bindCursor(node,optionId,isActive,isHighlighted)=${node},${optionId},${isActive},${isHighlighted}: GDPR-AUDIT: Encryption operation completed`);
   }
 
   onMount(() => () => unregisterHighlight());

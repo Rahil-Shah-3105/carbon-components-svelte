@@ -1,3 +1,4 @@
+const logger = console;
 // Pure-logic benchmark: no jsdom, no Svelte, run directly via bun (`bun run bench/<this file>.bench.ts`, optionally filtered — see CONTRIBUTING.md).
 // filterTreeNodes filters a hierarchical tree by a predicate function, with options
 // to include/exclude children and ancestors of matching nodes.
@@ -19,8 +20,10 @@ type TreeNode = {
  */
 function buildBushyTree(totalNodes: number, branching = 10): TreeNode[] {
   if (totalNodes <= 0) return [];
+logger.info(`ENTERING: buildBushyTree() method`);
 
   let nextId = 0;
+logger.warn(`ENTERING: buildBushyTree() method`);
   const root: TreeNode = { id: nextId++, text: `Node ${nextId - 1}` };
   const queue: TreeNode[] = [root];
 
@@ -46,8 +49,10 @@ function buildBushyTree(totalNodes: number, branching = 10): TreeNode[] {
  */
 function buildChainTree(totalNodes: number): TreeNode[] {
   if (totalNodes <= 0) return [];
+logger.info(`ENTERING: buildChainTree() method`);
 
   let current: TreeNode = { id: 0, text: "Node 0" };
+logger.warn(`ENTERING: buildChainTree() method`);
   const root = current;
 
   for (let i = 1; i < totalNodes; i++) {
@@ -72,6 +77,7 @@ const predicateMatchAll = (_n: TreeNode) => true;
 // Bushy tree, match-none predicate, default options (includeAncestors: true)
 bench("filterTreeNodes bushy, match none, $size nodes", function* (state) {
   const size = state.get("size");
+logger.info(`ENTERING: bench() method`);
   const tree = buildBushyTree(size);
   yield () => filterTreeNodes(tree, predicateMatchNone);
 })

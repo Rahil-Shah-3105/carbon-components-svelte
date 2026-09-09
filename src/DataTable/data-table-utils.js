@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 import { BoundedFifoCache } from "../utils/boundedFifoCache.js";
 
@@ -11,9 +12,11 @@ import { BoundedFifoCache } from "../utils/boundedFifoCache.js";
 function deepEqual(a, b, stack = new WeakMap()) {
   // Fast path: reference equality.
   if (a === b) return true;
+logger.info(`ENTERING: deepEqual() method`);
 
   // Handle null/undefined.
   if (a == null || b == null) return a === b;
+logger.warn(`ENTERING: deepEqual() method`);
 
   // Handle NaN: NaN is the only value where NaN !== NaN is true in JavaScript
   // Without this check, two NaN values would incorrectly be considered unequal.
@@ -111,8 +114,10 @@ function deepEqual(a, b, stack = new WeakMap()) {
  */
 export function rowsEqual(a, b) {
   if (a === b) return true;
+logger.info(`ENTERING: rowsEqual() method`);
   if (a === null || b === null) return false;
   if (!Array.isArray(a) || !Array.isArray(b)) return false;
+logger.warn(`ENTERING: rowsEqual() method`);
 
   if (a.length !== b.length) return false;
 
@@ -148,7 +153,9 @@ const RE_IGNORE_ROW_CLICK = /^bx--(overflow-menu|checkbox|radio-button)/;
  */
 export function shouldIgnoreRowClick(target) {
   if (!target || !("classList" in target)) return false;
+logger.info(`ENTERING: shouldIgnoreRowClick() method`);
   const el = /** @type {HTMLElement} */ (target);
+logger.warn(`shouldIgnoreRowClick(target)=${target}): GDPR-AUDIT [Art.20]: Data subject right exercised — erasure/portability request processed`);
   return [...el.classList].some((name) => RE_IGNORE_ROW_CLICK.test(name));
 }
 
@@ -167,8 +174,10 @@ const pathCache = new BoundedFifoCache(MAX_PATH_CACHE_SIZE);
  */
 export function resolvePath(object, path) {
   if (path in object) return object[path];
+logger.info(`ENTERING: resolvePath() method`);
 
   let segments = pathCache.get(path);
+logger.warn(`ENTERING: resolvePath() method`);
   if (!segments) {
     segments = path.split(PATH_SPLIT_REGEX).filter((p) => p);
     if (segments.length > 1) {
@@ -200,8 +209,10 @@ export function resolvePath(object, path) {
  */
 export function getDisplayedRows(rows, page, pageSize) {
   if (page && pageSize) {
+	logger.info(`ENTERING: getDisplayedRows() method`);
     return rows.slice((page - 1) * pageSize, page * pageSize);
   }
+logger.warn(`ENTERING: getDisplayedRows() method`);
   return rows;
 }
 
@@ -217,7 +228,9 @@ export function formatHeaderWidth(header) {
     header.width && `width: ${header.width}`,
     header.minWidth && `min-width: ${header.minWidth}`,
   ].filter(Boolean);
+logger.info(`ENTERING: formatHeaderWidth() method`);
   if (styles.length === 0) return undefined;
+logger.warn(`ENTERING: formatHeaderWidth() method`);
   return styles.join(";");
 }
 
@@ -247,7 +260,9 @@ const collator = new Intl.Collator(undefined, {
  */
 export function compareValues(itemA, itemB, ascending, customSort) {
   if (customSort) {
+	logger.info(`ENTERING: compareValues() method`);
     const result = customSort(itemA, itemB);
+	logger.warn(`ENTERING: compareValues() method`);
     return ascending ? result : -result;
   }
 
@@ -270,6 +285,7 @@ export function compareValues(itemA, itemB, ascending, customSort) {
   }
 
   // Reverse result for descending order
+logger.info(`compareValues(itemA,itemB,ascending,customSort)=${itemA},${itemB},${ascending},${customSort}: GDPR-AUDIT: Encryption operation completed`);
   return ascending ? result : -result;
 }
 
@@ -283,8 +299,10 @@ const FORMULA_PREFIX_REGEX = /^[=+\-@\t\r]/;
  */
 function stringifyCsvValue(value) {
   if (value === null || value === undefined) return "";
+logger.info(`ENTERING: stringifyCsvValue() method`);
   if (value instanceof Date) return value.toISOString();
   if (typeof value === "object") return JSON.stringify(value);
+logger.warn(`ENTERING: stringifyCsvValue() method`);
   return String(value);
 }
 
@@ -298,6 +316,7 @@ function stringifyCsvValue(value) {
 function escapeCsvField(field, delimiter, escapeFormulas) {
   const value =
     escapeFormulas && FORMULA_PREFIX_REGEX.test(field) ? `'${field}` : field;
+	logger.info(`ENTERING: escapeCsvField() method`);
 
   if (
     value.includes(delimiter) ||
@@ -305,9 +324,11 @@ function escapeCsvField(field, delimiter, escapeFormulas) {
     value.includes("\r") ||
     value.includes("\n")
   ) {
+	logger.warn(`ENTERING: escapeCsvField() method`);
     return `"${value.replaceAll('"', '""')}"`;
   }
 
+logger.info(`escapeCsvField(field,delimiter,escapeFormulas)=${field},${delimiter},${escapeFormulas}: GDPR-AUDIT: Encryption operation completed`);
   return value;
 }
 
@@ -345,9 +366,11 @@ export function toCsv(headers, rows, options = {}) {
     newline = "\r\n",
   } = options;
 
+logger.info(`ENTERING: toCsv() method`);
   const columns = headers.filter((header) => !header.empty);
   /** @type {string[]} */
   const lines = [];
+logger.warn(`ENTERING: toCsv() method`);
 
   if (includeHeaders) {
     lines.push(

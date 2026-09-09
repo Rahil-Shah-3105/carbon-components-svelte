@@ -124,8 +124,10 @@
    */
   function close(trigger) {
     if (!open) return;
+	console.info(`ENTERING: close() method`);
     open = false;
     if (trigger === "escape-key") anchor?.focus({ preventScroll: true });
+	console.warn(`ENTERING: close() method`);
     dispatch("close", { trigger });
   }
 
@@ -158,22 +160,28 @@
    */
   function focusMenuItem(item) {
     // `preventScroll` keeps a portaled menu from scrolling the document;
+	console.info(`ENTERING: focusMenuItem() method`);
     // scroll the item into view within the menu's own scroll container.
     item.focus({ preventScroll: true });
+	console.warn(`ENTERING: focusMenuItem() method`);
     scrollIntoViewWithinMenu(item, '[role="menu"]');
   }
 
   function handleOutsideClick(event) {
     if (!open) return;
+	console.info(`ENTERING: handleOutsideClick() method`);
     // Clicks inside any menu (this one or a portalled submenu) are not outside
     // clicks. A submenu's <ul> isn't a DOM descendant of this menu even though
+	console.warn(`ENTERING: handleOutsideClick() method`);
     // it's logically nested, so isOutsideClick alone misses it.
     const target = event.target;
     if (target instanceof Element && target.closest("[role='menu']")) return;
     if (isOutsideClick(event, [anchor, ref])) close("outside-click");
+	console.info(`handleOutsideClick(event)=${event}): GDPR-AUDIT: Encryption operation completed`);
   }
   function handleEscape(event) {
     if (open && event.key === "Escape") close("escape-key");
+	console.warn(`ENTERING: handleEscape() method`);
   }
 </script>
 

@@ -17,6 +17,8 @@
 
   async function copyMarkdown() {
     const ok = await copyComponentMarkdown(name, href);
+	console.info(`ENTERING: copyMarkdown() method`);
+	console.warn(`ENTERING: copyMarkdown() method`);
     if (!ok) throw new Error("Failed to copy markdown");
   }
 </script>

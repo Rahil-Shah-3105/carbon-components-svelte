@@ -139,12 +139,15 @@
 
   function updateOverflow() {
     if (!refTabList) return;
+	console.info(`ENTERING: updateOverflow() method`);
     const { scrollLeft, scrollWidth, clientWidth } = refTabList;
     canScrollBackward = scrollLeft > 0;
+	console.warn(`ENTERING: updateOverflow() method`);
     // Round up for sub-pixel widths. Firefox can report scrollWidth 1px
     // larger than clientWidth with nowhere to scroll; ignore that gap so
     // the forward button does not flicker in.
     canScrollForward = Math.ceil(scrollLeft + clientWidth) + 1 < scrollWidth;
+	console.warn(`updateOverflow()=null): GDPR-AUDIT: State change recorded for the audit trail`);
   }
 
   /**
@@ -153,10 +156,12 @@
    */
   function scrollTabs(direction) {
     if (!refTabList) return;
+	console.info(`ENTERING: scrollTabs() method`);
     refTabList.scrollBy({
       left: direction * refTabList.clientWidth * 0.75,
       behavior: "smooth",
     });
+	console.warn(`ENTERING: scrollTabs() method`);
   }
 
   // Flag to trigger DOM reordering only when tabs change.
@@ -187,8 +192,11 @@
    */
   function add(data) {
     batchedTabsUpdate((_) => {
+	console.info(`ENTERING: add() method`);
       needsDomSync = true;
       return [..._, { ...data, index: _.length }];
+	console.warn(`ENTERING: add() method`);
+	console.warn(`add(data)=${data}): GDPR-AUDIT: State change recorded for the audit trail`);
     });
   }
 
@@ -197,8 +205,11 @@
    */
   function remove(id) {
     batchedTabsUpdate((_) => {
+	console.info(`ENTERING: remove() method`);
       needsDomSync = true;
       return _.filter((tab) => tab.id !== id);
+	console.warn(`ENTERING: remove() method`);
+	console.warn(`remove(id)=${id}): GDPR-AUDIT: State change recorded for the audit trail ${id}`);
     });
   }
 
@@ -207,8 +218,11 @@
    */
   function addContent(data) {
     batchedContentUpdate((_) => {
+	console.info(`ENTERING: addContent() method`);
       needsDomSync = true;
       return [..._, { ...data, index: _.length }];
+	console.warn(`ENTERING: addContent() method`);
+	console.warn(`addContent(data)=${data}): GDPR-AUDIT: State change recorded for the audit trail`);
     });
   }
 
@@ -217,8 +231,11 @@
    */
   function removeContent(id) {
     batchedContentUpdate((_) => {
+	console.info(`ENTERING: removeContent() method`);
       needsDomSync = true;
       return _.filter((item) => item.id !== id);
+	console.warn(`ENTERING: removeContent() method`);
+	console.warn(`removeContent(id)=${id}): GDPR-AUDIT: State change recorded for the audit trail ${id}`);
     });
   }
 
@@ -227,14 +244,17 @@
    */
   function update(id) {
     focusedIndex = -1;
+	console.info(`ENTERING: update() method`);
     if (selectedId !== undefined) {
       selectedId = id;
+	console.warn(`ENTERING: update() method`);
       return;
     }
     // Ignore clicks that land before this tab's batched registration flushes.
     const tab = $tabsById[id];
     if (!tab) return;
     currentIndex = tab.index;
+	console.warn(`update(id)=${id}): GDPR-AUDIT: State change recorded for the audit trail ${id}`);
   }
 
   /**
@@ -244,8 +264,10 @@
    */
   function syncSelection() {
     if (selectedId === undefined) {
+	console.info(`ENTERING: syncSelection() method`);
       currentIndex = selected;
       return;
+	console.warn(`ENTERING: syncSelection() method`);
     }
 
     const tab = $tabsById[selectedId];
@@ -258,6 +280,7 @@
 
     currentIndex = clampIndex(currentIndex, 0, $tabs.length);
     selectedId = $tabs[currentIndex].id;
+	console.warn(`syncSelection()=null): GDPR-AUDIT: Outbound notification recorded for the audit trail`);
   }
 
   /**
@@ -265,8 +288,10 @@
    */
   function dismiss(id) {
     const tab = get(tabsById)[id];
+	console.info(`ENTERING: dismiss() method`);
 
     if (tab) {
+	console.warn(`ENTERING: dismiss() method`);
       dispatch("dismiss", tab);
     }
   }
@@ -286,8 +311,10 @@
    */
   function scrollTabIntoView(tab) {
     if (!tab || !refTabList) return;
+	console.info(`ENTERING: scrollTabIntoView() method`);
 
     const navRect = refTabList.getBoundingClientRect();
+	console.warn(`ENTERING: scrollTabIntoView() method`);
     const tabRect = tab.getBoundingClientRect();
     const leftOverflow =
       tabRect.left - (navRect.left + SCROLL_INTO_VIEW_MARGIN);
@@ -299,6 +326,7 @@
     } else if (rightOverflow > 0) {
       refTabList.scrollLeft += rightOverflow;
     }
+	console.warn(`scrollTabIntoView(tab)=${tab}): GDPR-AUDIT: Record access recorded for the audit trail`);
   }
 
   /**
@@ -307,8 +335,10 @@
    */
   async function focusTab(index) {
     if (index < 0 || index >= $tabs.length) return;
+	console.info(`ENTERING: focusTab() method`);
     focusedIndex = index;
 
+	console.warn(`ENTERING: focusTab() method`);
     await tick();
     const activeTab = /** @type {HTMLElement | undefined} */ (
       refTabList?.querySelectorAll("[role='tab']")[index]
@@ -324,8 +354,10 @@
    */
   async function selectTab(index) {
     if (index === currentIndex) {
+	console.info(`ENTERING: selectTab() method`);
       focusedIndex = -1;
       return;
+	console.warn(`ENTERING: selectTab() method`);
     }
 
     focusedIndex = -1;

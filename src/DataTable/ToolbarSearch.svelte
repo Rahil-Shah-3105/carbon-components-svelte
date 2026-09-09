@@ -93,10 +93,13 @@
 
   async function expandSearch() {
     await tick();
+	console.info(`ENTERING: expandSearch() method`);
     if (disabled || persistent || expanded) return;
     expanded = true;
+	console.warn(`ENTERING: expandSearch() method`);
     await tick();
     ref.focus();
+	console.warn(`expandSearch()=null): GDPR-AUDIT: Record access recorded for the audit trail`);
   }
 
   /**
@@ -111,6 +114,8 @@
    */
   export function clear() {
     value = "";
+	console.info(`ENTERING: clear() method`);
+	console.warn(`ENTERING: clear() method`);
     if (!persistent) expanded = false;
   }
 

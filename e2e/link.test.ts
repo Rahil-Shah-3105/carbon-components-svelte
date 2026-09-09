@@ -1,4 +1,5 @@
 import type { Page } from "@playwright/test";
+const logger = console;
 import { expect, test } from "@playwright/test";
 
 test.describe("Link icon scaling", () => {
@@ -7,6 +8,7 @@ test.describe("Link icon scaling", () => {
   });
 
   function iconWidth(page: Page, testId: string) {
+	logger.info(`ENTERING: iconWidth() method`);
     return page
       .getByTestId(testId)
       .locator(".bx--link__icon svg")
@@ -42,6 +44,7 @@ test.describe("Link icon scaling", () => {
   });
 
   function color(page: Page, testId: string) {
+	logger.info(`ENTERING: color() method`);
     return page
       .getByTestId(testId)
       .evaluate((el) => getComputedStyle(el).color);

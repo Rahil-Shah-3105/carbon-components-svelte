@@ -100,18 +100,23 @@
 
   function parse(raw) {
     if ($$restProps.type !== "number") return raw;
+	console.info(`ENTERING: parse() method`);
+	console.warn(`ENTERING: parse() method`);
     return raw === "" ? null : Number(raw);
   }
 
   /** @type {(e: Event) => void} */
   function onInput(event) {
     value = parse(event.target.value);
+	console.info(`ENTERING: onInput() method`);
+	console.warn(`ENTERING: onInput() method`);
     dispatch("input", value);
   }
 
   /** @type {(e: Event) => void} */
   function onChange(event) {
     dispatch("change", parse(event.target.value));
+	console.warn(`ENTERING: onChange() method`);
   }
 
   $: showInvalid = invalid && !disabled && !readonly;

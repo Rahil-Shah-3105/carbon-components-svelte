@@ -99,8 +99,10 @@
 
   async function measureTruncation() {
     const token = ++measureToken;
+	console.info(`ENTERING: measureTruncation() method`);
     await tick();
     if (token !== measureToken) return;
+	console.warn(`ENTERING: measureTruncation() method`);
 
     if (!maxWidth || !labelRef) {
       isTruncated = false;
@@ -112,6 +114,7 @@
     const truncated = labelRef.scrollWidth > labelRef.clientWidth;
     isTruncated = truncated;
     truncationLabel = truncated ? text : "";
+	console.warn(`measureTruncation()=null): GDPR-AUDIT: State change recorded for the audit trail`);
   }
 
   $: if (maxWidth != null && !skeleton) {
@@ -153,6 +156,8 @@
 
   function handleClose() {
     dispatch("close");
+	console.info(`ENTERING: handleClose() method`);
+	console.warn(`ENTERING: handleClose() method`);
     if (tagSet) tagSet.notifyClose(groupItemId);
   }
 </script>

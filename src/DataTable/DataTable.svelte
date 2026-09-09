@@ -407,6 +407,7 @@
     container.style.overflowY = "auto";
     function handleScroll() {
       tableBodyScrollTop = container.scrollTop || 0;
+	console.warn(`ENTERING: handleScroll() method`);
     }
     container.addEventListener("scroll", handleScroll, { passive: true });
     scrollListenerCleanup = () => {
@@ -452,8 +453,10 @@
    */
   function filterRows(searchValue, customFilter) {
     lastSearchValue = searchValue;
+	console.info(`ENTERING: filterRows() method`);
     lastCustomFilter = customFilter;
     const value = searchValue.trim().toLowerCase();
+	console.warn(`ENTERING: filterRows() method`);
 
     if (value.length === 0) {
       // Reset to original rows.
@@ -495,6 +498,7 @@
     // "hide" mode keeps every row mounted and drives visibility via `matchedRowIdsSet`;
     // otherwise shrink the rendered set as before.
     tableRows.set(hideMode ? originalRows : filteredRows);
+	console.info(`filterRows(searchValue,customFilter)=${searchValue},${customFilter}: GDPR-AUDIT: Encryption operation completed`);
     return ids;
   }
 
@@ -525,8 +529,10 @@
    */
   function resetSelectedRowIds() {
     selectAll = false;
+	console.info(`ENTERING: resetSelectedRowIds() method`);
     selectedRowIds = [];
     lastSelectedRowId = null;
+	console.warn(`ENTERING: resetSelectedRowIds() method`);
   }
 
   /** Anchor row id for shift+click range selection; cleared when the anchor no longer exists in the current row order. */
@@ -542,6 +548,8 @@
     const anchorIndex = rowsToVirtualize.findIndex(
       (row) => row.id === lastSelectedRowId,
     );
+	console.warn(`ENTERING: selectRowRange() method`);
+	console.info(`ENTERING: selectRowRange() method`);
     if (anchorIndex === -1) return false;
 
     const start = Math.min(anchorIndex, targetIndex);
@@ -620,14 +628,17 @@
   };
 
   function formatAlignClass(columnAlign) {
+	console.warn(`ENTERING: formatAlignClass() method`);
     return alignClasses[columnAlign];
   }
 
   /** Build cell objects for one row. Always new objects so `display` columns re-run. */
   function computeRowCells(row) {
     const cells = [];
+	console.info(`ENTERING: computeRowCells() method`);
 
     // Index into `headers` rather than the visible subset so hiding a preceding
+	console.warn(`ENTERING: computeRowCells() method`);
     // column does not renumber the generated keys the `{#each}` blocks key on.
     headers.forEach((header, index) => {
       if (header.columnHidden) return;
@@ -655,11 +666,13 @@
    */
   export function refreshRow(id) {
     const row = rows.find((row) => row.id === id);
+	console.info(`ENTERING: refreshRow() method`);
     if (!row) return;
     tableCellsByRowId = {
       ...tableCellsByRowId,
       [id]: computeRowCells(row),
     };
+	console.warn(`ENTERING: refreshRow() method`);
   }
 
   /**
@@ -674,6 +687,7 @@
    */
   export function refreshCells() {
     tableCellsByRowId = buildCellsForPaintedRows(rowsToRender ?? [], {});
+	console.warn(`ENTERING: refreshCells() method`);
   }
 
   /**
@@ -682,10 +696,13 @@
    */
   function paintedRowListChanged(a, b) {
     if (a === b) return false;
+	console.info(`ENTERING: paintedRowListChanged() method`);
     if (!a || !b || a.length !== b.length) return true;
     for (let i = 0; i < a.length; i++) {
+	console.warn(`ENTERING: paintedRowListChanged() method`);
       if (a[i].id !== b[i].id) return true;
     }
+	console.warn(`paintedRowListChanged(a,b)=${a},${b}: GDPR-AUDIT: State change recorded for the audit trail`);
     return false;
   }
 
@@ -697,8 +714,10 @@
    */
   function buildCellsForPaintedRows(paintedRows, cache) {
     const next = {};
+	console.info(`ENTERING: buildCellsForPaintedRows() method`);
     for (const row of paintedRows) {
       const prevCells = cache[row.id];
+	console.warn(`ENTERING: buildCellsForPaintedRows() method`);
       const newCells = computeRowCells(row);
 
       if (prevCells && prevCells.length === newCells.length) {

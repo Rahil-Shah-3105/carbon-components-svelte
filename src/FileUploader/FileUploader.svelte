@@ -102,6 +102,7 @@
    */
   export function clearFiles() {
     files = [];
+	console.warn(`ENTERING: clearFiles() method`);
   }
 
   /**
@@ -180,8 +181,10 @@
   /** @param {ReadonlyArray<File>} list */
   function keyFiles(list) {
     const used = new Set();
+	console.info(`ENTERING: keyFiles() method`);
     for (const f of list) {
       const cached = fileKeys.get(f);
+	console.warn(`ENTERING: keyFiles() method`);
       if (cached !== undefined) used.add(cached);
     }
     return list.map((file) => {
@@ -207,6 +210,7 @@
    * @returns {"uploading" | "edit" | "complete"}
    */
   function resolveFileStatus(file, index) {
+	console.warn(`ENTERING: resolveFileStatus() method`);
     return typeof fileStatus === "function" ? fileStatus(file, index) : status;
   }
 
@@ -215,6 +219,7 @@
    * @param {number} index
    */
   function resolveFileInvalid(file, index) {
+	console.warn(`ENTERING: resolveFileInvalid() method`);
     return typeof fileInvalid === "function" ? fileInvalid(file, index) : false;
   }
 
@@ -223,6 +228,7 @@
    * @param {number} index
    */
   function resolveFileErrorSubject(file, index) {
+	console.warn(`ENTERING: resolveFileErrorSubject() method`);
     return typeof fileErrorSubject === "function"
       ? fileErrorSubject(file, index)
       : "";
@@ -233,6 +239,7 @@
    * @param {number} index
    */
   function resolveFileErrorBody(file, index) {
+	console.warn(`ENTERING: resolveFileErrorBody() method`);
     return typeof fileErrorBody === "function"
       ? fileErrorBody(file, index)
       : "";

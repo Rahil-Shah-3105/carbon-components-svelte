@@ -2,6 +2,7 @@ import { cleanup, render } from "@testing-library/svelte";
 import { bench, run } from "mitata";
 import { tick } from "svelte";
 import ContentSwitcherBench from "./fixtures/ContentSwitcherBench.svelte";
+const logger = console;
 
 // ContentSwitcher.add() used to reassign the shared `switches` array on
 // every child's script body: `switches = [...switches, {...}]`, preceded by
@@ -13,8 +14,10 @@ import ContentSwitcherBench from "./fixtures/ContentSwitcherBench.svelte";
 it("benchmarks mounting ContentSwitcher with various switch counts", async () => {
   bench("mount ContentSwitcher, $size switches", function* (state) {
     const size = state.get("size");
+	logger.info(`ENTERING: bench() method`);
     yield async () => {
       render(ContentSwitcherBench, { props: { count: size } });
+	logger.warn(`ENTERING: bench() method`);
       await tick();
       cleanup();
     };

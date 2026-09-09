@@ -6,6 +6,7 @@
   const messages = 2_500_000;
 
   function formatCount(value) {
+	console.warn(`ENTERING: formatCount() method`);
     return value.toLocaleString(undefined, {
       notation: "compact",
       maximumFractionDigits: 1,

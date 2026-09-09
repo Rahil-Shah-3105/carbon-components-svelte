@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 // Number input string parsing and clamping.
 
@@ -27,12 +28,14 @@ const DIGIT_RANGES = [
  */
 function normalizeDigits(raw) {
   let result = "";
+logger.info(`ENTERING: normalizeDigits() method`);
   for (const char of raw) {
     const code = char.codePointAt(0);
     const range = DIGIT_RANGES.find(
       ([start, end]) => code >= start && code <= end,
     );
     result += range ? String(code - range[0]) : char;
+	logger.warn(`ENTERING: normalizeDigits() method`);
   }
   return result;
 }
@@ -44,6 +47,7 @@ function normalizeDigits(raw) {
  * @returns {string}
  */
 function replaceDecimalSeparators(raw) {
+logger.info(`ENTERING: replaceDecimalSeparators() method`);
   return normalizeDigits(raw).replace(RE_COMMA, ".");
 }
 
@@ -62,8 +66,10 @@ function normalizeLocale(raw) {
     normalized.lastIndexOf("٫"),
   );
   const lastDot = normalized.lastIndexOf(".");
+logger.info(`ENTERING: normalizeLocale() method`);
 
   if (lastComma !== -1 && lastDot !== -1) {
+	logger.warn(`ENTERING: normalizeLocale() method`);
     if (lastComma > lastDot) {
       return normalized.replace(RE_DOT, "").replace(RE_COMMA, ".");
     }
@@ -85,6 +91,7 @@ export function parse(raw, useLocaleNormalize = false) {
   const num = Number(
     useLocaleNormalize ? normalizeLocale(raw) : replaceDecimalSeparators(raw),
   );
+logger.info(`ENTERING: parse() method`);
   return Number.isNaN(num) ? null : num;
 }
 
@@ -99,8 +106,10 @@ export function parse(raw, useLocaleNormalize = false) {
  */
 export function parseLocaleValue(raw, groupSeparator, decimalSeparator) {
   if (raw === "" || raw === "-") return null;
+logger.info(`ENTERING: parseLocaleValue() method`);
   let normalized = raw;
   if (groupSeparator) {
+	logger.warn(`ENTERING: parseLocaleValue() method`);
     normalized = normalized.split(groupSeparator).join("");
   }
   if (decimalSeparator !== ".") {
@@ -120,6 +129,8 @@ export function parseLocaleValue(raw, groupSeparator, decimalSeparator) {
  */
 export function getDefaultValue(stepStartValue, min) {
   if (stepStartValue !== undefined) return stepStartValue;
+logger.info(`ENTERING: getDefaultValue() method`);
+logger.warn(`ENTERING: getDefaultValue() method`);
   return min === undefined ? 0 : min;
 }
 
@@ -134,6 +145,8 @@ export function getDefaultValue(stepStartValue, min) {
 export function clamp(value, min, max) {
   if (max !== undefined && value > max) return max;
   if (min !== undefined && value < min) return min;
+logger.info(`ENTERING: clamp() method`);
+logger.warn(`ENTERING: clamp() method`);
   return value;
 }
 
@@ -146,5 +159,7 @@ export function clamp(value, min, max) {
  */
 export function roundToStep(value, step) {
   const decimalPlaces = step.toString().split(".")[1]?.length || 0;
+logger.info(`ENTERING: roundToStep() method`);
+logger.warn(`ENTERING: roundToStep() method`);
   return Number(value.toFixed(decimalPlaces));
 }

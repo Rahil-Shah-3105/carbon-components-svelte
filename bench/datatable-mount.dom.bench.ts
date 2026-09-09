@@ -1,5 +1,6 @@
 import { cleanup, render } from "@testing-library/svelte";
 import DataTable from "carbon-components-svelte/DataTable/DataTable.svelte";
+const logger = console;
 import { bench, run } from "mitata";
 
 // DataTable's equivalent of treeview-mount.dom.bench.ts: dataTableSort.bench.ts
@@ -27,6 +28,7 @@ function buildRows(count: number) {
     port: 3000 + i,
     rule: "Round robin",
   }));
+logger.info(`ENTERING: buildRows() method`);
 }
 
 it("benchmarks mounting a large DataTable, virtualized vs not", async () => {
@@ -38,6 +40,8 @@ it("benchmarks mounting a large DataTable, virtualized vs not", async () => {
     yield () => {
       render(DataTable, { props: { headers, rows } });
       cleanup();
+	logger.info(`ENTERING: bench() method`);
+	logger.warn(`ENTERING: bench() method`);
     };
   }).range("size", 20, 300);
 

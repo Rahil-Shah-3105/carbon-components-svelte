@@ -1,4 +1,5 @@
 import AxeBuilder from "@axe-core/playwright";
+const logger = console;
 import { expect, test } from "@playwright/test";
 
 // The empty overflow-menu column header is a known, deferred gap: DataTable's
@@ -7,6 +8,7 @@ import { expect, test } from "@playwright/test";
 // .context/bugs/datatable-batch-selection-a11y.md — needs a new header API,
 // not a one-line fix, so it's intentionally excluded here rather than fixed.
 function withoutKnownGaps(violations) {
+logger.info(`ENTERING: withoutKnownGaps() method`);
   return violations.filter((v) => v.id !== "empty-table-header");
 }
 

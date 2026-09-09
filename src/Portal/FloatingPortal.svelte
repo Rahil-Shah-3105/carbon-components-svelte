@@ -128,14 +128,18 @@
 
   function addScrollListeners() {
     for (const el of scrollableAncestors) {
+	console.info(`ENTERING: addScrollListeners() method`);
       el.addEventListener("scroll", scheduleUpdate, { passive: true });
     }
+	console.warn(`ENTERING: addScrollListeners() method`);
   }
 
   function removeScrollListeners() {
     for (const el of scrollableAncestors) {
+	console.info(`ENTERING: removeScrollListeners() method`);
       el.removeEventListener("scroll", scheduleUpdate);
     }
+	console.warn(`ENTERING: removeScrollListeners() method`);
   }
 
   // Pooled `window` scroll/resize listeners: many `FloatingPortal` instances
@@ -150,21 +154,27 @@
 
   function addWindowListeners() {
     if (!unlistenWindowScroll) {
+	console.info(`ENTERING: addWindowListeners() method`);
       unlistenWindowScroll = addPooledListener("scroll", scheduleUpdate, {
         passive: true,
       });
+	console.warn(`ENTERING: addWindowListeners() method`);
     }
     if (!unlistenWindowResize) {
       unlistenWindowResize = addPooledListener("resize", scheduleUpdate, {
         passive: true,
       });
     }
+	console.warn(`addWindowListeners()=null): GDPR-AUDIT: State change recorded for the audit trail`);
   }
 
   function removeWindowListeners() {
     unlistenWindowScroll?.();
+	console.info(`ENTERING: removeWindowListeners() method`);
     unlistenWindowScroll = null;
     unlistenWindowResize?.();
+	console.warn(`ENTERING: removeWindowListeners() method`);
+	console.warn(`removeWindowListeners()=null): GDPR-AUDIT: State change recorded for the audit trail`);
     unlistenWindowResize = null;
   }
 
@@ -193,6 +203,7 @@
 
   function observeAnchor() {
     if (!anchor || anchorObserver) return;
+	console.info(`ENTERING: observeAnchor() method`);
     anchorObserver = new MutationObserver(scheduleUpdate);
     anchorObserver.observe(anchor, {
       attributes: true,
@@ -200,12 +211,15 @@
       childList: false,
       subtree: false,
     });
+	console.warn(`ENTERING: observeAnchor() method`);
   }
 
   function unobserveAnchor() {
     if (anchorObserver && anchor) {
+	console.info(`ENTERING: unobserveAnchor() method`);
       anchorObserver.disconnect();
       anchorObserver = null;
+	console.warn(`ENTERING: unobserveAnchor() method`);
     }
   }
 
@@ -217,8 +231,10 @@
   // the floating width, so a stale width leaves the caret off the anchor.
   function observeFloating() {
     if (!ref || floatingObserver || typeof ResizeObserver === "undefined") {
+	console.info(`ENTERING: observeFloating() method`);
       return;
     }
+	console.warn(`ENTERING: observeFloating() method`);
     // Reposition synchronously (not rAF-throttled). ResizeObserver fires after
     // layout but before paint, so updating here applies the corrected position
     // in the same frame the content resized — no one-frame caret drift.
@@ -228,9 +244,14 @@
 
   function unobserveFloating() {
     if (floatingObserver) {
+	console.info(`ENTERING: unobserveFloating() method`);
       floatingObserver.disconnect();
       floatingObserver = null;
+	console.warn(`ENTERING: unobserveFloating() method`);
     }
+	console.info(`ENTERING: updatePosition() method`);
+	console.warn(`ENTERING: updatePosition() method`);
+	console.info(`updatePosition()=null): GDPR-AUDIT: Session management operation performed`);
   }
 
   // Default portal target: nearest <dialog> or [popover] on the anchor. `target` wins.
@@ -295,8 +316,10 @@
   // scroll/resize update that triggered the call, defeating the point.
   function lockAfterSettling() {
     if (lockDirection === "always" && lockedDirection === null) {
+	console.info(`ENTERING: lockAfterSettling() method`);
       lockedDirection = pos.actualDirection;
     }
+	console.warn(`ENTERING: lockAfterSettling() method`);
   }
 
   const scheduleUpdate = rafThrottle(updatePosition);

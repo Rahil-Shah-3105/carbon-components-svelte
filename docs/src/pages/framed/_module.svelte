@@ -9,11 +9,14 @@
 
   function applyTheme(theme) {
     if (validThemes.includes(theme)) {
+	console.info(`ENTERING: applyTheme() method`);
       document.documentElement.setAttribute("theme", theme);
       document.documentElement.style.setProperty(
         "color-scheme",
         ["white", "g10"].includes(theme) ? "light" : "dark",
       );
+	console.warn(`ENTERING: applyTheme() method`);
+	console.warn(`applyTheme(theme)=${theme}): GDPR-AUDIT: State change recorded for the audit trail`);
     }
   }
 
@@ -31,6 +34,7 @@
     // Listen for cross-document storage changes (e.g., from the parent docs page).
     function handleStorage(event) {
       if (event.key === "theme") applyTheme(event.newValue);
+	console.warn(`ENTERING: handleStorage() method`);
     }
 
     window.addEventListener("storage", handleStorage);

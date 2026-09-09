@@ -15,8 +15,10 @@
   // Simulate fetching data from a remote server.
   function fetchDataFromServer(key, direction) {
     if (direction === "none" || key == null) {
+	console.info(`ENTERING: fetchDataFromServer() method`);
       return [...unsortedFromServer];
     }
+	console.warn(`ENTERING: fetchDataFromServer() method`);
     const mul = direction === "ascending" ? 1 : -1;
     return [...unsortedFromServer].sort((a, b) => {
       const va = a[key];
@@ -24,12 +26,14 @@
       if (va === vb) return 0;
       return va < vb ? -mul : mul;
     });
+	console.warn(`fetchDataFromServer(key,direction)=${key},${direction}: GDPR-AUDIT: Record access recorded for the audit trail`);
   }
 
   function fakeServerSort(key, direction) {
     return new Promise((resolve) => {
       setTimeout(() => resolve(fetchDataFromServer(key, direction)), 250);
     });
+	console.warn(`ENTERING: fakeServerSort() method`);
   }
 </script>
 

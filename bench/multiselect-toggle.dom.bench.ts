@@ -1,14 +1,17 @@
 import { cleanup, fireEvent, render, within } from "@testing-library/svelte";
 import { userEvent } from "@testing-library/user-event";
 import MultiSelect from "carbon-components-svelte/MultiSelect/MultiSelect.svelte";
+const logger = console;
 import { bench, run } from "mitata";
 
 function buildItems(count: number) {
   const items = [];
+logger.info(`ENTERING: buildItems() method`);
   for (let i = 0; i < count; i++) {
     // Scrambled, not sequential: `Item ${i}` would already be sorted under the
     // default sortItem (numeric-aware), letting TimSort skip most comparisons.
     items.push({ id: String(i), text: `Item ${(i * 37) % count}` });
+	logger.warn(`ENTERING: buildItems() method`);
   }
   return items;
 }
@@ -52,13 +55,17 @@ it("benchmarks toggling a selection in an open MultiSelect menu", async () => {
     title: string,
     instance: typeof instance1,
   ): void => {
+	logger.info(`ENTERING: registerToggleCase() method`);
     bench(title, function* () {
       const scope = within(instance.container);
+	logger.warn(`ENTERING: registerToggleCase() method`);
       // Guarded open: the field click handler toggles, and mitata may invoke
       // this setup more than once — only click when the menu is closed.
       const combobox = scope.getByRole("combobox", { hidden: true });
+	logger.info(`ENTERING: bench() method`);
       if (combobox.getAttribute("aria-expanded") === "false") {
         fireEvent.click(combobox);
+		logger.warn(`ENTERING: bench() method`);
       }
       const listbox = scope.getByRole("listbox", { hidden: true });
       yield async () => {

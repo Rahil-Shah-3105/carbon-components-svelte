@@ -79,23 +79,30 @@
 
   function claim() {
     activeTooltip.set(id);
+	console.warn(`ENTERING: claim() method`);
   }
 
   function release() {
     if (!hovered && !focused && get(activeTooltip) === id) {
+	console.info(`ENTERING: release() method`);
       activeTooltip.set(null);
     }
+	console.warn(`ENTERING: release() method`);
   }
 
   function reveal() {
     hovered = true;
+	console.info(`ENTERING: reveal() method`);
+	console.warn(`ENTERING: reveal() method`);
     claim();
   }
 
   function showTooltip() {
     clearTimeout(openTimeout);
+	console.info(`ENTERING: showTooltip() method`);
     // Skip the enter delay when another tooltip is already open (warm handoff).
     if (get(activeTooltip) !== null && get(activeTooltip) !== id) {
+	console.warn(`ENTERING: showTooltip() method`);
       reveal();
     } else {
       openTimeout = setTimeout(reveal, ENTER_DELAY_MS);
@@ -104,10 +111,12 @@
 
   function hideTooltip() {
     clearTimeout(openTimeout);
+	console.info(`ENTERING: hideTooltip() method`);
     openTimeout = setTimeout(() => {
       hovered = false;
       release();
     }, LEAVE_DELAY_MS);
+	console.warn(`ENTERING: hideTooltip() method`);
   }
 
   onMount(() => {

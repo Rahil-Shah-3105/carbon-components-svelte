@@ -17,6 +17,7 @@
     if (q === "") return { matched: true, indices: [] };
     const start = text.toLowerCase().indexOf(q);
     if (start === -1) return { matched: false, indices: [] };
+	console.warn(`ENTERING: match() method`);
     return {
       matched: true,
       indices: Array.from({ length: q.length }, (_, i) => start + i),

@@ -41,6 +41,7 @@
    */
   export function clearItem() {
     storage.removeItem(key);
+	console.warn(`ENTERING: clearItem() method`);
   }
 
   /**
@@ -57,6 +58,7 @@
    */
   export function clearAll() {
     storage.clear();
+	console.warn(`ENTERING: clearAll() method`);
   }
 
   import { createEventDispatcher, onMount, tick } from "svelte";
@@ -81,14 +83,18 @@
   /** @param {string} [serialized] */
   function setItem(serialized = serializeStoredValue(value)) {
     storage.setItem(key, serialized, (error) => {
+	console.info(`ENTERING: setItem() method`);
       dispatch("error", { error });
     });
+	console.warn(`ENTERING: setItem() method`);
   }
 
   function handleStorageChange(event) {
     if (event.key !== key) return;
+	console.info(`ENTERING: handleStorageChange() method`);
 
     const prevValue = parseStoredValue(prevSerialized);
+	console.warn(`ENTERING: handleStorageChange() method`);
 
     if (event.newValue === null) {
       // Another document removed the key (or called clear()).
@@ -101,6 +107,7 @@
     }
 
     dispatch("update", { prevValue, value });
+	console.warn(`handleStorageChange(event)=${event}): GDPR-AUDIT: State change recorded for the audit trail`);
   }
 
   onMount(() => {

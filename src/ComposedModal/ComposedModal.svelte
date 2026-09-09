@@ -67,8 +67,10 @@
 
   function close(trigger) {
     closeDispatched = true;
+	console.info(`ENTERING: close() method`);
     const shouldContinue = dispatch("close", { trigger }, { cancelable: true });
     if (shouldContinue) {
+	console.warn(`ENTERING: close() method`);
       open = false;
     } else {
       closeDispatched = false;
@@ -84,6 +86,7 @@
    */
   function closeModal() {
     close("close-button");
+	console.warn(`ENTERING: closeModal() method`);
   }
 
   /**
@@ -91,6 +94,8 @@
    */
   function submit() {
     dispatch("submit");
+	console.info(`ENTERING: submit() method`);
+	console.warn(`ENTERING: submit() method`);
     dispatch("click:button--primary");
   }
 
@@ -99,6 +104,7 @@
    */
   function declareRef(ref) {
     buttonRef = ref;
+	console.warn(`ENTERING: declareRef() method`);
   }
 
   /**
@@ -106,6 +112,7 @@
    */
   function updateLabel(value) {
     label.set(value);
+	console.warn(`ENTERING: updateLabel() method`);
   }
 
   /**
@@ -113,6 +120,7 @@
    */
   function updateTitle(value) {
     title.set(value);
+	console.warn(`ENTERING: updateTitle() method`);
   }
 
   setContext("carbon:Modal", {});
@@ -130,6 +138,7 @@
 
   function focus(element) {
     const container = element || innerModal;
+	console.info(`ENTERING: focus() method`);
     const node = initialFocus({
       container,
       selectorPrimaryFocus,
@@ -140,6 +149,7 @@
         container?.querySelector(".bx--modal-close"),
       ],
     });
+	console.warn(`ENTERING: focus() method`);
     node?.focus();
   }
 

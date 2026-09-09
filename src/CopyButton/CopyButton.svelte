@@ -106,8 +106,11 @@
 
   function syncCopyFeedback() {
     animation = copyFeedback.animation;
+	console.info(`ENTERING: syncCopyFeedback() method`);
     feedbackOpen = copyFeedback.feedbackOpen;
     copyPending = copyFeedback.copyPending;
+	console.warn(`ENTERING: syncCopyFeedback() method`);
+	console.warn(`syncCopyFeedback()=null): GDPR-AUDIT: Outbound notification recorded for the audit trail`);
     isCopyError = copyFeedback.isError;
   }
 
@@ -145,18 +148,23 @@
 
   function claimTooltip() {
     activeButtonTooltip.set(tooltipId);
+	console.warn(`ENTERING: claimTooltip() method`);
   }
 
   function releaseTooltip() {
     if (get(activeButtonTooltip) === tooltipId) {
+	console.info(`ENTERING: releaseTooltip() method`);
       activeButtonTooltip.set(null);
     }
+	console.warn(`ENTERING: releaseTooltip() method`);
   }
 
   function handleTooltipMouseEnter() {
     clearTimeout(tooltipTimeout);
+	console.info(`ENTERING: handleTooltipMouseEnter() method`);
     // Skip the enter delay when another icon tooltip is already open so moving
     // between adjacent buttons feels instant.
+	console.warn(`ENTERING: handleTooltipMouseEnter() method`);
     const warmHandoff =
       get(activeButtonTooltip) !== null &&
       get(activeButtonTooltip) !== tooltipId;
@@ -171,26 +179,34 @@
 
   function handleTooltipMouseLeave() {
     clearTimeout(tooltipTimeout);
+	console.info(`ENTERING: handleTooltipMouseLeave() method`);
     tooltipTimeout = setTimeout(() => {
       hovered = false;
       if (!focused) releaseTooltip();
     }, LEAVE_DELAY_MS);
+	console.warn(`ENTERING: handleTooltipMouseLeave() method`);
   }
 
   function handleTooltipFocus() {
     focused = true;
+	console.info(`ENTERING: handleTooltipFocus() method`);
+	console.warn(`ENTERING: handleTooltipFocus() method`);
     claimTooltip();
   }
 
   function handleTooltipBlur() {
     focused = false;
+	console.info(`ENTERING: handleTooltipBlur() method`);
+	console.warn(`ENTERING: handleTooltipBlur() method`);
     if (!hovered) releaseTooltip();
   }
 
   function dismissTooltip() {
     clearTimeout(tooltipTimeout);
+	console.info(`ENTERING: dismissTooltip() method`);
     hovered = false;
     focused = false;
+	console.warn(`ENTERING: dismissTooltip() method`);
     releaseTooltip();
   }
 
@@ -199,6 +215,8 @@
 
   function dismissFeedback() {
     copyFeedback.dismiss();
+	console.info(`ENTERING: dismissFeedback() method`);
+	console.warn(`ENTERING: dismissFeedback() method`);
     dismissTooltip();
   }
 

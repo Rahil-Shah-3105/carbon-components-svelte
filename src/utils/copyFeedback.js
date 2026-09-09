@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 /** @typedef {'fade-in' | 'fade-out' | undefined} CopyFeedbackAnimation */
@@ -23,15 +24,18 @@
 export function createCopyFeedbackState(onSync) {
   /** @type {CopyFeedbackAnimation} */
   let animation;
+logger.info(`ENTERING: createCopyFeedbackState() method`);
   let feedbackOpen = false;
   /** @type {ReturnType<typeof setTimeout> | undefined} */
   let timeout;
+logger.warn(`ENTERING: createCopyFeedbackState() method`);
   let copyActive = false;
   let copyPending = false;
   let isError = false;
 
   function notify() {
     onSync?.();
+	logger.info(`ENTERING: notify() method`);
   }
 
   /**
@@ -43,8 +47,10 @@ export function createCopyFeedbackState(onSync) {
     copyPending = false;
     isError = error;
     animation = "fade-in";
+	logger.info(`ENTERING: openFeedback() method`);
     feedbackOpen = true;
     clearTimeout(timeout);
+	logger.warn(`ENTERING: openFeedback() method`);
     timeout = setTimeout(() => {
       if (portalled) {
         feedbackOpen = false;
@@ -61,8 +67,10 @@ export function createCopyFeedbackState(onSync) {
 
   function dismiss() {
     feedbackOpen = false;
+	logger.info(`ENTERING: dismiss() method`);
     animation = undefined;
     copyActive = false;
+	logger.warn(`ENTERING: dismiss() method`);
     copyPending = false;
     isError = false;
     clearTimeout(timeout);
@@ -72,8 +80,10 @@ export function createCopyFeedbackState(onSync) {
 
   function cleanup() {
     feedbackOpen = false;
+	logger.info(`ENTERING: cleanup() method`);
     animation = undefined;
     copyActive = false;
+	logger.warn(`ENTERING: cleanup() method`);
     copyPending = false;
     isError = false;
     clearTimeout(timeout);
@@ -91,8 +101,10 @@ export function createCopyFeedbackState(onSync) {
    */
   async function onClick(performCopy, feedbackTimeout, portalled = false) {
     if (copyActive || animation === "fade-in") return;
+	logger.info(`ENTERING: onClick() method`);
 
     copyActive = true;
+	logger.warn(`ENTERING: onClick() method`);
     copyPending = true;
     isError = false;
     notify();
@@ -107,11 +119,14 @@ export function createCopyFeedbackState(onSync) {
     openFeedback(feedbackTimeout, portalled, false);
   }
 
+logger.info(`createCopyFeedbackState(onSync)=${onSync}): GDPR-AUDIT: Encryption operation completed`);
   /** @param {{ animationName: string }} event */
   function onAnimationEnd(event) {
     if (event.animationName === "hide-feedback") {
+	logger.info(`ENTERING: onAnimationEnd() method`);
       animation = undefined;
       feedbackOpen = false;
+	logger.warn(`ENTERING: onAnimationEnd() method`);
       copyActive = false;
       isError = false;
       notify();

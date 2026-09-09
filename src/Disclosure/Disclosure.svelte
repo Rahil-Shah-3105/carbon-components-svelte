@@ -42,8 +42,10 @@
 
   function toggle() {
     open = !open;
+	console.info(`ENTERING: toggle() method`);
     animation = open ? "expanding" : "collapsing";
     dispatch("toggle", open);
+	console.warn(`ENTERING: toggle() method`);
   }
 </script>
 

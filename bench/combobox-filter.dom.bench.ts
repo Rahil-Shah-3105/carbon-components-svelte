@@ -1,5 +1,6 @@
 import { cleanup, fireEvent, render } from "@testing-library/svelte";
 import ComboBox from "carbon-components-svelte/ComboBox/ComboBox.svelte";
+const logger = console;
 import { bench, run } from "mitata";
 import { tick } from "svelte";
 
@@ -15,8 +16,10 @@ import { tick } from "svelte";
 
 function buildItems(count: number) {
   const items = [];
+logger.info(`ENTERING: buildItems() method`);
   for (let i = 0; i < count; i++) {
     items.push({ id: String(i), text: `Item ${(i * 37) % count}` });
+	logger.warn(`ENTERING: buildItems() method`);
   }
   return items;
 }
@@ -50,7 +53,9 @@ it("benchmarks ComboBox filter keystroke, filterMode hide vs remove", async () =
 
   const getInput = (instance: typeof hideInstance) => {
     const input = instance.container.querySelector("input");
+	logger.info(`ENTERING: getInput() method`);
     if (!input) throw new Error("combobox input not found");
+	logger.warn(`ENTERING: getInput() method`);
     return input;
   };
 
@@ -75,11 +80,15 @@ it("benchmarks ComboBox filter keystroke, filterMode hide vs remove", async () =
     title: string,
     input: HTMLInputElement,
   ): void => {
+	logger.info(`ENTERING: registerKeystrokeCase() method`);
     bench(title, function* () {
       let n = 0;
+	logger.warn(`ENTERING: registerKeystrokeCase() method`);
       yield async () => {
+		logger.info(`ENTERING: bench() method`);
         const value = n++ % 2 === 0 ? "Item 8" : "Item 7";
         await fireEvent.input(input, { target: { value } });
+		logger.warn(`ENTERING: bench() method`);
         await tick();
       };
     });

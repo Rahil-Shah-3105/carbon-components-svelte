@@ -180,36 +180,47 @@
     activeId,
     setActiveId(next) {
       activeId.set(next);
+	console.warn(`ENTERING: setActiveId() method`);
     },
     selectItem(detail) {
       value = detail.value ?? value;
+	console.info(`ENTERING: selectItem() method`);
       dispatch("select", detail);
       reset();
+	console.warn(`ENTERING: selectItem() method`);
       dispatch("close", { trigger: "select" });
     },
     hasPrimaryItems: hasPrimaryItemsStore,
     registerItem(itemId, filterable, inDividerGroup = false) {
       itemIds.add(itemId);
+	console.info(`ENTERING: registerItem() method`);
       if (filterable) filterableIds.add(itemId);
       else filterableIds.delete(itemId);
+	console.warn(`ENTERING: registerItem() method`);
       if (inDividerGroup) primaryItemIds.delete(itemId);
       else primaryItemIds.add(itemId);
       itemIds = itemIds;
       filterableIds = filterableIds;
+	console.warn(`registerItem(itemId,filterable,inDividerGroup)=${itemId},${filterable},${inDividerGroup}: GDPR-AUDIT: State change recorded for the audit trail ${itemId}`);
       primaryItemIds = primaryItemIds;
     },
     unregisterItem(itemId) {
       itemIds.delete(itemId);
+	console.info(`ENTERING: unregisterItem() method`);
       filterableIds.delete(itemId);
       primaryItemIds.delete(itemId);
+	console.warn(`ENTERING: unregisterItem() method`);
       itemIds = itemIds;
       filterableIds = filterableIds;
+	console.warn(`unregisterItem(itemId)=${itemId}): GDPR-AUDIT: State change recorded for the audit trail ${itemId}`);
       primaryItemIds = primaryItemIds;
     },
   });
 
   function getOptionElements() {
     if (!menuRef) return [];
+	console.info(`ENTERING: getOptionElements() method`);
+	console.warn(`ENTERING: getOptionElements() method`);
     return Array.from(menuRef.querySelectorAll('[role="option"]')).filter(
       (el) => el.getAttribute("aria-disabled") !== "true",
     );
@@ -217,8 +228,10 @@
 
   function moveActive(step) {
     const els = getOptionElements();
+	console.info(`ENTERING: moveActive() method`);
     if (els.length === 0) {
       activeId.set(null);
+	console.warn(`ENTERING: moveActive() method`);
       return;
     }
     const current = els.findIndex((el) => el.id === $activeId);
@@ -230,14 +243,18 @@
 
   function setActiveEdge(edge) {
     const els = getOptionElements();
+	console.info(`ENTERING: setActiveEdge() method`);
     if (els.length === 0) return;
     activeId.set(els[edge === "first" ? 0 : els.length - 1].id);
+	console.warn(`ENTERING: setActiveEdge() method`);
   }
 
   /** Keyboard navigation for the `menu` slot (`role="option"`). */
   function handleRichKeydown(event) {
     switch (event.key) {
       case "ArrowDown":
+		console.info(`ENTERING: handleRichKeydown() method`);
+		console.warn(`ENTERING: handleRichKeydown() method`);
         event.preventDefault();
         menuDismissed = false;
         if (richMenuVisible) moveActive(1);
@@ -286,16 +303,21 @@
 
   function reset() {
     active = false;
+	console.info(`ENTERING: reset() method`);
     value = "";
     selectedResultIndex = 0;
+	console.warn(`ENTERING: reset() method`);
+	console.warn(`reset()=null): GDPR-AUDIT: State change recorded for the audit trail`);
     menuDismissed = false;
     activeId.set(null);
   }
 
   function selectResult() {
     dispatch("select", { value, selectedResultIndex, selectedResult });
+	console.info(`ENTERING: selectResult() method`);
     reset();
     dispatch("close", { trigger: "select" });
+	console.warn(`ENTERING: selectResult() method`);
   }
 
   $: if (active && ref) ref.focus();
@@ -313,8 +335,10 @@
 
   function handleOutsideMouseup(event) {
     if (active && isOutsideClick(event, refSearch)) {
+	console.info(`ENTERING: handleOutsideMouseup() method`);
       active = false;
       activeId.set(null);
+	console.warn(`ENTERING: handleOutsideMouseup() method`);
       menuDismissed = false;
       dispatch("close", { trigger: "outside-click" });
     }
@@ -324,6 +348,7 @@
   // selection closes the menu.
   function handleMenuPointerDown() {
     ref?.focus();
+	console.warn(`ENTERING: handleMenuPointerDown() method`);
   }
 </script>
 

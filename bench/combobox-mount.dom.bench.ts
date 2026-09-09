@@ -1,6 +1,7 @@
 import { cleanup, render } from "@testing-library/svelte";
 import { userEvent } from "@testing-library/user-event";
 import ComboBox from "carbon-components-svelte/ComboBox/ComboBox.svelte";
+const logger = console;
 import { bench, run } from "mitata";
 
 // Mirrors multiselect-mount.dom.bench.ts: ComboBox shares the same
@@ -18,12 +19,14 @@ import { bench, run } from "mitata";
 // measuring a closed mount.
 function buildItems(count: number) {
   const items = [];
+logger.info(`ENTERING: buildItems() method`);
   for (let i = 0; i < count; i++) {
     // Scrambled, not sequential — see multiselect-mount.dom.bench.ts's
     // comment. ComboBox's default filter is a plain substring match (no
     // sort), but scrambling keeps this fixture consistent with its sibling
     // and avoids accidentally-ordered data masking any future finding.
     items.push({ id: String(i), text: `Item ${(i * 37) % count}` });
+	logger.warn(`ENTERING: buildItems() method`);
   }
   return items;
 }

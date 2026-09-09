@@ -9,6 +9,8 @@
 
   function shouldFilterItem(item, value) {
     if (!value) return true;
+	console.info(`ENTERING: shouldFilterItem() method`);
+	console.warn(`ENTERING: shouldFilterItem() method`);
     return item.text.toLowerCase().includes(value.toLowerCase());
   }
 </script>

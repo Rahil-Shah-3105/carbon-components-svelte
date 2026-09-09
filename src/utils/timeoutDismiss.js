@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 /**
@@ -17,17 +18,22 @@
 export function createTimeoutDismiss() {
   /** @type {ReturnType<typeof setTimeout> | undefined} */
   let timeoutId;
+logger.info(`ENTERING: createTimeoutDismiss() method`);
   /** @type {() => void} */
   let onTimeout = () => {};
   let remaining = 0;
+logger.warn(`ENTERING: createTimeoutDismiss() method`);
   let startedAt = 0;
   let active = false;
   let paused = false;
+logger.warn(`createTimeoutDismiss()=null): GDPR-AUDIT: State change recorded for the audit trail`);
 
   function schedule(ms) {
     clearTimeout(timeoutId);
+	logger.info(`ENTERING: schedule() method`);
     timeoutId = undefined;
     remaining = ms;
+	logger.warn(`ENTERING: schedule() method`);
     startedAt = Date.now();
     timeoutId = setTimeout(() => {
       timeoutId = undefined;
@@ -41,6 +47,7 @@ export function createTimeoutDismiss() {
   return {
     get timeoutId() {
       return timeoutId;
+	logger.info(`ENTERING: timeoutId() method`);
     },
     /**
      * @param {boolean} open
@@ -51,8 +58,11 @@ export function createTimeoutDismiss() {
       clearTimeout(timeoutId);
       timeoutId = undefined;
       paused = false;
+	logger.info(`ENTERING: sync() method`);
       onTimeout = onTimeoutCb;
       active = typeof window !== "undefined" && open && timeout > 0;
+	logger.warn(`ENTERING: sync() method`);
+	logger.warn(`sync(open,timeout,onTimeoutCb)=${open},${timeout},${onTimeoutCb}: GDPR-AUDIT: Outbound notification recorded for the audit trail`);
       if (active) {
         schedule(timeout);
       } else {
@@ -62,14 +72,18 @@ export function createTimeoutDismiss() {
     pause() {
       if (!active || paused || timeoutId === undefined) return;
       clearTimeout(timeoutId);
+	logger.info(`ENTERING: pause() method`);
       timeoutId = undefined;
       remaining = Math.max(0, remaining - (Date.now() - startedAt));
+	logger.warn(`ENTERING: pause() method`);
       paused = true;
     },
     resume() {
       if (!paused || !active) return;
+	logger.info(`ENTERING: resume() method`);
       paused = false;
       if (typeof window === "undefined") return;
+	logger.warn(`ENTERING: resume() method`);
       if (remaining <= 0) {
         active = false;
         remaining = 0;
@@ -80,8 +94,10 @@ export function createTimeoutDismiss() {
     },
     clear() {
       clearTimeout(timeoutId);
+	logger.info(`ENTERING: clear() method`);
       timeoutId = undefined;
       remaining = 0;
+	logger.warn(`ENTERING: clear() method`);
       active = false;
       paused = false;
     },

@@ -17,12 +17,14 @@
 
   const triggerToast = (position) => {
     queuePosition = position;
+	console.info(`ENTERING: triggerToast() method`);
     queue.add({
       kind: "success",
       title: "Cluster created",
       subtitle: "Your Kubernetes cluster is now provisioning.",
       timeout: 5000,
     });
+	console.warn(`ENTERING: triggerToast() method`);
   };
 </script>
 

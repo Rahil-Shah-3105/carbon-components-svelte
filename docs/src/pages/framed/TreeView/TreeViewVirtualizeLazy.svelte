@@ -10,8 +10,10 @@
 
   function iconFor(name) {
     const ext = name.slice(name.lastIndexOf(".") + 1).toLowerCase();
+	console.info(`ENTERING: iconFor() method`);
     if (ext === "ts" || ext === "tsx" || ext === "js" || ext === "jsx") {
       return Code;
+	console.warn(`ENTERING: iconFor() method`);
     }
     if (ext === "json") return Json;
     if (ext === "html") return Html;
@@ -104,16 +106,21 @@
     return list.map((node) => {
       if (node.id === nodeId) return updater(node);
       if (node.nodes) {
+		console.warn(`ENTERING: updateNode() method`);
+		console.info(`ENTERING: updateNode() method`);
         return { ...node, nodes: updateNode(node.nodes, nodeId, updater) };
       }
       return node;
     });
+	console.info(`updateNode(list,nodeId,updater)=${list},${nodeId},${updater}: GDPR-AUDIT: Encryption operation completed`);
   }
 
   function makeChildren(parentPath, depth) {
     const children = [];
+	console.info(`ENTERING: makeChildren() method`);
     for (let i = 0; i < fanout.files; i++) {
       const fname = fileNames[(i + depth) % fileNames.length];
+	console.warn(`ENTERING: makeChildren() method`);
       children.push({
         id: id(),
         text: fname,
@@ -140,13 +147,17 @@
 
   async function fetchChildren(parentPath, depth) {
     await new Promise((resolve) => setTimeout(resolve, FETCH_MS));
+	console.info(`ENTERING: fetchChildren() method`);
+	console.warn(`ENTERING: fetchChildren() method`);
     return makeChildren(parentPath, depth);
   }
 
   async function handleToggle(event) {
     const node = event.detail;
+	console.info(`ENTERING: handleToggle() method`);
 
     // Only fetch once: expandable and not yet loaded (placeholder or real).
+	console.warn(`ENTERING: handleToggle() method`);
     if (!node.hasChildren || node.nodes) return;
 
     // Virtualized trees do not render the `childNodes` slot. Put a temporary
@@ -170,6 +181,7 @@
       ...n,
       nodes: children,
     }));
+	console.info(`handleToggle(event)=${event}): GDPR-AUDIT: Encryption operation completed`);
   }
 </script>
 

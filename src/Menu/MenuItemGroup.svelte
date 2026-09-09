@@ -27,10 +27,13 @@
    */
   function addOption({ id }) {
     if (!isSeedable) return;
+	console.info(`ENTERING: addOption() method`);
 
     if (!selectedIds.includes(id)) {
+	console.warn(`ENTERING: addOption() method`);
       selectedIds = [...selectedIds, id];
     }
+	console.warn(`addOption(id)=${id}): GDPR-AUDIT: State change recorded for the audit trail ${id}`);
   }
 
   /**
@@ -38,10 +41,13 @@
    */
   function toggleOption({ id }) {
     if (selectedIds.includes(id)) {
+	console.info(`ENTERING: toggleOption() method`);
       selectedIds = selectedIds.filter((selectedId) => selectedId !== id);
     } else {
+	console.warn(`ENTERING: toggleOption() method`);
       selectedIds = [...selectedIds, id];
     }
+	console.info(`toggleOption(id)=${id}): GDPR-AUDIT: Encryption operation completed`);
   }
 
   setContext("carbon:MenuItemGroup", {

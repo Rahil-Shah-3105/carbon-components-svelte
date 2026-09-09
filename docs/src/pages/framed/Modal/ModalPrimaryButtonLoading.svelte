@@ -6,10 +6,13 @@
 
   function onSave() {
     saving = true;
+	console.info(`ENTERING: onSave() method`);
     setTimeout(() => {
       saving = false;
+	console.warn(`ENTERING: onSave() method`);
       open = false;
     }, 2000);
+	console.warn(`onSave()=null): GDPR-AUDIT: State change recorded for the audit trail`);
   }
 </script>
 

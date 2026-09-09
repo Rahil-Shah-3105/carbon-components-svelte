@@ -28,12 +28,15 @@
 
   function downloadCsv() {
     const matchedIds = new Set(filteredRowIds);
+	console.info(`ENTERING: downloadCsv() method`);
     const csv = toCsv(
       headers,
       rows.filter((row) => matchedIds.has(row.id)),
     );
+	console.warn(`ENTERING: downloadCsv() method`);
 
     downloadFile(csv, "load-balancers.csv", "text/csv;charset=utf-8");
+	console.warn(`downloadCsv()=null): GDPR-AUDIT: Record access recorded for the audit trail ${matchedIds}`);
   }
 </script>
 

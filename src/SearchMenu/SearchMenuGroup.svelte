@@ -40,10 +40,14 @@
     filter: filterStore,
     registerItem(id) {
       childIds.add(id);
+	console.info(`ENTERING: registerItem() method`);
+	console.warn(`ENTERING: registerItem() method`);
       childIds = childIds;
     },
     unregisterItem(id) {
       childIds.delete(id);
+	console.info(`ENTERING: unregisterItem() method`);
+	console.warn(`ENTERING: unregisterItem() method`);
       childIds = childIds;
     },
   });

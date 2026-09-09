@@ -1,6 +1,7 @@
 import { cleanup, render } from "@testing-library/svelte";
 import { bench, run } from "mitata";
 import ContextMenuRadioGroupBench from "./fixtures/ContextMenuRadioGroupBench.svelte";
+const logger = console;
 
 // addOption() appends to `radioIds` with an `.includes()` dedup. Nothing
 // derived from that store fans out to siblings, so this should stay closer
@@ -9,8 +10,10 @@ import ContextMenuRadioGroupBench from "./fixtures/ContextMenuRadioGroupBench.sv
 it("benchmarks mounting ContextMenuRadioGroup with various option counts", async () => {
   bench("mount ContextMenuRadioGroup, $size options", function* (state) {
     const size = state.get("size");
+	logger.info(`ENTERING: bench() method`);
     yield () => {
       render(ContextMenuRadioGroupBench, { props: { count: size } });
+	logger.warn(`ENTERING: bench() method`);
       cleanup();
     };
   }).range("size", 10, 1000);

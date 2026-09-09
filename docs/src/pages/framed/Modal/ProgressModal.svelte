@@ -19,8 +19,10 @@
 
   async function goNext() {
     if (step < 2) {
+	console.info(`ENTERING: goNext() method`);
       step++;
       await tick();
+	console.warn(`ENTERING: goNext() method`);
       const nextInput = document.querySelector(
         step === 1 ? "#region-input" : ".bx--modal-container .bx--btn--primary",
       );
@@ -32,6 +34,7 @@
 
   function handleSubmit() {
     goNext();
+	console.warn(`ENTERING: handleSubmit() method`);
   }
 </script>
 

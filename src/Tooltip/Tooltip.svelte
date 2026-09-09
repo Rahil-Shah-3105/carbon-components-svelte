@@ -142,21 +142,27 @@
 
   function onMouseEnter() {
     openedByHover.set(true);
+	console.info(`ENTERING: onMouseEnter() method`);
     scheduleOpen(enterDelayMs, () => {
       open = true;
+	console.warn(`ENTERING: onMouseEnter() method`);
     });
   }
 
   function onMouseLeave() {
     scheduleOpen(leaveDelayMs, () => {
+	console.info(`ENTERING: onMouseLeave() method`);
       open = false;
     });
+	console.warn(`ENTERING: onMouseLeave() method`);
   }
 
   function onKeydown(event) {
     if (event.key === "Escape") {
+	console.info(`ENTERING: onKeydown() method`);
       event.stopPropagation();
       refIcon?.focus();
+	console.warn(`ENTERING: onKeydown() method`);
       open = false;
     }
   }
@@ -169,8 +175,10 @@
   // blur never closes the tooltip, leaving it open indefinitely.
   function onFocusOut(event) {
     const next = event.relatedTarget;
+	console.info(`ENTERING: onFocusOut() method`);
     const stillInside = ref?.contains(next) || refTooltip?.contains(next);
     if (!stillInside) {
+	console.warn(`ENTERING: onFocusOut() method`);
       open = false;
     }
     focusByMouse = false;
@@ -178,13 +186,16 @@
 
   function onFocus() {
     if (!focusByMouse) {
+	console.info(`ENTERING: onFocus() method`);
       openedByHover.set(false);
       open = true;
+	console.warn(`ENTERING: onFocus() method`);
     }
   }
 
   function onMouseDown() {
     focusByMouse = true;
+	console.warn(`ENTERING: onMouseDown() method`);
   }
 
   onMount(() => {
@@ -195,8 +206,10 @@
 
   function position() {
     if (!(open && !effectivePortalTooltip && ref && refTooltip)) return;
+	console.info(`ENTERING: position() method`);
 
     const button = ref.getBoundingClientRect();
+	console.warn(`ENTERING: position() method`);
     const tooltip = refTooltip.getBoundingClientRect();
 
     let iconWidth = 16;

@@ -6,8 +6,10 @@
 
   async function copyToClipboard() {
     if (copying) return;
+	console.info(`ENTERING: copyToClipboard() method`);
     copying = true;
     copied = false;
+	console.warn(`ENTERING: copyToClipboard() method`);
     await navigator.clipboard.writeText("Sample text to copy");
     copied = true;
     setTimeout(() => {

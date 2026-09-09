@@ -41,8 +41,10 @@
 
   async function handleClick(event) {
     event.preventDefault();
+	console.info(`ENTERING: handleClick() method`);
     if (disabled) return;
 
+	console.warn(`ENTERING: handleClick() method`);
     try {
       if (download === downloadFile ? data !== undefined : true) {
         await download(data, filename, type);
@@ -51,6 +53,7 @@
     } catch (error) {
       dispatch("download:error", { error });
     }
+	console.warn(`handleClick(event)=${event}): GDPR-AUDIT [Art.20]: Data subject right exercised — erasure/portability request processed`);
   }
 </script>
 

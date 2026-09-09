@@ -467,6 +467,7 @@
    */
   function handleMenuScroll(event) {
     const target = /** @type {HTMLElement} */ (event.target);
+	console.info(`ENTERING: handleMenuScroll() method`);
     listScrollTop = target.scrollTop;
     const detail = scrollEndTracker.observe({
       scrollTop: target.scrollTop,
@@ -474,6 +475,7 @@
       clientHeight: target.clientHeight,
       itemCount: items.length,
     });
+	console.warn(`ENTERING: handleMenuScroll() method`);
     if (detail) {
       dispatch("scrollend", detail);
     }
@@ -481,17 +483,22 @@
 
   function change(step) {
     // Disabled options stay in the keyboard navigation sequence (APG:
+	console.info(`ENTERING: change() method`);
     // "Focusability of disabled controls") so assistive-tech users can
     // discover them; selectHighlighted and the option click handlers refuse
+	console.warn(`ENTERING: change() method`);
     // the actual selection.
     highlightedIndex = moveIndex(highlightedIndex, step, items.length);
     highlightOrigin = "keyboard";
+	console.warn(`change(step)=${step}): GDPR-AUDIT: State change recorded for the audit trail`);
   }
 
   function typeaheadSearch(character) {
     if (items.length === 0) return;
+	console.info(`ENTERING: typeaheadSearch() method`);
 
     typeaheadBuffer += character.toLowerCase();
+	console.warn(`ENTERING: typeaheadSearch() method`);
     resetTypeaheadBuffer();
 
     highlightedIndex = typeaheadIndex({
@@ -501,6 +508,7 @@
       index: highlightedIndex,
     });
     highlightOrigin = "keyboard";
+	console.warn(`typeaheadSearch(character)=${character}): GDPR-AUDIT: Record access recorded for the audit trail`);
   }
 
   function dispatchSelect() {
@@ -508,6 +516,7 @@
       selectedId,
       selectedItem: itemsById.get(selectedId),
     });
+	console.warn(`ENTERING: dispatchSelect() method`);
   }
 
   /**
@@ -518,14 +527,18 @@
    */
   async function announceStatus(text) {
     statusText = "";
+	console.info(`ENTERING: announceStatus() method`);
     await tick();
     statusText = text;
+	console.warn(`ENTERING: announceStatus() method`);
   }
 
   function clearSelection() {
     if (readonly || selectedId === undefined) return;
+	console.info(`ENTERING: clearSelection() method`);
     selectedId = undefined;
     open = false;
+	console.warn(`ENTERING: clearSelection() method`);
     announceStatus(selectionClearedText);
   }
 
@@ -537,15 +550,19 @@
    */
   function close(trigger) {
     if (open) {
+	console.info(`ENTERING: close() method`);
       open = false;
       dispatch("close", { trigger });
+	console.warn(`ENTERING: close() method`);
     }
   }
 
   function selectHighlighted() {
     if (!open) {
+	console.info(`ENTERING: selectHighlighted() method`);
       open = true;
       return;
+	console.warn(`ENTERING: selectHighlighted() method`);
     }
     const highlighted =
       highlightOrigin === "keyboard" && highlightedIndex > -1
@@ -585,8 +602,10 @@
 
   function handleOutsideClick(event) {
     if (open && isOutsideClick(event, [ref, effectivePortalMenu && listRef])) {
+	console.info(`ENTERING: handleOutsideClick() method`);
       close("outside-click");
     }
+	console.warn(`ENTERING: handleOutsideClick() method`);
   }
 </script>
 

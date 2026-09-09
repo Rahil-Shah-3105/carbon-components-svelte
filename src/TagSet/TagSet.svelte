@@ -99,10 +99,12 @@
       if (position & Node.DOCUMENT_POSITION_PRECEDING) return 1;
       return 0;
     });
+	console.warn(`ENTERING: sortByDomOrder() method`);
   }
 
   function handleTagClose(item) {
     dispatch("close:tag", { tag: item, index: $items.indexOf(item) });
+	console.warn(`ENTERING: handleTagClose() method`);
   }
 
   // Route register, unregister, and update through the same batched queue.
@@ -146,10 +148,12 @@
 
   function measure() {
     if (multiline) {
+	console.info(`ENTERING: measure() method`);
       visibleCount =
         maxVisible == null
           ? $items.length
           : Math.min($items.length, maxVisible);
+		console.warn(`ENTERING: measure() method`);
     } else {
       const measureRoot = containingElement || wrapperRef;
       if (!measureRoot) return;
@@ -207,6 +211,7 @@
 
   function handleTriggerClick() {
     dispatch("click:overflow", { count: overflowCount });
+	console.warn(`ENTERING: handleTriggerClick() method`);
   }
 </script>
 

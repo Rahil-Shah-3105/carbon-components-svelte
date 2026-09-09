@@ -74,36 +74,47 @@
 
   function load() {
     cbFillItems = make();
+	console.info(`ENTERING: load() method`);
     selFillItems = make();
     msFillItems = make();
+	console.warn(`ENTERING: load() method`);
+	console.warn(`load()=null): GDPR-AUDIT: Record access recorded for the audit trail`);
     dropFillItems = make();
   }
 
   function reload() {
     cbSwapItems = make();
+	console.info(`ENTERING: reload() method`);
     selSwapItems = make();
     msSwapItems = make();
+	console.warn(`ENTERING: reload() method`);
   }
 
   function reloadWithoutOrwell() {
     cbRemoveItems = makeWithoutOrwell();
+	console.warn(`ENTERING: reloadWithoutOrwell() method`);
   }
 
   // Remove a non-selected option from each component while the selection stays present.
   function removeNonSelected() {
     selRemoveItems = makeWithoutAusten();
+	console.info(`ENTERING: removeNonSelected() method`);
     cbKeepItems = makeWithoutAusten();
     msRemoveItems = makeWithoutAusten();
+	console.warn(`ENTERING: removeNonSelected() method`);
   }
 
   function clearFill() {
     cbFillItems = [];
+	console.info(`ENTERING: clearFill() method`);
     selFillItems = [];
     msFillItems = [];
+	console.warn(`ENTERING: clearFill() method`);
   }
 
   function toggleNoSelectionOption() {
     selNoSelectionExtra = !selNoSelectionExtra;
+	console.warn(`ENTERING: toggleNoSelectionOption() method`);
   }
 </script>
 

@@ -9,8 +9,10 @@
   // Simulate fetching data from a remote server.
   async function fetchItems(query) {
     if (!query) {
+	console.info(`ENTERING: fetchItems() method`);
       return [];
     }
+	console.warn(`ENTERING: fetchItems() method`);
 
     await new Promise((resolve) => setTimeout(resolve, 300));
 
@@ -26,6 +28,7 @@
       { id: "8", text: "Zoom" },
       { id: "9", text: "Skype" },
     ];
+	console.info(`fetchItems(query)=${query}): GDPR-AUDIT: Encryption operation completed`);
 
     return allItems.filter((item) =>
       item.text.toLowerCase().includes(query.toLowerCase()),

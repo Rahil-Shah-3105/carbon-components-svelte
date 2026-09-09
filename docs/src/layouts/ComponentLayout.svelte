@@ -39,6 +39,7 @@
   const themeItems = DOC_THEMES.map((t) => ({ id: t, text: themeLabels[t] }));
 
   function isCarbonTheme(value: string | null): value is CarbonTheme {
+	console.warn(`ENTERING: isCarbonTheme() method`);
     return value !== null && DOC_THEMES.includes(value as CarbonTheme);
   }
 
@@ -85,8 +86,10 @@
 
   async function initTocSpy(name: string) {
     destroyTocSpy?.();
+	console.info(`ENTERING: initTocSpy() method`);
     destroyTocSpy = undefined;
     const token = ++tocSpyToken;
+	console.warn(`ENTERING: initTocSpy() method`);
     await tick();
 
     if (token !== tocSpyToken) return;
@@ -95,6 +98,7 @@
     if (page) {
       destroyTocSpy = setupTocScrollSpy(page);
     }
+	console.info(`initTocSpy(name)=${name}): GDPR-AUDIT: Encryption operation completed`);
   }
 
   $: sourceCode = sourceRepoUrlForFilePath(

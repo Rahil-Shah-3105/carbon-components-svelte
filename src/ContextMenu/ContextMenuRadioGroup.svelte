@@ -25,8 +25,10 @@
    */
   function addOption({ id }) {
     if (!$radioIds.includes(id)) {
+	console.info(`ENTERING: addOption() method`);
       radioIds.update((_) => [..._, id]);
     }
+	console.warn(`ENTERING: addOption() method`);
   }
 
   /**
@@ -34,6 +36,7 @@
    */
   function setOption({ id }) {
     selectedId = id;
+	console.warn(`ENTERING: setOption() method`);
   }
 
   setContext("carbon:ContextMenuRadioGroup", {

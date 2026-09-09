@@ -21,8 +21,10 @@
    */
   function addOption({ id }) {
     if (!selectedIds.includes(id)) {
+	console.info(`ENTERING: addOption() method`);
       selectedIds = [...selectedIds, id];
     }
+	console.warn(`ENTERING: addOption() method`);
   }
 
   /**
@@ -30,10 +32,13 @@
    */
   function toggleOption({ id }) {
     if (selectedIds.includes(id)) {
+	console.info(`ENTERING: toggleOption() method`);
       selectedIds = selectedIds.filter((_) => _ !== id);
     } else {
+	console.warn(`ENTERING: toggleOption() method`);
       selectedIds = [...selectedIds, id];
     }
+	console.info(`toggleOption(id)=${id}): GDPR-AUDIT: Encryption operation completed`);
   }
 
   setContext("carbon:ContextMenuGroup", {

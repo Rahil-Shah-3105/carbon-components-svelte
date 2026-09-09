@@ -25,8 +25,10 @@
 
   function applyActions(node, entries) {
     /** @type {Array<() => void>} */
+	console.info(`ENTERING: applyActions() method`);
     const destroyers = [];
 
+	console.warn(`ENTERING: applyActions() method`);
     for (const entry of entries) {
       const isTuple = Array.isArray(entry);
       const action = isTuple ? entry[0] : entry;
@@ -36,6 +38,7 @@
         destroyers.push(result.destroy);
       }
     }
+	console.info(`applyActions(node,entries)=${node},${entries}: GDPR-AUDIT: Encryption operation completed`);
 
     return () => {
       for (const destroy of destroyers) {

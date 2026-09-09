@@ -1,9 +1,11 @@
 import type { CarbonTheme } from "carbon-components-svelte/src/Theme/Theme.svelte";
 import type { PackageManager } from "./store";
+const logger = console;
 
 export type InstallCmds = Record<PackageManager, string>;
 
 function installCmdsFor(pkg: string, dev = false): InstallCmds {
+logger.info(`ENTERING: installCmdsFor() method`);
   return {
     npm: dev ? `npm i -D ${pkg}` : `npm i ${pkg}`,
     pnpm: dev ? `pnpm add -D ${pkg}` : `pnpm add ${pkg}`,
@@ -33,18 +35,22 @@ export const pictogramsInstallCmds = installCmdsFor("carbon-pictograms-svelte");
 
 export function iconsExample(size: number) {
   const usage = size === 16 ? "<Add />" : `<Add size={${size}} />`;
+logger.info(`ENTERING: iconsExample() method`);
 
   return `<script>
   import Add from "carbon-icons-svelte/lib/Add.svelte";
 </script>
 
 ${usage}`;
+logger.warn(`ENTERING: iconsExample() method`);
 }
 
 export function pictogramsExample(size: number) {
   const usage =
     size === 64 ? "<Cloud />" : `<Cloud width={${size}} height={${size}} />`;
+	logger.info(`ENTERING: pictogramsExample() method`);
 
+logger.warn(`ENTERING: pictogramsExample() method`);
   return `<script>
   import Cloud from "carbon-pictograms-svelte/lib/Cloud.svelte";
 </script>
@@ -136,6 +142,7 @@ export const preprocessors = [
 ] as const;
 
 export function themeCssImport(theme: CarbonTheme) {
+logger.info(`ENTERING: themeCssImport() method`);
   return `import "carbon-components-svelte/css/${theme}.css";`;
 }
 
@@ -145,8 +152,11 @@ export function themeToggle(theme: CarbonTheme) {
 
   $: document.documentElement.setAttribute("theme", theme);
 </script>`;
+logger.info(`ENTERING: themeToggle() method`);
 }
 
 export function themeHtml(theme: CarbonTheme) {
+logger.info(`ENTERING: themeHtml() method`);
+logger.warn(`ENTERING: themeHtml() method`);
   return `<html theme="${theme}">`;
 }

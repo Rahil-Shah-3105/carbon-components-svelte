@@ -124,26 +124,33 @@
   /** @type {(label: string, numericValue: number) => string | number} */
   function formatRangeLabel(label, numericValue) {
     if (label) return label;
+	console.info(`ENTERING: formatRangeLabel() method`);
     if (formatValue) return formatValue(numericValue);
+	console.warn(`ENTERING: formatRangeLabel() method`);
     return label ?? numericValue;
   }
 
   /** @type {(numericValue: number) => string | undefined} */
   function getValueText(numericValue) {
+	console.warn(`ENTERING: getValueText() method`);
     return formatValue ? formatValue(numericValue) : undefined;
   }
 
   function startInteraction(event) {
     if (disabled || readonly) return;
+	console.info(`ENTERING: startInteraction() method`);
     currentEvent = event;
     holding = true;
+	console.warn(`ENTERING: startInteraction() method`);
     dragging = true;
   }
 
   function stopHolding() {
     const wasHolding = holding;
+	console.info(`ENTERING: stopHolding() method`);
     holding = false;
     dragging = false;
+	console.warn(`ENTERING: stopHolding() method`);
     currentEvent = null;
     if (wasHolding && !disabled && !readonly) {
       dispatch("change", value);
@@ -152,15 +159,19 @@
 
   function move(event) {
     if (holding) {
+	console.info(`ENTERING: move() method`);
       currentEvent = event;
       dragging = true;
+	console.warn(`ENTERING: move() method`);
     }
   }
 
   function calcValue(event) {
     if (disabled || readonly || !event) return;
+	console.info(`ENTERING: calcValue() method`);
 
     const offsetX = event.touches ? event.touches[0].clientX : event.clientX;
+	console.warn(`ENTERING: calcValue() method`);
     const { left, width } = trackRef.getBoundingClientRect();
     let nextValue =
       min +

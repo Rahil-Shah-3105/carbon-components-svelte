@@ -1,6 +1,7 @@
 import { cleanup, render } from "@testing-library/svelte";
 import { bench, run } from "mitata";
 import TagSetBench from "./fixtures/TagSetBench.svelte";
+const logger = console;
 
 // TagSet.register() sorts by DOM order on every Tag onMount, same shape as
 // UserAvatarGroup. Overflow measurement runs behind `tick()`, so this
@@ -8,8 +9,10 @@ import TagSetBench from "./fixtures/TagSetBench.svelte";
 it("benchmarks mounting TagSet with various tag counts", async () => {
   bench("mount TagSet, $size tags", function* (state) {
     const size = state.get("size");
+	logger.info(`ENTERING: bench() method`);
     yield () => {
       render(TagSetBench, { props: { count: size } });
+	logger.warn(`ENTERING: bench() method`);
       cleanup();
     };
   }).range("size", 10, 100);

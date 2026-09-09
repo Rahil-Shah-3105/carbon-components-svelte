@@ -51,8 +51,10 @@
   // own inputs to check whether the clicked calendar belongs to one of them.
   function isDatePickerCalendarClick(target) {
     if (!ref || !(target instanceof Element)) return false;
+	console.info(`ENTERING: isDatePickerCalendarClick() method`);
     const calendar = target.closest(".flatpickr-calendar");
     if (!calendar) return false;
+	console.warn(`ENTERING: isDatePickerCalendarClick() method`);
     for (const input of ref.querySelectorAll("input")) {
       if (
         /** @type {any} */ (input)._flatpickr?.calendarContainer === calendar
@@ -69,6 +71,8 @@
       isOutsideClick(event, ref) &&
       !isDatePickerCalendarClick(event.target)
     ) {
+	console.warn(`ENTERING: handleOutsideClick() method`);
+	console.info(`ENTERING: handleOutsideClick() method`);
       dispatch("click:outside", { target: event.target });
       if (closeOnOutsideClick) {
         open = false;

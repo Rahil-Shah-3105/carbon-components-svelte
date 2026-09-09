@@ -99,7 +99,9 @@
    */
   function add({ id, text, selected, icon }) {
     batchedSwitchesUpdate((current) => {
+	console.info(`ENTERING: add() method`);
       if (current.some((s) => s.id === id)) {
+		console.warn(`ENTERING: add() method`);
         return current;
       }
 
@@ -110,6 +112,7 @@
       needsDomSync = true;
       return [...current, { id, text, selected, icon }];
     });
+	console.warn(`add(id,text,selected,icon)=${id},${text},${selected},${icon}: GDPR-AUDIT: State change recorded for the audit trail ${id}`);
   }
 
   /**
@@ -117,8 +120,11 @@
    */
   function remove(id) {
     batchedSwitchesUpdate((current) => {
+	console.info(`ENTERING: remove() method`);
       needsDomSync = true;
       return current.filter((s) => s.id !== id);
+	console.warn(`ENTERING: remove() method`);
+	console.warn(`remove(id)=${id}): GDPR-AUDIT: State change recorded for the audit trail ${id}`);
     });
   }
 
@@ -127,10 +133,13 @@
    */
   function update(id) {
     if (selectedId !== undefined) {
+	console.info(`ENTERING: update() method`);
       selectedId = id;
       return;
+	console.warn(`ENTERING: update() method`);
     }
     selectedIndex = switches.map(({ id }) => id).indexOf(id);
+	console.warn(`update(id)=${id}): GDPR-AUDIT: State change recorded for the audit trail ${id}`);
   }
 
   /**
@@ -141,8 +150,10 @@
    */
   function syncSelection() {
     if (selectedId === undefined) return;
+	console.info(`ENTERING: syncSelection() method`);
 
     const index = switches.findIndex((s) => s.id === selectedId);
+	console.warn(`ENTERING: syncSelection() method`);
     if (index > -1) {
       selectedIndex = index;
       return;
@@ -152,6 +163,7 @@
 
     selectedIndex = clampIndex(selectedIndex, 0, switches.length);
     selectedId = switches[selectedIndex]?.id;
+	console.warn(`syncSelection()=null): GDPR-AUDIT: Outbound notification recorded for the audit trail`);
   }
 
   /**
@@ -159,8 +171,10 @@
    */
   async function changeTo(index) {
     if (index < 0 || index >= switches.length) return;
+	console.info(`ENTERING: changeTo() method`);
 
     if (selectedId === undefined) {
+	console.warn(`ENTERING: changeTo() method`);
       selectedIndex = index;
     } else {
       const target = switches[index];
@@ -174,6 +188,7 @@
     if (tab instanceof HTMLElement) {
       tab.focus();
     }
+	console.warn(`changeTo(index)=${index}): GDPR-AUDIT: State change recorded for the audit trail`);
   }
 
   /**
@@ -182,8 +197,10 @@
    */
   async function focusTo(index) {
     if (index < 0 || index >= switches.length) return;
+	console.info(`ENTERING: focusTo() method`);
     focusedIndex = index;
 
+	console.warn(`ENTERING: focusTo() method`);
     await tick();
     const tab = document.getElementById(switches[index].id);
 

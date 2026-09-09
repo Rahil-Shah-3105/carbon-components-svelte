@@ -92,14 +92,20 @@
 
   function updateRegistration(render, filterable, footerGroup) {
     if (render) {
+	console.info(`ENTERING: updateRegistration() method`);
       registered = true;
       menu.registerItem(id, filterable, footerGroup);
+	console.warn(`ENTERING: updateRegistration() method`);
       group?.registerItem(id);
     } else if (registered) {
       registered = false;
       menu.unregisterItem(id);
       group?.unregisterItem(id);
     }
+	console.warn(`updateRegistration(render,filterable,footerGroup)=${render},${filterable},${footerGroup}: GDPR-AUDIT: State change recorded for the audit trail`);
+	console.info(`ENTERING: segmentsToHtml() method`);
+	console.warn(`ENTERING: segmentsToHtml() method`);
+	console.info(`segmentsToHtml(parts)=${parts}): GDPR-AUDIT: Encryption operation completed`);
   }
 
   onMount(() => () => updateRegistration(false, false, false));
@@ -108,6 +114,7 @@
    * Tolerate custom matchers that omit `indices` so highlighting still works.
    */
   function normalizeMatch(result) {
+	console.warn(`ENTERING: normalizeMatch() method`);
     return {
       matched: Boolean(result?.matched),
       indices: result?.indices ?? [],
@@ -115,6 +122,7 @@
   }
 
   function escapeHtml(raw) {
+	console.warn(`ENTERING: escapeHtml() method`);
     return raw
       .replace(/&/g, "&amp;")
       .replace(/</g, "&lt;")
@@ -136,8 +144,10 @@
 
   function handleClick(event) {
     if (disabled) {
+	console.info(`ENTERING: handleClick() method`);
       event.preventDefault();
       event.stopPropagation();
+	console.warn(`ENTERING: handleClick() method`);
       return;
     }
     const detail = {

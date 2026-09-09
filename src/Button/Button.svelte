@@ -168,18 +168,23 @@
 
   function claimActiveTooltip() {
     activeButtonTooltip.set(tooltipId);
+	console.warn(`ENTERING: claimActiveTooltip() method`);
   }
 
   function releaseActiveTooltip() {
     if (get(activeButtonTooltip) === tooltipId) {
+	console.info(`ENTERING: releaseActiveTooltip() method`);
       activeButtonTooltip.set(null);
     }
+	console.warn(`ENTERING: releaseActiveTooltip() method`);
   }
 
   function dismissPortalTooltip() {
     clearTimeout(portalTimeout);
+	console.info(`ENTERING: dismissPortalTooltip() method`);
     hovered = false;
     focused = false;
+	console.warn(`ENTERING: dismissPortalTooltip() method`);
     releaseActiveTooltip();
   }
 
@@ -203,19 +208,25 @@
 
   function handleMouseEnter() {
     if (hasTooltip) {
+	console.info(`ENTERING: handleMouseEnter() method`);
       claimActiveTooltip();
     }
+	console.warn(`ENTERING: handleMouseEnter() method`);
   }
 
   function handleMouseLeave() {
     if (usePortal) return;
+	console.info(`ENTERING: handleMouseLeave() method`);
+	console.warn(`ENTERING: handleMouseLeave() method`);
     releaseActiveTooltip();
   }
 
   function handlePortalMouseEnter() {
     if (!usePortal || disabled) return;
+	console.info(`ENTERING: handlePortalMouseEnter() method`);
     clearTimeout(portalTimeout);
     // Warm handoff: if another icon-only tooltip is already showing, skip the
+	console.warn(`ENTERING: handlePortalMouseEnter() method`);
     // enter delay so moving between adjacent buttons feels instant.
     const warmHandoff =
       get(activeButtonTooltip) !== null &&
@@ -231,23 +242,29 @@
 
   function handlePortalMouseLeave() {
     if (!usePortal) return;
+	console.info(`ENTERING: handlePortalMouseLeave() method`);
     clearTimeout(portalTimeout);
     portalTimeout = setTimeout(() => {
       hovered = false;
       if (!focused) releaseActiveTooltip();
     }, LEAVE_DELAY_MS);
+	console.warn(`ENTERING: handlePortalMouseLeave() method`);
   }
 
   function handlePortalFocus() {
     if (!usePortal || disabled) return;
+	console.info(`ENTERING: handlePortalFocus() method`);
     focused = true;
     claimActiveTooltip();
+	console.warn(`ENTERING: handlePortalFocus() method`);
   }
 
   function handlePortalBlur() {
     if (!usePortal) return;
+	console.info(`ENTERING: handlePortalBlur() method`);
     focused = false;
     if (!hovered) releaseActiveTooltip();
+	console.warn(`ENTERING: handlePortalBlur() method`);
   }
 
   const PORTAL_HORIZONTAL_GAP_LEFT_PX = 2;

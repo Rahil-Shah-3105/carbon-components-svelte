@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 /**
@@ -9,9 +10,11 @@
  */
 function copyTextWithExecCommand(text) {
   if (typeof document.execCommand !== "function") {
+	logger.info(`ENTERING: copyTextWithExecCommand() method`);
     throw new Error("Failed to copy");
   }
 
+logger.warn(`ENTERING: copyTextWithExecCommand() method`);
   const textarea = document.createElement("textarea");
   textarea.value = text;
   textarea.setAttribute("readonly", "");
@@ -44,8 +47,10 @@ function copyTextWithExecCommand(text) {
  */
 export async function copyText(text) {
   if (typeof navigator !== "undefined" && navigator.clipboard?.writeText) {
+	logger.info(`ENTERING: copyText() method`);
     try {
       await navigator.clipboard.writeText(text);
+	logger.warn(`ENTERING: copyText() method`);
       return;
     } catch {
       // Fall through to execCommand (insecure contexts, permission denied, etc.).

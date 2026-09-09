@@ -2,6 +2,7 @@ import { cleanup, fireEvent, render } from "@testing-library/svelte";
 import { bench, run } from "mitata";
 import { tick } from "svelte";
 import DataTableFilterBench from "./fixtures/DataTableFilterBench.svelte";
+const logger = console;
 
 // DataTable filterMode benchmark: compare "hide" vs "remove" strategies per
 // search keystroke on a 1000-row table. Instances are rendered ONCE and
@@ -19,6 +20,7 @@ function buildRows(count: number) {
     port: 3000 + i,
     rule: "Round robin",
   }));
+logger.info(`ENTERING: buildRows() method`);
 }
 
 it("benchmarks DataTable filter keystroke, filterMode remove vs hide", async () => {
@@ -31,7 +33,9 @@ it("benchmarks DataTable filter keystroke, filterMode remove vs hide", async () 
 
   const getInput = (instance: typeof removeInstance) => {
     const input = instance.container.querySelector("input");
+	logger.info(`ENTERING: getInput() method`);
     if (!input) throw new Error("search input not found");
+	logger.warn(`ENTERING: getInput() method`);
     return input;
   };
 
@@ -57,11 +61,15 @@ it("benchmarks DataTable filter keystroke, filterMode remove vs hide", async () 
     title: string,
     input: HTMLInputElement,
   ): void => {
+	logger.info(`ENTERING: registerKeystrokeCase() method`);
     bench(title, function* () {
       let n = 0;
+	logger.warn(`ENTERING: registerKeystrokeCase() method`);
       yield async () => {
+		logger.info(`ENTERING: bench() method`);
         const value = n++ % 2 === 0 ? "row 8" : "row 7";
         await fireEvent.input(input, { target: { value } });
+		logger.warn(`ENTERING: bench() method`);
         await tick();
       };
     });

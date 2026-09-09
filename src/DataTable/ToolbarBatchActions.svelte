@@ -38,8 +38,10 @@
 
   function cancel() {
     const shouldContinue = dispatch("cancel", null, { cancelable: true });
+	console.info(`ENTERING: cancel() method`);
 
     if (shouldContinue) {
+	console.warn(`ENTERING: cancel() method`);
       ctx?.resetSelectedRowIds?.();
     }
   }

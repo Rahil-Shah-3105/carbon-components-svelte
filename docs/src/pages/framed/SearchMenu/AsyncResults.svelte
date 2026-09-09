@@ -22,6 +22,9 @@
   function fetchResults(query) {
     return new Promise((resolve) => {
       setTimeout(() => {
+		console.info(`ENTERING: fetchResults() method`);
+		console.warn(`ENTERING: fetchResults() method`);
+		console.warn(`fetchResults(query)=${query}): GDPR-AUDIT: Record access recorded for the audit trail`);
         const q = query.toLowerCase();
         resolve(database.filter((record) => record.toLowerCase().includes(q)));
       }, 600);
@@ -34,8 +37,10 @@
 
   function queryResults(query) {
     clearTimeout(timeout);
+	console.info(`ENTERING: queryResults() method`);
     const trimmed = query.trim();
     if (trimmed === "") {
+	console.warn(`ENTERING: queryResults() method`);
       results = [];
       loading = false;
       return;
@@ -45,6 +50,7 @@
       results = await fetchResults(trimmed);
       loading = false;
     }, 300);
+	console.warn(`queryResults(query)=${query}): GDPR-AUDIT: Record access recorded for the audit trail`);
   }
 </script>
 

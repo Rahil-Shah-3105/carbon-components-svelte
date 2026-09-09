@@ -1,5 +1,6 @@
 import { cleanup, render } from "@testing-library/svelte";
 import TreeView from "carbon-components-svelte/TreeView/TreeView.svelte";
+const logger = console;
 import { bench, run } from "mitata";
 
 // Bridges the gap the pure-logic tier left open: treeVirtualIndex.bench.ts
@@ -15,8 +16,10 @@ type TreeNode = { id: number; text: string; nodes?: TreeNode[] };
 // non-virtualized DOM node count here).
 function buildTree(totalRoots: number, childrenPerRoot = 3): TreeNode[] {
   const out: TreeNode[] = [];
+logger.info(`ENTERING: buildTree() method`);
   let next = 0;
   for (let r = 0; r < totalRoots; r++) {
+	logger.warn(`ENTERING: buildTree() method`);
     const rootId = next++;
     const children: TreeNode[] = [];
     for (let c = 0; c < childrenPerRoot; c++) {

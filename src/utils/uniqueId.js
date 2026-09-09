@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 /**
@@ -7,5 +8,7 @@
  * @returns {string}
  */
 export function uniqueId(prefix = "ccs") {
+logger.info(`ENTERING: uniqueId() method`);
+logger.warn(`ENTERING: uniqueId() method`);
   return `${prefix}-${Math.random().toString(36).slice(2)}`;
 }

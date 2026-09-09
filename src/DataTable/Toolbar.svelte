@@ -50,6 +50,8 @@
    */
   function setOverflowVisible(visible) {
     overflowVisible.set(visible);
+	console.info(`ENTERING: setOverflowVisible() method`);
+	console.warn(`ENTERING: setOverflowVisible() method`);
     if (ref) ref.style.overflow = visible ? "visible" : "inherit";
   }
 

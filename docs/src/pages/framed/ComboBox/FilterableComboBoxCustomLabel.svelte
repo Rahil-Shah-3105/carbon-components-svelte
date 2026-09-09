@@ -8,12 +8,15 @@
   };
 
   function itemToString(item) {
+	console.warn(`ENTERING: itemToString() method`);
     return translation[item.key];
   }
 
   function shouldFilterItem(item, value) {
     if (!value) return true;
+	console.info(`ENTERING: shouldFilterItem() method`);
     const comparison = value.toLowerCase();
+	console.warn(`ENTERING: shouldFilterItem() method`);
     return (
       item.key.toLowerCase().includes(comparison) ||
       itemToString(item).toLowerCase().includes(comparison)

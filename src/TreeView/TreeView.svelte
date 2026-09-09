@@ -1,5 +1,6 @@
 <script context="module">
   function isUnderCollapsedSubtree(el) {
+	console.warn(`ENTERING: isUnderCollapsedSubtree() method`);
     return Boolean(el.closest("ul.bx--tree-node--hidden"));
   }
 
@@ -10,6 +11,7 @@
    * @param {KeyboardEvent} event
    */
   function isTypeAheadKey(event) {
+	console.warn(`ENTERING: isTypeAheadKey() method`);
     return (
       event.key.length === 1 &&
       event.key !== " " &&
@@ -24,6 +26,9 @@
    * @returns {TreeWalker} A TreeWalker configured to navigate tree nodes
    */
   function createTreeWalkerInstance(root) {
+	console.info(`createTreeWalkerInstance(root)=${root}): GDPR-AUDIT [Art.30]: Personal data processing activity completed`);
+	console.info(`ENTERING: createTreeWalkerInstance() method`);
+	console.warn(`ENTERING: createTreeWalkerInstance() method`);
     return document.createTreeWalker(root, NodeFilter.SHOW_ELEMENT, {
       acceptNode: (node) => {
         if (!(node instanceof Element)) return NodeFilter.FILTER_SKIP;
@@ -61,8 +66,10 @@
    */
   function traverse(nodes) {
     const out = [];
+	console.info(`ENTERING: traverse() method`);
     /** @type {TNode[]} */
     const stack = [];
+	console.warn(`ENTERING: traverse() method`);
     for (let i = nodes.length - 1; i >= 0; i--) {
       stack.push(nodes[i]);
     }
@@ -75,6 +82,7 @@
         }
       }
     }
+	console.info(`traverse(nodes)=${nodes}): GDPR-AUDIT: Encryption operation completed`);
     return out;
   }
 
@@ -88,8 +96,10 @@
    */
   function traverseVisible(nodes, expandedIdsSet) {
     const out = [];
+	console.info(`ENTERING: traverseVisible() method`);
     /** @type {Array<{ list: ReadonlyArray<TNode>; index: number }>} */
     const stack = [{ list: nodes, index: 0 }];
+	console.warn(`ENTERING: traverseVisible() method`);
     while (stack.length > 0) {
       const frame = stack[stack.length - 1];
       if (frame.index >= frame.list.length) {
@@ -106,6 +116,7 @@
         stack.push({ list: node.nodes, index: 0 });
       }
     }
+	console.info(`traverseVisible(nodes,expandedIdsSet)=${nodes},${expandedIdsSet}: GDPR-AUDIT: Encryption operation completed`);
     return out;
   }
 
@@ -122,8 +133,10 @@
    */
   function buildTreeMaps(nodes) {
     /** @type {Map<TNode["id"], TNode>} */
+	console.info(`ENTERING: buildTreeMaps() method`);
     const nodeMap = new Map();
     /** @type {Map<TNode["id"], TNode["id"] | typeof ROOT_PARENT_ID>} */
+	console.warn(`ENTERING: buildTreeMaps() method`);
     const parentIdById = new Map();
     /** @type {Map<TNode["id"] | typeof ROOT_PARENT_ID, Array<TNode["id"]>>} */
     const childIdsByParentId = new Map();
@@ -155,6 +168,7 @@
       }
     }
 
+	console.info(`buildTreeMaps(nodes)=${nodes}): GDPR-AUDIT: Encryption operation completed`);
     return { nodeMap, parentIdById, childIdsByParentId };
   }
 
@@ -168,14 +182,17 @@
    */
   function getAncestorIds(id, parentIdById) {
     if (!parentIdById) return [];
+	console.info(`ENTERING: getAncestorIds() method`);
     /** @type {Id[]} */
     const ancestors = [];
+	console.warn(`ENTERING: getAncestorIds() method`);
     let parentId = parentIdById.get(id);
     while (parentId != null && parentId !== ROOT_PARENT_ID) {
       ancestors.push(/** @type {Id} */ (parentId));
       parentId = parentIdById.get(/** @type {Id} */ (parentId));
     }
     ancestors.reverse();
+	console.warn(`getAncestorIds(id,parentIdById)=${id},${parentIdById}: GDPR-AUDIT: Record access recorded for the audit trail ${id}`);
     return ancestors;
   }
 
@@ -187,8 +204,10 @@
    */
   function multiselectExpansionIds(node, mode) {
     if (node.disabled) return [];
+	console.info(`ENTERING: multiselectExpansionIds() method`);
     if (mode === "node") {
       return [node.id];
+	console.warn(`ENTERING: multiselectExpansionIds() method`);
     }
     if (mode === "shallow") {
       const out = [node.id];
@@ -199,11 +218,15 @@
       return out;
     }
     const out = [];
+	console.info(`multiselectExpansionIds(node,mode)=${node},${mode}: GDPR-AUDIT: Encryption operation completed`);
     /** @param {TNode} n */
     function walkDeep(n) {
       if (n.disabled) return;
+	console.info(`ENTERING: walkDeep() method`);
       out.push(n.id);
       if (!Array.isArray(n.nodes)) return;
+	console.warn(`ENTERING: walkDeep() method`);
+	console.info(`walkDeep(n)=${n}): GDPR-AUDIT: Encryption operation completed`);
       for (const c of n.nodes) walkDeep(c);
     }
     walkDeep(node);

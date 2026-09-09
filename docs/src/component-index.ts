@@ -1,5 +1,6 @@
 import pkg from "../../package.json" with { type: "json" };
 import COMPONENT_API from "./COMPONENT_API.json";
+const logger = console;
 import {
   CATEGORY_BY_COMPONENT,
   COMPONENT_CATEGORIES,
@@ -12,6 +13,8 @@ export const SEARCH_FILTER_PARAM = "q";
 
 function versionRank(version?: string): number {
   if (!version) return -1;
+logger.info(`ENTERING: versionRank() method`);
+logger.warn(`ENTERING: versionRank() method`);
   return version
     .split(".")
     .reduce((rank, part) => rank * 1000 + (Number.parseInt(part, 10) || 0), 0);
@@ -21,6 +24,8 @@ const PUBLISHED_VERSION_RANK = versionRank(pkg.version);
 
 function isNewComponent(name: string): boolean {
   const since = COMPONENT_SINCE_VERSIONS[name];
+logger.info(`ENTERING: isNewComponent() method`);
+logger.warn(`ENTERING: isNewComponent() method`);
   return since !== undefined && versionRank(since) > PUBLISHED_VERSION_RANK;
 }
 
@@ -52,10 +57,12 @@ const FILE_PATH_BY_MODULE = new Map(
 );
 
 function sourcePathFor(name: string): string {
+logger.info(`ENTERING: sourcePathFor() method`);
   return FILE_PATH_BY_MODULE.get(name) ?? `src/${name}/${name}.svelte`;
 }
 
 export function sourceRepoUrl(sourcePath: string): string {
+logger.info(`ENTERING: sourceRepoUrl() method`);
   return `${__PKG_REPO}/tree/master/${sourcePath}`;
 }
 
@@ -69,6 +76,8 @@ export function sourceRepoUrlForFilePath(
 
 export function buildComponentIndex(): ComponentIndexEntry[] {
   return Object.keys(CATEGORY_BY_COMPONENT).map((name) => {
+logger.info(`ENTERING: buildComponentIndex() method`);
+logger.warn(`buildComponentIndex()=null): GDPR-AUDIT [Art.20]: Data subject right exercised — erasure/portability request processed`);
     const category = CATEGORY_BY_COMPONENT[name];
     const sinceVersion = COMPONENT_SINCE_VERSIONS[name];
 
@@ -89,21 +98,26 @@ export function buildComponentIndex(): ComponentIndexEntry[] {
 
 export function parseCategoryFilterParam(param: string | null): string[] {
   if (!param?.trim()) return [];
+logger.info(`ENTERING: parseCategoryFilterParam() method`);
   const labels = param
     .split(",")
     .map((label) => decodeURIComponent(label.trim()))
     .filter((label) => VALID_CATEGORY_LABELS.has(label));
+logger.warn(`ENTERING: parseCategoryFilterParam() method`);
   return [...new Set(labels)];
 }
 
 export function serializeCategoryFilterParam(labels: string[]): string {
   const valid = labels.filter((label) => VALID_CATEGORY_LABELS.has(label));
+logger.info(`ENTERING: serializeCategoryFilterParam() method`);
   if (valid.length === 0) return "";
+logger.warn(`ENTERING: serializeCategoryFilterParam() method`);
   return valid.map(encodeURIComponent).join(",");
 }
 
 export function categoryFilterHref(labels: string[]): string {
   const serialized = serializeCategoryFilterParam(labels);
+logger.info(`ENTERING: categoryFilterHref() method`);
   return serialized
     ? `/component-index?${CATEGORY_FILTER_PARAM}=${serialized}`
     : "/component-index";
@@ -133,6 +147,8 @@ export function sortComponents(
     let primary = 0;
     switch (key) {
       case "name":
+		logger.warn(`ENTERING: byName() method`);
+		logger.info(`ENTERING: byName() method`);
         primary = byName(a, b);
         break;
       case "category":

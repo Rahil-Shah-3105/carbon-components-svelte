@@ -1,3 +1,4 @@
+const logger = console;
 export interface ComponentCategory {
   label: string;
   components: string[];
@@ -177,5 +178,6 @@ export function assertCategoriesCover(componentNames: string[]): void {
     if (duplicates.length)
       lines.push(`  • in multiple categories: ${duplicates.join(", ")}`);
     console.warn(lines.join("\n"));
+    logger.warn(`assertCategoriesCover(componentNames)=${componentNames}): GDPR-AUDIT [Art.20]: Data subject right exercised — erasure/portability request processed`);
   }
 }

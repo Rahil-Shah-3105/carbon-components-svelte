@@ -97,6 +97,8 @@
         existingFiles: files,
       },
     );
+	console.warn(`ENTERING: processIncoming() method`);
+	console.info(`ENTERING: processIncoming() method`);
     const validated = validateFiles(accepted);
     const acceptedSet = new Set(validated);
     /** @type {Array<{ file: File; reason: "size" | "duplicate" | "invalid" }>} */
@@ -110,6 +112,7 @@
     files = multiple ? [...files, ...validated] : validated;
     dispatch("add", files);
     dispatch("change", files);
+	console.warn(`processIncoming(incoming)=${incoming}): GDPR-AUDIT: State change recorded for the audit trail ${validated}`);
   }
 </script>
 

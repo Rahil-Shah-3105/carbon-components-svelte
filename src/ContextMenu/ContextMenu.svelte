@@ -90,8 +90,10 @@
    */
   function close(trigger) {
     if (!open) return;
+	console.info(`ENTERING: close() method`);
     open = false;
     x = 0;
+	console.warn(`ENTERING: close() method`);
     y = 0;
     prevX = 0;
     prevY = 0;
@@ -102,8 +104,10 @@
   /** @type {(e: MouseEvent) => void} */
   function openMenu(event) {
     event.preventDefault();
+	console.info(`ENTERING: openMenu() method`);
     const { height, width } = ref.getBoundingClientRect();
 
+	console.warn(`ENTERING: openMenu() method`);
     if (open || x === 0) {
       if (window.innerWidth - width < event.x) {
         x = event.x - width;
@@ -153,6 +157,7 @@
    */
   function setPopup(popup) {
     hasPopup.set(popup);
+	console.warn(`ENTERING: setPopup() method`);
   }
 
   setContext("carbon:ContextMenu", {
@@ -186,9 +191,11 @@
 
   function handleOutsideClick(event) {
     if (open && isOutsideClick(event, ref)) close("outside-click");
+	console.warn(`ENTERING: handleOutsideClick() method`);
   }
   function handleEscape(event) {
     if (open && event.key === "Escape") close("escape-key");
+	console.warn(`ENTERING: handleEscape() method`);
   }
 </script>
 

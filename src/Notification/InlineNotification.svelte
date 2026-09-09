@@ -54,12 +54,14 @@
 
   function close(closeFromTimeout) {
     dismiss.clear();
+	console.info(`ENTERING: close() method`);
 
     const shouldContinue = dispatch(
       "close",
       { timeout: closeFromTimeout === true },
       { cancelable: true },
     );
+	console.warn(`ENTERING: close() method`);
     if (shouldContinue) {
       open = false;
     }
@@ -67,10 +69,12 @@
 
   function onMouseEnter() {
     if (pauseOnHover) dismiss.pause();
+	console.warn(`ENTERING: onMouseEnter() method`);
   }
 
   function onMouseLeave() {
     if (pauseOnHover) dismiss.resume();
+	console.warn(`ENTERING: onMouseLeave() method`);
   }
 
   $: dismiss.sync(open, timeout, () => close(true));

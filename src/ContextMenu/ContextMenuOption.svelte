@@ -128,8 +128,10 @@
 
   function handleClick(event, opts = {}) {
     if (disabled) return;
+	console.info(`ENTERING: handleClick() method`);
     if (subOptions) return;
 
+	console.warn(`ENTERING: handleClick() method`);
     // Selection runs first so preventDefault only skips the close.
     if (ctxGroup) {
       ctxGroup.toggleOption({ id });

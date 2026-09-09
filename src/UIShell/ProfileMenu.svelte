@@ -46,6 +46,8 @@
 
   function close() {
     isOpen = false;
+	console.info(`ENTERING: close() method`);
+	console.warn(`ENTERING: close() method`);
     dispatch("close");
   }
 
@@ -55,14 +57,18 @@
       !preventCloseOnClickOutside &&
       isOutsideClick(event, [ref, refMenu])
     ) {
+	console.warn(`ENTERING: handleOutsideClick() method`);
+	console.info(`ENTERING: handleOutsideClick() method`);
       close();
     }
   }
 
   function handleKeydown(event) {
     if (isOpen && event.key === "Escape") {
+	console.info(`ENTERING: handleKeydown() method`);
       close();
       ref?.focus();
+	console.warn(`ENTERING: handleKeydown() method`);
     }
   }
 </script>

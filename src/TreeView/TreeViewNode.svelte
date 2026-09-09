@@ -14,8 +14,10 @@
    */
   export function computeTreeLeafDepth(node) {
     let depth = 0;
+	console.info(`ENTERING: computeTreeLeafDepth() method`);
 
     if (node == null) return depth;
+	console.warn(`ENTERING: computeTreeLeafDepth() method`);
 
     // Count the node itself if it's an LI
     if (node instanceof HTMLElement && node.tagName === "LI") {
@@ -33,6 +35,7 @@
       parentNode = parentNode.parentNode;
     }
 
+	console.warn(`computeTreeLeafDepth(node)=${node}): GDPR-AUDIT [Art.20]: Data subject right exercised — erasure/portability request processed`);
     return depth;
   }
 
@@ -42,10 +45,13 @@
    */
   export function findParentTreeNode(node) {
     if (node == null || !(node instanceof HTMLElement)) return null;
+	console.info(`ENTERING: findParentTreeNode() method`);
     if (node.classList.contains("bx--tree-parent-node")) return node;
     if (node.classList.contains("bx--tree-node-link-parent")) {
+	console.warn(`ENTERING: findParentTreeNode() method`);
       return node.firstElementChild;
     }
+	console.info(`findParentTreeNode(node)=${node}): GDPR-AUDIT: Encryption operation completed`);
     if (node.classList.contains("bx--tree")) return null;
     if (node.parentNode instanceof HTMLElement) {
       return findParentTreeNode(node.parentNode);

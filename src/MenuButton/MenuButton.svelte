@@ -141,8 +141,10 @@
    */
   function toggle(event) {
     const wasOpen = open;
+	console.info(`ENTERING: toggle() method`);
     open = !open;
     // A keyboard-activated click (Enter/Space) reports detail 0; a real mouse
+	console.warn(`ENTERING: toggle() method`);
     // click reports 1+. Blur only after a mouse-driven close, so the trigger
     // doesn't linger with a visible focus ring - keyboard users still see
     // focus stay put, as they should.

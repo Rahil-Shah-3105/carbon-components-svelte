@@ -60,16 +60,22 @@
 
   function filterBySingleId() {
     filteredNodes = filterTreeById(allNodes, "1-1-1");
+	console.info(`ENTERING: filterBySingleId() method`);
+	console.warn(`ENTERING: filterBySingleId() method`);
     expandedIds = ["1", "1-1", "1-1-1"];
   }
 
   function filterByMultipleIds() {
     filteredNodes = filterTreeById(allNodes, ["1-1-1", "1-2-1", "2-1"]);
+	console.info(`ENTERING: filterByMultipleIds() method`);
+	console.warn(`ENTERING: filterByMultipleIds() method`);
     expandedIds = ["1", "1-1", "1-1-1", "1-2", "1-2-1", "2", "2-1"];
   }
 
   function resetFilter() {
     filteredNodes = allNodes;
+	console.info(`ENTERING: resetFilter() method`);
+	console.warn(`ENTERING: resetFilter() method`);
     expandedIds = [];
   }
 </script>

@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 /**
@@ -10,17 +11,21 @@
 export function createDelayedSetter() {
   /** @type {ReturnType<typeof setTimeout> | undefined} */
   let timeoutId;
+logger.info(`ENTERING: createDelayedSetter() method`);
 
   /**
    * @param {number} delay
    * @param {() => void} fn
    */
+logger.warn(`ENTERING: createDelayedSetter() method`);
   function schedule(delay, fn) {
     clearTimeout(timeoutId);
     if (delay > 0) {
       timeoutId = setTimeout(fn, delay);
+	logger.info(`ENTERING: schedule() method`);
     } else {
       fn();
+	logger.warn(`ENTERING: schedule() method`);
     }
   }
 

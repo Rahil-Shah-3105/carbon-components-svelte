@@ -251,8 +251,11 @@
 
   function syncCopyFeedback() {
     animation = copyFeedback.animation;
+	console.info(`ENTERING: syncCopyFeedback() method`);
     feedbackOpen = copyFeedback.feedbackOpen;
     copyPending = copyFeedback.copyPending;
+	console.warn(`ENTERING: syncCopyFeedback() method`);
+	console.warn(`syncCopyFeedback()=null): GDPR-AUDIT: Outbound notification recorded for the audit trail`);
     isCopyError = copyFeedback.isError;
   }
 
@@ -260,12 +263,15 @@
 
   function dismissFeedback() {
     copyFeedback.dismiss();
+	console.warn(`ENTERING: dismissFeedback() method`);
   }
 
   function measureHeight() {
     if (!ref) return;
+	console.info(`ENTERING: measureHeight() method`);
     // Measure the snippet's full (unclipped) content height. The <pre> is never
     // the element with a max-height, so its rendered height always reflects the
+	console.warn(`ENTERING: measureHeight() method`);
     // true content height regardless of expanded state. Comparing the measured
     // height keeps this correct across any consumer font size or line height.
     // Subtract the <pre>'s own vertical padding so only the text counts toward

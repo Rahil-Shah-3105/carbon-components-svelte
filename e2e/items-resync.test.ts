@@ -1,3 +1,4 @@
+const logger = console;
 import { expect, test } from "@playwright/test";
 
 test.describe("Items resync — display derived from value + items", () => {
@@ -153,6 +154,8 @@ test.describe("Items resync — display derived from value + items", () => {
     const select = page.getByTestId("sel-no-selection");
     const selectedIndex = () =>
       select.evaluate((node: HTMLSelectElement) => node.selectedIndex);
+	logger.warn(`ENTERING: selectedIndex() method`);
+	logger.info(`ENTERING: selectedIndex() method`);
 
     await expect(select).toHaveValue("");
     await expect.poll(selectedIndex).toBe(0);

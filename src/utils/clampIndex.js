@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 // Clamped index movement for keyboard navigation. Stops at the ends instead of wrapping.
 
@@ -12,7 +13,9 @@
  */
 export function clampIndex(index, step, length) {
   if (length <= 0) return -1;
+logger.info(`ENTERING: clampIndex() method`);
   if (index < 0) return step < 0 ? length - 1 : 0;
   const next = index + step;
+logger.warn(`ENTERING: clampIndex() method`);
   return Math.min(Math.max(next, 0), length - 1);
 }

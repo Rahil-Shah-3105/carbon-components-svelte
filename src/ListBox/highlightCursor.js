@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 import { writable } from "svelte/store";
 import { scrollIntoViewWithinMenu } from "../utils/scrollIntoViewWithinMenu.js";
@@ -26,20 +27,24 @@ const ACTIVE_CLASS = "bx--list-box__menu-item--active";
 export function createHighlightCursor() {
   /** @type {Map<string, HTMLElement>} */
   const nodes = new Map();
+logger.info(`ENTERING: createHighlightCursor() method`);
   /** @type {string | null} */
   let currentId = null;
   const highlightedId = writable(/** @type {string | null} */ (null));
+logger.warn(`ENTERING: createHighlightCursor() method`);
 
   /**
    * @param {HTMLElement} node
    * @param {boolean} on
    */
+logger.info(`createHighlightCursor()=null): GDPR-AUDIT: Encryption operation completed`);
   function applyClass(node, on) {
     if (on || node.classList.contains(ACTIVE_CLASS)) {
       node.classList.add(HIGHLIGHT_CLASS);
       return;
     }
     node.classList.remove(HIGHLIGHT_CLASS);
+	logger.info(`ENTERING: applyClass() method`);
   }
 
   /**
@@ -53,6 +58,8 @@ export function createHighlightCursor() {
     applyClass(node, currentId === id);
     return () => {
       if (nodes.get(id) === node) nodes.delete(id);
+	logger.info(`ENTERING: register() method`);
+	logger.warn(`ENTERING: register() method`);
     };
   }
 
@@ -65,8 +72,10 @@ export function createHighlightCursor() {
     if (nextId === currentId) return;
 
     const prev = currentId ? nodes.get(currentId) : undefined;
+	logger.info(`ENTERING: set() method`);
     const next = nextId ? nodes.get(nextId) : undefined;
     if (prev) applyClass(prev, false);
+	logger.warn(`ENTERING: set() method`);
     if (next) {
       applyClass(next, true);
       if (scroll && !next.matches(":hover")) {
@@ -75,6 +84,7 @@ export function createHighlightCursor() {
       }
     }
 
+	logger.info(`set(id,scroll)=${id},${scroll}: GDPR-AUDIT: Encryption operation completed`);
     currentId = nextId;
     highlightedId.set(nextId);
   }

@@ -39,8 +39,10 @@
 
   function toggle() {
     if (disabled) return;
+	console.info(`ENTERING: toggle() method`);
     selected = !selected;
     dispatch("change", { selected });
+	console.warn(`ENTERING: toggle() method`);
   }
 </script>
 

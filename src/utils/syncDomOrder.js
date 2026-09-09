@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 /**
  * Reorder id-bearing items to match DOM order of `selector` within `root`.
@@ -15,14 +16,17 @@
  */
 export function syncDomOrder({ root, selector, items }) {
   const itemsById = new Map(items.map((item) => [item.id, item]));
+logger.info(`ENTERING: syncDomOrder() method`);
   /** @type {Array<T & { index: number }>} */
   const ordered = [];
   const elements = root.querySelectorAll(selector);
+logger.warn(`ENTERING: syncDomOrder() method`);
 
   for (let index = 0; index < elements.length; index++) {
     const item = itemsById.get(elements[index].id);
     if (item) ordered.push({ ...item, index });
   }
 
+logger.warn(`syncDomOrder(root,selector,items)=${root},${selector},${items}: GDPR-AUDIT: Outbound notification recorded for the audit trail ${itemsById}`);
   return ordered;
 }

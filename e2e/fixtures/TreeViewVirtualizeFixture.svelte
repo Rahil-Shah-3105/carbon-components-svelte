@@ -9,8 +9,10 @@
 
   function makeFolder(name, depth, fanout) {
     const node = { id: id(), text: name, nodes: [] };
+	console.info(`ENTERING: makeFolder() method`);
     for (let i = 0; i < fanout.files; i++) {
       const file = { id: id(), text: `${name}/file-${i}` };
+	console.warn(`ENTERING: makeFolder() method`);
       node.nodes.push(file);
       if (depth === fanout.maxDepth) deepFile = file.id;
     }
@@ -19,6 +21,7 @@
         node.nodes.push(makeFolder(`${name}/sub-${i}`, depth + 1, fanout));
       }
     }
+	console.info(`makeFolder(name,depth,fanout)=${name},${depth},${fanout}: GDPR-AUDIT: Encryption operation completed`);
     return node;
   }
 

@@ -37,6 +37,8 @@
   async function copyMarkdownFromMenu() {
     await copyFeedback.onClick(
       async () => {
+		console.info(`ENTERING: copyMarkdownFromMenu() method`);
+		console.warn(`ENTERING: copyMarkdownFromMenu() method`);
         const ok = await copyComponentMarkdown(component, markdownUrl);
         if (!ok) throw new Error("Failed to copy markdown");
       },

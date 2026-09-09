@@ -1,6 +1,7 @@
 import { cleanup, render } from "@testing-library/svelte";
 import { bench, run } from "mitata";
 import OverflowMenuBench from "./fixtures/OverflowMenuBench.svelte";
+const logger = console;
 
 // OverflowMenu.add() (called synchronously from each OverflowMenuItem's own
 // script, once per item) does `items.update((_) => [..., {...}])` — the
@@ -27,8 +28,10 @@ it("benchmarks mounting an open OverflowMenu with various item counts", async ()
   // attempted.
   bench("mount open OverflowMenu, $size items", function* (state) {
     const size = state.get("size");
+	logger.info(`ENTERING: bench() method`);
     yield () => {
       render(OverflowMenuBench, { props: { count: size } });
+	logger.warn(`ENTERING: bench() method`);
       cleanup();
     };
   }).range("size", 10, 100);

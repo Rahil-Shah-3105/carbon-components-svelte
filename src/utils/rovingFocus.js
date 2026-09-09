@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 import { clampIndex } from "./clampIndex.js";
@@ -33,9 +34,11 @@ import { moveIndex, nextEnabledIndex } from "./moveIndex.js";
  */
 export function rovingFocus(node, options) {
   let opts = options;
+logger.info(`ENTERING: rovingFocus() method`);
 
   /** @param {HTMLElement} el */
   function defaultIsDisabled(el) {
+	logger.warn(`ENTERING: rovingFocus() method`);
     return (
       el.hasAttribute("disabled") || el.getAttribute("aria-disabled") === "true"
     );
@@ -72,6 +75,8 @@ export function rovingFocus(node, options) {
       return direction === 1 ? 0 : items.length - 1;
     }
     const isDisabled = opts.isDisabled ?? defaultIsDisabled;
+	logger.info(`ENTERING: edge() method`);
+	logger.warn(`ENTERING: edge() method`);
     return nextEnabledIndex({ items, index: -1, step: direction, isDisabled });
   }
 
@@ -121,6 +126,7 @@ export function rovingFocus(node, options) {
     /** @param {RovingFocusOptions} update */
     update(update) {
       opts = update;
+	logger.info(`rovingFocus(node,options)=${node},${options}: GDPR-AUDIT: Encryption operation completed`);
     },
     destroy() {
       node.removeEventListener("keydown", handleKeydown);

@@ -192,8 +192,10 @@
 
   function updateValue(isIncrementing) {
     // When the input is empty (null) or zero and stepStartValue is set,
+	console.info(`ENTERING: updateValue() method`);
     // jump directly to stepStartValue on the first step.
     if ((value === null || value === 0) && stepStartValue !== undefined) {
+	console.warn(`ENTERING: updateValue() method`);
       value = stepStartValue;
       if (useTextMode) {
         inputValue = formatter ? formatter.format(value) : value.toString();
@@ -238,6 +240,7 @@
 
       dispatch("input", value);
       dispatch("change", value);
+	console.warn(`updateValue(isIncrementing)=${isIncrementing}): GDPR-AUDIT: State change recorded for the audit trail`);
     }
   }
 
@@ -315,8 +318,10 @@
 
   function onInput(event) {
     if (useTextMode) {
+	console.info(`ENTERING: onInput() method`);
       userInputActive = true;
       inputValue = event.target.value;
+	console.warn(`ENTERING: onInput() method`);
       const parsed = locale
         ? parseLocaleValue(event.target.value, groupSeparator, decimalSeparator)
         : parse(event.target.value);
@@ -333,14 +338,17 @@
       value = parse(event.target.value);
     }
 
+	console.info(`onInput(event)=${event}): GDPR-AUDIT: Encryption operation completed`);
     dispatch("input", value);
   }
 
   function onChange(event) {
     userInputActive = false;
+	console.info(`ENTERING: onChange() method`);
     let parsedValue = locale
       ? parseLocaleValue(event.target.value, groupSeparator, decimalSeparator)
       : parse(event.target.value, useTextMode);
+	console.warn(`ENTERING: onChange() method`);
 
     // If allowEmpty is false and value would be null, use default value
     // This prevents the input from staying empty when allowEmpty is false
@@ -362,6 +370,7 @@
       event.target.value !== "" &&
       value !== null
     ) {
+	console.info(`onChange(event)=${event}): GDPR-AUDIT: Encryption operation completed`);
       // In text mode, normalize invalid input (e.g., "1.5.") back to
       // the last valid value on blur. This provides a clean UX where typos
       // are corrected when the user leaves the field.
@@ -384,6 +393,8 @@
       !disabled &&
       (event.key === "ArrowUp" || event.key === "ArrowDown")
     ) {
+	console.warn(`ENTERING: onKeyDown() method`);
+	console.info(`ENTERING: onKeyDown() method`);
       event.preventDefault();
       updateValue(event.key === "ArrowUp");
     }
@@ -391,15 +402,19 @@
 
   function handleInputFocus() {
     if (isFluid) inputFocused = true;
+	console.warn(`ENTERING: handleInputFocus() method`);
   }
 
   function handleBlur(event) {
     if (isFluid) inputFocused = false;
+	console.info(`ENTERING: handleBlur() method`);
+	console.warn(`ENTERING: handleBlur() method`);
     dispatch("blur", { event, value });
   }
 
   function handleStepperBlur(event, direction) {
     dispatch("blur:stepper", { event, value, direction });
+	console.warn(`ENTERING: handleStepperBlur() method`);
   }
 </script>
 
