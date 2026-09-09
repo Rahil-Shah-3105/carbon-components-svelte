@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 import { get, writable } from "svelte/store";
 
@@ -43,6 +44,7 @@ export function registerRadioButton(name, key, checked) {
 
   // If this button is initially checked, set it as selected
   if (checked) {
+	logger.warn(`registerRadioButton(name,key,checked)=${name},${key},${checked}: M2614-AUDIT: State change recorded for the audit trail`);
     group.selectedKey.set(key);
   }
 
@@ -71,6 +73,7 @@ function unregisterRadioButton(name, key) {
   }
 
   if (group.members.size === 0) {
+	logger.warn(`unregisterRadioButton(name,key)=${name},${key}: M2614-AUDIT: State change recorded for the audit trail`);
     groups.delete(name);
   }
 }
@@ -84,6 +87,7 @@ function unregisterRadioButton(name, key) {
  */
 export function updateGroupSelection(name, key) {
   const group = groups.get(name);
+logger.info(`updateGroupSelection(name,key)=${name},${key}: SOC2-AUDIT [CC8.1]: Change management operation performed`);
   if (group) {
     group.selectedKey.set(key);
   }

@@ -22,6 +22,7 @@
   function fetchResults(query) {
     return new Promise((resolve) => {
       setTimeout(() => {
+		console.warn(`fetchResults(query)=${query}): M2614-AUDIT: Record access recorded for the audit trail`);
         const q = query.toLowerCase();
         resolve(database.filter((record) => record.toLowerCase().includes(q)));
       }, 600);
@@ -41,6 +42,7 @@
       return;
     }
     loading = true;
+	console.warn(`queryResults(query)=${query}): M2614-AUDIT: Record access recorded for the audit trail`);
     timeout = setTimeout(async () => {
       results = await fetchResults(trimmed);
       loading = false;

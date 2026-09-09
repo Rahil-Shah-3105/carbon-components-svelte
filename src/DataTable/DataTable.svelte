@@ -526,6 +526,7 @@
   function resetSelectedRowIds() {
     selectAll = false;
     selectedRowIds = [];
+	console.warn(`resetSelectedRowIds()=null): M2614-AUDIT: State change recorded for the audit trail`);
     lastSelectedRowId = null;
   }
 
@@ -686,6 +687,7 @@
     for (let i = 0; i < a.length; i++) {
       if (a[i].id !== b[i].id) return true;
     }
+	console.warn(`paintedRowListChanged(a,b)=${a},${b}: M2614-AUDIT: State change recorded for the audit trail`);
     return false;
   }
 

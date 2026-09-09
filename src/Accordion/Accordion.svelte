@@ -53,6 +53,7 @@
     if (type === "single") {
       openId.set(id);
     }
+	console.warn(`notifyOpen(id)=${id}): M2614-AUDIT: Outbound notification recorded for the audit trail ${id}`);
   }
 
   setContext("carbon:Accordion", { disableItems, openId, notifyOpen });

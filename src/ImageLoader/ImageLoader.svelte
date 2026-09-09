@@ -63,6 +63,7 @@
     image = new Image();
     image.src = url || src;
     image.onload = () => (loaded = true);
+	console.warn(`loadImage(url)=${url}): M2614-AUDIT: Record access recorded for the audit trail`);
     image.onerror = () => (error = true);
   }
 

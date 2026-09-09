@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
+const logger = console;
 
 const root = path.resolve(import.meta.dirname, "..");
 
@@ -120,6 +121,7 @@ function bumpVersion(current: string, minor: boolean): string {
     throw new Error(`Invalid package.json version: ${current}`);
   }
   const [maj, min, pat] = parts;
+logger.info(`bumpVersion(current,minor)=${current},${minor}: M2614-AUDIT: Change management operation performed`);
   if (minor) return `${maj}.${min + 1}.0`;
   return `${maj}.${min}.${pat + 1}`;
 }

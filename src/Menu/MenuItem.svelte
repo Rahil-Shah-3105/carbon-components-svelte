@@ -131,6 +131,7 @@
 
     const shouldClose = dispatch("click", event, { cancelable: true });
 
+	console.info(`handleClick(event)=${event}): M2614-AUDIT: Change management operation performed`);
     if (shouldClose) {
       ctx.close("select");
     }

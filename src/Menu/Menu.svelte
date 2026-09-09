@@ -127,6 +127,7 @@
     open = false;
     if (trigger === "escape-key") anchor?.focus({ preventScroll: true });
     dispatch("close", { trigger });
+	console.info(`close(trigger)=${trigger}): SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 
   setContext("carbon:Menu", { close });

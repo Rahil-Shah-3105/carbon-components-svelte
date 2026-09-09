@@ -85,6 +85,7 @@
     if (!hovered && !focused && get(activeTooltip) === id) {
       activeTooltip.set(null);
     }
+	console.info(`release()=null): SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 
   function reveal() {
@@ -104,6 +105,7 @@
 
   function hideTooltip() {
     clearTimeout(openTimeout);
+	console.info(`hideTooltip()=null): M2614-AUDIT: Change management operation performed`);
     openTimeout = setTimeout(() => {
       hovered = false;
       release();

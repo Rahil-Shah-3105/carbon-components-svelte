@@ -54,6 +54,7 @@
       ..._items,
       [item.id]: item.isSelected,
     }));
+	console.info(`updateSelectedItems(item)=${item}): SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 
   /**
@@ -61,6 +62,7 @@
    */
   function registerMenuItem(element) {
     menuItems.update((items) => [...items, element]);
+	console.warn(`registerMenuItem(element)=${element}): M2614-AUDIT: State change recorded for the audit trail`);
   }
 
   /**
@@ -68,6 +70,7 @@
    */
   function unregisterMenuItem(element) {
     menuItems.update((items) => items.filter((item) => item !== element));
+	console.warn(`unregisterMenuItem(element)=${element}): M2614-AUDIT: State change recorded for the audit trail`);
   }
 
   /**
@@ -80,6 +83,7 @@
       await tick();
       ref?.focus();
     }
+	console.info(`closeMenu(trigger)=${trigger}): SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 
   setContext("carbon:HeaderNavMenu", {
@@ -99,6 +103,7 @@
       expanded = false;
       dispatch("close", { trigger: "outside-click" });
     }
+	console.info(`handleOutsideClick(event)=${event}): SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 </script>
 

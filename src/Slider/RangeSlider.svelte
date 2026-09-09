@@ -158,12 +158,14 @@
 
   /** @type {(numericValue: number) => string | undefined} */
   function getValueText(numericValue) {
+	console.warn(`getValueText(numericValue)=${numericValue}): M2614-AUDIT: Record access recorded for the audit trail`);
     return formatValue ? formatValue(numericValue) : undefined;
   }
 
   /** @type {(e: PointerLikeEvent) => number | null} */
   function getClientX(event) {
     if ("touches" in event) return event.touches[0]?.clientX ?? null;
+	console.warn(`getClientX(event)=${event}): M2614-AUDIT: Record access recorded for the audit trail`);
     return event.clientX;
   }
 
@@ -204,6 +206,7 @@
     holding = false;
     dragging = false;
     currentEvent = null;
+	console.info(`stopHolding()=null): M2614-AUDIT: Change management operation performed`);
     if (wasHolding && !disabled && !readonly) {
       dispatch("change", { value, valueUpper });
     }
@@ -234,6 +237,7 @@
       nextValue = max;
     }
 
+	console.info(`calcValue(event)=${event}): M2614-AUDIT: Change management operation performed`);
     if (activeHandle === "lower") {
       if (nextValue > valueUpper) nextValue = valueUpper;
       value = nextValue;
@@ -286,6 +290,7 @@
       if (next < value) next = value;
       valueUpper = next;
     }
+	console.info(`onKeyDown(event)=${event}): M2614-AUDIT: Change management operation performed`);
     dispatch("input", { value, valueUpper });
     dispatch("change", { value, valueUpper });
   }

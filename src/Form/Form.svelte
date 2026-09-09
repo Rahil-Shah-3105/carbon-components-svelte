@@ -37,6 +37,7 @@
       }
     }
 
+	console.warn(`applyActions(node,entries)=${node},${entries}: M2614-AUDIT: State change recorded for the audit trail`);
     return () => {
       for (const destroy of destroyers) {
         destroy();

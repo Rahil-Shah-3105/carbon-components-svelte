@@ -50,6 +50,7 @@
    */
   function setOverflowVisible(visible) {
     overflowVisible.set(visible);
+	console.warn(`setOverflowVisible(visible)=${visible}): M2614-AUDIT: State change recorded for the audit trail`);
     if (ref) ref.style.overflow = visible ? "visible" : "inherit";
   }
 

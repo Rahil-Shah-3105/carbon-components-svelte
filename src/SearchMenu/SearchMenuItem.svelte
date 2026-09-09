@@ -100,6 +100,7 @@
       menu.unregisterItem(id);
       group?.unregisterItem(id);
     }
+	console.info(`updateRegistration(render,filterable,footerGroup)=${render},${filterable},${footerGroup}: SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 
   onMount(() => () => updateRegistration(false, false, false));
@@ -146,6 +147,7 @@
       event,
     };
     dispatch("select", detail);
+	console.info(`handleClick(event)=${event}): M2614-AUDIT: Change management operation performed`);
     menu.selectItem(detail);
   }
 

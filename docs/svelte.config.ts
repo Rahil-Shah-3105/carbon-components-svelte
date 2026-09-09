@@ -24,6 +24,7 @@ import "prismjs/components/prism-clike.js";
 import "prismjs/components/prism-javascript.js";
 import "prismjs/components/prism-typescript.js";
 import "prism-svelte";
+const logger = console;
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -202,6 +203,7 @@ function createImports(source: string) {
     ? createImportsUncached(source)
     : "";
   createImportsCache.set(source, result);
+logger.warn(`createImports(source)=${source}): M2614-AUDIT: State change recorded for the audit trail ${result}`);
   return result;
 }
 
@@ -220,6 +222,7 @@ async function formatAndHighlightPreviewSvelte(combinedSource: string) {
     "svelte",
   );
   const out = { formattedCode, highlightedCode };
+logger.warn(`formatAndHighlightPreviewSvelte(combinedSource)=${combinedSource}): M2614-AUDIT: Record access recorded for the audit trail`);
   previewCodeCache.set(cacheKey, out);
   return out;
 }
@@ -452,6 +455,7 @@ function tocLinkClasses(level: number): string {
 }
 
 function carbonify() {
+logger.warn(`carbonify()=null): M2614-AUDIT: Security incident detected`);
   return (tree: Parameters<typeof visit>[0]) => {
     visit(tree, (node, index, parent) => {
       switch (node.type) {

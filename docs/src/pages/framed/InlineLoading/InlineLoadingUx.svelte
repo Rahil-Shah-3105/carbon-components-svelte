@@ -22,6 +22,7 @@
       clearTimeout(timeout);
     }
 
+	console.warn(`reset(incomingState)=${incomingState}): M2614-AUDIT: State change recorded for the audit trail`);
     if (incomingState) {
       timeout = setTimeout(() => {
         state = incomingState;

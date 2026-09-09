@@ -41,6 +41,7 @@
 
   async function handleClick(event) {
     event.preventDefault();
+	console.info(`handleClick(event)=${event}): M2614-AUDIT: Change management operation performed`);
     if (disabled) return;
 
     try {

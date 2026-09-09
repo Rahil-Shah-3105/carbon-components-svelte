@@ -60,6 +60,7 @@
     if (isSelected && !$selectedValues.includes(value)) {
       selectedValues.update((values) => [...values, value]);
     }
+	console.warn(`add(isSelected,value)=${isSelected},${value}: M2614-AUDIT: State change recorded for the audit trail`);
   }
 
   /**
@@ -69,6 +70,7 @@
     if ($selectedValues.includes(value)) {
       selectedValues.update((values) => values.filter((v) => v !== value));
     }
+	console.warn(`remove(value)=${value}): M2614-AUDIT: State change recorded for the audit trail`);
   }
 
   /**
@@ -86,6 +88,7 @@
         dispatch("deselect", value);
       }
     }
+	console.info(`update(value,isSelected)=${value},${isSelected}: SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 
   setContext("carbon:SelectableTileGroup", {

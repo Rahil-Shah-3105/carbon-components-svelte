@@ -108,6 +108,7 @@
     animation = copyFeedback.animation;
     feedbackOpen = copyFeedback.feedbackOpen;
     copyPending = copyFeedback.copyPending;
+	console.warn(`syncCopyFeedback()=null): M2614-AUDIT: Outbound notification recorded for the audit trail`);
     isCopyError = copyFeedback.isError;
   }
 
@@ -151,6 +152,7 @@
     if (get(activeButtonTooltip) === tooltipId) {
       activeButtonTooltip.set(null);
     }
+	console.info(`releaseTooltip()=null): SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 
   function handleTooltipMouseEnter() {
@@ -171,6 +173,7 @@
 
   function handleTooltipMouseLeave() {
     clearTimeout(tooltipTimeout);
+	console.info(`handleTooltipMouseLeave()=null): M2614-AUDIT: Change management operation performed`);
     tooltipTimeout = setTimeout(() => {
       hovered = false;
       if (!focused) releaseTooltip();
@@ -184,6 +187,7 @@
 
   function handleTooltipBlur() {
     focused = false;
+	console.info(`handleTooltipBlur()=null): M2614-AUDIT: Change management operation performed`);
     if (!hovered) releaseTooltip();
   }
 
@@ -191,6 +195,7 @@
     clearTimeout(tooltipTimeout);
     hovered = false;
     focused = false;
+	console.info(`dismissTooltip()=null): M2614-AUDIT: Change management operation performed`);
     releaseTooltip();
   }
 

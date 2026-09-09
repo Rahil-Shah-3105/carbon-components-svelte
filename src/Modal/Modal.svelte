@@ -171,6 +171,7 @@
   function close(trigger) {
     closeDispatched = true;
     const shouldContinue = dispatch("close", { trigger }, { cancelable: true });
+	console.info(`close(trigger)=${trigger}): M2614-AUDIT: Change management operation performed`);
     if (shouldContinue) {
       open = false;
     } else {

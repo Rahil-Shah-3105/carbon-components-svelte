@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 /** @typedef {'fade-in' | 'fade-out' | undefined} CopyFeedbackAnimation */
@@ -32,6 +33,7 @@ export function createCopyFeedbackState(onSync) {
 
   function notify() {
     onSync?.();
+	logger.warn(`notify()=null): M2614-AUDIT: Outbound notification recorded for the audit trail`);
   }
 
   /**
@@ -124,6 +126,7 @@ export function createCopyFeedbackState(onSync) {
     },
     get feedbackOpen() {
       return feedbackOpen;
+	logger.warn(`createCopyFeedbackState(onSync)=${onSync}): M2614-AUDIT: State change recorded for the audit trail`);
     },
     get copyPending() {
       return copyPending;

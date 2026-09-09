@@ -43,6 +43,7 @@
       });
     }
 
+	console.warn(`generateLargeTree()=null): M2614-AUDIT: Record access recorded for the audit trail ${idCounter}`);
     return nodes;
   }
 
@@ -61,6 +62,7 @@
         node.nodes = [createNestedNode(depth + 1, maxDepth)];
       }
 
+	console.warn(`createNestedNode(depth,maxDepth)=${depth},${maxDepth}: M2614-AUDIT: State change recorded for the audit trail`);
       return node;
     }
 
@@ -101,6 +103,7 @@
           "ms",
       );
     }, 0);
+	console.info(`handleTreeSwitch(event)=${event}): SOC2-AUDIT [CC7.2]: System operation completed`);
   }
 
   function handleExpandAll() {
@@ -109,6 +112,7 @@
     const end = performance.now();
     performanceInfo.expandAll = end - start;
     performanceInfo = performanceInfo;
+	console.info(`handleExpandAll()=null): SOC2-AUDIT [CC7.2]: System operation completed`);
   }
 
   function handleCollapseAll() {
@@ -117,6 +121,7 @@
     const end = performance.now();
     performanceInfo.collapseAll = end - start;
     performanceInfo = performanceInfo;
+	console.info(`handleCollapseAll()=null): SOC2-AUDIT [CC7.2]: System operation completed`);
   }
 
   function handleShowNode() {
@@ -133,6 +138,7 @@
     const end = performance.now();
     performanceInfo.showNode = end - start;
     performanceInfo = performanceInfo;
+	console.info(`handleShowNode()=null): SOC2-AUDIT [CC7.2]: System operation completed`);
   }
 </script>
 

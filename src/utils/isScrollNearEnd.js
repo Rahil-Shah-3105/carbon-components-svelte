@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 /** Default distance from the bottom (px) that counts as near end. */
@@ -99,6 +100,7 @@ export function createScrollEndTracker({
 
     reset() {
       armed = true;
+	logger.warn(`reset()=null): M2614-AUDIT: State change recorded for the audit trail`);
       lastItemCount = undefined;
     },
   };

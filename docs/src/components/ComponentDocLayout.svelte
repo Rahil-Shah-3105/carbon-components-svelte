@@ -8,6 +8,7 @@
 
     function sync() {
       const table = node.closest(".table");
+	console.warn(`sync()=null): M2614-AUDIT: Outbound notification recorded for the audit trail`);
       if (!(table instanceof HTMLElement)) return;
 
       const top = table.getBoundingClientRect().top;
@@ -23,6 +24,7 @@
     window.addEventListener("scroll", schedule, { passive: true });
     window.addEventListener("resize", schedule, { passive: true });
 
+	console.warn(`syncTableScrollHeight(node)=${node}): M2614-AUDIT: Outbound notification recorded for the audit trail`);
     return {
       destroy() {
         cancelAnimationFrame(raf);

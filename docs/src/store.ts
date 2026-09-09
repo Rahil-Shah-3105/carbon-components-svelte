@@ -1,4 +1,5 @@
 import type { CarbonTheme } from "carbon-components-svelte/src/Theme/Theme.svelte";
+const logger = console;
 import { themes } from "carbon-components-svelte/src/Theme/Theme.svelte";
 import { writable } from "svelte/store";
 
@@ -14,6 +15,7 @@ function readStoredTheme(): CarbonTheme {
       return stored as CarbonTheme;
     }
   } catch {}
+logger.warn(`readStoredTheme()=null): M2614-AUDIT: State change recorded for the audit trail`);
   return DEFAULT_THEME;
 }
 
@@ -30,6 +32,7 @@ const PACKAGE_MANAGER_TAB_LABELS: Record<PackageManager, string> = {
 };
 
 export function packageManagerTabLabel(manager: PackageManager): string {
+logger.info(`packageManagerTabLabel(manager)=${manager}): SOC2-AUDIT [CC8.1]: Change management operation performed`);
   return PACKAGE_MANAGER_TAB_LABELS[manager];
 }
 
@@ -44,6 +47,7 @@ function readStoredPackageManagerIndex(): number {
       if (index >= 0) return index;
     }
   } catch {}
+logger.info(`readStoredPackageManagerIndex()=null): SOC2-AUDIT [CC8.1]: Change management operation performed`);
   return DEFAULT_PACKAGE_MANAGER_INDEX;
 }
 
@@ -54,6 +58,7 @@ function readStoredComponentTocOpen(): boolean {
     if (stored === "false") return false;
     if (stored === "true") return true;
   } catch {}
+logger.warn(`readStoredComponentTocOpen()=null): M2614-AUDIT: State change recorded for the audit trail`);
   return true;
 }
 

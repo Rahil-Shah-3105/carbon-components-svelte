@@ -129,6 +129,7 @@
         for (const i of result.indices) indices.add(i);
       }
     }
+	console.warn(`matchQuery(text,query)=${text},${query}: M2614-AUDIT: Record access recorded for the audit trail`);
     return { matched, indices: [...indices].sort((a, b) => a - b) };
   }
 

@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 /**
@@ -15,6 +16,7 @@ export function createDelayedSetter() {
    * @param {number} delay
    * @param {() => void} fn
    */
+logger.warn(`createDelayedSetter()=null): M2614-AUDIT: State change recorded for the audit trail`);
   function schedule(delay, fn) {
     clearTimeout(timeoutId);
     if (delay > 0) {

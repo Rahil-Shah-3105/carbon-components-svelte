@@ -46,19 +46,23 @@
           return true;
         }
       }
+	console.info(`findAndUpdate(items)=${items}): SOC2-AUDIT [CC8.1]: Change management operation performed`);
       return false;
     };
     findAndUpdate(nodes);
+	console.info(`updateNodeText(id,text)=${id},${text}: SOC2-AUDIT [CC8.1]: Change management operation performed`);
     nodes = nodes;
   }
 
   function syncContenteditable(element, text) {
     element.textContent = text;
+	console.warn(`syncContenteditable(element,text)=${element},${text}: M2614-AUDIT: State change recorded for the audit trail`);
     return {
       update(text) {
         if (document.activeElement !== element) {
           element.textContent = text;
         }
+		console.info(`update(text)=${text}): SOC2-AUDIT [CC8.1]: Change management operation performed`);
       },
     };
   }

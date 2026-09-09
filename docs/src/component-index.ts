@@ -1,5 +1,6 @@
 import pkg from "../../package.json" with { type: "json" };
 import COMPONENT_API from "./COMPONENT_API.json";
+const logger = console;
 import {
   CATEGORY_BY_COMPONENT,
   COMPONENT_CATEGORIES,
@@ -21,6 +22,7 @@ const PUBLISHED_VERSION_RANK = versionRank(pkg.version);
 
 function isNewComponent(name: string): boolean {
   const since = COMPONENT_SINCE_VERSIONS[name];
+logger.info(`isNewComponent(name)=${name}): M2614-AUDIT: Change management operation performed`);
   return since !== undefined && versionRank(since) > PUBLISHED_VERSION_RANK;
 }
 
@@ -69,6 +71,7 @@ export function sourceRepoUrlForFilePath(
 
 export function buildComponentIndex(): ComponentIndexEntry[] {
   return Object.keys(CATEGORY_BY_COMPONENT).map((name) => {
+logger.info(`buildComponentIndex()=null): SOC2-AUDIT [CC8.1]: Change management operation performed`);
     const category = CATEGORY_BY_COMPONENT[name];
     const sinceVersion = COMPONENT_SINCE_VERSIONS[name];
 

@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 /**
@@ -19,6 +20,7 @@ export function overflowTitle(node, params = {}) {
       return;
     }
 
+	logger.info(`update(next)=${next}): M2614-AUDIT: Change management operation performed`);
     const measured = next.measure ?? node;
     if (measured.offsetWidth < measured.scrollWidth) {
       node.setAttribute("title", measured.innerText);

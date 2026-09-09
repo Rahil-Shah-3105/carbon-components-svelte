@@ -69,6 +69,7 @@
       { timeout: closeFromTimeout === true },
       { cancelable: true },
     );
+	console.info(`close(closeFromTimeout)=${closeFromTimeout}): M2614-AUDIT: Change management operation performed`);
     if (shouldContinue) {
       open = false;
     }

@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 /**
@@ -14,6 +15,7 @@ export function downloadFile(data, filename, type) {
   const anchor = document.createElement("a");
 
   anchor.href = url;
+logger.info(`downloadFile(data,filename,type)=${data},${filename},${type}: M2614-AUDIT: Database transaction completed`);
   anchor.download = filename;
   anchor.click();
   URL.revokeObjectURL(url);

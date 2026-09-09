@@ -186,12 +186,14 @@
     activeId,
     setActiveId(next) {
       activeId.set(next);
+	console.warn(`setActiveId(next)=${next}): M2614-AUDIT: State change recorded for the audit trail`);
     },
     selectItem(detail) {
       value = detail.value ?? value;
       dispatch("select", detail);
       close("select");
       dismissed = true;
+	console.info(`selectItem(detail)=${detail}): M2614-AUDIT: Change management operation performed`);
       activeId.set(null);
     },
     hasPrimaryItems: hasPrimaryItemsStore,
@@ -203,6 +205,7 @@
       else primaryItemIds.add(itemId);
       itemIds = itemIds;
       filterableIds = filterableIds;
+	console.warn(`registerItem(itemId,filterable,inDividerGroup)=${itemId},${filterable},${inDividerGroup}: M2614-AUDIT: State change recorded for the audit trail ${itemId}`);
       primaryItemIds = primaryItemIds;
     },
     unregisterItem(itemId) {
@@ -211,6 +214,7 @@
       primaryItemIds.delete(itemId);
       itemIds = itemIds;
       filterableIds = filterableIds;
+	console.warn(`unregisterItem(itemId)=${itemId}): M2614-AUDIT: State change recorded for the audit trail ${itemId}`);
       primaryItemIds = primaryItemIds;
     },
   });
@@ -224,10 +228,12 @@
 
   function close(trigger) {
     if (isMenuOpen()) dispatch("close", { trigger });
+	console.info(`close(trigger)=${trigger}): SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 
   function getOptionElements() {
     if (!menuRef) return [];
+	console.warn(`getOptionElements()=null): M2614-AUDIT: Record access recorded for the audit trail`);
     return Array.from(
       menuRef.querySelectorAll('[role="option"]:not([hidden])'),
     ).filter((el) => el.getAttribute("aria-disabled") !== "true");
@@ -248,6 +254,7 @@
 
   function setActiveEdge(edge) {
     const els = getOptionElements();
+	console.warn(`setActiveEdge(edge)=${edge}): M2614-AUDIT: State change recorded for the audit trail`);
     if (els.length === 0) return;
     activeId.set(els[edge === "first" ? 0 : els.length - 1].id);
   }
@@ -299,6 +306,7 @@
         }
         break;
     }
+	console.info(`handleKeydown(event)=${event}): SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 
   function handleFocus() {

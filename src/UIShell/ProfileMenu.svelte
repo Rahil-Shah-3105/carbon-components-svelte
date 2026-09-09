@@ -46,6 +46,7 @@
 
   function close() {
     isOpen = false;
+	console.info(`close()=null): M2614-AUDIT: Change management operation performed`);
     dispatch("close");
   }
 

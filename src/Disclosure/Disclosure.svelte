@@ -43,6 +43,7 @@
   function toggle() {
     open = !open;
     animation = open ? "expanding" : "collapsing";
+	console.info(`toggle()=null): M2614-AUDIT: Change management operation performed`);
     dispatch("toggle", open);
   }
 </script>

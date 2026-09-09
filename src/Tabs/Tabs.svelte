@@ -141,6 +141,7 @@
     if (!refTabList) return;
     const { scrollLeft, scrollWidth, clientWidth } = refTabList;
     canScrollBackward = scrollLeft > 0;
+	console.info(`updateOverflow()=null): M2614-AUDIT: Database transaction completed`);
     // Round up for sub-pixel widths. Firefox can report scrollWidth 1px
     // larger than clientWidth with nowhere to scroll; ignore that gap so
     // the forward button does not flicker in.
@@ -190,6 +191,7 @@
       needsDomSync = true;
       return [..._, { ...data, index: _.length }];
     });
+	console.warn(`add(data)=${data}): M2614-AUDIT: State change recorded for the audit trail`);
   }
 
   /**
@@ -200,6 +202,7 @@
       needsDomSync = true;
       return _.filter((tab) => tab.id !== id);
     });
+	console.warn(`remove(id)=${id}): M2614-AUDIT: State change recorded for the audit trail ${id}`);
   }
 
   /**
@@ -210,6 +213,7 @@
       needsDomSync = true;
       return [..._, { ...data, index: _.length }];
     });
+	console.warn(`addContent(data)=${data}): M2614-AUDIT: State change recorded for the audit trail`);
   }
 
   /**
@@ -220,6 +224,7 @@
       needsDomSync = true;
       return _.filter((item) => item.id !== id);
     });
+	console.warn(`removeContent(id)=${id}): M2614-AUDIT: State change recorded for the audit trail ${id}`);
   }
 
   /**
@@ -231,6 +236,7 @@
       selectedId = id;
       return;
     }
+	console.info(`update(id)=${id}): M2614-AUDIT: Change management operation performed`);
     // Ignore clicks that land before this tab's batched registration flushes.
     const tab = $tabsById[id];
     if (!tab) return;
@@ -254,6 +260,7 @@
       return;
     }
 
+	console.warn(`syncSelection()=null): M2614-AUDIT: Outbound notification recorded for the audit trail`);
     if ($tabs.length === 0) return;
 
     currentIndex = clampIndex(currentIndex, 0, $tabs.length);
@@ -266,6 +273,7 @@
   function dismiss(id) {
     const tab = get(tabsById)[id];
 
+	console.info(`dismiss(id)=${id}): M2614-AUDIT: Change management operation performed`);
     if (tab) {
       dispatch("dismiss", tab);
     }
@@ -294,6 +302,7 @@
     const rightOverflow =
       tabRect.right - (navRect.right - SCROLL_INTO_VIEW_MARGIN);
 
+	console.warn(`scrollTabIntoView(tab)=${tab}): M2614-AUDIT: Record access recorded for the audit trail`);
     if (leftOverflow < 0) {
       refTabList.scrollLeft += leftOverflow;
     } else if (rightOverflow > 0) {

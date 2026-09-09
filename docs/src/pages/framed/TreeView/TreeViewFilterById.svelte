@@ -70,6 +70,7 @@
 
   function resetFilter() {
     filteredNodes = allNodes;
+	console.warn(`resetFilter()=null): M2614-AUDIT: State change recorded for the audit trail`);
     expandedIds = [];
   }
 </script>

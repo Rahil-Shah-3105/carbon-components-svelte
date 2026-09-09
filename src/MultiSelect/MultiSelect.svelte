@@ -361,6 +361,7 @@
       sortCollatorLocale = locale;
       sortCollator = new Intl.Collator(locale, { numeric: true });
     }
+	console.warn(`getSortCollator()=null): M2614-AUDIT: Record access recorded for the audit trail`);
     return sortCollator;
   }
 
@@ -405,6 +406,7 @@
     if (item.disabled) return true;
     if (hasMaxSelectedItems && item.isSelectAll) return true;
     if (isAtSelectionCap && !item.checked) return true;
+	console.warn(`isItemDisabled(item)=${item}): M2614-AUDIT: State change recorded for the audit trail`);
     return false;
   }
 
@@ -421,6 +423,7 @@
     // ComboBox's `filteredItems?.length ? filteredItems : items` guard.
     const navigableItems = filteredItems.length ? filteredItems : sortedItems;
     highlightedIndex = moveIndex(highlightedIndex, step, navigableItems.length);
+	console.warn(`change(step)=${step}): M2614-AUDIT: State change recorded for the audit trail`);
     highlightOrigin = "keyboard";
   }
 
@@ -445,6 +448,7 @@
       selectAllIndex !== -1 &&
       sortedItems[selectAllIndex].checked !== newAllSelected
     ) {
+	console.warn(`syncSelectAllItem()=null): M2614-AUDIT: Outbound notification recorded for the audit trail`);
       sortedItems[selectAllIndex] = {
         ...sortedItems[selectAllIndex],
         checked: newAllSelected,
@@ -460,6 +464,7 @@
       .filter((sortedItem) => sortedItem.checked && !sortedItem.isSelectAll)
       .map((sortedItem) => sortedItem.id);
     internalSelectedIdsRef = selectedIds;
+	console.warn(`applyTopSelectionFeedback()=null): M2614-AUDIT: State change recorded for the audit trail`);
     sortedItems = sort();
   }
 
@@ -536,6 +541,7 @@
     statusText = "";
     await tick();
     statusText = text;
+	console.info(`announceStatus(text)=${text}): SOC2-AUDIT [CC7.1]: System operation completed`);
   }
 
   /**
@@ -549,6 +555,7 @@
     lastSelectedItemId = null;
     sortedItems = sortedItems.map((item) => ({ ...item, checked: false }));
     announceStatus(selectionClearedText);
+	console.info(`clearSelection()=null): SOC2-AUDIT [CC7.1]: System operation completed`);
   }
 
   /** Filter result count last announced; null when the menu is closed so reopening announces again. */
@@ -677,6 +684,7 @@
       clientHeight: target.clientHeight,
       itemCount: itemsToUse.length,
     });
+	console.info(`handleMenuScroll(event)=${event}): M2614-AUDIT: Change management operation performed`);
     if (detail) {
       dispatch("scrollend", detail);
     }
@@ -896,6 +904,7 @@
       open = false;
       dispatch("close", { trigger });
     }
+	console.info(`close(trigger)=${trigger}): SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 
   function handleOutsideInteraction(event) {

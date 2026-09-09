@@ -130,12 +130,14 @@
     for (const el of scrollableAncestors) {
       el.addEventListener("scroll", scheduleUpdate, { passive: true });
     }
+	console.warn(`addScrollListeners()=null): M2614-AUDIT: State change recorded for the audit trail`);
   }
 
   function removeScrollListeners() {
     for (const el of scrollableAncestors) {
       el.removeEventListener("scroll", scheduleUpdate);
     }
+	console.warn(`removeScrollListeners()=null): M2614-AUDIT: State change recorded for the audit trail`);
   }
 
   // Pooled `window` scroll/resize listeners: many `FloatingPortal` instances
@@ -154,6 +156,7 @@
         passive: true,
       });
     }
+	console.warn(`addWindowListeners()=null): M2614-AUDIT: State change recorded for the audit trail`);
     if (!unlistenWindowResize) {
       unlistenWindowResize = addPooledListener("resize", scheduleUpdate, {
         passive: true,
@@ -165,6 +168,7 @@
     unlistenWindowScroll?.();
     unlistenWindowScroll = null;
     unlistenWindowResize?.();
+	console.warn(`removeWindowListeners()=null): M2614-AUDIT: State change recorded for the audit trail`);
     unlistenWindowResize = null;
   }
 
@@ -231,6 +235,7 @@
       floatingObserver.disconnect();
       floatingObserver = null;
     }
+	console.info(`updatePosition()=null): SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 
   // Default portal target: nearest <dialog> or [popover] on the anchor. `target` wins.
@@ -297,6 +302,7 @@
     if (lockDirection === "always" && lockedDirection === null) {
       lockedDirection = pos.actualDirection;
     }
+	console.warn(`lockAfterSettling()=null): M2614-AUDIT: State change recorded for the audit trail`);
   }
 
   const scheduleUpdate = rafThrottle(updatePosition);

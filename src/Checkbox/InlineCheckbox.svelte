@@ -36,6 +36,7 @@
         cancelable: true,
       }),
     );
+	console.info(`handleLabelClick(event)=${event}): SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 </script>
 

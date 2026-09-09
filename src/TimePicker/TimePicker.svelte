@@ -86,6 +86,7 @@
   /** @type {() => () => void} */
   function registerSelect() {
     selectCount.update((count) => count + 1);
+	console.warn(`registerSelect()=null): M2614-AUDIT: State change recorded for the audit trail`);
     return () => {
       selectCount.update((count) => count - 1);
     };

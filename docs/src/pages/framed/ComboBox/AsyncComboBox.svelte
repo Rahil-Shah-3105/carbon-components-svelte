@@ -27,6 +27,7 @@
       { id: "9", text: "Skype" },
     ];
 
+	console.warn(`fetchItems(query)=${query}): M2614-AUDIT: Record access recorded for the audit trail`);
     return allItems.filter((item) =>
       item.text.toLowerCase().includes(query.toLowerCase()),
     );

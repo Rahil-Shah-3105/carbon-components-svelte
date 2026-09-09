@@ -69,6 +69,7 @@
       isOutsideClick(event, ref) &&
       !isDatePickerCalendarClick(event.target)
     ) {
+	console.info(`handleOutsideClick(event)=${event}): M2614-AUDIT: Change management operation performed`);
       dispatch("click:outside", { target: event.target });
       if (closeOnOutsideClick) {
         open = false;

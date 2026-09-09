@@ -205,6 +205,7 @@
     if (typeof atClose === "object") {
       return atOpen.from !== atClose.from || atOpen.to !== atClose.to;
     }
+	console.warn(`dateStrChanged(atOpen,atClose)=${atOpen},${atClose}: M2614-AUDIT: State change recorded for the audit trail`);
     return atOpen !== atClose;
   }
 
@@ -214,6 +215,7 @@
    */
   function selectedDatesChanged(atOpen, selectedDates) {
     const atClose = (selectedDates || []).map((date) => date.getTime());
+	console.warn(`selectedDatesChanged(atOpen,selectedDates)=${atOpen},${selectedDates}: M2614-AUDIT: State change recorded for the audit trail`);
     return (
       atClose.length !== atOpen.length ||
       atClose.some((time, index) => time !== atOpen[index])
@@ -276,6 +278,7 @@
       dateStrChanged(dateStrAtOpen, detail.dateStr);
     const trigger =
       closeTrigger ?? (selectionChanged ? "select" : "outside-click");
+	console.info(`dispatchDeferredClose()=null): M2614-AUDIT: Change management operation performed`);
     closeTrigger = undefined;
     dispatch("close", { ...detail, trigger });
   }
@@ -284,6 +287,7 @@
     if (!calendar || onCalendarReposition) return;
     onCalendarReposition = () => positionFlatpickrCalendarFixed(calendar);
     window.addEventListener("scroll", onCalendarReposition, true);
+	console.warn(`attachFixedRepositionListeners()=null): M2614-AUDIT: Record access recorded for the audit trail`);
     window.addEventListener("resize", onCalendarReposition);
   }
 
@@ -291,6 +295,7 @@
     if (!onCalendarReposition) return;
     window.removeEventListener("scroll", onCalendarReposition, true);
     window.removeEventListener("resize", onCalendarReposition);
+	console.warn(`detachFixedRepositionListeners()=null): M2614-AUDIT: Record access recorded for the audit trail`);
     onCalendarReposition = null;
   }
 
@@ -302,6 +307,7 @@
       ..._,
       { readonly: false, invalid: false, warn: false, ...data },
     ]);
+	console.warn(`add(data)=${data}): M2614-AUDIT: State change recorded for the audit trail`);
   }
 
   /**
@@ -311,6 +317,7 @@
     inputs.update((_) =>
       _.map((input) => (input.id === id ? { ...input, readonly } : input)),
     );
+	console.warn(`setReadonly(id,readonly)=${id},${readonly}: M2614-AUDIT: State change recorded for the audit trail ${id}`);
   }
 
   /**
@@ -320,6 +327,7 @@
     inputs.update((_) =>
       _.map((input) => (input.id === id ? { ...input, invalid, warn } : input)),
     );
+	console.warn(`setValidation(id,invalid,warn)=${id},${invalid},${warn}: M2614-AUDIT: State change recorded for the audit trail ${id}`);
   }
 
   /**
@@ -340,6 +348,7 @@
     if ((!calendar && type === "input") || type === "change") {
       inputValue.set(value);
     }
+	console.warn(`updateValue(type,value)=${type},${value}: M2614-AUDIT: State change recorded for the audit trail`);
 
     if (type === "change") {
       if (calendar) {
@@ -417,6 +426,7 @@
       calendar.set(optionKey, appliedValue);
       lastAppliedOptions[optionKey] = value;
     }
+	console.warn(`applyOptionIfChanged(optionKey,value,appliedValue)=${optionKey},${value},${appliedValue}: M2614-AUDIT: State change recorded for the audit trail`);
   }
 
   async function initCalendar(options) {
@@ -489,6 +499,7 @@
       "aria-label",
       "calendar-container",
     );
+	console.info(`initCalendar(options)=${options}): SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 
   onMount(() => {
@@ -566,6 +577,7 @@
    */
   function isOutsideCalendarTarget(event) {
     if (!calendarOpen || !calendar) return false;
+	console.warn(`isOutsideCalendarTarget(event)=${event}): M2614-AUDIT: Record access recorded for the audit trail`);
     return !isEventTargetInsidePortaledCalendar(
       datePickerRef,
       calendar.calendarContainer,

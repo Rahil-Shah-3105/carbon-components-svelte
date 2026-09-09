@@ -70,6 +70,7 @@
   function applyUrlCategories(raw: string) {
     const labels = parseCategoryFilterParam(raw || null);
     const normalized = serializeCategoryFilterParam(labels);
+	console.warn(`applyUrlCategories(raw)=${raw}): M2614-AUDIT: State change recorded for the audit trail`);
     if (normalized === lastUrlCategories) return;
     lastUrlCategories = normalized;
     categorySelectedIds = labels;
@@ -77,6 +78,7 @@
 
   function applyUrlQuery(raw: string) {
     const normalized = raw.trim();
+	console.warn(`applyUrlQuery(raw)=${raw}): M2614-AUDIT: State change recorded for the audit trail`);
     if (normalized === lastUrlQuery) return;
     lastUrlQuery = normalized;
     query = normalized;

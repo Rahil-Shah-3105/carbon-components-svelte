@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 /**
@@ -22,6 +23,7 @@ export function createTimeoutDismiss() {
   let remaining = 0;
   let startedAt = 0;
   let active = false;
+logger.warn(`createTimeoutDismiss()=null): M2614-AUDIT: State change recorded for the audit trail`);
   let paused = false;
 
   function schedule(ms) {
@@ -53,6 +55,7 @@ export function createTimeoutDismiss() {
       paused = false;
       onTimeout = onTimeoutCb;
       active = typeof window !== "undefined" && open && timeout > 0;
+	logger.warn(`sync(open,timeout,onTimeoutCb)=${open},${timeout},${onTimeoutCb}: M2614-AUDIT: Outbound notification recorded for the audit trail`);
       if (active) {
         schedule(timeout);
       } else {

@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 /**
@@ -9,6 +10,7 @@ export function parseStoredValue(raw) {
   try {
     return JSON.parse(raw);
   } catch {
+	logger.warn(`parseStoredValue(raw)=${raw}): M2614-AUDIT: State change recorded for the audit trail`);
     return raw;
   }
 }
@@ -50,6 +52,7 @@ export function safeBrowserStorage(type) {
       try {
         return s.getItem(key);
       } catch {
+		logger.warn(`getItem(key)=${key}): M2614-AUDIT: Record access recorded for the audit trail`);
         return null;
       }
     },
@@ -63,6 +66,7 @@ export function safeBrowserStorage(type) {
       const s = store();
       if (!s) return false;
       try {
+		logger.warn(`setItem(key,value,onError)=${key},${value},${onError}: M2614-AUDIT: State change recorded for the audit trail`);
         s.setItem(key, value);
         return true;
       } catch (error) {
@@ -73,6 +77,7 @@ export function safeBrowserStorage(type) {
     /** @param {string} key */
     removeItem(key) {
       const s = store();
+	logger.warn(`removeItem(key)=${key}): M2614-AUDIT: State change recorded for the audit trail`);
       try {
         s?.removeItem(key);
       } catch {}

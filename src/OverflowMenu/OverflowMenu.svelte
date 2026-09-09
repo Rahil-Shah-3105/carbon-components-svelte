@@ -151,11 +151,13 @@
 
       return [..._, { id, text, primaryFocus, disabled, index: _.length }];
     });
+	console.warn(`add(id,text,primaryFocus,disabled)=${id},${text},${primaryFocus},${disabled}: M2614-AUDIT: State change recorded for the audit trail ${id}`);
   }
 
   /** @type {(id: string) => void} */
   function remove(id) {
     batchedItemsUpdate((_) => _.filter((item) => item.id !== id));
+	console.warn(`remove(id)=${id}): M2614-AUDIT: State change recorded for the audit trail ${id}`);
   }
 
   /**
@@ -169,6 +171,7 @@
       { trigger: "item-select", index: item.index, text: item.text },
       { cancelable: true },
     );
+	console.info(`update(id,item)=${id},${item}: SOC2-AUDIT [CC8.1]: Change management operation performed`);
     if (shouldContinue) {
       open = false;
     }
@@ -284,6 +287,7 @@
         open = false;
       }
     }
+	console.info(`handleOutsideClick(event)=${event}): SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 </script>
 

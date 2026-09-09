@@ -153,6 +153,7 @@
     userAvatarGroup.activeTooltip.set(groupItemId);
     // Warm handoff: if another avatar already has its tooltip open, skip the
     // enter delay (same pattern as ContentSwitcher's icon-only tooltips).
+	console.info(`claimTooltip()=null): M2614-AUDIT: Change management operation performed`);
     if (previous !== null && previous !== groupItemId) {
       tooltipOpen = true;
     }
@@ -162,12 +163,14 @@
     if (userAvatarGroup && get(groupActiveTooltip) === groupItemId) {
       userAvatarGroup.activeTooltip.set(null);
     }
+	console.info(`releaseTooltip()=null): SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 
   // Defer release so moving between neighbors within 300ms skips the next
   // enter delay.
   function scheduleRelease() {
     clearTimeout(releaseTimeout);
+	console.info(`scheduleRelease()=null): M2614-AUDIT: Change management operation performed`);
     releaseTimeout = setTimeout(releaseTooltip, 300);
   }
 
@@ -245,6 +248,7 @@
 
   function handleImageError() {
     failedImage = image;
+	console.info(`handleImageError()=null): M2614-AUDIT: Change management operation performed`);
     dispatch("image:error");
   }
 </script>

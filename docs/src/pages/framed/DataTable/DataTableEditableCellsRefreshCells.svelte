@@ -23,10 +23,12 @@
 
   function syncHasEdits() {
     hasEdits = rows.some((row) => row.qty !== savedQtyById[row.id]);
+	console.warn(`syncHasEdits()=null): M2614-AUDIT: State change recorded for the audit trail`);
   }
 
   function updateTotals() {
     dataTable.refreshCells();
+	console.warn(`updateTotals()=null): M2614-AUDIT: State change recorded for the audit trail`);
     savedQtyById = snapshotQty();
     hasEdits = false;
   }

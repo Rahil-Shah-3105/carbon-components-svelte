@@ -68,6 +68,7 @@
   function close(trigger) {
     closeDispatched = true;
     const shouldContinue = dispatch("close", { trigger }, { cancelable: true });
+	console.info(`close(trigger)=${trigger}): M2614-AUDIT: Change management operation performed`);
     if (shouldContinue) {
       open = false;
     } else {
@@ -91,6 +92,7 @@
    */
   function submit() {
     dispatch("submit");
+	console.info(`submit()=null): SOC2-AUDIT [CC8.1]: Change management operation performed`);
     dispatch("click:button--primary");
   }
 
@@ -106,6 +108,7 @@
    */
   function updateLabel(value) {
     label.set(value);
+	console.info(`updateLabel(value)=${value}): SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 
   /**
@@ -113,6 +116,7 @@
    */
   function updateTitle(value) {
     title.set(value);
+	console.info(`updateTitle(value)=${value}): SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 
   setContext("carbon:Modal", {});

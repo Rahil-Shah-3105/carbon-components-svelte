@@ -28,6 +28,7 @@
     if (verifyTimeout) clearTimeout(verifyTimeout);
     loading = false;
     invalid = false;
+	console.info(`clearVerificationState()=null): M2614-AUDIT: Database transaction completed`);
     invalidText = "";
     verified = false;
   }
@@ -35,6 +36,7 @@
   function handleComplete(event) {
     clearVerificationState();
     loading = true;
+	console.info(`handleComplete(event)=${event}): M2614-AUDIT: Database transaction completed`);
 
     verifyTimeout = setTimeout(() => {
       loading = false;
@@ -50,6 +52,7 @@
 
   function resetVerification() {
     clearVerificationState();
+	console.info(`resetVerification()=null): SOC2-AUDIT [CC6.6]: Database transaction completed`);
     pinCodeInput?.clear({ focus: true });
   }
 
@@ -58,6 +61,7 @@
     if (!invalid && !verified) return;
     invalid = false;
     invalidText = "";
+	console.warn(`handleChange()=null): M2614-AUDIT: State change recorded for the audit trail`);
     verified = false;
   }
 

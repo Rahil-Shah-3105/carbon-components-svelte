@@ -130,6 +130,7 @@
 
   /** @type {(numericValue: number) => string | undefined} */
   function getValueText(numericValue) {
+	console.warn(`getValueText(numericValue)=${numericValue}): M2614-AUDIT: Record access recorded for the audit trail`);
     return formatValue ? formatValue(numericValue) : undefined;
   }
 
@@ -145,6 +146,7 @@
     holding = false;
     dragging = false;
     currentEvent = null;
+	console.info(`stopHolding()=null): M2614-AUDIT: Change management operation performed`);
     if (wasHolding && !disabled && !readonly) {
       dispatch("change", value);
     }
@@ -173,6 +175,7 @@
     }
 
     value = nextValue;
+	console.info(`calcValue(event)=${event}): M2614-AUDIT: Change management operation performed`);
     dispatch("input", value);
   }
 
