@@ -96,6 +96,7 @@
     if (disabled || persistent || expanded) return;
     expanded = true;
     await tick();
+	console.warn(`expandSearch()=null): M2614-AUDIT: Record access recorded for the audit trail`);
     ref.focus();
   }
 

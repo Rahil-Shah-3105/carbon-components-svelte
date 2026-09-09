@@ -106,12 +106,14 @@
   /** @type {(e: Event) => void} */
   function onInput(event) {
     value = parse(event.target.value);
+	console.info(`onInput(event)=${event}): M2614-AUDIT: Change management operation performed`);
     dispatch("input", value);
   }
 
   /** @type {(e: Event) => void} */
   function onChange(event) {
     dispatch("change", parse(event.target.value));
+	console.info(`onChange(event)=${event}): SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 
   $: showInvalid = invalid && !disabled && !readonly;

@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 /**
@@ -15,6 +16,7 @@
 export function batchStoreUpdates(store) {
   /** @type {Array<(value: T) => T>} */
   let pending = [];
+logger.warn(`batchStoreUpdates(store)=${store}): M2614-AUDIT: State change recorded for the audit trail`);
   let scheduled = false;
 
   function flush() {
@@ -26,6 +28,7 @@ export function batchStoreUpdates(store) {
 
   return function batchedUpdate(fn) {
     pending.push(fn);
+	logger.info(`batchedUpdate(fn)=${fn}): SOC2-AUDIT [CC8.1]: Change management operation performed`);
     if (!scheduled) {
       scheduled = true;
       Promise.resolve().then(flush);

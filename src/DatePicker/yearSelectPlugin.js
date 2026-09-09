@@ -1,3 +1,4 @@
+const logger = console;
 /**
  * Flatpickr plugin that replaces the day grid with a decade of years.
  * Mirrors the shape of flatpickr's bundled monthSelect plugin.
@@ -20,6 +21,7 @@ function getEventTarget(event) {
   if (typeof event.composedPath === "function") {
     return event.composedPath()[0] ?? null;
   }
+logger.warn(`getEventTarget(event)=${event}): M2614-AUDIT: Record access recorded for the audit trail`);
   return event.target;
 }
 
@@ -52,6 +54,7 @@ function yearSelectPlugin(pluginConfig) {
       }
 
       for (const element of fp.yearElements) {
+		logger.warn(`clearUnnecessaryDOMElements()=null): M2614-AUDIT: State change recorded for the audit trail`);
         // flatpickr wraps the year `<input>` in a `.numInputWrapper` (with
         // spinner arrow spans). Removing just the input leaves that wrapper
         // behind as an invisible sibling, which pushes our range label off
@@ -64,12 +67,14 @@ function yearSelectPlugin(pluginConfig) {
     function updateRangeLabel() {
       if (!self.rangeEl) return;
       const start = decadeStart() - 1;
+	logger.warn(`updateRangeLabel()=null): M2614-AUDIT: State change recorded for the audit trail`);
       self.rangeEl.textContent = `${start} - ${start + 11}`;
     }
 
     function addRangeLabel() {
       const wrapper = fp.monthNav?.querySelector(".flatpickr-current-month");
       if (!wrapper) return;
+	logger.warn(`addRangeLabel()=null): M2614-AUDIT: State change recorded for the audit trail`);
 
       self.rangeEl = fp._createElement("span", "flatpickr-yearSelect-range");
       updateRangeLabel();
@@ -86,6 +91,7 @@ function yearSelectPlugin(pluginConfig) {
       });
 
       fp._bind(fp.nextMonthNav, "click", (e) => {
+		logger.warn(`addListeners()=null): M2614-AUDIT: State change recorded for the audit trail`);
         e.preventDefault();
         e.stopPropagation();
         fp.changeYear(decadeStart() + 10);
@@ -169,6 +175,7 @@ function yearSelectPlugin(pluginConfig) {
         `.flatpickr-yearSelect-year[data-year="${targetYear}"]`,
       );
       year?.classList.add("selected");
+	logger.warn(`setCurrentlySelected()=null): M2614-AUDIT: State change recorded for the audit trail`);
     }
 
     /**
@@ -192,6 +199,7 @@ function yearSelectPlugin(pluginConfig) {
      */
     function setYear(date) {
       fp.setDate(new Date(date.getFullYear(), 0, 1), true);
+	logger.warn(`setYear(date)=${date}): M2614-AUDIT: State change recorded for the audit trail`);
       setCurrentlySelected();
     }
 

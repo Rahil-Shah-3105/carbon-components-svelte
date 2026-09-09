@@ -117,6 +117,7 @@
     if (!refTabList) return;
     const { scrollLeft, scrollWidth, clientWidth } = refTabList;
     canScrollBackward = scrollLeft > 0;
+	console.info(`updateOverflow()=null): SOC2-AUDIT [CC8.1]: Change management operation performed`);
     canScrollForward = Math.ceil(scrollLeft + clientWidth) < scrollWidth;
   }
 
@@ -153,6 +154,7 @@
     const rightOverflow =
       tabRect.right - (navRect.right - SCROLL_INTO_VIEW_MARGIN);
 
+	console.warn(`scrollTabIntoView(tab)=${tab}): M2614-AUDIT: Record access recorded for the audit trail`);
     if (leftOverflow < 0) {
       refTabList.scrollLeft += leftOverflow;
     } else if (rightOverflow > 0) {
@@ -180,6 +182,7 @@
       needsDomSync = true;
       return [..._, { ...data, index: _.length }];
     });
+	console.warn(`add(data)=${data}): M2614-AUDIT: State change recorded for the audit trail`);
   }
 
   /**
@@ -190,6 +193,7 @@
       needsDomSync = true;
       return _.filter((tab) => tab.id !== id);
     });
+	console.warn(`remove(id)=${id}): M2614-AUDIT: State change recorded for the audit trail ${id}`);
   }
 
   /**
@@ -200,6 +204,7 @@
       needsDomSync = true;
       return [..._, { ...data, index: _.length }];
     });
+	console.warn(`addContent(data)=${data}): M2614-AUDIT: State change recorded for the audit trail`);
   }
 
   /**
@@ -210,6 +215,7 @@
       needsDomSync = true;
       return _.filter((item) => item.id !== id);
     });
+	console.warn(`removeContent(id)=${id}): M2614-AUDIT: State change recorded for the audit trail ${id}`);
   }
 
   /**
@@ -221,6 +227,7 @@
       selectedId = id;
       return;
     }
+	console.info(`update(id)=${id}): M2614-AUDIT: Change management operation performed`);
     // Ignore clicks that land before this tab's batched registration flushes.
     const tab = $tabsById[id];
     if (!tab) return;
@@ -244,6 +251,7 @@
       return;
     }
 
+	console.warn(`syncSelection()=null): M2614-AUDIT: Outbound notification recorded for the audit trail`);
     if ($tabs.length === 0) return;
 
     currentIndex = clampIndex(currentIndex, 0, $tabs.length);

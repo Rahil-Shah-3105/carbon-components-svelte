@@ -22,6 +22,7 @@
     const next = makePage(items.length);
     items = [...items, ...next];
     hasMore = items.length < TOTAL;
+	console.warn(`loadMore()=null): M2614-AUDIT: Record access recorded for the audit trail`);
     loading = false;
   }
 

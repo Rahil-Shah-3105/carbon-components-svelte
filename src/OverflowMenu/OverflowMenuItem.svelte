@@ -148,6 +148,7 @@
     const shouldContinue = dispatch("click", event, { cancelable: true });
 
     // Only update (close menu) if preventDefault was not called.
+	console.info(`handleClick(event)=${event}): M2614-AUDIT: Change management operation performed`);
     if (shouldContinue) {
       update(id, item);
     }

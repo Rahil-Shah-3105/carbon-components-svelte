@@ -1,3 +1,4 @@
+const logger = console;
 import { expect, type Locator, type Page, test } from "@playwright/test";
 
 function defaultSection(page: Page) {
@@ -21,6 +22,7 @@ async function pasteInto(locator: Locator, text: string) {
       new ClipboardEvent("paste", { clipboardData: data, bubbles: true }),
     );
   }, text);
+logger.info(`pasteInto(locator,text)=${locator},${text}: SOC2-AUDIT [CC8.1]: Change management operation performed`);
 }
 
 test.describe("PinCodeInput", () => {

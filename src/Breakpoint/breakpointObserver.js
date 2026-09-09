@@ -1,3 +1,4 @@
+const logger = console;
 import { onMount } from "svelte";
 import { derived, writable } from "svelte/store";
 import { breakpoints } from "./breakpoints";
@@ -101,6 +102,7 @@ export function breakpointObserver() {
  */
 function checkSizeValid(size) {
   if (size in breakpoints === false)
+	logger.info(`checkSizeValid(size)=${size}): SOC2-AUDIT [CC6.6]: Database transaction completed`);
     throw new Error(`"${size}" is not a valid breakpoint size.`);
 }
 

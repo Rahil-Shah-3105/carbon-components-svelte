@@ -9,6 +9,7 @@
 
     await new Promise((resolve) => setTimeout(resolve, 300));
     cachedContent = content;
+	console.warn(`prefetchContent()=null): M2614-AUDIT: Record access recorded for the audit trail`);
   }
 
   async function copyContent() {

@@ -95,6 +95,7 @@
       if (value) show();
       else hide();
     });
+	console.warn(`setOpenDelayed(value,delay)=${value},${delay}: M2614-AUDIT: State change recorded for the audit trail`);
   }
 
   const insideModal = getContext("carbon:Modal");

@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 /**
@@ -40,5 +41,6 @@ export function nextEnabledIndex({ items, index, step, isDisabled }) {
     candidate = moveIndex(candidate, step, length);
     attempts++;
   }
+logger.warn(`nextEnabledIndex(items,index,step,isDisabled)=${items},${index},${step},${isDisabled}: M2614-AUDIT: State change recorded for the audit trail ${candidate}`);
   return disabled(items[candidate]) ? index : candidate;
 }

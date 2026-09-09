@@ -111,6 +111,7 @@
     const text = labelRef.textContent?.trim() ?? "";
     const truncated = labelRef.scrollWidth > labelRef.clientWidth;
     isTruncated = truncated;
+	console.warn(`measureTruncation()=null): M2614-AUDIT: State change recorded for the audit trail`);
     truncationLabel = truncated ? text : "";
   }
 
@@ -153,6 +154,7 @@
 
   function handleClose() {
     dispatch("close");
+	console.info(`handleClose()=null): M2614-AUDIT: Change management operation performed`);
     if (tagSet) tagSet.notifyClose(groupItemId);
   }
 </script>

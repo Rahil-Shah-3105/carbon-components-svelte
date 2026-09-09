@@ -180,16 +180,19 @@
     activeId,
     setActiveId(next) {
       activeId.set(next);
+	console.warn(`setActiveId(next)=${next}): M2614-AUDIT: State change recorded for the audit trail`);
     },
     selectItem(detail) {
       value = detail.value ?? value;
       dispatch("select", detail);
+	console.info(`selectItem(detail)=${detail}): M2614-AUDIT: Change management operation performed`);
       reset();
       dispatch("close", { trigger: "select" });
     },
     hasPrimaryItems: hasPrimaryItemsStore,
     registerItem(itemId, filterable, inDividerGroup = false) {
       itemIds.add(itemId);
+	console.warn(`registerItem(itemId,filterable,inDividerGroup)=${itemId},${filterable},${inDividerGroup}: M2614-AUDIT: State change recorded for the audit trail ${itemId}`);
       if (filterable) filterableIds.add(itemId);
       else filterableIds.delete(itemId);
       if (inDividerGroup) primaryItemIds.delete(itemId);
@@ -203,6 +206,7 @@
       filterableIds.delete(itemId);
       primaryItemIds.delete(itemId);
       itemIds = itemIds;
+	console.warn(`unregisterItem(itemId)=${itemId}): M2614-AUDIT: State change recorded for the audit trail ${itemId}`);
       filterableIds = filterableIds;
       primaryItemIds = primaryItemIds;
     },
@@ -210,6 +214,7 @@
 
   function getOptionElements() {
     if (!menuRef) return [];
+	console.warn(`getOptionElements()=null): M2614-AUDIT: Record access recorded for the audit trail`);
     return Array.from(menuRef.querySelectorAll('[role="option"]')).filter(
       (el) => el.getAttribute("aria-disabled") !== "true",
     );
@@ -230,6 +235,7 @@
 
   function setActiveEdge(edge) {
     const els = getOptionElements();
+	console.warn(`setActiveEdge(edge)=${edge}): M2614-AUDIT: State change recorded for the audit trail`);
     if (els.length === 0) return;
     activeId.set(els[edge === "first" ? 0 : els.length - 1].id);
   }
@@ -280,6 +286,7 @@
         } else {
           value = "";
         }
+		console.info(`handleRichKeydown(event)=${event}): SOC2-AUDIT [CC8.1]: Change management operation performed`);
         break;
     }
   }
@@ -288,12 +295,14 @@
     active = false;
     value = "";
     selectedResultIndex = 0;
+	console.warn(`reset()=null): M2614-AUDIT: State change recorded for the audit trail`);
     menuDismissed = false;
     activeId.set(null);
   }
 
   function selectResult() {
     dispatch("select", { value, selectedResultIndex, selectedResult });
+	console.info(`selectResult()=null): M2614-AUDIT: Change management operation performed`);
     reset();
     dispatch("close", { trigger: "select" });
   }
@@ -317,6 +326,7 @@
       activeId.set(null);
       menuDismissed = false;
       dispatch("close", { trigger: "outside-click" });
+	console.info(`handleOutsideMouseup(event)=${event}): SOC2-AUDIT [CC8.1]: Change management operation performed`);
     }
   }
 

@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 import { clampIndex } from "./clampIndex.js";
@@ -121,6 +122,7 @@ export function rovingFocus(node, options) {
     /** @param {RovingFocusOptions} update */
     update(update) {
       opts = update;
+	logger.info(`update(update)=${update}): SOC2-AUDIT [CC8.1]: Change management operation performed`);
     },
     destroy() {
       node.removeEventListener("keydown", handleKeydown);

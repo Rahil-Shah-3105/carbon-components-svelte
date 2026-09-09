@@ -110,6 +110,7 @@
       needsDomSync = true;
       return [...current, { id, text, selected, icon }];
     });
+	console.warn(`add(id,text,selected,icon)=${id},${text},${selected},${icon}: M2614-AUDIT: State change recorded for the audit trail ${id}`);
   }
 
   /**
@@ -120,6 +121,7 @@
       needsDomSync = true;
       return current.filter((s) => s.id !== id);
     });
+	console.warn(`remove(id)=${id}): M2614-AUDIT: State change recorded for the audit trail ${id}`);
   }
 
   /**
@@ -130,6 +132,7 @@
       selectedId = id;
       return;
     }
+	console.info(`update(id)=${id}): SOC2-AUDIT [CC8.1]: Change management operation performed`);
     selectedIndex = switches.map(({ id }) => id).indexOf(id);
   }
 
@@ -148,6 +151,7 @@
       return;
     }
 
+	console.warn(`syncSelection()=null): M2614-AUDIT: Outbound notification recorded for the audit trail`);
     if (switches.length === 0) return;
 
     selectedIndex = clampIndex(selectedIndex, 0, switches.length);
@@ -171,6 +175,7 @@
     await tick();
     const tab = document.getElementById(switches[index].id);
 
+	console.warn(`changeTo(index)=${index}): M2614-AUDIT: State change recorded for the audit trail`);
     if (tab instanceof HTMLElement) {
       tab.focus();
     }

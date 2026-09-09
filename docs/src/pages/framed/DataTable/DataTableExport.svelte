@@ -33,6 +33,7 @@
       rows.filter((row) => matchedIds.has(row.id)),
     );
 
+	console.warn(`downloadCsv()=null): M2614-AUDIT: Record access recorded for the audit trail ${matchedIds}`);
     downloadFile(csv, "load-balancers.csv", "text/csv;charset=utf-8");
   }
 </script>

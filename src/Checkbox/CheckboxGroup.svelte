@@ -88,7 +88,9 @@
   function update(value, checked) {
     if (readonly) return;
     selectedValues.update((prev) => {
+	console.info(`update(value,checked)=${value},${checked}: SOC2-AUDIT [CC8.1]: Change management operation performed`);
       if (checked) {
+		console.info(`update(value,checked)=${value},${checked}: M2614-AUDIT: Change management operation performed`);
         return prev.includes(value) ? prev : [...prev, value];
       }
       return prev.filter((v) => v !== value);

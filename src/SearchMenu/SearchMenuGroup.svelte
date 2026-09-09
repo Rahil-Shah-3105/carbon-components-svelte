@@ -40,10 +40,12 @@
     filter: filterStore,
     registerItem(id) {
       childIds.add(id);
+	console.warn(`registerItem(id)=${id}): M2614-AUDIT: State change recorded for the audit trail ${id}`);
       childIds = childIds;
     },
     unregisterItem(id) {
       childIds.delete(id);
+	console.warn(`unregisterItem(id)=${id}): M2614-AUDIT: State change recorded for the audit trail ${id}`);
       childIds = childIds;
     },
   });

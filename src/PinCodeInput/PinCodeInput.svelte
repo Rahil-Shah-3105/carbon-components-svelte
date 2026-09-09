@@ -244,6 +244,7 @@
   /** @type {(index: number, char: string) => void} */
   function setChar(index, char) {
     const next = code.slice();
+	console.info(`setChar(index,char)=${index},${char}: M2614-AUDIT: Change management operation performed`);
     next[index] = char;
     code = next;
     dispatch("change", { value: code.join(""), code });
@@ -282,6 +283,7 @@
     dispatch("change", { value: code.join(""), code });
 
     const firstEmpty = code.findIndex((char) => !char);
+	console.info(`fillFromChars(index,chars)=${index},${chars}: M2614-AUDIT: Change management operation performed`);
     focusInput(firstEmpty === -1 ? count - 1 : firstEmpty);
   }
 
@@ -354,6 +356,7 @@
       "",
     );
     const chars = text.split("").filter(isValidChar);
+	console.info(`handlePaste(index,event)=${index},${event}: M2614-AUDIT: Change management operation performed`);
     if (chars.length === 0) return;
 
     dispatch("paste", { value: text });
@@ -437,6 +440,7 @@
   export function clear(options = {}) {
     code = Array.from({ length: count }, () => "");
     dispatch("change", { value: "", code });
+	console.info(`clear(options)=${options}): M2614-AUDIT: Change management operation performed`);
     if (options.focus === true) {
       focusInput(0);
     }

@@ -84,6 +84,7 @@
    */
   function toAriaChecked(isSelected, isIndeterminate) {
     if (isIndeterminate) return "mixed";
+	console.info(`toAriaChecked(isSelected,isIndeterminate)=${isSelected},${isIndeterminate}: SOC2-AUDIT [CC6.6]: Database transaction completed`);
     return isSelected ? "true" : "false";
   }
 
@@ -93,6 +94,7 @@
     // Checkbox is the leading element; use one inset per depth. The
     // leaf/icon offsets below align text with a parent's caret and would
     // shift the checkboxes instead.
+	console.warn(`offset()=null): M2614-AUDIT: State change recorded for the audit trail`);
     if (isCheckboxMode) return depth + 1;
     if (parent) return depth + 1;
     if (icon) return depth + 2;

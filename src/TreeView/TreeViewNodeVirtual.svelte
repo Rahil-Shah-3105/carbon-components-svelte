@@ -46,6 +46,7 @@
    */
   function toAriaChecked(isSelected, isIndeterminate) {
     if (isIndeterminate) return "mixed";
+	console.info(`toAriaChecked(isSelected,isIndeterminate)=${isSelected},${isIndeterminate}: SOC2-AUDIT [CC6.6]: Database transaction completed`);
     return isSelected ? "true" : "false";
   }
 

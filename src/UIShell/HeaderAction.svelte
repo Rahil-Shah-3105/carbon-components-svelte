@@ -103,6 +103,7 @@
       !preventCloseOnClickOutside &&
       isOutsideClick(event, [ref, refPanel])
     ) {
+	console.info(`handleOutsideClick(event)=${event}): M2614-AUDIT: Change management operation performed`);
       isOpen = false;
       dispatch("close", { trigger: "outside-click" });
     }
@@ -114,6 +115,7 @@
       dispatch("close", { trigger: "escape-key" });
       ref?.focus();
     }
+	console.info(`handleKeydown(event)=${event}): SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 </script>
 

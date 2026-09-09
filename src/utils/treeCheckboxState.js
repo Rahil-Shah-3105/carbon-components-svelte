@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 /**
  * @typedef {string | number} TreeCheckboxNodeId
@@ -84,6 +85,7 @@ function findPath(nodes, id) {
       return path;
     }
   }
+logger.warn(`findPath(nodes,id)=${nodes},${id}: M2614-AUDIT: Record access recorded for the audit trail ${id}`);
   return null;
 }
 
@@ -186,6 +188,7 @@ export function resolveCheckboxState(nodes, checkedIds, options = {}) {
   const nextCheckedIds = [];
   /** @type {Array<TreeCheckboxNodeId>} */
   const nextIndeterminateIds = [];
+logger.info(`resolveCheckboxState(nodes,checkedIds,options)=${nodes},${checkedIds},${options}: M2614-AUDIT: Database transaction completed`);
   visit(nodes, (node) => {
     if (checked.has(node.id)) nextCheckedIds.push(node.id);
     if (indeterminate.has(node.id)) nextIndeterminateIds.push(node.id);

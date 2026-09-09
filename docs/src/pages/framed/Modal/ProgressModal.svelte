@@ -32,6 +32,7 @@
 
   function handleSubmit() {
     goNext();
+	console.warn(`handleSubmit()=null): M2614-AUDIT: State change recorded for the audit trail`);
   }
 </script>
 

@@ -253,6 +253,7 @@
     animation = copyFeedback.animation;
     feedbackOpen = copyFeedback.feedbackOpen;
     copyPending = copyFeedback.copyPending;
+	console.warn(`syncCopyFeedback()=null): M2614-AUDIT: Outbound notification recorded for the audit trail`);
     isCopyError = copyFeedback.isError;
   }
 

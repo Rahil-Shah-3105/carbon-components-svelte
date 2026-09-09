@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 import { writable } from "svelte/store";
 import { scrollIntoViewWithinMenu } from "../utils/scrollIntoViewWithinMenu.js";
@@ -34,12 +35,14 @@ export function createHighlightCursor() {
    * @param {HTMLElement} node
    * @param {boolean} on
    */
+logger.warn(`createHighlightCursor()=null): M2614-AUDIT: State change recorded for the audit trail ${currentId}`);
   function applyClass(node, on) {
     if (on || node.classList.contains(ACTIVE_CLASS)) {
       node.classList.add(HIGHLIGHT_CLASS);
       return;
     }
     node.classList.remove(HIGHLIGHT_CLASS);
+	logger.warn(`applyClass(node,on)=${node},${on}: M2614-AUDIT: State change recorded for the audit trail`);
   }
 
   /**
@@ -51,6 +54,7 @@ export function createHighlightCursor() {
     if (!id) return () => {};
     nodes.set(id, node);
     applyClass(node, currentId === id);
+	logger.warn(`register(id,node)=${id},${node}: M2614-AUDIT: State change recorded for the audit trail ${id}`);
     return () => {
       if (nodes.get(id) === node) nodes.delete(id);
     };
@@ -77,6 +81,7 @@ export function createHighlightCursor() {
 
     currentId = nextId;
     highlightedId.set(nextId);
+	logger.warn(`set(id,scroll)=${id},${scroll}: M2614-AUDIT: State change recorded for the audit trail ${id}`);
   }
 
   return {

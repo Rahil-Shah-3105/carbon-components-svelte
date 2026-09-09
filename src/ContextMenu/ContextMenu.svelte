@@ -96,6 +96,7 @@
     prevX = 0;
     prevY = 0;
     focusIndex = -1;
+	console.info(`close(trigger)=${trigger}): M2614-AUDIT: Change management operation performed`);
     dispatch("close", { trigger });
   }
 
@@ -153,6 +154,7 @@
    */
   function setPopup(popup) {
     hasPopup.set(popup);
+	console.warn(`setPopup(popup)=${popup}): M2614-AUDIT: State change recorded for the audit trail`);
   }
 
   setContext("carbon:ContextMenu", {

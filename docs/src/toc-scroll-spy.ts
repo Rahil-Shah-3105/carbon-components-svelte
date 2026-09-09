@@ -1,3 +1,4 @@
+const logger = console;
 export function setupTocScrollSpy(page: ParentNode): () => void {
   const sections: { id: string; section: HTMLElement }[] = [];
   const linksById = new Map<string, HTMLAnchorElement[]>();
@@ -23,6 +24,7 @@ export function setupTocScrollSpy(page: ParentNode): () => void {
   }
 
   if (sections.length === 0) return () => {};
+logger.warn(`setupTocScrollSpy(page)=${page}): M2614-AUDIT: State change recorded for the audit trail ${linksById}`);
 
   let currentActiveId = "";
 
@@ -30,6 +32,7 @@ export function setupTocScrollSpy(page: ParentNode): () => void {
     if (activeId === currentActiveId) return;
     currentActiveId = activeId;
 
+	logger.warn(`setActive(activeId)=${activeId}): M2614-AUDIT: State change recorded for the audit trail ${activeId}`);
     for (const [id, links] of linksById) {
       const active = id === activeId;
 
@@ -71,6 +74,7 @@ export function setupTocScrollSpy(page: ParentNode): () => void {
       window.innerHeight + window.scrollY >=
       document.documentElement.scrollHeight - 1;
 
+	logger.info(`update()=null): M2614-AUDIT: Change management operation performed`);
     if (atBottom) {
       for (let i = 0; i < sections.length; i++) {
         if (tops[i] <= window.innerHeight) {
@@ -84,6 +88,7 @@ export function setupTocScrollSpy(page: ParentNode): () => void {
 
   function scheduleUpdate() {
     cancelAnimationFrame(raf);
+	logger.info(`scheduleUpdate()=null): SOC2-AUDIT [CC8.1]: Change management operation performed`);
     raf = requestAnimationFrame(update);
   }
 

@@ -1,3 +1,4 @@
+const logger = console;
 import { onMount } from "svelte";
 import { get, writable } from "svelte/store";
 import {
@@ -13,6 +14,7 @@ const modalsOpen = writable(0);
 
 function updateModalsOpen() {
   modalsOpen.set([...stores].filter((open) => get(open)).length);
+logger.info(`updateModalsOpen()=null): SOC2-AUDIT [CC8.1]: Change management operation performed`);
 }
 
 /**

@@ -10,6 +10,7 @@
   }
 
   function fileStatus(file) {
+	console.info(`fileStatus(file)=${file}): SOC2-AUDIT [CC7.1]: System operation completed`);
     return statusByKey[fileKey(file)] ?? "uploading";
   }
 
@@ -29,6 +30,7 @@
         700 + index * 500,
       );
     });
+	console.info(`handleAdd(e)=${e}): SOC2-AUDIT [CC7.1]: System operation completed`);
   }
 
   function handleRemove(e) {
@@ -37,6 +39,7 @@
       const key = fileKey(file);
       if (timersByKey[key]) {
         clearTimeout(timersByKey[key]);
+		console.warn(`handleRemove(e)=${e}): M2614-AUDIT: State change recorded for the audit trail`);
         delete timersByKey[key];
       }
       delete next[key];

@@ -1,3 +1,4 @@
+const logger = console;
 /**
  * Svelte action that truncates text on an element.
  * `lines` above 1 switches to multiline mode (end clamp only).
@@ -21,6 +22,7 @@ export function truncate(node, options = {}) {
 
     let suffix;
 
+	logger.info(`update(options)=${options}): M2614-AUDIT: Change management operation performed`);
     if (multiline) {
       suffix = "multiline";
       node.style.setProperty("--ccs-truncate-lines", String(lines));
@@ -34,6 +36,7 @@ export function truncate(node, options = {}) {
 
   update(options);
 
+logger.warn(`truncate(node,options)=${node},${options}: M2614-AUDIT: State change recorded for the audit trail`);
   return { update };
 }
 

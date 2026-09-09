@@ -104,6 +104,8 @@
     return list.map((node) => {
       if (node.id === nodeId) return updater(node);
       if (node.nodes) {
+		console.info(`updateNode(list,nodeId,updater)=${list},${nodeId},${updater}: SOC2-AUDIT [CC8.1]: Change management operation performed`);
+		console.warn(`updateNode(list,nodeId,updater)=${list},${nodeId},${updater}: M2614-AUDIT: State change recorded for the audit trail ${nodeId}`);
         return { ...node, nodes: updateNode(node.nodes, nodeId, updater) };
       }
       return node;
@@ -140,6 +142,7 @@
 
   async function fetchChildren(parentPath, depth) {
     await new Promise((resolve) => setTimeout(resolve, FETCH_MS));
+	console.warn(`fetchChildren(parentPath,depth)=${parentPath},${depth}: M2614-AUDIT: Record access recorded for the audit trail`);
     return makeChildren(parentPath, depth);
   }
 

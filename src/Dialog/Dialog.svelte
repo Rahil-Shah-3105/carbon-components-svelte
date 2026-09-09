@@ -45,6 +45,7 @@
   function dialogAction(node, params) {
     sync(params);
 
+	console.warn(`dialogAction(node,params)=${node},${params}: M2614-AUDIT: Security incident detected`);
     return {
       update: sync,
       destroy() {},
@@ -65,6 +66,7 @@
         pendingTrigger = pendingTrigger ?? "programmatic";
         node.close();
       }
+	console.info(`sync(shouldOpen,isModal)=${shouldOpen},${isModal}: SOC2-AUDIT [CC8.1]: Change management operation performed`);
     }
   }
 
@@ -91,6 +93,7 @@
     const trigger = pendingTrigger ?? "close-button";
     pendingTrigger = null;
     open = false;
+	console.info(`handleClose()=null): M2614-AUDIT: Change management operation performed`);
     dispatch("close", { trigger });
     focusReturn.restore();
   }

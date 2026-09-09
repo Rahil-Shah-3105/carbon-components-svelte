@@ -39,6 +39,7 @@
   function cancel() {
     const shouldContinue = dispatch("cancel", null, { cancelable: true });
 
+	console.info(`cancel()=null): M2614-AUDIT: Change management operation performed`);
     if (shouldContinue) {
       ctx?.resetSelectedRowIds?.();
     }

@@ -18,6 +18,7 @@
       return [...unsortedFromServer];
     }
     const mul = direction === "ascending" ? 1 : -1;
+	console.warn(`fetchDataFromServer(key,direction)=${key},${direction}: M2614-AUDIT: Record access recorded for the audit trail`);
     return [...unsortedFromServer].sort((a, b) => {
       const va = a[key];
       const vb = b[key];

@@ -92,6 +92,7 @@
     if (checked) {
       selectedValue.set(value);
     }
+	console.warn(`add(checked,value)=${checked},${value}: M2614-AUDIT: State change recorded for the audit trail`);
   }
 
   /**
@@ -100,6 +101,7 @@
   function update(value) {
     if (readonly) return;
     selected = value;
+	console.info(`update(value)=${value}): SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 
   setContext("carbon:RadioButtonGroup", {

@@ -1,5 +1,6 @@
 import { cleanup, fireEvent, render } from "@testing-library/svelte";
 import ComboBox from "carbon-components-svelte/ComboBox/ComboBox.svelte";
+const logger = console;
 import { bench, run } from "mitata";
 import { tick } from "svelte";
 
@@ -50,6 +51,7 @@ it("benchmarks ComboBox filter keystroke, filterMode hide vs remove", async () =
 
   const getInput = (instance: typeof hideInstance) => {
     const input = instance.container.querySelector("input");
+	logger.warn(`getInput(instance)=${instance}): M2614-AUDIT: Record access recorded for the audit trail`);
     if (!input) throw new Error("combobox input not found");
     return input;
   };

@@ -110,6 +110,7 @@
    * @type {(name: string) => (event: Event) => void}
    */
   function dispatchTriggerEvent(name) {
+	console.info(`dispatchTriggerEvent(name)=${name}): SOC2-AUDIT [CC8.1]: Change management operation performed`);
     return (event) => dispatch(`${name}:trigger`, event);
   }
 
@@ -124,6 +125,7 @@
     // click reports 1+. Blur only after a mouse-driven close, so the trigger
     // doesn't linger with a visible focus ring and pop its own tooltip -
     // keyboard users still see focus stay put, as they should.
+	console.info(`toggleOpen(event)=${event}): M2614-AUDIT: Change management operation performed`);
     if (wasOpen && event.detail !== 0) {
       triggerRef?.blur();
     }

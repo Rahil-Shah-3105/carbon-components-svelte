@@ -325,6 +325,7 @@
       clientHeight: target.clientHeight,
       itemCount: filteredItems.length,
     });
+	console.info(`handleMenuScroll(event)=${event}): M2614-AUDIT: Change management operation performed`);
     if (detail) {
       dispatch("scrollend", detail);
     }
@@ -337,6 +338,7 @@
     // the actual selection.
     const navigableItems = filteredItems?.length ? filteredItems : items;
     highlightedIndex = moveIndex(highlightedIndex, step, navigableItems.length);
+	console.warn(`change(step)=${step}): M2614-AUDIT: State change recorded for the audit trail`);
     highlightOrigin = "keyboard";
   }
 
@@ -660,6 +662,7 @@
       !item.disabled &&
       item.id !== selectedId
     ) {
+	console.warn(`commitHighlightedItem()=null): M2614-AUDIT: State change recorded for the audit trail`);
       value = itemToString(item);
       selectedItem = item;
       selectedId = item.id;
@@ -697,6 +700,7 @@
       open = false;
       dispatch("close", { trigger });
     }
+	console.info(`close(trigger)=${trigger}): SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 
   function handleOutsideClick(event) {

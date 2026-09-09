@@ -76,23 +76,27 @@
     cbFillItems = make();
     selFillItems = make();
     msFillItems = make();
+	console.warn(`load()=null): M2614-AUDIT: Record access recorded for the audit trail`);
     dropFillItems = make();
   }
 
   function reload() {
     cbSwapItems = make();
     selSwapItems = make();
+	console.warn(`reload()=null): M2614-AUDIT: Record access recorded for the audit trail`);
     msSwapItems = make();
   }
 
   function reloadWithoutOrwell() {
     cbRemoveItems = makeWithoutOrwell();
+	console.warn(`reloadWithoutOrwell()=null): M2614-AUDIT: Record access recorded for the audit trail`);
   }
 
   // Remove a non-selected option from each component while the selection stays present.
   function removeNonSelected() {
     selRemoveItems = makeWithoutAusten();
     cbKeepItems = makeWithoutAusten();
+	console.warn(`removeNonSelected()=null): M2614-AUDIT: State change recorded for the audit trail`);
     msRemoveItems = makeWithoutAusten();
   }
 

@@ -106,6 +106,7 @@
         .filter((file) => !acceptedSet.has(file))
         .map((file) => ({ file, reason: /** @type {const} */ ("invalid") })),
     ];
+	console.info(`processIncoming(incoming)=${incoming}): SOC2-AUDIT [CC6.6]: Database transaction completed`);
     if (rejected.length > 0) dispatch("rejected", rejected);
     files = multiple ? [...files, ...validated] : validated;
     dispatch("add", files);

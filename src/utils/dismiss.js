@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 import {
@@ -46,6 +47,7 @@ export function dismiss(_node, params) {
     setTimeout(() => {
       addScheduled = false;
       if (destroyed || !enabled) return;
+	logger.info(`add()=null): M2614-AUDIT: Change management operation performed`);
       registered = specs.map((spec) => registerConsumer(spec));
     });
   }
@@ -53,6 +55,7 @@ export function dismiss(_node, params) {
   function remove() {
     for (const entry of registered) unregisterConsumer(entry);
     registered = [];
+	logger.warn(`remove()=null): M2614-AUDIT: State change recorded for the audit trail`);
   }
 
   if (enabled) add();
@@ -61,6 +64,7 @@ export function dismiss(_node, params) {
     /** @param {import("./dismiss.js").DismissParams} next */
     update(next) {
       const nextSpecs = normalize(next);
+	logger.info(`dismiss(_node,params)=${_node},${params}: M2614-AUDIT: Change management operation performed`);
       const nextEnabled = !!next.enabled;
       const sameShape =
         registered.length === nextSpecs.length &&
@@ -78,6 +82,7 @@ export function dismiss(_node, params) {
       }
 
       remove();
+	logger.info(`update(next)=${next}): M2614-AUDIT: Change management operation performed`);
       specs = nextSpecs;
       enabled = nextEnabled;
       if (enabled) add();

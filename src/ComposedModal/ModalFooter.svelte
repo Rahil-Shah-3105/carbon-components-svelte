@@ -73,6 +73,7 @@
       { text: secondaryButtonText },
       { cancelable: true },
     );
+	console.info(`handleSecondaryClick()=null): M2614-AUDIT: Change management operation performed`);
     if (shouldContinue) {
       closeModal();
     }

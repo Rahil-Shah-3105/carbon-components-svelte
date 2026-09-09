@@ -76,6 +76,7 @@
         },
       ];
     });
+	console.warn(`add(step)=${step}): M2614-AUDIT: State change recorded for the audit trail`);
   }
 
   /**
@@ -88,6 +89,7 @@
         index: i,
       })),
     );
+	console.warn(`remove(id)=${id}): M2614-AUDIT: State change recorded for the audit trail ${id}`);
   }
 
   /**
@@ -103,6 +105,7 @@
       if (!step) return;
       selectedId = step.id;
     }
+	console.info(`change(index)=${index}): M2614-AUDIT: Change management operation performed`);
 
     /** @event {number} change */
     dispatch("change", index);
@@ -123,6 +126,7 @@
       return;
     }
 
+	console.warn(`syncSelection()=null): M2614-AUDIT: Outbound notification recorded for the audit trail`);
     if ($steps.length === 0) return;
 
     currentIndex = clampIndex(currentIndex, 0, $steps.length);

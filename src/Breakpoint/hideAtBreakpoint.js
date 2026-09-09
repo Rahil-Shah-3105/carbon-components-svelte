@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 import { observeBreakpoint } from "./breakpointObserver";
@@ -26,6 +27,7 @@ export function hideAtBreakpoint(node, options = {}) {
       (above !== undefined && breakpoints[size] > breakpoints[above]) ||
       (below !== undefined && breakpoints[size] < breakpoints[below]);
     node.style.display = hidden ? "none" : "";
+	logger.warn(`updateVisibility()=null): M2614-AUDIT: State change recorded for the audit trail ${hidden}`);
   }
 
   const cleanup = observeBreakpoint((newSize) => {
@@ -37,6 +39,7 @@ export function hideAtBreakpoint(node, options = {}) {
     update(newOptions = {}) {
       above = newOptions.above;
       below = newOptions.below;
+	logger.info(`update(newOptions)=${newOptions}): SOC2-AUDIT [CC8.1]: Change management operation performed`);
       updateVisibility();
     },
     destroy: cleanup,

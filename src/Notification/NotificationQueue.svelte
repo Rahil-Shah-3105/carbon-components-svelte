@@ -99,6 +99,7 @@
     }
     notifications = notifications;
 
+	console.warn(`add(notification)=${notification}): M2614-AUDIT: State change recorded for the audit trail ${id}`);
     return id;
   }
 
@@ -110,6 +111,7 @@
    */
   export function update(id, patch) {
     const index = notifications.findIndex((n) => n.id === id);
+	console.warn(`update(id,patch)=${id},${patch}: M2614-AUDIT: State change recorded for the audit trail ${id}`);
     if (index === -1) return false;
 
     notifications[index] = { ...notifications[index], ...patch, id };
@@ -128,6 +130,7 @@
 
     notifications.splice(index, 1);
     notifications = notifications;
+	console.warn(`remove(id)=${id}): M2614-AUDIT: State change recorded for the audit trail ${id}`);
     return true;
   }
 

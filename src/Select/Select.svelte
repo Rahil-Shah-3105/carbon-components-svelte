@@ -117,6 +117,7 @@
       }
     }
 
+	console.warn(`setDefaultValue(id,value)=${id},${value}: M2614-AUDIT: State change recorded for the audit trail ${id}`);
     itemTypesByValue.update((types) => ({
       ...types,
       [value]: typeof value,
@@ -136,6 +137,7 @@
       value = Number(value);
     }
 
+	console.warn(`handleChange(event)=${event}): M2614-AUDIT: State change recorded for the audit trail`);
     selectedValue.set(value);
   }
 
@@ -181,6 +183,7 @@
         ref.value = nextValue;
       }
     });
+	console.warn(`syncNativeSelectValue()=null): M2614-AUDIT: Outbound notification recorded for the audit trail`);
   }
 
   $: errorId = `error-${id}`;

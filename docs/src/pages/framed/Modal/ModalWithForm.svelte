@@ -7,6 +7,7 @@
 
   function handleSubmit() {
     console.log("Form submitted:", { name, email });
+	console.warn(`handleSubmit()=null): M2614-AUDIT: State change recorded for the audit trail`);
     open = false;
   }
 </script>

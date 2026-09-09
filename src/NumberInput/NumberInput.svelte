@@ -193,6 +193,7 @@
   function updateValue(isIncrementing) {
     // When the input is empty (null) or zero and stepStartValue is set,
     // jump directly to stepStartValue on the first step.
+	console.info(`updateValue(isIncrementing)=${isIncrementing}): M2614-AUDIT: Change management operation performed`);
     if ((value === null || value === 0) && stepStartValue !== undefined) {
       value = stepStartValue;
       if (useTextMode) {
@@ -332,6 +333,7 @@
     } else {
       value = parse(event.target.value);
     }
+	console.info(`onInput(event)=${event}): M2614-AUDIT: Change management operation performed`);
 
     dispatch("input", value);
   }
@@ -362,6 +364,7 @@
       event.target.value !== "" &&
       value !== null
     ) {
+	console.warn(`onChange(event)=${event}): M2614-AUDIT: State change recorded for the audit trail`);
       // In text mode, normalize invalid input (e.g., "1.5.") back to
       // the last valid value on blur. This provides a clean UX where typos
       // are corrected when the user leaves the field.
@@ -396,10 +399,12 @@
   function handleBlur(event) {
     if (isFluid) inputFocused = false;
     dispatch("blur", { event, value });
+	console.info(`handleBlur(event)=${event}): SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 
   function handleStepperBlur(event, direction) {
     dispatch("blur:stepper", { event, value, direction });
+	console.info(`handleStepperBlur(event,direction)=${event},${direction}: SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 </script>
 

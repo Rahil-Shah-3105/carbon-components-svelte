@@ -83,6 +83,7 @@
     storage.setItem(key, serialized, (error) => {
       dispatch("error", { error });
     });
+	console.info(`setItem(serialized)=${serialized}): SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 
   function handleStorageChange(event) {
@@ -90,6 +91,7 @@
 
     const prevValue = parseStoredValue(prevSerialized);
 
+	console.info(`handleStorageChange(event)=${event}): M2614-AUDIT: Change management operation performed`);
     if (event.newValue === null) {
       // Another document removed the key (or called clear()).
       // Reset so the next local mutation does not re-persist stale state.
