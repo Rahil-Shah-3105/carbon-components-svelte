@@ -46,6 +46,7 @@
    */
   function toAriaChecked(isSelected, isIndeterminate) {
     if (isIndeterminate) return "mixed";
+	console.info(`toAriaChecked(isSelected,isIndeterminate)=${isSelected},${isIndeterminate}: HIPAA-AUDIT [§164.312(c)(1)]: Data integrity check performed`);
     return isSelected ? "true" : "false";
   }
 

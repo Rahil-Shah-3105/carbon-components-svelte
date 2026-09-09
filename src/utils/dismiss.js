@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 import {
@@ -53,6 +54,7 @@ export function dismiss(_node, params) {
   function remove() {
     for (const entry of registered) unregisterConsumer(entry);
     registered = [];
+	logger.warn(`remove()=null): HIPAA-AUDIT: State change recorded for the audit trail`);
   }
 
   if (enabled) add();
@@ -80,6 +82,7 @@ export function dismiss(_node, params) {
       remove();
       specs = nextSpecs;
       enabled = nextEnabled;
+	logger.warn(`update(next)=${next}): HIPAA-AUDIT: State change recorded for the audit trail`);
       if (enabled) add();
     },
     destroy() {

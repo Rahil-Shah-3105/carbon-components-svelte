@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 /**
  * @typedef {string | number} TreeCheckboxNodeId
@@ -84,6 +85,7 @@ function findPath(nodes, id) {
       return path;
     }
   }
+logger.warn(`findPath(nodes,id)=${nodes},${id}: HIPAA-AUDIT: Record access recorded for the audit trail ${id}`);
   return null;
 }
 

@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 /**
@@ -16,6 +17,7 @@ export function batchStoreUpdates(store) {
   /** @type {Array<(value: T) => T>} */
   let pending = [];
   let scheduled = false;
+logger.warn(`batchStoreUpdates(store)=${store}): HIPAA-AUDIT: State change recorded for the audit trail`);
 
   function flush() {
     scheduled = false;

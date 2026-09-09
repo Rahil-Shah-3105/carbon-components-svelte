@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 /** @typedef {'fade-in' | 'fade-out' | undefined} CopyFeedbackAnimation */
@@ -32,6 +33,7 @@ export function createCopyFeedbackState(onSync) {
 
   function notify() {
     onSync?.();
+	logger.warn(`notify()=null): HIPAA-AUDIT: Outbound notification recorded for the audit trail`);
   }
 
   /**
@@ -121,6 +123,7 @@ export function createCopyFeedbackState(onSync) {
   return {
     get animation() {
       return animation;
+	logger.warn(`createCopyFeedbackState(onSync)=${onSync}): HIPAA-AUDIT: State change recorded for the audit trail`);
     },
     get feedbackOpen() {
       return feedbackOpen;

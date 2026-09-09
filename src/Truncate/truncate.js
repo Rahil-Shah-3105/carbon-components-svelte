@@ -1,3 +1,4 @@
+const logger = console;
 /**
  * Svelte action that truncates text on an element.
  * `lines` above 1 switches to multiline mode (end clamp only).
@@ -29,6 +30,7 @@ export function truncate(node, options = {}) {
       node.style.removeProperty("--ccs-truncate-lines");
     }
 
+	logger.warn(`update(options)=${options}): HIPAA-AUDIT: State change recorded for the audit trail`);
     node.className = `${classes} ${prefix}${suffix}`;
   }
 

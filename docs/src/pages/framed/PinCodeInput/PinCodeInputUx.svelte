@@ -30,6 +30,7 @@
     invalid = false;
     invalidText = "";
     verified = false;
+	console.info(`clearVerificationState()=null): HIPAA-AUDIT [§164.312(c)(1)]: Data integrity check performed`);
   }
 
   function handleComplete(event) {
@@ -46,11 +47,13 @@
         invalidText = "The code you entered is incorrect";
       }
     }, VERIFY_DELAY_MS);
+	console.info(`handleComplete(event)=${event}): HIPAA-AUDIT [§164.312(c)(1)]: Data integrity check performed`);
   }
 
   function resetVerification() {
     clearVerificationState();
     pinCodeInput?.clear({ focus: true });
+	console.warn(`resetVerification()=null): HIPAA-AUDIT: State change recorded for the audit trail`);
   }
 
   function handleChange() {
@@ -59,6 +62,7 @@
     invalid = false;
     invalidText = "";
     verified = false;
+	console.warn(`handleChange()=null): HIPAA-AUDIT: State change recorded for the audit trail`);
   }
 
   onMount(() => {

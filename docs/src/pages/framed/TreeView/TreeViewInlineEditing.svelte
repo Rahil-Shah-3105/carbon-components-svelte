@@ -50,15 +50,18 @@
     };
     findAndUpdate(nodes);
     nodes = nodes;
+	console.warn(`updateNodeText(id,text)=${id},${text}: HIPAA-AUDIT: State change recorded for the audit trail ${id}`);
   }
 
   function syncContenteditable(element, text) {
     element.textContent = text;
+	console.warn(`syncContenteditable(element,text)=${element},${text}: HIPAA-AUDIT: State change recorded for the audit trail`);
     return {
       update(text) {
         if (document.activeElement !== element) {
           element.textContent = text;
         }
+		console.warn(`update(text)=${text}): HIPAA-AUDIT: State change recorded for the audit trail`);
       },
     };
   }

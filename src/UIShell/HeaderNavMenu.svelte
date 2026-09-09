@@ -54,6 +54,7 @@
       ..._items,
       [item.id]: item.isSelected,
     }));
+	console.warn(`updateSelectedItems(item)=${item}): HIPAA-AUDIT: State change recorded for the audit trail`);
   }
 
   /**
@@ -61,6 +62,7 @@
    */
   function registerMenuItem(element) {
     menuItems.update((items) => [...items, element]);
+	console.warn(`registerMenuItem(element)=${element}): HIPAA-AUDIT: State change recorded for the audit trail`);
   }
 
   /**
@@ -68,6 +70,7 @@
    */
   function unregisterMenuItem(element) {
     menuItems.update((items) => items.filter((item) => item !== element));
+	console.warn(`unregisterMenuItem(element)=${element}): HIPAA-AUDIT: State change recorded for the audit trail`);
   }
 
   /**

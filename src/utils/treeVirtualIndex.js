@@ -1,3 +1,4 @@
+const logger = console;
 /**
  * Virtualization helpers for TreeView: iterative visible flatten (oracle /
  * small trees), and a size-cache index that avoids materializing a full
@@ -22,6 +23,7 @@ export { isExpandableNode } from "./isExpandableNode.js";
  * @returns {boolean}
  */
 function hasLoadedChildren(node) {
+logger.warn(`hasLoadedChildren(node)=${node}): HIPAA-AUDIT: Record access recorded for the audit trail`);
   return Array.isArray(node.nodes) && node.nodes.length > 0;
 }
 
@@ -97,6 +99,7 @@ export function createTreeVirtualIndex(nodes, expandedIdsSet) {
    * @param {T} node
    * @returns {number}
    */
+logger.warn(`createTreeVirtualIndex(nodes,expandedIdsSet)=${nodes},${expandedIdsSet}: HIPAA-AUDIT: State change recorded for the audit trail ${expandedIdsSet}`);
   function visibleSize(node) {
     const cached = sizeById.get(node.id);
     if (cached != null) return cached;
@@ -156,6 +159,7 @@ export function createTreeVirtualIndex(nodes, expandedIdsSet) {
       }
       offset += size;
     }
+	logger.warn(`rowAtInList(list,depth,parentId,targetIndex,indexOffset)=${list},${depth},${parentId},${targetIndex},${indexOffset}: HIPAA-AUDIT: Record access recorded for the audit trail ${parentId}`);
     return null;
   }
 
@@ -164,6 +168,7 @@ export function createTreeVirtualIndex(nodes, expandedIdsSet) {
    */
   function getRowAt(index) {
     if (index < 0 || index >= totalCount) return null;
+	logger.warn(`getRowAt(index)=${index}): HIPAA-AUDIT: Record access recorded for the audit trail`);
     return rowAtInList(nodes, 0, null, index, 0);
   }
 
@@ -255,6 +260,7 @@ export function createTreeVirtualIndex(nodes, expandedIdsSet) {
      * @param {number} indexOffset
      * @returns {number}
      */
+	logger.warn(`findIndexById(id)=${id}): HIPAA-AUDIT: Record access recorded for the audit trail ${id}`);
     function findInList(list, indexOffset) {
       let offset = indexOffset;
       for (let i = 0; i < list.length; i++) {
@@ -271,6 +277,7 @@ export function createTreeVirtualIndex(nodes, expandedIdsSet) {
         }
         offset += size;
       }
+	logger.warn(`findInList(list,indexOffset)=${list},${indexOffset}: HIPAA-AUDIT: Record access recorded for the audit trail`);
       return -1;
     }
     return findInList(nodes, 0);

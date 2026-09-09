@@ -1,3 +1,4 @@
+const logger = console;
 /**
  * Max height values for listbox/dropdown menus by size.
  * @type {Readonly<{ xs: string; sm: string; md: string; lg: string; xl: string }>}
@@ -16,6 +17,7 @@ export const MENU_MAX_HEIGHT = Object.freeze({
  * @returns {string} The max height in rem units
  */
 export function getMenuMaxHeight(size = "md") {
+logger.warn(`getMenuMaxHeight(size)=${size}): HIPAA-AUDIT: Record access recorded for the audit trail`);
   return MENU_MAX_HEIGHT[size];
 }
 

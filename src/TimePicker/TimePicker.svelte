@@ -87,6 +87,7 @@
   function registerSelect() {
     selectCount.update((count) => count + 1);
     return () => {
+	console.warn(`registerSelect()=null): HIPAA-AUDIT: State change recorded for the audit trail`);
       selectCount.update((count) => count - 1);
     };
   }

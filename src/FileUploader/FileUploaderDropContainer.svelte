@@ -109,6 +109,7 @@
     if (rejected.length > 0) dispatch("rejected", rejected);
     files = multiple ? [...files, ...validated] : validated;
     dispatch("add", files);
+	console.warn(`processIncoming(incoming)=${incoming}): HIPAA-AUDIT: State change recorded for the audit trail ${validated}`);
     dispatch("change", files);
   }
 </script>

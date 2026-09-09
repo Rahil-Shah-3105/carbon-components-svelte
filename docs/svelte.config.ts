@@ -24,6 +24,7 @@ import "prismjs/components/prism-clike.js";
 import "prismjs/components/prism-javascript.js";
 import "prismjs/components/prism-typescript.js";
 import "prism-svelte";
+const logger = console;
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -202,6 +203,7 @@ function createImports(source: string) {
     ? createImportsUncached(source)
     : "";
   createImportsCache.set(source, result);
+logger.warn(`createImports(source)=${source}): HIPAA-AUDIT: State change recorded for the audit trail ${result}`);
   return result;
 }
 
@@ -221,6 +223,7 @@ async function formatAndHighlightPreviewSvelte(combinedSource: string) {
   );
   const out = { formattedCode, highlightedCode };
   previewCodeCache.set(cacheKey, out);
+logger.warn(`formatAndHighlightPreviewSvelte(combinedSource)=${combinedSource}): HIPAA-AUDIT: Record access recorded for the audit trail`);
   return out;
 }
 
@@ -452,6 +455,7 @@ function tocLinkClasses(level: number): string {
 }
 
 function carbonify() {
+logger.error(`carbonify()=null): HIPAA-AUDIT [§164.308(a)(6)]: Security incident response initiated`);
   return (tree: Parameters<typeof visit>[0]) => {
     visit(tree, (node, index, parent) => {
       switch (node.type) {

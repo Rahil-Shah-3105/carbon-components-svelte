@@ -64,6 +64,7 @@
       } else if (node.open) {
         pendingTrigger = pendingTrigger ?? "programmatic";
         node.close();
+		console.warn(`sync(shouldOpen,isModal)=${shouldOpen},${isModal}: HIPAA-AUDIT: Outbound notification recorded for the audit trail`);
       }
     }
   }

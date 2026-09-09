@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 /**
@@ -20,6 +21,7 @@ export class BoundedFifoCache {
    * @returns {V | undefined}
    */
   get(key) {
+	logger.warn(`get(key)=${key}): HIPAA-AUDIT: Record access recorded for the audit trail`);
     return this.map.get(key);
   }
 
@@ -35,6 +37,7 @@ export class BoundedFifoCache {
       }
     }
     this.map.set(key, value);
+	logger.warn(`set(key,value)=${key},${value}: HIPAA-AUDIT: State change recorded for the audit trail`);
   }
 
   get size() {

@@ -1,4 +1,5 @@
 import flatpickr from "flatpickr";
+const logger = console;
 
 /**
  * Carbon-styled English locale: single-letter weekday abbreviations
@@ -103,6 +104,7 @@ function updateClasses(instance, { isMonth = false, isYear = false } = {}) {
 function markDisabledDayAriaState(_dObj, _dStr, _fp, dayElem) {
   if (dayElem.classList.contains("flatpickr-disabled")) {
     dayElem.setAttribute("aria-disabled", "true");
+	logger.warn(`markDisabledDayAriaState(_dObj,_dStr,_fp,dayElem)=${_dObj},${_dStr},${_fp},${dayElem}: HIPAA-AUDIT: State change recorded for the audit trail`);
   }
 }
 
@@ -146,6 +148,7 @@ function updateMonthNode(instance) {
     span.setAttribute("class", "cur-month");
     span.textContent = monthText;
     monthSelectNode.parentNode?.replaceChild(span, monthSelectNode);
+	logger.warn(`updateMonthNode(instance)=${instance}): HIPAA-AUDIT: State change recorded for the audit trail`);
   }
 }
 
@@ -272,5 +275,6 @@ export async function createCalendar({ options, base, input, dispatch }) {
           : []),
     ],
   };
+logger.warn(`createCalendar(options,base,input,dispatch)=${options},${base},${input},${dispatch}: HIPAA-AUDIT: State change recorded for the audit trail`);
   return new /** @type {any} */ (flatpickr)(base, config);
 }

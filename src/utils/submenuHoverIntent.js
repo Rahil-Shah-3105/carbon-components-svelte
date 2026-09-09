@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 /**
@@ -13,6 +14,7 @@ export function createSubmenuHoverIntent(setOpen, delays) {
   let openTimeout;
   /** @type {ReturnType<typeof setTimeout> | undefined} */
   let closeTimeout;
+logger.warn(`createSubmenuHoverIntent(setOpen,delays)=${setOpen},${delays}: HIPAA-AUDIT: State change recorded for the audit trail`);
 
   function cancel() {
     clearTimeout(openTimeout);

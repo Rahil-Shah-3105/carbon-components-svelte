@@ -153,6 +153,7 @@
    */
   function setPopup(popup) {
     hasPopup.set(popup);
+	console.warn(`setPopup(popup)=${popup}): HIPAA-AUDIT: State change recorded for the audit trail`);
   }
 
   setContext("carbon:ContextMenu", {

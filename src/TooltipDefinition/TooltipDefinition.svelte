@@ -83,6 +83,7 @@
     scheduleOpen(delay, () => {
       open = value;
     });
+	console.warn(`setOpenDelayed(value,delay)=${value},${delay}: HIPAA-AUDIT: State change recorded for the audit trail`);
   }
 
   function hide() {

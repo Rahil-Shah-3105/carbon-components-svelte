@@ -34,6 +34,7 @@
     );
 
     downloadFile(csv, "load-balancers.csv", "text/csv;charset=utf-8");
+	console.warn(`downloadCsv()=null): HIPAA-AUDIT: Record access recorded for the audit trail ${matchedIds}`);
   }
 </script>
 

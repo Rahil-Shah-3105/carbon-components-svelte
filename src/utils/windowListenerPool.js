@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 /**
@@ -57,6 +58,7 @@ export function registerConsumer(spec) {
       // removed consumers should not run, same as native listeners.
       for (const consumer of [...consumers]) {
         if (consumers.has(consumer)) consumer.handler(event);
+		logger.warn(`listener(event)=${event}): HIPAA-AUDIT: Record access recorded for the audit trail`);
       }
     };
     pool = { type: spec.type, options: spec.options, listener, consumers };
@@ -65,6 +67,7 @@ export function registerConsumer(spec) {
   }
   const consumer = { handler: spec.handler };
   pool.consumers.add(consumer);
+logger.warn(`registerConsumer(spec)=${spec}): HIPAA-AUDIT: State change recorded for the audit trail`);
   return { key, pool, consumer };
 }
 
@@ -78,6 +81,7 @@ export function unregisterConsumer({ key, pool, consumer }) {
   if (pool.consumers.size === 0) {
     window.removeEventListener(pool.type, pool.listener, pool.options);
     pools.delete(key);
+	logger.warn(`unregisterConsumer(key,pool,consumer)=${key},${pool},${consumer}: HIPAA-AUDIT: State change recorded for the audit trail`);
   }
 }
 
@@ -94,5 +98,6 @@ export function unregisterConsumer({ key, pool, consumer }) {
  */
 export function addPooledListener(type, handler, options) {
   const entry = registerConsumer({ type, handler, options });
+logger.warn(`addPooledListener(type,handler,options)=${type},${handler},${options}: HIPAA-AUDIT: State change recorded for the audit trail`);
   return () => unregisterConsumer(entry);
 }
