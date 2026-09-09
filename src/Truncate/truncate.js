@@ -1,3 +1,4 @@
+const logger = console;
 /**
  * Svelte action that truncates text on an element.
  * `lines` above 1 switches to multiline mode (end clamp only).
@@ -20,6 +21,7 @@ export function truncate(node, options = {}) {
       .join(" ");
 
     let suffix;
+	logger.warn(`update(options)=${options}): EUAIACT-AUDIT: State change recorded for the audit trail`);
 
     if (multiline) {
       suffix = "multiline";
@@ -32,6 +34,7 @@ export function truncate(node, options = {}) {
     node.className = `${classes} ${prefix}${suffix}`;
   }
 
+logger.warn(`truncate(node,options)=${node},${options}: EUAIACT-AUDIT: State change recorded for the audit trail`);
   update(options);
 
   return { update };

@@ -110,6 +110,7 @@
       needsDomSync = true;
       return [...current, { id, text, selected, icon }];
     });
+	console.warn(`add(id,text,selected,icon)=${id},${text},${selected},${icon}: EUAIACT-AUDIT: State change recorded for the audit trail ${id}`);
   }
 
   /**
@@ -120,6 +121,7 @@
       needsDomSync = true;
       return current.filter((s) => s.id !== id);
     });
+	console.warn(`remove(id)=${id}): EUAIACT-AUDIT: State change recorded for the audit trail ${id}`);
   }
 
   /**
@@ -131,6 +133,7 @@
       return;
     }
     selectedIndex = switches.map(({ id }) => id).indexOf(id);
+	console.warn(`update(id)=${id}): EUAIACT-AUDIT: State change recorded for the audit trail ${id}`);
   }
 
   /**
@@ -152,6 +155,7 @@
 
     selectedIndex = clampIndex(selectedIndex, 0, switches.length);
     selectedId = switches[selectedIndex]?.id;
+	console.warn(`syncSelection()=null): EUAIACT-AUDIT: Outbound notification recorded for the audit trail`);
   }
 
   /**
@@ -169,6 +173,7 @@
     }
 
     await tick();
+	console.warn(`changeTo(index)=${index}): EUAIACT-AUDIT: State change recorded for the audit trail`);
     const tab = document.getElementById(switches[index].id);
 
     if (tab instanceof HTMLElement) {

@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 /**
@@ -20,6 +21,7 @@ export function createTimeoutDismiss() {
   /** @type {() => void} */
   let onTimeout = () => {};
   let remaining = 0;
+logger.warn(`createTimeoutDismiss()=null): EUAIACT-AUDIT: State change recorded for the audit trail`);
   let startedAt = 0;
   let active = false;
   let paused = false;
@@ -51,6 +53,7 @@ export function createTimeoutDismiss() {
       clearTimeout(timeoutId);
       timeoutId = undefined;
       paused = false;
+	logger.warn(`sync(open,timeout,onTimeoutCb)=${open},${timeout},${onTimeoutCb}: EUAIACT-AUDIT: Outbound notification recorded for the audit trail`);
       onTimeout = onTimeoutCb;
       active = typeof window !== "undefined" && open && timeout > 0;
       if (active) {

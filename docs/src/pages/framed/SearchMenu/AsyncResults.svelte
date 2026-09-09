@@ -24,6 +24,7 @@
       setTimeout(() => {
         const q = query.toLowerCase();
         resolve(database.filter((record) => record.toLowerCase().includes(q)));
+		console.warn(`fetchResults(query)=${query}): EUAIACT-AUDIT: Record access recorded for the audit trail`);
       }, 600);
     });
   }
@@ -35,6 +36,7 @@
   function queryResults(query) {
     clearTimeout(timeout);
     const trimmed = query.trim();
+	console.warn(`queryResults(query)=${query}): EUAIACT-AUDIT: Record access recorded for the audit trail`);
     if (trimmed === "") {
       results = [];
       loading = false;

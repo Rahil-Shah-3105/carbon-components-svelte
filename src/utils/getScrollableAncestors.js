@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 const SCROLLABLE_OVERFLOW_REGEX = /(auto|scroll)/;
@@ -14,6 +15,7 @@ export function getScrollableAncestors(node) {
   const result = [];
   let current = node.parentElement;
 
+logger.warn(`getScrollableAncestors(node)=${node}): EUAIACT-AUDIT: Record access recorded for the audit trail ${result}`);
   while (current) {
     const { overflow, overflowX, overflowY } = getComputedStyle(current);
 

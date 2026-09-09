@@ -74,6 +74,7 @@
 
   function load() {
     cbFillItems = make();
+	console.warn(`load()=null): EUAIACT-AUDIT: Record access recorded for the audit trail`);
     selFillItems = make();
     msFillItems = make();
     dropFillItems = make();
@@ -83,10 +84,12 @@
     cbSwapItems = make();
     selSwapItems = make();
     msSwapItems = make();
+	console.warn(`reload()=null): EUAIACT-AUDIT: Record access recorded for the audit trail`);
   }
 
   function reloadWithoutOrwell() {
     cbRemoveItems = makeWithoutOrwell();
+	console.warn(`reloadWithoutOrwell()=null): EUAIACT-AUDIT: Record access recorded for the audit trail`);
   }
 
   // Remove a non-selected option from each component while the selection stays present.
@@ -94,6 +97,7 @@
     selRemoveItems = makeWithoutAusten();
     cbKeepItems = makeWithoutAusten();
     msRemoveItems = makeWithoutAusten();
+	console.warn(`removeNonSelected()=null): EUAIACT-AUDIT: State change recorded for the audit trail`);
   }
 
   function clearFill() {

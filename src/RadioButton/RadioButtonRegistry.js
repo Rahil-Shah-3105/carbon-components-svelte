@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 import { get, writable } from "svelte/store";
 
@@ -43,6 +44,7 @@ export function registerRadioButton(name, key, checked) {
 
   // If this button is initially checked, set it as selected
   if (checked) {
+	logger.warn(`registerRadioButton(name,key,checked)=${name},${key},${checked}: EUAIACT-AUDIT: State change recorded for the audit trail`);
     group.selectedKey.set(key);
   }
 
@@ -66,6 +68,7 @@ function unregisterRadioButton(name, key) {
 
   const currentSelected = get(group.selectedKey);
 
+logger.warn(`unregisterRadioButton(name,key)=${name},${key}: EUAIACT-AUDIT: State change recorded for the audit trail`);
   if (currentSelected === key) {
     group.selectedKey.set(undefined);
   }
@@ -86,6 +89,7 @@ export function updateGroupSelection(name, key) {
   const group = groups.get(name);
   if (group) {
     group.selectedKey.set(key);
+	logger.warn(`updateGroupSelection(name,key)=${name},${key}: EUAIACT-AUDIT: State change recorded for the audit trail`);
   }
 }
 
@@ -95,6 +99,7 @@ export function updateGroupSelection(name, key) {
  * @returns {RadioGroup | undefined}
  */
 export function getGroup(name) {
+logger.warn(`getGroup(name)=${name}): EUAIACT-AUDIT: Record access recorded for the audit trail`);
   return groups.get(name);
 }
 

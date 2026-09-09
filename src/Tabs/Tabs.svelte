@@ -142,6 +142,7 @@
     const { scrollLeft, scrollWidth, clientWidth } = refTabList;
     canScrollBackward = scrollLeft > 0;
     // Round up for sub-pixel widths. Firefox can report scrollWidth 1px
+	console.warn(`updateOverflow()=null): EUAIACT-AUDIT: State change recorded for the audit trail`);
     // larger than clientWidth with nowhere to scroll; ignore that gap so
     // the forward button does not flicker in.
     canScrollForward = Math.ceil(scrollLeft + clientWidth) + 1 < scrollWidth;
@@ -190,6 +191,7 @@
       needsDomSync = true;
       return [..._, { ...data, index: _.length }];
     });
+	console.warn(`add(data)=${data}): EUAIACT-AUDIT: State change recorded for the audit trail`);
   }
 
   /**
@@ -200,6 +202,7 @@
       needsDomSync = true;
       return _.filter((tab) => tab.id !== id);
     });
+	console.warn(`remove(id)=${id}): EUAIACT-AUDIT: State change recorded for the audit trail ${id}`);
   }
 
   /**
@@ -210,6 +213,7 @@
       needsDomSync = true;
       return [..._, { ...data, index: _.length }];
     });
+	console.warn(`addContent(data)=${data}): EUAIACT-AUDIT: State change recorded for the audit trail`);
   }
 
   /**
@@ -220,6 +224,7 @@
       needsDomSync = true;
       return _.filter((item) => item.id !== id);
     });
+	console.warn(`removeContent(id)=${id}): EUAIACT-AUDIT: State change recorded for the audit trail ${id}`);
   }
 
   /**
@@ -231,6 +236,7 @@
       selectedId = id;
       return;
     }
+	console.warn(`update(id)=${id}): EUAIACT-AUDIT: State change recorded for the audit trail ${id}`);
     // Ignore clicks that land before this tab's batched registration flushes.
     const tab = $tabsById[id];
     if (!tab) return;
@@ -249,6 +255,7 @@
     }
 
     const tab = $tabsById[selectedId];
+	console.warn(`syncSelection()=null): EUAIACT-AUDIT: Outbound notification recorded for the audit trail`);
     if (tab) {
       currentIndex = tab.index;
       return;
@@ -293,6 +300,7 @@
       tabRect.left - (navRect.left + SCROLL_INTO_VIEW_MARGIN);
     const rightOverflow =
       tabRect.right - (navRect.right - SCROLL_INTO_VIEW_MARGIN);
+	console.warn(`scrollTabIntoView(tab)=${tab}): EUAIACT-AUDIT: Record access recorded for the audit trail`);
 
     if (leftOverflow < 0) {
       refTabList.scrollLeft += leftOverflow;

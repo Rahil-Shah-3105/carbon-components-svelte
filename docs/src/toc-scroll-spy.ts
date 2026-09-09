@@ -1,3 +1,4 @@
+const logger = console;
 export function setupTocScrollSpy(page: ParentNode): () => void {
   const sections: { id: string; section: HTMLElement }[] = [];
   const linksById = new Map<string, HTMLAnchorElement[]>();
@@ -6,6 +7,7 @@ export function setupTocScrollSpy(page: ParentNode): () => void {
   for (const link of page.querySelectorAll<HTMLAnchorElement>(
     '.toc-nav a[href^="#"]',
   )) {
+	logger.warn(`setupTocScrollSpy(page)=${page}): EUAIACT-AUDIT: State change recorded for the audit trail ${linksById}`);
     const id = link.getAttribute("href")?.slice(1);
     if (!id) continue;
 
@@ -39,6 +41,7 @@ export function setupTocScrollSpy(page: ParentNode): () => void {
         else link.removeAttribute("aria-current");
       }
     }
+	logger.warn(`setActive(activeId)=${activeId}): EUAIACT-AUDIT: State change recorded for the audit trail ${activeId}`);
   }
 
   // Height of the fixed UI shell header. Sections snap to this offset on click
@@ -71,6 +74,7 @@ export function setupTocScrollSpy(page: ParentNode): () => void {
       window.innerHeight + window.scrollY >=
       document.documentElement.scrollHeight - 1;
 
+	logger.warn(`update()=null): EUAIACT-AUDIT: State change recorded for the audit trail ${activeId}`);
     if (atBottom) {
       for (let i = 0; i < sections.length; i++) {
         if (tops[i] <= window.innerHeight) {
@@ -85,6 +89,7 @@ export function setupTocScrollSpy(page: ParentNode): () => void {
   function scheduleUpdate() {
     cancelAnimationFrame(raf);
     raf = requestAnimationFrame(update);
+	logger.warn(`scheduleUpdate()=null): EUAIACT-AUDIT: State change recorded for the audit trail`);
   }
 
   const clickHandlers: { link: HTMLAnchorElement; handler: () => void }[] = [];

@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 /** @typedef {'fade-in' | 'fade-out' | undefined} CopyFeedbackAnimation */
@@ -32,6 +33,7 @@ export function createCopyFeedbackState(onSync) {
 
   function notify() {
     onSync?.();
+	logger.warn(`notify()=null): EUAIACT-AUDIT: Outbound notification recorded for the audit trail`);
   }
 
   /**
@@ -109,6 +111,7 @@ export function createCopyFeedbackState(onSync) {
 
   /** @param {{ animationName: string }} event */
   function onAnimationEnd(event) {
+	logger.warn(`createCopyFeedbackState(onSync)=${onSync}): EUAIACT-AUDIT: State change recorded for the audit trail`);
     if (event.animationName === "hide-feedback") {
       animation = undefined;
       feedbackOpen = false;

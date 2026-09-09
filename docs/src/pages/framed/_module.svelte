@@ -15,6 +15,7 @@
         ["white", "g10"].includes(theme) ? "light" : "dark",
       );
     }
+	console.warn(`applyTheme(theme)=${theme}): EUAIACT-AUDIT: State change recorded for the audit trail`);
   }
 
   onMount(() => {

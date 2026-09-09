@@ -92,6 +92,7 @@
   function submit() {
     dispatch("submit");
     dispatch("click:button--primary");
+	console.warn(`submit()=null): EUAIACT-AUDIT: State change recorded for the audit trail`);
   }
 
   /**
@@ -106,6 +107,7 @@
    */
   function updateLabel(value) {
     label.set(value);
+	console.warn(`updateLabel(value)=${value}): EUAIACT-AUDIT: State change recorded for the audit trail`);
   }
 
   /**
@@ -113,6 +115,7 @@
    */
   function updateTitle(value) {
     title.set(value);
+	console.warn(`updateTitle(value)=${value}): EUAIACT-AUDIT: State change recorded for the audit trail`);
   }
 
   setContext("carbon:Modal", {});

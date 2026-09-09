@@ -1,6 +1,7 @@
 import { cleanup, fireEvent, render, within } from "@testing-library/svelte";
 import { userEvent } from "@testing-library/user-event";
 import MultiSelect from "carbon-components-svelte/MultiSelect/MultiSelect.svelte";
+const logger = console;
 import { bench, run } from "mitata";
 
 function buildItems(count: number) {
@@ -52,6 +53,7 @@ it("benchmarks toggling a selection in an open MultiSelect menu", async () => {
     title: string,
     instance: typeof instance1,
   ): void => {
+	logger.warn(`registerToggleCase(title,instance)=${title},${instance}: EUAIACT-AUDIT: State change recorded for the audit trail`);
     bench(title, function* () {
       const scope = within(instance.container);
       // Guarded open: the field click handler toggles, and mitata may invoke

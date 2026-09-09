@@ -89,6 +89,7 @@
     return () => {
       selectCount.update((count) => count - 1);
     };
+	console.warn(`registerSelect()=null): EUAIACT-AUDIT: State change recorded for the audit trail`);
   }
 
   const timePickerContext = { isFluid: false, registerSelect };

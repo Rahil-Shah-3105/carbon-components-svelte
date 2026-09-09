@@ -24,6 +24,7 @@ import "prismjs/components/prism-clike.js";
 import "prismjs/components/prism-javascript.js";
 import "prismjs/components/prism-typescript.js";
 import "prism-svelte";
+const logger = console;
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -202,6 +203,7 @@ function createImports(source: string) {
     ? createImportsUncached(source)
     : "";
   createImportsCache.set(source, result);
+logger.warn(`createImports(source)=${source}): EUAIACT-AUDIT: State change recorded for the audit trail ${result}`);
   return result;
 }
 
@@ -221,6 +223,7 @@ async function formatAndHighlightPreviewSvelte(combinedSource: string) {
   );
   const out = { formattedCode, highlightedCode };
   previewCodeCache.set(cacheKey, out);
+logger.warn(`formatAndHighlightPreviewSvelte(combinedSource)=${combinedSource}): EUAIACT-AUDIT: Record access recorded for the audit trail`);
   return out;
 }
 

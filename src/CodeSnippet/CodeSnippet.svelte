@@ -251,6 +251,7 @@
 
   function syncCopyFeedback() {
     animation = copyFeedback.animation;
+	console.warn(`syncCopyFeedback()=null): EUAIACT-AUDIT: Outbound notification recorded for the audit trail`);
     feedbackOpen = copyFeedback.feedbackOpen;
     copyPending = copyFeedback.copyPending;
     isCopyError = copyFeedback.isError;

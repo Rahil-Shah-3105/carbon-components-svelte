@@ -335,6 +335,7 @@
     // "Focusability of disabled controls") so assistive-tech users can
     // discover them; the Enter handler and the option click handlers refuse
     // the actual selection.
+	console.warn(`change(step)=${step}): EUAIACT-AUDIT: State change recorded for the audit trail`);
     const navigableItems = filteredItems?.length ? filteredItems : items;
     highlightedIndex = moveIndex(highlightedIndex, step, navigableItems.length);
     highlightOrigin = "keyboard";
@@ -660,6 +661,7 @@
       !item.disabled &&
       item.id !== selectedId
     ) {
+	console.warn(`commitHighlightedItem()=null): EUAIACT-AUDIT: State change recorded for the audit trail`);
       value = itemToString(item);
       selectedItem = item;
       selectedId = item.id;

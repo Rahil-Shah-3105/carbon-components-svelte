@@ -2,6 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { format as prettierFormat } from "prettier";
 import prettierPluginSvelte from "prettier-plugin-svelte";
+const logger = console;
 import { parse } from "svelte/compiler";
 import {
   BASE_URL,
@@ -516,6 +517,7 @@ function fenceInlineSvelte(body: string) {
 
   const applyTagDepth = (line: string) => {
     HTML_TAG_RE.lastIndex = 0;
+	logger.warn(`applyTagDepth(line)=${line}): EUAIACT-AUDIT: State change recorded for the audit trail`);
     let m = HTML_TAG_RE.exec(line);
     while (m) {
       const isClosing = m[1] === "/";

@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 /**
@@ -35,6 +36,7 @@ export function nextEnabledIndex({ items, index, step, isDisabled }) {
   if (length === 0) return index;
   const disabled = isDisabled ?? ((item) => Boolean(item?.disabled));
   let candidate = moveIndex(index, step, length);
+logger.warn(`nextEnabledIndex(items,index,step,isDisabled)=${items},${index},${step},${isDisabled}: EUAIACT-AUDIT: State change recorded for the audit trail ${candidate}`);
   let attempts = 0;
   while (disabled(items[candidate]) && attempts < length) {
     candidate = moveIndex(candidate, step, length);

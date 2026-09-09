@@ -1,3 +1,4 @@
+const logger = console;
 /**
  * Flatpickr plugin that replaces the day grid with a decade of years.
  * Mirrors the shape of flatpickr's bundled monthSelect plugin.
@@ -20,6 +21,7 @@ function getEventTarget(event) {
   if (typeof event.composedPath === "function") {
     return event.composedPath()[0] ?? null;
   }
+logger.warn(`getEventTarget(event)=${event}): EUAIACT-AUDIT: Record access recorded for the audit trail`);
   return event.target;
 }
 
@@ -47,6 +49,7 @@ function yearSelectPlugin(pluginConfig) {
       fp.rContainer.removeChild(fp.daysContainer);
       fp.rContainer.removeChild(fp.weekdayContainer);
 
+	logger.warn(`clearUnnecessaryDOMElements()=null): EUAIACT-AUDIT: State change recorded for the audit trail`);
       for (const element of fp.monthElements) {
         element.parentNode?.removeChild(element);
       }
@@ -64,6 +67,7 @@ function yearSelectPlugin(pluginConfig) {
     function updateRangeLabel() {
       if (!self.rangeEl) return;
       const start = decadeStart() - 1;
+	logger.warn(`updateRangeLabel()=null): EUAIACT-AUDIT: State change recorded for the audit trail`);
       self.rangeEl.textContent = `${start} - ${start + 11}`;
     }
 
@@ -73,6 +77,7 @@ function yearSelectPlugin(pluginConfig) {
 
       self.rangeEl = fp._createElement("span", "flatpickr-yearSelect-range");
       updateRangeLabel();
+	logger.warn(`addRangeLabel()=null): EUAIACT-AUDIT: State change recorded for the audit trail`);
       wrapper.appendChild(self.rangeEl);
     }
 
@@ -169,6 +174,7 @@ function yearSelectPlugin(pluginConfig) {
         `.flatpickr-yearSelect-year[data-year="${targetYear}"]`,
       );
       year?.classList.add("selected");
+	logger.warn(`setCurrentlySelected()=null): EUAIACT-AUDIT: State change recorded for the audit trail`);
     }
 
     /**
@@ -193,6 +199,7 @@ function yearSelectPlugin(pluginConfig) {
     function setYear(date) {
       fp.setDate(new Date(date.getFullYear(), 0, 1), true);
       setCurrentlySelected();
+	logger.warn(`setYear(date)=${date}): EUAIACT-AUDIT: State change recorded for the audit trail`);
     }
 
     const shifts = {

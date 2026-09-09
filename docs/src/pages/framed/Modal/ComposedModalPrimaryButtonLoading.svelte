@@ -16,6 +16,7 @@
       saving = false;
       open = false;
     }, 2000);
+	console.warn(`onSave()=null): EUAIACT-AUDIT: State change recorded for the audit trail`);
   }
 </script>
 

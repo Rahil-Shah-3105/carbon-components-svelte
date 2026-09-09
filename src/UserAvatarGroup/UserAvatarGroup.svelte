@@ -81,6 +81,7 @@
       el?.parentElement &&
       !el.parentElement.classList.contains("bx--user-avatar-group")
     ) {
+	console.warn(`overlapTarget()=null): EUAIACT-AUDIT: Record access recorded for the audit trail`);
       el = el.parentElement;
     }
     return el ?? null;

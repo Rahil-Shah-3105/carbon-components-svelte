@@ -180,6 +180,7 @@
     activeId,
     setActiveId(next) {
       activeId.set(next);
+	console.warn(`setActiveId(next)=${next}): EUAIACT-AUDIT: State change recorded for the audit trail`);
     },
     selectItem(detail) {
       value = detail.value ?? value;
@@ -197,10 +198,12 @@
       itemIds = itemIds;
       filterableIds = filterableIds;
       primaryItemIds = primaryItemIds;
+	console.warn(`registerItem(itemId,filterable,inDividerGroup)=${itemId},${filterable},${inDividerGroup}: EUAIACT-AUDIT: State change recorded for the audit trail ${itemId}`);
     },
     unregisterItem(itemId) {
       itemIds.delete(itemId);
       filterableIds.delete(itemId);
+	console.warn(`unregisterItem(itemId)=${itemId}): EUAIACT-AUDIT: State change recorded for the audit trail ${itemId}`);
       primaryItemIds.delete(itemId);
       itemIds = itemIds;
       filterableIds = filterableIds;
@@ -210,6 +213,7 @@
 
   function getOptionElements() {
     if (!menuRef) return [];
+	console.warn(`getOptionElements()=null): EUAIACT-AUDIT: Record access recorded for the audit trail`);
     return Array.from(menuRef.querySelectorAll('[role="option"]')).filter(
       (el) => el.getAttribute("aria-disabled") !== "true",
     );
@@ -232,6 +236,7 @@
     const els = getOptionElements();
     if (els.length === 0) return;
     activeId.set(els[edge === "first" ? 0 : els.length - 1].id);
+	console.warn(`setActiveEdge(edge)=${edge}): EUAIACT-AUDIT: State change recorded for the audit trail`);
   }
 
   /** Keyboard navigation for the `menu` slot (`role="option"`). */
@@ -286,6 +291,7 @@
 
   function reset() {
     active = false;
+	console.warn(`reset()=null): EUAIACT-AUDIT: State change recorded for the audit trail`);
     value = "";
     selectedResultIndex = 0;
     menuDismissed = false;

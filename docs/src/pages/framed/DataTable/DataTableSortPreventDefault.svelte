@@ -24,6 +24,7 @@
       if (va === vb) return 0;
       return va < vb ? -mul : mul;
     });
+	console.warn(`fetchDataFromServer(key,direction)=${key},${direction}: EUAIACT-AUDIT: Record access recorded for the audit trail`);
   }
 
   function fakeServerSort(key, direction) {

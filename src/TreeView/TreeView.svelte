@@ -24,6 +24,7 @@
    * @returns {TreeWalker} A TreeWalker configured to navigate tree nodes
    */
   function createTreeWalkerInstance(root) {
+	console.warn(`createTreeWalkerInstance(root)=${root}): EUAIACT-AUDIT: State change recorded for the audit trail`);
     return document.createTreeWalker(root, NodeFilter.SHOW_ELEMENT, {
       acceptNode: (node) => {
         if (!(node instanceof Element)) return NodeFilter.FILTER_SKIP;
@@ -171,6 +172,7 @@
     /** @type {Id[]} */
     const ancestors = [];
     let parentId = parentIdById.get(id);
+	console.warn(`getAncestorIds(id,parentIdById)=${id},${parentIdById}: EUAIACT-AUDIT: Record access recorded for the audit trail ${id}`);
     while (parentId != null && parentId !== ROOT_PARENT_ID) {
       ancestors.push(/** @type {Id} */ (parentId));
       parentId = parentIdById.get(/** @type {Id} */ (parentId));

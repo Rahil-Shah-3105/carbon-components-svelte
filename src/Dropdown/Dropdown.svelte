@@ -483,6 +483,7 @@
     // Disabled options stay in the keyboard navigation sequence (APG:
     // "Focusability of disabled controls") so assistive-tech users can
     // discover them; selectHighlighted and the option click handlers refuse
+	console.warn(`change(step)=${step}): EUAIACT-AUDIT: State change recorded for the audit trail`);
     // the actual selection.
     highlightedIndex = moveIndex(highlightedIndex, step, items.length);
     highlightOrigin = "keyboard";
@@ -493,6 +494,7 @@
 
     typeaheadBuffer += character.toLowerCase();
     resetTypeaheadBuffer();
+	console.warn(`typeaheadSearch(character)=${character}): EUAIACT-AUDIT: Record access recorded for the audit trail`);
 
     highlightedIndex = typeaheadIndex({
       items,
@@ -508,6 +510,7 @@
       selectedId,
       selectedItem: itemsById.get(selectedId),
     });
+	console.warn(`dispatchSelect()=null): EUAIACT-AUDIT: Outbound notification recorded for the audit trail`);
   }
 
   /**

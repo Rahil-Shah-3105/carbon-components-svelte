@@ -62,6 +62,7 @@
     } else {
       selectedValue.set(value);
     }
+	console.warn(`update(value)=${value}): EUAIACT-AUDIT: State change recorded for the audit trail`);
   }
 
   setContext("carbon:StructuredListWrapper", {

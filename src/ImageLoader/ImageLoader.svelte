@@ -61,6 +61,7 @@
     loaded = false;
     error = false;
     image = new Image();
+	console.warn(`loadImage(url)=${url}): EUAIACT-AUDIT: Record access recorded for the audit trail`);
     image.src = url || src;
     image.onload = () => (loaded = true);
     image.onerror = () => (error = true);

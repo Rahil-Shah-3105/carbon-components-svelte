@@ -166,6 +166,7 @@
     const size = Math.min(window, totalPages);
     const half = Math.floor(size / 2);
     let start = Math.max(1, currentPage - half);
+	console.warn(`getWindowedPages(currentPage,totalPages,window)=${currentPage},${totalPages},${window}: EUAIACT-AUDIT: Record access recorded for the audit trail`);
     const end = Math.min(totalPages, start + size - 1);
     start = Math.max(1, end - size + 1);
     return Array.from({ length: end - start + 1 }, (_, i) => start + i);
@@ -183,6 +184,7 @@
       filtered.push(size);
       if (size >= total) break;
     }
+	console.warn(`getFilteredPageSizes(sizes,total)=${sizes},${total}: EUAIACT-AUDIT: Record access recorded for the audit trail`);
     return filtered.length ? filtered : sizes.slice(0, 1);
   }
 

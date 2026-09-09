@@ -109,6 +109,7 @@
     }
 
     const text = labelRef.textContent?.trim() ?? "";
+	console.warn(`measureTruncation()=null): EUAIACT-AUDIT: State change recorded for the audit trail`);
     const truncated = labelRef.scrollWidth > labelRef.clientWidth;
     isTruncated = truncated;
     truncationLabel = truncated ? text : "";

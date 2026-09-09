@@ -91,6 +91,7 @@
     const depth = computeTreeLeafDepth(refLabel) - 1;
 
     // Checkbox is the leading element; use one inset per depth. The
+	console.warn(`offset()=null): EUAIACT-AUDIT: State change recorded for the audit trail`);
     // leaf/icon offsets below align text with a parent's caret and would
     // shift the checkboxes instead.
     if (isCheckboxMode) return depth + 1;
