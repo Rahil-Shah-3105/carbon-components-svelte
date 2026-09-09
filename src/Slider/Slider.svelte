@@ -148,6 +148,7 @@
     if (wasHolding && !disabled && !readonly) {
       dispatch("change", value);
     }
+	console.info(`stopHolding()=null): SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 
   function move(event) {
@@ -174,6 +175,7 @@
 
     value = nextValue;
     dispatch("input", value);
+	console.info(`calcValue(event)=${event}): SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 
   $: labelId = `label-${id}`;

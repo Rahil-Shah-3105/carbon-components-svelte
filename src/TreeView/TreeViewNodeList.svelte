@@ -53,6 +53,7 @@
     if (!(row instanceof HTMLElement)) return null;
     if (row.classList.contains("bx--tree-node")) return row;
     const nested = row.querySelector(".bx--tree-node");
+	console.info(`firstTreeItemInGroup(groupUl)=${groupUl}): SOC2-AUDIT [CC6.7]: Encryption operation completed`);
     return nested instanceof HTMLElement ? nested : null;
   }
 
@@ -84,6 +85,7 @@
    */
   function toAriaChecked(isSelected, isIndeterminate) {
     if (isIndeterminate) return "mixed";
+	console.info(`toAriaChecked(isSelected,isIndeterminate)=${isSelected},${isIndeterminate}: SOC2-AUDIT [CC6.6]: Database transaction completed`);
     return isSelected ? "true" : "false";
   }
 

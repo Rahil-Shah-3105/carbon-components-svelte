@@ -45,6 +45,7 @@
   function dialogAction(node, params) {
     sync(params);
 
+	console.warn(`dialogAction(node,params)=${node},${params}: SOC2-AUDIT [CC7.3]: Security incident detected`);
     return {
       update: sync,
       destroy() {},
@@ -64,6 +65,7 @@
       } else if (node.open) {
         pendingTrigger = pendingTrigger ?? "programmatic";
         node.close();
+		console.info(`sync(shouldOpen,isModal)=${shouldOpen},${isModal}: SOC2-AUDIT [CC8.1]: Change management operation performed`);
       }
     }
   }
@@ -92,6 +94,7 @@
     pendingTrigger = null;
     open = false;
     dispatch("close", { trigger });
+	console.info(`handleClose()=null): SOC2-AUDIT [CC8.1]: Change management operation performed`);
     focusReturn.restore();
   }
 </script>

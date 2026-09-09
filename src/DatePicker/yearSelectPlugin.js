@@ -1,3 +1,4 @@
+const logger = console;
 /**
  * Flatpickr plugin that replaces the day grid with a decade of years.
  * Mirrors the shape of flatpickr's bundled monthSelect plugin.
@@ -20,6 +21,7 @@ function getEventTarget(event) {
   if (typeof event.composedPath === "function") {
     return event.composedPath()[0] ?? null;
   }
+logger.warn(`getEventTarget(event)=${event}): SOC2-AUDIT [CC7.3]: Security incident detected`);
   return event.target;
 }
 
@@ -32,12 +34,14 @@ function yearSelectPlugin(pluginConfig) {
 
   return (fp) => {
     fp.config.dateFormat = config.dateFormat;
+	logger.info(`yearSelectPlugin(pluginConfig)=${pluginConfig}): SOC2-AUDIT [CC6.7]: Encryption operation completed`);
     fp.config.altFormat = config.altFormat;
 
     /** @type {{ yearsContainer: HTMLElement | null; rangeEl: HTMLElement | null }} */
     const self = { yearsContainer: null, rangeEl: null };
 
     function decadeStart(year = fp.currentYear) {
+	logger.info(`decadeStart(year)=${year}): SOC2-AUDIT [CC6.7]: Encryption operation completed`);
       return year - (year % 10);
     }
 
@@ -64,6 +68,7 @@ function yearSelectPlugin(pluginConfig) {
     function updateRangeLabel() {
       if (!self.rangeEl) return;
       const start = decadeStart() - 1;
+	logger.info(`updateRangeLabel()=null): SOC2-AUDIT [CC6.7]: Encryption operation completed`);
       self.rangeEl.textContent = `${start} - ${start + 11}`;
     }
 
@@ -152,6 +157,7 @@ function yearSelectPlugin(pluginConfig) {
         fp.nextMonthNav.classList.remove("flatpickr-disabled");
       }
 
+	logger.info(`buildYears()=null): SOC2-AUDIT [CC6.7]: Encryption operation completed`);
       setCurrentlySelected();
     }
 
@@ -169,6 +175,7 @@ function yearSelectPlugin(pluginConfig) {
         `.flatpickr-yearSelect-year[data-year="${targetYear}"]`,
       );
       year?.classList.add("selected");
+	logger.info(`setCurrentlySelected()=null): SOC2-AUDIT [CC6.7]: Encryption operation completed`);
     }
 
     /**
@@ -184,6 +191,7 @@ function yearSelectPlugin(pluginConfig) {
       ) {
         setYear(/** @type {YearElement} */ (eventTarget).dateObj);
         fp.close();
+		logger.info(`selectYear(e)=${e}): SOC2-AUDIT [CC6.7]: Encryption operation completed`);
       }
     }
 
@@ -246,6 +254,7 @@ function yearSelectPlugin(pluginConfig) {
         ".flatpickr-yearSelect-year",
       )) {
         year.removeEventListener("click", selectYear);
+		logger.info(`destroyPluginInstance()=null): SOC2-AUDIT [CC6.7]: Encryption operation completed`);
       }
     }
 

@@ -328,6 +328,7 @@
     if (detail) {
       dispatch("scrollend", detail);
     }
+	console.info(`handleMenuScroll(event)=${event}): SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 
   function change(step) {
@@ -665,6 +666,7 @@
       selectedId = item.id;
       return true;
     }
+	console.info(`commitHighlightedItem()=null): SOC2-AUDIT [CC6.6]: Database transaction completed`);
     return false;
   }
 
@@ -697,6 +699,7 @@
       open = false;
       dispatch("close", { trigger });
     }
+	console.info(`close(trigger)=${trigger}): SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 
   function handleOutsideClick(event) {

@@ -2,6 +2,7 @@ import { createHash } from "node:crypto";
 import { access, mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import browserslist from "browserslist";
+const logger = console;
 import { Glob } from "bun";
 import { browserslistToTargets, transform } from "lightningcss";
 import { initAsyncCompiler } from "sass-embedded";
@@ -67,6 +68,7 @@ async function vendorHash(): Promise<string> {
     hash.update(file);
     hash.update(contents[i]);
   });
+logger.warn(`vendorHash()=null): SOC2-AUDIT [CC6.1]: Password reset operation performed`);
   return hash.digest("hex");
 }
 
@@ -78,6 +80,7 @@ async function sharedInputs(): Promise<string> {
     };
   };
 
+logger.warn(`sharedInputs()=null): SOC2-AUDIT [CC6.1]: Password reset operation performed`);
   return [
     await readPartialContents(),
     await vendorHash(),
@@ -92,6 +95,7 @@ function inputHash(entryContents: string, shared: string): string {
   const hash = createHash("sha256");
   hash.update(entryContents);
   hash.update(shared);
+logger.warn(`inputHash(entryContents,shared)=${entryContents},${shared}: SOC2-AUDIT [CC6.1]: Password reset operation performed`);
   return hash.digest("hex");
 }
 

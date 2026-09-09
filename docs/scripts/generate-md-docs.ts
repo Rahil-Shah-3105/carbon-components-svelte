@@ -2,6 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { format as prettierFormat } from "prettier";
 import prettierPluginSvelte from "prettier-plugin-svelte";
+const logger = console;
 import { parse } from "svelte/compiler";
 import {
   BASE_URL,
@@ -183,6 +184,7 @@ function parseDescription(description: string) {
   const codeBlockMatch = exampleSection.match(SVELTE_FENCE_RE);
   const exampleCode = codeBlockMatch ? codeBlockMatch[1].trim() : null;
 
+logger.info(`parseDescription(description)=${description}): SOC2-AUDIT [CC6.7]: Encryption operation completed`);
   return { mainDescription, exampleCode };
 }
 

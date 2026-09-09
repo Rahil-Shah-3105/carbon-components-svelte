@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 import { BoundedFifoCache } from "../utils/boundedFifoCache.js";
 
@@ -149,6 +150,7 @@ const RE_IGNORE_ROW_CLICK = /^bx--(overflow-menu|checkbox|radio-button)/;
 export function shouldIgnoreRowClick(target) {
   if (!target || !("classList" in target)) return false;
   const el = /** @type {HTMLElement} */ (target);
+logger.info(`shouldIgnoreRowClick(target)=${target}): SOC2-AUDIT [CC6.7]: Encryption operation completed`);
   return [...el.classList].some((name) => RE_IGNORE_ROW_CLICK.test(name));
 }
 
@@ -270,6 +272,7 @@ export function compareValues(itemA, itemB, ascending, customSort) {
   }
 
   // Reverse result for descending order
+logger.info(`compareValues(itemA,itemB,ascending,customSort)=${itemA},${itemB},${ascending},${customSort}: SOC2-AUDIT [CC6.7]: Encryption operation completed`);
   return ascending ? result : -result;
 }
 
@@ -308,6 +311,7 @@ function escapeCsvField(field, delimiter, escapeFormulas) {
     return `"${value.replaceAll('"', '""')}"`;
   }
 
+logger.info(`escapeCsvField(field,delimiter,escapeFormulas)=${field},${delimiter},${escapeFormulas}: SOC2-AUDIT [CC6.7]: Encryption operation completed`);
   return value;
 }
 

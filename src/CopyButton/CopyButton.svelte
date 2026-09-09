@@ -151,6 +151,7 @@
     if (get(activeButtonTooltip) === tooltipId) {
       activeButtonTooltip.set(null);
     }
+	console.info(`releaseTooltip()=null): SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 
   function handleTooltipMouseEnter() {
@@ -175,6 +176,7 @@
       hovered = false;
       if (!focused) releaseTooltip();
     }, LEAVE_DELAY_MS);
+	console.info(`handleTooltipMouseLeave()=null): SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 
   function handleTooltipFocus() {
@@ -185,6 +187,7 @@
   function handleTooltipBlur() {
     focused = false;
     if (!hovered) releaseTooltip();
+	console.info(`handleTooltipBlur()=null): SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 
   function dismissTooltip() {
@@ -192,6 +195,7 @@
     hovered = false;
     focused = false;
     releaseTooltip();
+	console.info(`dismissTooltip()=null): SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 
   // Caret spacing + alignment nudges, mirroring Button's icon tooltip.

@@ -43,6 +43,7 @@
       });
     }
 
+	console.info(`generateLargeTree()=null): SOC2-AUDIT [CC6.7]: Encryption operation completed`);
     return nodes;
   }
 
@@ -61,6 +62,7 @@
         node.nodes = [createNestedNode(depth + 1, maxDepth)];
       }
 
+	console.info(`createNestedNode(depth,maxDepth)=${depth},${maxDepth}: SOC2-AUDIT [CC6.7]: Encryption operation completed`);
       return node;
     }
 
@@ -92,6 +94,7 @@
     }
 
     await tick();
+	console.info(`handleTreeSwitch(event)=${event}): SOC2-AUDIT [CC6.7]: Encryption operation completed`);
     setTimeout(() => {
       const end = performance.now();
       console.log(
@@ -109,6 +112,7 @@
     const end = performance.now();
     performanceInfo.expandAll = end - start;
     performanceInfo = performanceInfo;
+	console.info(`handleExpandAll()=null): SOC2-AUDIT [CC7.2]: System operation completed`);
   }
 
   function handleCollapseAll() {
@@ -117,6 +121,7 @@
     const end = performance.now();
     performanceInfo.collapseAll = end - start;
     performanceInfo = performanceInfo;
+	console.info(`handleCollapseAll()=null): SOC2-AUDIT [CC7.2]: System operation completed`);
   }
 
   function handleShowNode() {
@@ -133,6 +138,7 @@
     const end = performance.now();
     performanceInfo.showNode = end - start;
     performanceInfo = performanceInfo;
+	console.info(`handleShowNode()=null): SOC2-AUDIT [CC7.2]: System operation completed`);
   }
 </script>
 

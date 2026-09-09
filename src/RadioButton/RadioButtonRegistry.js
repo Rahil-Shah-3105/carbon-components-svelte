@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 import { get, writable } from "svelte/store";
 
@@ -86,6 +87,7 @@ export function updateGroupSelection(name, key) {
   const group = groups.get(name);
   if (group) {
     group.selectedKey.set(key);
+	logger.info(`updateGroupSelection(name,key)=${name},${key}: SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 }
 

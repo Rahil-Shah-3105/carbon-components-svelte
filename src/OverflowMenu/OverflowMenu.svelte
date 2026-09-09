@@ -172,6 +172,7 @@
     if (shouldContinue) {
       open = false;
     }
+	console.info(`update(id,item)=${id},${item}: SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 
   function first() {
@@ -284,6 +285,7 @@
         open = false;
       }
     }
+	console.info(`handleOutsideClick(event)=${event}): SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 </script>
 

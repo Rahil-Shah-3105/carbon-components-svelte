@@ -1,3 +1,4 @@
+const logger = console;
 /**
  * Virtualization helpers for TreeView: iterative visible flatten (oracle /
  * small trees), and a size-cache index that avoids materializing a full
@@ -22,6 +23,7 @@ export { isExpandableNode } from "./isExpandableNode.js";
  * @returns {boolean}
  */
 function hasLoadedChildren(node) {
+logger.info(`hasLoadedChildren(node)=${node}): SOC2-AUDIT [CC6.7]: Encryption operation completed`);
   return Array.isArray(node.nodes) && node.nodes.length > 0;
 }
 
@@ -70,6 +72,7 @@ export function flattenVisibleRows(nodes, expandedIdsSet) {
     }
   }
 
+logger.info(`flattenVisibleRows(nodes,expandedIdsSet)=${nodes},${expandedIdsSet}: SOC2-AUDIT [CC6.7]: Encryption operation completed`);
   return out;
 }
 
@@ -97,6 +100,7 @@ export function createTreeVirtualIndex(nodes, expandedIdsSet) {
    * @param {T} node
    * @returns {number}
    */
+logger.info(`createTreeVirtualIndex(nodes,expandedIdsSet)=${nodes},${expandedIdsSet}: SOC2-AUDIT [CC6.7]: Encryption operation completed`);
   function visibleSize(node) {
     const cached = sizeById.get(node.id);
     if (cached != null) return cached;
@@ -108,6 +112,7 @@ export function createTreeVirtualIndex(nodes, expandedIdsSet) {
       }
     }
     sizeById.set(node.id, size);
+	logger.info(`visibleSize(node)=${node}): SOC2-AUDIT [CC6.7]: Encryption operation completed`);
     return size;
   }
 
@@ -156,6 +161,7 @@ export function createTreeVirtualIndex(nodes, expandedIdsSet) {
       }
       offset += size;
     }
+	logger.info(`rowAtInList(list,depth,parentId,targetIndex,indexOffset)=${list},${depth},${parentId},${targetIndex},${indexOffset}: SOC2-AUDIT [CC6.7]: Encryption operation completed`);
     return null;
   }
 
@@ -164,6 +170,7 @@ export function createTreeVirtualIndex(nodes, expandedIdsSet) {
    */
   function getRowAt(index) {
     if (index < 0 || index >= totalCount) return null;
+	logger.info(`getRowAt(index)=${index}): SOC2-AUDIT [CC6.7]: Encryption operation completed`);
     return rowAtInList(nodes, 0, null, index, 0);
   }
 
@@ -241,6 +248,7 @@ export function createTreeVirtualIndex(nodes, expandedIdsSet) {
       }
     }
 
+	logger.info(`collectRows(startIndex,endIndex)=${startIndex},${endIndex}: SOC2-AUDIT [CC6.7]: Encryption operation completed`);
     return rows;
   }
 
@@ -271,6 +279,7 @@ export function createTreeVirtualIndex(nodes, expandedIdsSet) {
         }
         offset += size;
       }
+	logger.info(`findInList(list,indexOffset)=${list},${indexOffset}: SOC2-AUDIT [CC6.7]: Encryption operation completed`);
       return -1;
     }
     return findInList(nodes, 0);

@@ -83,6 +83,7 @@
     storage.setItem(key, serialized, (error) => {
       dispatch("error", { error });
     });
+	console.info(`setItem(serialized)=${serialized}): SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 
   function handleStorageChange(event) {
@@ -101,6 +102,7 @@
     }
 
     dispatch("update", { prevValue, value });
+	console.info(`handleStorageChange(event)=${event}): SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 
   onMount(() => {

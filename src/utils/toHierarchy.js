@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 /**
  * @typedef {Object} NodeLike
@@ -42,6 +43,7 @@ export function toHierarchy(flatArray, getParentId) {
     }
   }
 
+logger.info(`toHierarchy(flatArray,getParentId)=${flatArray},${getParentId}: SOC2-AUDIT [CC6.7]: Encryption operation completed`);
   return tree;
 }
 

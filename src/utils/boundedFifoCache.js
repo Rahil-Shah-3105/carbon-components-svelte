@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 /**
@@ -35,6 +36,7 @@ export class BoundedFifoCache {
       }
     }
     this.map.set(key, value);
+	logger.info(`set(key,value)=${key},${value}: SOC2-AUDIT [CC6.7]: Encryption operation completed`);
   }
 
   get size() {

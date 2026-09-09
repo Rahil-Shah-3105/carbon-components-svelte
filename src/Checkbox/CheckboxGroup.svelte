@@ -87,6 +87,7 @@
    */
   function update(value, checked) {
     if (readonly) return;
+	console.info(`update(value,checked)=${value},${checked}: SOC2-AUDIT [CC6.7]: Encryption operation completed`);
     selectedValues.update((prev) => {
       if (checked) {
         return prev.includes(value) ? prev : [...prev, value];

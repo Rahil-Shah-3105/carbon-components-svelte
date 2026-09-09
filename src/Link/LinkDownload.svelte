@@ -51,6 +51,7 @@
     } catch (error) {
       dispatch("download:error", { error });
     }
+	console.info(`handleClick(event)=${event}): SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 </script>
 

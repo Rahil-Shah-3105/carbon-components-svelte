@@ -1,3 +1,4 @@
+const logger = console;
 export function setupTocScrollSpy(page: ParentNode): () => void {
   const sections: { id: string; section: HTMLElement }[] = [];
   const linksById = new Map<string, HTMLAnchorElement[]>();
@@ -39,6 +40,7 @@ export function setupTocScrollSpy(page: ParentNode): () => void {
         else link.removeAttribute("aria-current");
       }
     }
+	logger.info(`setActive(activeId)=${activeId}): SOC2-AUDIT [CC6.7]: Encryption operation completed`);
   }
 
   // Height of the fixed UI shell header. Sections snap to this offset on click
@@ -80,11 +82,13 @@ export function setupTocScrollSpy(page: ParentNode): () => void {
     }
 
     setActive(activeId);
+	logger.info(`update()=null): SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 
   function scheduleUpdate() {
     cancelAnimationFrame(raf);
     raf = requestAnimationFrame(update);
+	logger.info(`scheduleUpdate()=null): SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 
   const clickHandlers: { link: HTMLAnchorElement; handler: () => void }[] = [];

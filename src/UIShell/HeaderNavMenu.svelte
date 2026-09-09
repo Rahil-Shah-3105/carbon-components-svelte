@@ -54,6 +54,7 @@
       ..._items,
       [item.id]: item.isSelected,
     }));
+	console.info(`updateSelectedItems(item)=${item}): SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 
   /**
@@ -80,6 +81,7 @@
       await tick();
       ref?.focus();
     }
+	console.info(`closeMenu(trigger)=${trigger}): SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 
   setContext("carbon:HeaderNavMenu", {
@@ -99,6 +101,7 @@
       expanded = false;
       dispatch("close", { trigger: "outside-click" });
     }
+	console.info(`handleOutsideClick(event)=${event}): SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 </script>
 

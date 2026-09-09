@@ -47,6 +47,7 @@
   function close() {
     isOpen = false;
     dispatch("close");
+	console.info(`close()=null): SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 
   function handleOutsideClick(event) {

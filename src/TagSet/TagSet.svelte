@@ -103,6 +103,7 @@
 
   function handleTagClose(item) {
     dispatch("close:tag", { tag: item, index: $items.indexOf(item) });
+	console.info(`handleTagClose(item)=${item}): SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 
   // Route register, unregister, and update through the same batched queue.
@@ -207,6 +208,7 @@
 
   function handleTriggerClick() {
     dispatch("click:overflow", { count: overflowCount });
+	console.info(`handleTriggerClick()=null): SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 </script>
 

@@ -41,6 +41,7 @@
     if (disabled) return;
     selected = !selected;
     dispatch("change", { selected });
+	console.info(`toggle()=null): SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 </script>
 

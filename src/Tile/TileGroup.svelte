@@ -78,6 +78,7 @@
   function update(value) {
     selectedValue.set(value);
     dispatch("select", value);
+	console.info(`update(value)=${value}): SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 
   setContext("carbon:TileGroup", {

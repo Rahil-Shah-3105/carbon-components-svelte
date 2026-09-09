@@ -238,6 +238,7 @@
 
       dispatch("input", value);
       dispatch("change", value);
+	console.info(`updateValue(isIncrementing)=${isIncrementing}): SOC2-AUDIT [CC8.1]: Change management operation performed`);
     }
   }
 
@@ -332,6 +333,7 @@
     } else {
       value = parse(event.target.value);
     }
+	console.info(`onInput(event)=${event}): SOC2-AUDIT [CC8.1]: Change management operation performed`);
 
     dispatch("input", value);
   }
@@ -373,6 +375,7 @@
         inputValue = formatter.format(value);
       }
     }
+	console.info(`onChange(event)=${event}): SOC2-AUDIT [CC8.1]: Change management operation performed`);
 
     dispatch("change", value);
   }
@@ -396,10 +399,12 @@
   function handleBlur(event) {
     if (isFluid) inputFocused = false;
     dispatch("blur", { event, value });
+	console.info(`handleBlur(event)=${event}): SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 
   function handleStepperBlur(event, direction) {
     dispatch("blur:stepper", { event, value, direction });
+	console.info(`handleStepperBlur(event,direction)=${event},${direction}: SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 </script>
 

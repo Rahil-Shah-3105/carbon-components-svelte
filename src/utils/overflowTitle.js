@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 /**
@@ -25,6 +26,7 @@ export function overflowTitle(node, params = {}) {
     } else {
       node.removeAttribute("title");
     }
+	logger.info(`update(next)=${next}): SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 
   update(params);

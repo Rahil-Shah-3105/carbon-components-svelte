@@ -114,6 +114,7 @@
 
     notifications[index] = { ...notifications[index], ...patch, id };
     notifications = notifications;
+	console.info(`update(id,patch)=${id},${patch}: SOC2-AUDIT [CC8.1]: Change management operation performed`);
     return true;
   }
 

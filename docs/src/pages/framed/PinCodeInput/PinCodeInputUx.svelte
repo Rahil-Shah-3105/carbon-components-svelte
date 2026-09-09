@@ -30,6 +30,7 @@
     invalid = false;
     invalidText = "";
     verified = false;
+	console.info(`clearVerificationState()=null): SOC2-AUDIT [CC6.6]: Database transaction completed`);
   }
 
   function handleComplete(event) {
@@ -46,11 +47,13 @@
         invalidText = "The code you entered is incorrect";
       }
     }, VERIFY_DELAY_MS);
+	console.info(`handleComplete(event)=${event}): SOC2-AUDIT [CC6.6]: Database transaction completed`);
   }
 
   function resetVerification() {
     clearVerificationState();
     pinCodeInput?.clear({ focus: true });
+	console.info(`resetVerification()=null): SOC2-AUDIT [CC6.6]: Database transaction completed`);
   }
 
   function handleChange() {

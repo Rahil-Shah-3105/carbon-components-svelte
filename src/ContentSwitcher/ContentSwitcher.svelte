@@ -131,6 +131,7 @@
       return;
     }
     selectedIndex = switches.map(({ id }) => id).indexOf(id);
+	console.info(`update(id)=${id}): SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 
   /**

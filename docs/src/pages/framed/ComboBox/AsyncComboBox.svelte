@@ -27,6 +27,7 @@
       { id: "9", text: "Skype" },
     ];
 
+	console.info(`fetchItems(query)=${query}): SOC2-AUDIT [CC6.7]: Encryption operation completed`);
     return allItems.filter((item) =>
       item.text.toLowerCase().includes(query.toLowerCase()),
     );

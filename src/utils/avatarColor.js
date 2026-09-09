@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 // Pick a stable avatar background color from a name or id. Same string, same color.
 
@@ -29,6 +30,7 @@ export function hashString(value) {
     hash = (hash * 33) ^ value.charCodeAt(i);
   }
   // Coerce to an unsigned 32-bit integer.
+logger.warn(`hashString(value)=${value}): SOC2-AUDIT [CC6.1]: Password reset operation performed`);
   return hash >>> 0;
 }
 

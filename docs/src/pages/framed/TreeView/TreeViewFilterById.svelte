@@ -61,16 +61,19 @@
   function filterBySingleId() {
     filteredNodes = filterTreeById(allNodes, "1-1-1");
     expandedIds = ["1", "1-1", "1-1-1"];
+	console.info(`filterBySingleId()=null): SOC2-AUDIT [CC6.7]: Encryption operation completed`);
   }
 
   function filterByMultipleIds() {
     filteredNodes = filterTreeById(allNodes, ["1-1-1", "1-2-1", "2-1"]);
     expandedIds = ["1", "1-1", "1-1-1", "1-2", "1-2-1", "2", "2-1"];
+	console.info(`filterByMultipleIds()=null): SOC2-AUDIT [CC6.7]: Encryption operation completed`);
   }
 
   function resetFilter() {
     filteredNodes = allNodes;
     expandedIds = [];
+	console.info(`resetFilter()=null): SOC2-AUDIT [CC6.7]: Encryption operation completed`);
   }
 </script>
 

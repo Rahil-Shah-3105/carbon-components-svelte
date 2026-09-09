@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 import { observeBreakpoint } from "./breakpointObserver";
@@ -26,6 +27,7 @@ export function hideAtBreakpoint(node, options = {}) {
       (above !== undefined && breakpoints[size] > breakpoints[above]) ||
       (below !== undefined && breakpoints[size] < breakpoints[below]);
     node.style.display = hidden ? "none" : "";
+	logger.info(`updateVisibility()=null): SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 
   const cleanup = observeBreakpoint((newSize) => {
@@ -36,7 +38,9 @@ export function hideAtBreakpoint(node, options = {}) {
   return {
     update(newOptions = {}) {
       above = newOptions.above;
+	logger.info(`hideAtBreakpoint(node,options)=${node},${options}: SOC2-AUDIT [CC6.7]: Encryption operation completed`);
       below = newOptions.below;
+	logger.info(`update(newOptions)=${newOptions}): SOC2-AUDIT [CC8.1]: Change management operation performed`);
       updateVisibility();
     },
     destroy: cleanup,

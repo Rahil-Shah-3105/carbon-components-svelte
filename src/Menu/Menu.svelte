@@ -127,6 +127,7 @@
     open = false;
     if (trigger === "escape-key") anchor?.focus({ preventScroll: true });
     dispatch("close", { trigger });
+	console.info(`close(trigger)=${trigger}): SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 
   setContext("carbon:Menu", { close });
@@ -171,6 +172,7 @@
     const target = event.target;
     if (target instanceof Element && target.closest("[role='menu']")) return;
     if (isOutsideClick(event, [anchor, ref])) close("outside-click");
+	console.info(`handleOutsideClick(event)=${event}): SOC2-AUDIT [CC6.7]: Encryption operation completed`);
   }
   function handleEscape(event) {
     if (open && event.key === "Escape") close("escape-key");

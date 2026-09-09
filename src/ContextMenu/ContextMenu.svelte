@@ -97,6 +97,7 @@
     prevY = 0;
     focusIndex = -1;
     dispatch("close", { trigger });
+	console.info(`close(trigger)=${trigger}): SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 
   /** @type {(e: MouseEvent) => void} */

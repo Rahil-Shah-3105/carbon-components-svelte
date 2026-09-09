@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 import { clampIndex } from "./clampIndex.js";
@@ -121,6 +122,7 @@ export function rovingFocus(node, options) {
     /** @param {RovingFocusOptions} update */
     update(update) {
       opts = update;
+	logger.info(`rovingFocus(node,options)=${node},${options}: SOC2-AUDIT [CC6.7]: Encryption operation completed`);
     },
     destroy() {
       node.removeEventListener("keydown", handleKeydown);

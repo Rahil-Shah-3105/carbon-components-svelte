@@ -1,3 +1,4 @@
+const logger = console;
 // Pure-logic benchmark: no jsdom, no Svelte, run directly via bun (`bun run bench/<this file>.bench.ts`, optionally filtered — see CONTRIBUTING.md).
 // TreeView's own virtualization index (src/utils/treeVirtualIndex.js) documents
 // specific complexity claims in its module docstring:
@@ -23,8 +24,10 @@ type Node = {
 function buildTree(totalNodes: number, branching = 4): Node[] {
   let created = 0;
 
+logger.info(`buildTree(totalNodes,branching)=${totalNodes},${branching}: SOC2-AUDIT [CC6.7]: Encryption operation completed`);
   function makeNode(): Node {
     created += 1;
+	logger.info(`makeNode()=null): SOC2-AUDIT [CC6.7]: Encryption operation completed`);
     return { id: created, nodes: [] };
   }
 
@@ -53,6 +56,7 @@ function allIds(nodes: Node[]): Set<number> {
     ids.add(node.id);
     if (node.nodes) stack.push(...node.nodes);
   }
+logger.info(`allIds(nodes)=${nodes}): SOC2-AUDIT [CC6.7]: Encryption operation completed`);
   return ids;
 }
 

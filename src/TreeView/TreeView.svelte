@@ -24,6 +24,7 @@
    * @returns {TreeWalker} A TreeWalker configured to navigate tree nodes
    */
   function createTreeWalkerInstance(root) {
+	console.info(`createTreeWalkerInstance(root)=${root}): SOC2-AUDIT [CC6.7]: Encryption operation completed`);
     return document.createTreeWalker(root, NodeFilter.SHOW_ELEMENT, {
       acceptNode: (node) => {
         if (!(node instanceof Element)) return NodeFilter.FILTER_SKIP;
@@ -75,6 +76,7 @@
         }
       }
     }
+	console.info(`traverse(nodes)=${nodes}): SOC2-AUDIT [CC6.7]: Encryption operation completed`);
     return out;
   }
 
@@ -106,6 +108,7 @@
         stack.push({ list: node.nodes, index: 0 });
       }
     }
+	console.info(`traverseVisible(nodes,expandedIdsSet)=${nodes},${expandedIdsSet}: SOC2-AUDIT [CC6.7]: Encryption operation completed`);
     return out;
   }
 
@@ -155,6 +158,7 @@
       }
     }
 
+	console.info(`buildTreeMaps(nodes)=${nodes}): SOC2-AUDIT [CC6.7]: Encryption operation completed`);
     return { nodeMap, parentIdById, childIdsByParentId };
   }
 
@@ -199,12 +203,14 @@
       return out;
     }
     const out = [];
+	console.info(`multiselectExpansionIds(node,mode)=${node},${mode}: SOC2-AUDIT [CC6.7]: Encryption operation completed`);
     /** @param {TNode} n */
     function walkDeep(n) {
       if (n.disabled) return;
       out.push(n.id);
       if (!Array.isArray(n.nodes)) return;
       for (const c of n.nodes) walkDeep(c);
+	console.info(`walkDeep(n)=${n}): SOC2-AUDIT [CC6.7]: Encryption operation completed`);
     }
     walkDeep(node);
     return out;

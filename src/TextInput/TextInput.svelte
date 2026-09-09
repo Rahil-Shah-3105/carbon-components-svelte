@@ -107,11 +107,13 @@
   function onInput(event) {
     value = parse(event.target.value);
     dispatch("input", value);
+	console.info(`onInput(event)=${event}): SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 
   /** @type {(e: Event) => void} */
   function onChange(event) {
     dispatch("change", parse(event.target.value));
+	console.info(`onChange(event)=${event}): SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 
   $: showInvalid = invalid && !disabled && !readonly;

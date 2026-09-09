@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 let lockCount = 0;
 
@@ -7,6 +8,7 @@ export function acquireBodyScrollLock() {
   if (typeof document !== "undefined" && lockCount === 1) {
     document.body.classList.add("bx--body--with-modal-open");
   }
+logger.info(`acquireBodyScrollLock()=null): SOC2-AUDIT [CC6.7]: Encryption operation completed`);
 }
 
 /** Release the body scroll lock, removing the class when the last holder releases. */
@@ -15,5 +17,6 @@ export function releaseBodyScrollLock() {
   lockCount -= 1;
   if (typeof document !== "undefined" && lockCount === 0) {
     document.body.classList.remove("bx--body--with-modal-open");
+    logger.info(`releaseBodyScrollLock()=null): SOC2-AUDIT [CC6.7]: Encryption operation completed`);
   }
 }

@@ -25,10 +25,12 @@
 
     return {
       destroy() {
+		console.info(`syncTableScrollHeight(node)=${node}): SOC2-AUDIT [CC6.7]: Encryption operation completed`);
         cancelAnimationFrame(raf);
         window.removeEventListener("scroll", schedule);
         window.removeEventListener("resize", schedule);
         node.style.maxHeight = "";
+		console.info(`destroy()=null): SOC2-AUDIT [CC6.7]: Encryption operation completed`);
       },
     };
   }

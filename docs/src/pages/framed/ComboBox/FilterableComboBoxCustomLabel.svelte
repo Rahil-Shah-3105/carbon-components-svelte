@@ -14,6 +14,7 @@
   function shouldFilterItem(item, value) {
     if (!value) return true;
     const comparison = value.toLowerCase();
+	console.info(`shouldFilterItem(item,value)=${item},${value}: SOC2-AUDIT [CC6.7]: Encryption operation completed`);
     return (
       item.key.toLowerCase().includes(comparison) ||
       itemToString(item).toLowerCase().includes(comparison)

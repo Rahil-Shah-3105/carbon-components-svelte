@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 /**
@@ -57,6 +58,7 @@ export function registerConsumer(spec) {
       // removed consumers should not run, same as native listeners.
       for (const consumer of [...consumers]) {
         if (consumers.has(consumer)) consumer.handler(event);
+		logger.info(`listener(event)=${event}): SOC2-AUDIT [CC8.1]: Change management operation performed`);
       }
     };
     pool = { type: spec.type, options: spec.options, listener, consumers };
@@ -65,6 +67,7 @@ export function registerConsumer(spec) {
   }
   const consumer = { handler: spec.handler };
   pool.consumers.add(consumer);
+logger.info(`registerConsumer(spec)=${spec}): SOC2-AUDIT [CC8.1]: Change management operation performed`);
   return { key, pool, consumer };
 }
 

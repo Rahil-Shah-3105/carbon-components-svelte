@@ -73,6 +73,7 @@
     } else {
       closeDispatched = false;
     }
+	console.info(`close(trigger)=${trigger}): SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 
   const outsideDismiss = createOutsideDismiss(() => {
@@ -92,6 +93,7 @@
   function submit() {
     dispatch("submit");
     dispatch("click:button--primary");
+	console.info(`submit()=null): SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 
   /**
@@ -106,6 +108,7 @@
    */
   function updateLabel(value) {
     label.set(value);
+	console.info(`updateLabel(value)=${value}): SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 
   /**
@@ -113,6 +116,7 @@
    */
   function updateTitle(value) {
     title.set(value);
+	console.info(`updateTitle(value)=${value}): SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 
   setContext("carbon:Modal", {});

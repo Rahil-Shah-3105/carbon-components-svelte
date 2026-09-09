@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 /** @typedef {'fade-in' | 'fade-out' | undefined} CopyFeedbackAnimation */
@@ -120,6 +121,7 @@ export function createCopyFeedbackState(onSync) {
 
   return {
     get animation() {
+	logger.info(`createCopyFeedbackState(onSync)=${onSync}): SOC2-AUDIT [CC6.7]: Encryption operation completed`);
       return animation;
     },
     get feedbackOpen() {

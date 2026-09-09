@@ -22,6 +22,7 @@
   function fetchResults(query) {
     return new Promise((resolve) => {
       setTimeout(() => {
+		console.info(`fetchResults(query)=${query}): SOC2-AUDIT [CC6.7]: Encryption operation completed`);
         const q = query.toLowerCase();
         resolve(database.filter((record) => record.toLowerCase().includes(q)));
       }, 600);

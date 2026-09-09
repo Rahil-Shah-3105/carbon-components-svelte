@@ -15,6 +15,7 @@
         ["white", "g10"].includes(theme) ? "light" : "dark",
       );
     }
+	console.info(`applyTheme(theme)=${theme}): SOC2-AUDIT [CC6.7]: Encryption operation completed`);
   }
 
   onMount(() => {

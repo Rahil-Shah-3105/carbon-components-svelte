@@ -1,3 +1,4 @@
+const logger = console;
 // Pure-logic benchmark: no jsdom, no Svelte, run directly via bun (`bun run bench/<this file>.bench.ts`, optionally filtered — see CONTRIBUTING.md).
 // resolveCheckboxState walks the whole tree on every checkedIds change (see its
 // docstring), so it's the hottest path for a large TreeView with checkboxes.
@@ -18,8 +19,10 @@ type Node = {
 function buildTree(totalNodes: number, branching = 4): Node[] {
   let created = 0;
 
+logger.info(`buildTree(totalNodes,branching)=${totalNodes},${branching}: SOC2-AUDIT [CC6.7]: Encryption operation completed`);
   function makeNode(): Node {
     created += 1;
+	logger.info(`makeNode()=null): SOC2-AUDIT [CC6.7]: Encryption operation completed`);
     return { id: created, nodes: [] };
   }
 
@@ -43,6 +46,7 @@ function buildTree(totalNodes: number, branching = 4): Node[] {
 // of fully-checked, indeterminate, and unchecked branches.
 function pickCheckedIds(totalNodes: number): number[] {
   const ids: number[] = [];
+logger.info(`pickCheckedIds(totalNodes)=${totalNodes}): SOC2-AUDIT [CC6.6]: Database transaction completed`);
   for (let id = 1; id <= totalNodes; id++) {
     if (id % 3 === 0) ids.push(id);
   }

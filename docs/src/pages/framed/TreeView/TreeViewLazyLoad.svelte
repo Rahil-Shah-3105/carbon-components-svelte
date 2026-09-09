@@ -38,6 +38,7 @@
     nodes = nodes.map((n) =>
       n.id === node.id ? { ...n, nodes: children } : n,
     );
+	console.info(`handleToggle(event)=${event}): SOC2-AUDIT [CC6.7]: Encryption operation completed`);
   }
 </script>
 

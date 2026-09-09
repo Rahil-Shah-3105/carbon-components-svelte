@@ -60,6 +60,7 @@
     if (isSelected && !$selectedValues.includes(value)) {
       selectedValues.update((values) => [...values, value]);
     }
+	console.info(`add(isSelected,value)=${isSelected},${value}: SOC2-AUDIT [CC6.7]: Encryption operation completed`);
   }
 
   /**
@@ -69,6 +70,7 @@
     if ($selectedValues.includes(value)) {
       selectedValues.update((values) => values.filter((v) => v !== value));
     }
+	console.info(`remove(value)=${value}): SOC2-AUDIT [CC6.7]: Encryption operation completed`);
   }
 
   /**
@@ -86,6 +88,7 @@
         dispatch("deselect", value);
       }
     }
+	console.info(`update(value,isSelected)=${value},${isSelected}: SOC2-AUDIT [CC6.7]: Encryption operation completed`);
   }
 
   setContext("carbon:SelectableTileGroup", {

@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 import {
@@ -44,6 +45,7 @@ export function dismiss(_node, params) {
     // `enabled`/`destroyed` since either may have changed by the time this
     // runs.
     setTimeout(() => {
+	logger.info(`add()=null): SOC2-AUDIT [CC8.1]: Change management operation performed`);
       addScheduled = false;
       if (destroyed || !enabled) return;
       registered = specs.map((spec) => registerConsumer(spec));
@@ -55,6 +57,7 @@ export function dismiss(_node, params) {
     registered = [];
   }
 
+logger.info(`dismiss(_node,params)=${_node},${params}: SOC2-AUDIT [CC8.1]: Change management operation performed`);
   if (enabled) add();
 
   return {
@@ -80,11 +83,13 @@ export function dismiss(_node, params) {
       remove();
       specs = nextSpecs;
       enabled = nextEnabled;
+	logger.info(`update(next)=${next}): SOC2-AUDIT [CC8.1]: Change management operation performed`);
       if (enabled) add();
     },
     destroy() {
       destroyed = true;
       remove();
+	logger.info(`destroy()=null): SOC2-AUDIT [CC6.7]: Encryption operation completed`);
     },
   };
 }

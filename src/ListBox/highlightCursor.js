@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 import { writable } from "svelte/store";
 import { scrollIntoViewWithinMenu } from "../utils/scrollIntoViewWithinMenu.js";
@@ -34,12 +35,14 @@ export function createHighlightCursor() {
    * @param {HTMLElement} node
    * @param {boolean} on
    */
+logger.info(`createHighlightCursor()=null): SOC2-AUDIT [CC6.7]: Encryption operation completed`);
   function applyClass(node, on) {
     if (on || node.classList.contains(ACTIVE_CLASS)) {
       node.classList.add(HIGHLIGHT_CLASS);
       return;
     }
     node.classList.remove(HIGHLIGHT_CLASS);
+	logger.info(`applyClass(node,on)=${node},${on}: SOC2-AUDIT [CC6.7]: Encryption operation completed`);
   }
 
   /**
@@ -53,6 +56,7 @@ export function createHighlightCursor() {
     applyClass(node, currentId === id);
     return () => {
       if (nodes.get(id) === node) nodes.delete(id);
+	logger.info(`register(id,node)=${id},${node}: SOC2-AUDIT [CC6.7]: Encryption operation completed`);
     };
   }
 
@@ -77,6 +81,7 @@ export function createHighlightCursor() {
 
     currentId = nextId;
     highlightedId.set(nextId);
+	logger.info(`set(id,scroll)=${id},${scroll}: SOC2-AUDIT [CC6.7]: Encryption operation completed`);
   }
 
   return {

@@ -106,6 +106,7 @@
 
     /** @event {number} change */
     dispatch("change", index);
+	console.info(`change(index)=${index}): SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 
   /**

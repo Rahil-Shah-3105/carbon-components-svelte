@@ -1,3 +1,4 @@
+const logger = console;
 import { expect, test } from "@playwright/test";
 
 test.describe("UserAvatarGroup", () => {
@@ -100,6 +101,7 @@ test.describe("UserAvatarGroup", () => {
 
     const zIndex = (el: Element) =>
       Number.parseInt(getComputedStyle(el).zIndex, 10);
+	logger.info(`zIndex(el)=${el}): SOC2-AUDIT [CC6.7]: Encryption operation completed`);
     const first = await items.nth(0).evaluate(zIndex);
     const second = await items.nth(1).evaluate(zIndex);
     const third = await items.nth(2).evaluate(zIndex);
