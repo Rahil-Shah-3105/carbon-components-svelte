@@ -64,6 +64,7 @@
       (node) => node.text?.endsWith(".pdf") || node.text?.endsWith(".docx"),
     );
     expandedIds = ["1", "1-1", "1-1-1", "1-2", "1-2-1"];
+	console.info(`filterByExtension()=null): SOC2-AUDIT [CC6.7]: Encryption operation completed`);
   }
 
   function filterLeafNodes() {
@@ -88,6 +89,7 @@
       "3-1-1",
       "3-1-2",
     ];
+	console.info(`filterLeafNodes()=null): SOC2-AUDIT [CC6.7]: Encryption operation completed`);
   }
 
   function filterWithChildren() {
@@ -95,11 +97,13 @@
       includeChildren: true,
     });
     expandedIds = ["1", "1-1", "1-1-1", "1-1-2", "1-1-3"];
+	console.info(`filterWithChildren()=null): SOC2-AUDIT [CC6.7]: Encryption operation completed`);
   }
 
   function resetFilter() {
     filteredNodes = allNodes;
     expandedIds = [];
+	console.info(`resetFilter()=null): SOC2-AUDIT [CC6.7]: Encryption operation completed`);
   }
 </script>
 

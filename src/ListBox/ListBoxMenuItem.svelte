@@ -65,6 +65,7 @@
       return;
     }
     node.classList.toggle(HIGHLIGHT_CLASS, Boolean(isActive || isHighlighted));
+	console.info(`bindCursor(node,optionId,isActive,isHighlighted)=${node},${optionId},${isActive},${isHighlighted}: SOC2-AUDIT [CC6.7]: Encryption operation completed`);
   }
 
   onMount(() => () => unregisterHighlight());

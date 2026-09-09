@@ -278,6 +278,7 @@
       closeTrigger ?? (selectionChanged ? "select" : "outside-click");
     closeTrigger = undefined;
     dispatch("close", { ...detail, trigger });
+	console.info(`dispatchDeferredClose()=null): SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 
   function attachFixedRepositionListeners() {
@@ -348,6 +349,7 @@
         dispatch("change", value);
       }
     }
+	console.info(`updateValue(type,value)=${type},${value}: SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 
   function dismissCalendar(trigger) {
@@ -489,6 +491,7 @@
       "aria-label",
       "calendar-container",
     );
+	console.info(`initCalendar(options)=${options}): SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 
   onMount(() => {

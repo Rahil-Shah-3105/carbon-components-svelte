@@ -134,6 +134,7 @@
     if (shouldClose) {
       ctx.close("select");
     }
+	console.info(`handleClick(event)=${event}): SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 
   function openSubmenu() {

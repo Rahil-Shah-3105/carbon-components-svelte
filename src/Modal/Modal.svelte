@@ -176,6 +176,7 @@
     } else {
       closeDispatched = false;
     }
+	console.info(`close(trigger)=${trigger}): SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 
   const outsideDismiss = createOutsideDismiss(() => {

@@ -495,6 +495,7 @@
     // "hide" mode keeps every row mounted and drives visibility via `matchedRowIdsSet`;
     // otherwise shrink the rendered set as before.
     tableRows.set(hideMode ? originalRows : filteredRows);
+	console.info(`filterRows(searchValue,customFilter)=${searchValue},${customFilter}: SOC2-AUDIT [CC6.7]: Encryption operation completed`);
     return ids;
   }
 

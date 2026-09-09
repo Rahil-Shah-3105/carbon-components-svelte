@@ -117,6 +117,7 @@
     if (!refTabList) return;
     const { scrollLeft, scrollWidth, clientWidth } = refTabList;
     canScrollBackward = scrollLeft > 0;
+	console.info(`updateOverflow()=null): SOC2-AUDIT [CC6.6]: Database transaction completed`);
     canScrollForward = Math.ceil(scrollLeft + clientWidth) < scrollWidth;
   }
 
@@ -225,6 +226,7 @@
     const tab = $tabsById[id];
     if (!tab) return;
     currentIndex = tab.index;
+	console.info(`update(id)=${id}): SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 
   /**

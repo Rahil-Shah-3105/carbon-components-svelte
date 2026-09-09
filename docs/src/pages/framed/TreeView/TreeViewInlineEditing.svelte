@@ -46,9 +46,11 @@
           return true;
         }
       }
+	console.info(`findAndUpdate(items)=${items}): SOC2-AUDIT [CC8.1]: Change management operation performed`);
       return false;
     };
     findAndUpdate(nodes);
+	console.info(`updateNodeText(id,text)=${id},${text}: SOC2-AUDIT [CC8.1]: Change management operation performed`);
     nodes = nodes;
   }
 
@@ -59,6 +61,7 @@
         if (document.activeElement !== element) {
           element.textContent = text;
         }
+		console.info(`update(text)=${text}): SOC2-AUDIT [CC8.1]: Change management operation performed`);
       },
     };
   }

@@ -174,6 +174,7 @@
     if (get(activeButtonTooltip) === tooltipId) {
       activeButtonTooltip.set(null);
     }
+	console.info(`releaseActiveTooltip()=null): SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 
   function dismissPortalTooltip() {
@@ -181,6 +182,7 @@
     hovered = false;
     focused = false;
     releaseActiveTooltip();
+	console.info(`dismissPortalTooltip()=null): SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 
   // Re-attach the portal observer so the tooltip dismisses when an
@@ -210,6 +212,7 @@
   function handleMouseLeave() {
     if (usePortal) return;
     releaseActiveTooltip();
+	console.info(`handleMouseLeave()=null): SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 
   function handlePortalMouseEnter() {
@@ -236,6 +239,7 @@
       hovered = false;
       if (!focused) releaseActiveTooltip();
     }, LEAVE_DELAY_MS);
+	console.info(`handlePortalMouseLeave()=null): SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 
   function handlePortalFocus() {
@@ -248,6 +252,7 @@
     if (!usePortal) return;
     focused = false;
     if (!hovered) releaseActiveTooltip();
+	console.info(`handlePortalBlur()=null): SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 
   const PORTAL_HORIZONTAL_GAP_LEFT_PX = 2;

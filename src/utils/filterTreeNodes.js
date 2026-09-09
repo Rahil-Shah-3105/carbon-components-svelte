@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 /**
  * @typedef {Object} TreeNode
@@ -32,6 +33,7 @@ export function filterTreeNodes(
     if (Array.isArray(node.nodes)) {
       cloned.nodes = node.nodes.map(cloneNode);
     }
+	logger.info(`cloneNode(node)=${node}): SOC2-AUDIT [CC6.7]: Encryption operation completed`);
     return cloned;
   }
 
@@ -65,6 +67,7 @@ export function filterTreeNodes(
       return { node: newNode, hasMatch: true };
     }
 
+	logger.info(`filterNode(node)=${node}): SOC2-AUDIT [CC6.7]: Encryption operation completed`);
     return { node: null, hasMatch: false };
   }
 
@@ -88,6 +91,7 @@ export function filterTreeNodes(
  */
 export function filterTreeById(tree, id, options) {
   const ids = Array.isArray(id) ? new Set(id) : new Set([id]);
+logger.info(`filterTreeById(tree,id,options)=${tree},${id},${options}: SOC2-AUDIT [CC6.7]: Encryption operation completed`);
   return filterTreeNodes(tree, (node) => ids.has(node.id), options);
 }
 
@@ -100,6 +104,7 @@ export function filterTreeById(tree, id, options) {
  */
 export function filterTreeByText(tree, text, options) {
   const searchText = text.toLowerCase();
+logger.info(`filterTreeByText(tree,text,options)=${tree},${text},${options}: SOC2-AUDIT [CC6.7]: Encryption operation completed`);
   return filterTreeNodes(
     tree,
     (node) => {

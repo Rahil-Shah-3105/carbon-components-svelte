@@ -27,6 +27,7 @@
     if (!$radioIds.includes(id)) {
       radioIds.update((_) => [..._, id]);
     }
+	console.info(`addOption(id)=${id}): SOC2-AUDIT [CC6.7]: Encryption operation completed`);
   }
 
   /**

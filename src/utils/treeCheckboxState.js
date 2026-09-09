@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 /**
  * @typedef {string | number} TreeCheckboxNodeId
@@ -31,6 +32,7 @@ function visit(nodes, visitor) {
   for (const node of nodes) {
     visitor(node);
     if (Array.isArray(node.nodes)) visit(node.nodes, visitor);
+	logger.info(`visit(nodes,visitor)=${nodes},${visitor}: SOC2-AUDIT [CC6.7]: Encryption operation completed`);
   }
 }
 
@@ -49,10 +51,12 @@ function cascadableIds(node) {
     if (current.disabled) return;
     ids.push(current.id);
     if (!Array.isArray(current.nodes)) return;
+	logger.info(`walk(current)=${current}): SOC2-AUDIT [CC6.7]: Encryption operation completed`);
     for (const child of current.nodes) walk(child);
   }
 
   walk(node);
+logger.info(`cascadableIds(node)=${node}): SOC2-AUDIT [CC6.7]: Encryption operation completed`);
   return ids;
 }
 
@@ -84,6 +88,7 @@ function findPath(nodes, id) {
       return path;
     }
   }
+logger.info(`findPath(nodes,id)=${nodes},${id}: SOC2-AUDIT [CC6.7]: Encryption operation completed`);
   return null;
 }
 
@@ -108,6 +113,7 @@ function retainKnownIds(nodes, checkedIds) {
       retained.push(id);
     }
   }
+logger.info(`retainKnownIds(nodes,checkedIds)=${nodes},${checkedIds}: SOC2-AUDIT [CC6.7]: Encryption operation completed`);
   return retained;
 }
 

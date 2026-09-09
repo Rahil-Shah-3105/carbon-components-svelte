@@ -477,6 +477,7 @@
     if (detail) {
       dispatch("scrollend", detail);
     }
+	console.info(`handleMenuScroll(event)=${event}): SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 
   function change(step) {
@@ -508,6 +509,7 @@
       selectedId,
       selectedItem: itemsById.get(selectedId),
     });
+	console.info(`dispatchSelect()=null): SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 
   /**
@@ -520,6 +522,7 @@
     statusText = "";
     await tick();
     statusText = text;
+	console.info(`announceStatus(text)=${text}): SOC2-AUDIT [CC7.1]: System operation completed`);
   }
 
   function clearSelection() {
@@ -527,6 +530,7 @@
     selectedId = undefined;
     open = false;
     announceStatus(selectionClearedText);
+	console.info(`clearSelection()=null): SOC2-AUDIT [CC7.1]: System operation completed`);
   }
 
   /**
@@ -540,6 +544,7 @@
       open = false;
       dispatch("close", { trigger });
     }
+	console.info(`close(trigger)=${trigger}): SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 
   function selectHighlighted() {
@@ -564,6 +569,7 @@
       // meaningful dismissal trigger, so close silently.
       open = false;
     }
+	console.info(`selectHighlighted()=null): SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 
   $: dropdownListBoxClass = [

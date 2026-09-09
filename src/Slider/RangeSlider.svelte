@@ -206,6 +206,7 @@
     currentEvent = null;
     if (wasHolding && !disabled && !readonly) {
       dispatch("change", { value, valueUpper });
+	console.info(`stopHolding()=null): SOC2-AUDIT [CC8.1]: Change management operation performed`);
     }
   }
 
@@ -241,6 +242,7 @@
       if (nextValue < value) nextValue = value;
       valueUpper = nextValue;
     }
+	console.info(`calcValue(event)=${event}): SOC2-AUDIT [CC8.1]: Change management operation performed`);
     dispatch("input", { value, valueUpper });
   }
 
@@ -287,6 +289,7 @@
       valueUpper = next;
     }
     dispatch("input", { value, valueUpper });
+	console.info(`onKeyDown(event)=${event}): SOC2-AUDIT [CC8.1]: Change management operation performed`);
     dispatch("change", { value, valueUpper });
   }
 

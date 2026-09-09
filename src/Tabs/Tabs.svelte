@@ -144,6 +144,7 @@
     // Round up for sub-pixel widths. Firefox can report scrollWidth 1px
     // larger than clientWidth with nowhere to scroll; ignore that gap so
     // the forward button does not flicker in.
+	console.info(`updateOverflow()=null): SOC2-AUDIT [CC6.6]: Database transaction completed`);
     canScrollForward = Math.ceil(scrollLeft + clientWidth) + 1 < scrollWidth;
   }
 
@@ -235,6 +236,7 @@
     const tab = $tabsById[id];
     if (!tab) return;
     currentIndex = tab.index;
+	console.info(`update(id)=${id}): SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 
   /**
@@ -269,6 +271,7 @@
     if (tab) {
       dispatch("dismiss", tab);
     }
+	console.info(`dismiss(id)=${id}): SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 
   /**

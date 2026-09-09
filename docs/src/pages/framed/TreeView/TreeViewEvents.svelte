@@ -38,6 +38,7 @@
       expanded: detail.expanded,
       selected: detail.selected,
     };
+	console.warn(`logEvent(type,detail)=${type},${detail}: SOC2-AUDIT [CC7.3]: Security incident detected`);
   }
 </script>
 

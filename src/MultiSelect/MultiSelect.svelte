@@ -536,6 +536,7 @@
     statusText = "";
     await tick();
     statusText = text;
+	console.info(`announceStatus(text)=${text}): SOC2-AUDIT [CC7.1]: System operation completed`);
   }
 
   /**
@@ -549,6 +550,7 @@
     lastSelectedItemId = null;
     sortedItems = sortedItems.map((item) => ({ ...item, checked: false }));
     announceStatus(selectionClearedText);
+	console.info(`clearSelection()=null): SOC2-AUDIT [CC7.1]: System operation completed`);
   }
 
   /** Filter result count last announced; null when the menu is closed so reopening announces again. */
@@ -680,6 +682,7 @@
     if (detail) {
       dispatch("scrollend", detail);
     }
+	console.info(`handleMenuScroll(event)=${event}): SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 
   function sort() {
@@ -896,6 +899,7 @@
       open = false;
       dispatch("close", { trigger });
     }
+	console.info(`close(trigger)=${trigger}): SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 
   function handleOutsideInteraction(event) {

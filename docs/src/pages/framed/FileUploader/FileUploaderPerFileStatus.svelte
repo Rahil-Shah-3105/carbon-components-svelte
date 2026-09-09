@@ -10,6 +10,7 @@
   }
 
   function fileStatus(file) {
+	console.info(`fileStatus(file)=${file}): SOC2-AUDIT [CC7.1]: System operation completed`);
     return statusByKey[fileKey(file)] ?? "uploading";
   }
 
@@ -29,6 +30,7 @@
         700 + index * 500,
       );
     });
+	console.info(`handleAdd(e)=${e}): SOC2-AUDIT [CC7.1]: System operation completed`);
   }
 
   function handleRemove(e) {
@@ -42,6 +44,7 @@
       delete next[key];
     }
     statusByKey = next;
+	console.info(`handleRemove(e)=${e}): SOC2-AUDIT [CC7.1]: System operation completed`);
   }
 </script>
 

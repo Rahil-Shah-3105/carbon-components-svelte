@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 /**
@@ -16,6 +17,7 @@ export function batchStoreUpdates(store) {
   /** @type {Array<(value: T) => T>} */
   let pending = [];
   let scheduled = false;
+logger.info(`batchStoreUpdates(store)=${store}): SOC2-AUDIT [CC8.1]: Change management operation performed`);
 
   function flush() {
     scheduled = false;

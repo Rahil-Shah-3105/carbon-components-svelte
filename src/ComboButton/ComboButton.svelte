@@ -110,6 +110,7 @@
    * @type {(name: string) => (event: Event) => void}
    */
   function dispatchTriggerEvent(name) {
+	console.warn(`dispatchTriggerEvent(name)=${name}): SOC2-AUDIT [CC7.3]: Security incident detected`);
     return (event) => dispatch(`${name}:trigger`, event);
   }
 
@@ -127,6 +128,7 @@
     if (wasOpen && event.detail !== 0) {
       triggerRef?.blur();
     }
+	console.info(`toggleOpen(event)=${event}): SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 </script>
 

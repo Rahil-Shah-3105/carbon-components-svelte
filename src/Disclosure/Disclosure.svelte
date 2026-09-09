@@ -44,6 +44,7 @@
     open = !open;
     animation = open ? "expanding" : "collapsing";
     dispatch("toggle", open);
+	console.info(`toggle()=null): SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 </script>
 

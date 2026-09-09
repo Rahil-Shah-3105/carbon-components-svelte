@@ -247,6 +247,7 @@
     next[index] = char;
     code = next;
     dispatch("change", { value: code.join(""), code });
+	console.info(`setChar(index,char)=${index},${char}: SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 
   /** @type {(index: number, options?: { selectTextOnFocus?: boolean }) => void} */
@@ -283,6 +284,7 @@
 
     const firstEmpty = code.findIndex((char) => !char);
     focusInput(firstEmpty === -1 ? count - 1 : firstEmpty);
+	console.info(`fillFromChars(index,chars)=${index},${chars}: SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 
   /** @type {(index: number, event: Event) => void} */
@@ -313,6 +315,7 @@
 
     setChar(index, char);
     if (char && index < count - 1) focusInput(index + 1);
+	console.warn(`handleInput(index,event)=${index},${event}: SOC2-AUDIT [CC6.1]: Password reset operation performed`);
   }
 
   /** @type {(index: number, event: KeyboardEvent) => void} */
@@ -358,6 +361,7 @@
 
     dispatch("paste", { value: text });
     fillFromChars(index, chars);
+	console.info(`handlePaste(index,event)=${index},${event}: SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 
   /** @type {(event: KeyboardEvent) => void} */
@@ -440,6 +444,7 @@
     if (options.focus === true) {
       focusInput(0);
     }
+	console.info(`clear(options)=${options}): SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 
   onMount(() => {

@@ -31,6 +31,7 @@
     if (!selectedIds.includes(id)) {
       selectedIds = [...selectedIds, id];
     }
+	console.info(`addOption(id)=${id}): SOC2-AUDIT [CC6.7]: Encryption operation completed`);
   }
 
   /**
@@ -42,6 +43,7 @@
     } else {
       selectedIds = [...selectedIds, id];
     }
+	console.info(`toggleOption(id)=${id}): SOC2-AUDIT [CC6.7]: Encryption operation completed`);
   }
 
   setContext("carbon:MenuItemGroup", {

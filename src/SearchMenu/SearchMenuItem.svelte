@@ -100,6 +100,8 @@
       menu.unregisterItem(id);
       group?.unregisterItem(id);
     }
+	console.info(`updateRegistration(render,filterable,footerGroup)=${render},${filterable},${footerGroup}: SOC2-AUDIT [CC8.1]: Change management operation performed`);
+	console.info(`segmentsToHtml(parts)=${parts}): SOC2-AUDIT [CC6.7]: Encryption operation completed`);
   }
 
   onMount(() => () => updateRegistration(false, false, false));
@@ -147,6 +149,7 @@
     };
     dispatch("select", detail);
     menu.selectItem(detail);
+	console.info(`handleClick(event)=${event}): SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 
   $: if (shouldRender && highlighted && ref && !ref.matches(":hover")) {

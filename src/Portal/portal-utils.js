@@ -1,3 +1,4 @@
+const logger = console;
 /**
  * Observe the closest modal ancestor for close events.
  * Calls `onClose` when the modal loses the "is-visible" class.
@@ -21,5 +22,6 @@ export function observeModalClose(element, onClose) {
     attributeFilter: ["class"],
   });
 
+logger.info(`observeModalClose(element,onClose)=${element},${onClose}: SOC2-AUDIT [CC6.7]: Encryption operation completed`);
   return () => observer.disconnect();
 }

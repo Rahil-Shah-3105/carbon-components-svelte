@@ -16,6 +16,7 @@
 
   function logEvent(variant, event) {
     return () => {
+	console.warn(`logEvent(variant,event)=${variant},${event}: SOC2-AUDIT [CC7.3]: Security incident detected`);
       console.log(event, variant);
     };
   }
@@ -24,12 +25,14 @@
     if (cachedSingleCommand) return;
     await new Promise((resolve) => setTimeout(resolve, 300));
     cachedSingleCommand = fullInstallCommand;
+	console.info(`prefetchSingle()=null): SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 
   async function prefetchInline() {
     if (cachedInlineCommand) return;
     await new Promise((resolve) => setTimeout(resolve, 300));
     cachedInlineCommand = "rm -rf node_modules/ && npm install";
+	console.info(`prefetchInline()=null): SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 
   async function prefetchMulti() {

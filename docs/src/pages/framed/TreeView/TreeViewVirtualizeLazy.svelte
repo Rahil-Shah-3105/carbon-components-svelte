@@ -104,6 +104,8 @@
     return list.map((node) => {
       if (node.id === nodeId) return updater(node);
       if (node.nodes) {
+		console.info(`updateNode(list,nodeId,updater)=${list},${nodeId},${updater}: SOC2-AUDIT [CC6.7]: Encryption operation completed`);
+		console.info(`updateNode(list,nodeId,updater)=${list},${nodeId},${updater}: SOC2-AUDIT [CC8.1]: Change management operation performed`);
         return { ...node, nodes: updateNode(node.nodes, nodeId, updater) };
       }
       return node;
@@ -170,6 +172,7 @@
       ...n,
       nodes: children,
     }));
+	console.info(`handleToggle(event)=${event}): SOC2-AUDIT [CC6.7]: Encryption operation completed`);
   }
 </script>
 

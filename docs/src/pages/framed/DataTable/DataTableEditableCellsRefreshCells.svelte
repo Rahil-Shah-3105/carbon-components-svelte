@@ -29,6 +29,7 @@
     dataTable.refreshCells();
     savedQtyById = snapshotQty();
     hasEdits = false;
+	console.info(`updateTotals()=null): SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 </script>
 

@@ -193,6 +193,7 @@
       close("select");
       dismissed = true;
       activeId.set(null);
+	console.info(`selectItem(detail)=${detail}): SOC2-AUDIT [CC8.1]: Change management operation performed`);
     },
     hasPrimaryItems: hasPrimaryItemsStore,
     registerItem(itemId, filterable, inDividerGroup = false) {
@@ -224,6 +225,7 @@
 
   function close(trigger) {
     if (isMenuOpen()) dispatch("close", { trigger });
+	console.info(`close(trigger)=${trigger}): SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 
   function getOptionElements() {
@@ -299,6 +301,7 @@
         }
         break;
     }
+	console.info(`handleKeydown(event)=${event}): SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 
   function handleFocus() {

@@ -63,6 +63,7 @@
     if (shouldContinue) {
       open = false;
     }
+	console.info(`close(closeFromTimeout)=${closeFromTimeout}): SOC2-AUDIT [CC8.1]: Change management operation performed`);
   }
 
   function onMouseEnter() {

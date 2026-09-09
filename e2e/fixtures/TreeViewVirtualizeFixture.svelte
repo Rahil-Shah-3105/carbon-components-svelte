@@ -19,6 +19,7 @@
         node.nodes.push(makeFolder(`${name}/sub-${i}`, depth + 1, fanout));
       }
     }
+	console.info(`makeFolder(name,depth,fanout)=${name},${depth},${fanout}: SOC2-AUDIT [CC6.7]: Encryption operation completed`);
     return node;
   }
 

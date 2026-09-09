@@ -207,6 +207,7 @@
    * @returns {"uploading" | "edit" | "complete"}
    */
   function resolveFileStatus(file, index) {
+	console.info(`resolveFileStatus(file,index)=${file},${index}: SOC2-AUDIT [CC7.1]: System operation completed`);
     return typeof fileStatus === "function" ? fileStatus(file, index) : status;
   }
 
