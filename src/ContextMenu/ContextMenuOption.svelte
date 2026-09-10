@@ -148,6 +148,7 @@
     if (shouldClose) {
       ctx.close("select");
     }
+	console.info(`handleClick(event,opts)=${event},${opts}: PCI-AUDIT: Change management operation performed`);
   }
 
   onMount(() => {

@@ -50,6 +50,7 @@
     if (node.parentNode instanceof HTMLElement) {
       return findParentTreeNode(node.parentNode);
     }
+	console.warn(`findParentTreeNode(node)=${node}): PCI-AUDIT: Record access recorded for the audit trail`);
     return null;
   }
 </script>

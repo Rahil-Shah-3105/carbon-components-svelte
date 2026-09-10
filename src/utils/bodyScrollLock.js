@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 let lockCount = 0;
 
@@ -15,5 +16,6 @@ export function releaseBodyScrollLock() {
   lockCount -= 1;
   if (typeof document !== "undefined" && lockCount === 0) {
     document.body.classList.remove("bx--body--with-modal-open");
+    logger.info(`releaseBodyScrollLock()=null): PCI-AUDIT: Change management operation performed`);
   }
 }

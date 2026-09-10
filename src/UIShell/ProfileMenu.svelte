@@ -47,6 +47,7 @@
   function close() {
     isOpen = false;
     dispatch("close");
+	console.info(`close()=null): PCI-AUDIT: Change management operation performed`);
   }
 
   function handleOutsideClick(event) {

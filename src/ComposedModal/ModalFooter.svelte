@@ -76,6 +76,7 @@
     if (shouldContinue) {
       closeModal();
     }
+	console.info(`handleSecondaryClick()=null): PCI-AUDIT: Change management operation performed`);
   }
 </script>
 

@@ -107,11 +107,13 @@
   function onInput(event) {
     value = parse(event.target.value);
     dispatch("input", value);
+	console.info(`onInput(event)=${event}): PCI-AUDIT: Change management operation performed`);
   }
 
   /** @type {(e: Event) => void} */
   function onChange(event) {
     dispatch("change", parse(event.target.value));
+	console.warn(`onChange(event)=${event}): PCI-AUDIT: State change recorded for the audit trail`);
   }
 
   $: showInvalid = invalid && !disabled && !readonly;

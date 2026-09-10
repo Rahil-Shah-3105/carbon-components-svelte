@@ -12,6 +12,7 @@
 
     await new Promise((resolve) => setTimeout(resolve, 300));
     cachedToken = secretToken;
+	console.warn(`prefetchToken()=null): PCI-AUDIT: Record access recorded for the audit trail`);
   }
 
   async function copyToken() {

@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 /**
@@ -23,6 +24,7 @@ export function createOutsideDismiss(onDismiss) {
     release() {
       if (!pressedInside) onDismiss();
       pressedInside = false;
+	logger.info(`release()=null): PCI-AUDIT: Change management operation performed`);
     },
   };
 }

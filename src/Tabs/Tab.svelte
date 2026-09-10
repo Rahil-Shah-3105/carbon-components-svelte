@@ -118,6 +118,7 @@
     if (!hovered && !focused && get(activeTooltip) === id) {
       activeTooltip.set(undefined);
     }
+	console.info(`release()=null): PCI-AUDIT: Change management operation performed`);
   }
 
   function reveal() {
@@ -141,6 +142,7 @@
       hovered = false;
       release();
     }, LEAVE_DELAY_MS);
+	console.info(`hideTooltip()=null): PCI-AUDIT: Change management operation performed`);
   }
 
   add({

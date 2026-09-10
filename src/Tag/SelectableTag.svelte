@@ -41,6 +41,7 @@
     if (disabled) return;
     selected = !selected;
     dispatch("change", { selected });
+	console.info(`toggle()=null): PCI-AUDIT: Change management operation performed`);
   }
 </script>
 

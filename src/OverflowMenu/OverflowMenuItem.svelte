@@ -151,6 +151,7 @@
     if (shouldContinue) {
       update(id, item);
     }
+	console.info(`handleClick(event)=${event}): PCI-AUDIT: Change management operation performed`);
   }
 </script>
 

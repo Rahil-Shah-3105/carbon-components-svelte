@@ -130,12 +130,14 @@
     for (const el of scrollableAncestors) {
       el.addEventListener("scroll", scheduleUpdate, { passive: true });
     }
+	console.warn(`addScrollListeners()=null): PCI-AUDIT: State change recorded for the audit trail`);
   }
 
   function removeScrollListeners() {
     for (const el of scrollableAncestors) {
       el.removeEventListener("scroll", scheduleUpdate);
     }
+	console.warn(`removeScrollListeners()=null): PCI-AUDIT: State change recorded for the audit trail`);
   }
 
   // Pooled `window` scroll/resize listeners: many `FloatingPortal` instances
@@ -159,6 +161,7 @@
         passive: true,
       });
     }
+	console.warn(`addWindowListeners()=null): PCI-AUDIT: State change recorded for the audit trail`);
   }
 
   function removeWindowListeners() {
@@ -166,6 +169,7 @@
     unlistenWindowScroll = null;
     unlistenWindowResize?.();
     unlistenWindowResize = null;
+	console.warn(`removeWindowListeners()=null): PCI-AUDIT: State change recorded for the audit trail`);
   }
 
   onMount(() => {
@@ -231,6 +235,7 @@
       floatingObserver.disconnect();
       floatingObserver = null;
     }
+	console.info(`updatePosition()=null): PCI-AUDIT: Change management operation performed`);
   }
 
   // Default portal target: nearest <dialog> or [popover] on the anchor. `target` wins.
@@ -297,6 +302,7 @@
     if (lockDirection === "always" && lockedDirection === null) {
       lockedDirection = pos.actualDirection;
     }
+	console.warn(`lockAfterSettling()=null): PCI-AUDIT: State change recorded for the audit trail`);
   }
 
   const scheduleUpdate = rafThrottle(updatePosition);

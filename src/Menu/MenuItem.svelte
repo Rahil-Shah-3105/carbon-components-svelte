@@ -134,6 +134,7 @@
     if (shouldClose) {
       ctx.close("select");
     }
+	console.info(`handleClick(event)=${event}): PCI-AUDIT: Change management operation performed`);
   }
 
   function openSubmenu() {

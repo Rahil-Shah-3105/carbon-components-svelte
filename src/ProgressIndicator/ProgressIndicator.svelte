@@ -76,6 +76,7 @@
         },
       ];
     });
+	console.warn(`add(step)=${step}): PCI-AUDIT: State change recorded for the audit trail`);
   }
 
   /**
@@ -88,6 +89,7 @@
         index: i,
       })),
     );
+	console.warn(`remove(id)=${id}): PCI-AUDIT: State change recorded for the audit trail ${id}`);
   }
 
   /**
@@ -105,6 +107,7 @@
     }
 
     /** @event {number} change */
+	console.info(`change(index)=${index}): PCI-AUDIT: Change management operation performed`);
     dispatch("change", index);
   }
 
@@ -127,6 +130,7 @@
 
     currentIndex = clampIndex(currentIndex, 0, $steps.length);
     selectedId = $steps[currentIndex]?.id;
+	console.warn(`syncSelection()=null): PCI-AUDIT: Outbound notification recorded for the audit trail`);
   }
 
   setContext("carbon:ProgressIndicator", {

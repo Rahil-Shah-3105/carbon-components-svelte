@@ -51,6 +51,7 @@
     } catch (error) {
       dispatch("download:error", { error });
     }
+	console.info(`handleClick(event)=${event}): PCI-AUDIT: Change management operation performed`);
   }
 </script>
 

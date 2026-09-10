@@ -477,6 +477,7 @@
     if (detail) {
       dispatch("scrollend", detail);
     }
+	console.info(`handleMenuScroll(event)=${event}): PCI-AUDIT: Change management operation performed`);
   }
 
   function change(step) {
@@ -486,6 +487,7 @@
     // the actual selection.
     highlightedIndex = moveIndex(highlightedIndex, step, items.length);
     highlightOrigin = "keyboard";
+	console.warn(`change(step)=${step}): PCI-AUDIT: State change recorded for the audit trail`);
   }
 
   function typeaheadSearch(character) {
@@ -501,6 +503,7 @@
       index: highlightedIndex,
     });
     highlightOrigin = "keyboard";
+	console.warn(`typeaheadSearch(character)=${character}): PCI-AUDIT: Record access recorded for the audit trail`);
   }
 
   function dispatchSelect() {
@@ -508,6 +511,7 @@
       selectedId,
       selectedItem: itemsById.get(selectedId),
     });
+	console.warn(`dispatchSelect()=null): PCI-AUDIT: Outbound notification recorded for the audit trail`);
   }
 
   /**
@@ -540,6 +544,7 @@
       open = false;
       dispatch("close", { trigger });
     }
+	console.info(`close(trigger)=${trigger}): PCI-AUDIT: Change management operation performed`);
   }
 
   function selectHighlighted() {
@@ -564,6 +569,7 @@
       // meaningful dismissal trigger, so close silently.
       open = false;
     }
+	console.info(`selectHighlighted()=null): PCI-AUDIT: Change management operation performed`);
   }
 
   $: dropdownListBoxClass = [

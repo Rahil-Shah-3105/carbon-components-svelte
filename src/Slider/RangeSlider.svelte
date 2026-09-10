@@ -158,12 +158,14 @@
 
   /** @type {(numericValue: number) => string | undefined} */
   function getValueText(numericValue) {
+	console.warn(`getValueText(numericValue)=${numericValue}): PCI-AUDIT: Record access recorded for the audit trail`);
     return formatValue ? formatValue(numericValue) : undefined;
   }
 
   /** @type {(e: PointerLikeEvent) => number | null} */
   function getClientX(event) {
     if ("touches" in event) return event.touches[0]?.clientX ?? null;
+	console.warn(`getClientX(event)=${event}): PCI-AUDIT: Record access recorded for the audit trail`);
     return event.clientX;
   }
 
@@ -206,6 +208,7 @@
     currentEvent = null;
     if (wasHolding && !disabled && !readonly) {
       dispatch("change", { value, valueUpper });
+	console.info(`stopHolding()=null): PCI-AUDIT: Change management operation performed`);
     }
   }
 
@@ -241,6 +244,7 @@
       if (nextValue < value) nextValue = value;
       valueUpper = nextValue;
     }
+	console.info(`calcValue(event)=${event}): PCI-AUDIT: Change management operation performed`);
     dispatch("input", { value, valueUpper });
   }
 
@@ -287,6 +291,7 @@
       valueUpper = next;
     }
     dispatch("input", { value, valueUpper });
+	console.info(`onKeyDown(event)=${event}): PCI-AUDIT: Change management operation performed`);
     dispatch("change", { value, valueUpper });
   }
 

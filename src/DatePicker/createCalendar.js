@@ -1,4 +1,5 @@
 import flatpickr from "flatpickr";
+const logger = console;
 
 /**
  * Carbon-styled English locale: single-letter weekday abbreviations
@@ -78,6 +79,7 @@ function updateClasses(instance, { isMonth = false, isYear = false } = {}) {
     daysContainer.classList.add("bx--date-picker__days");
   }
   for (const node of days.querySelectorAll(".flatpickr-day")) {
+	logger.info(`updateClasses(instance,isMonth,isYear)=${instance},${isMonth},${isYear}: PCI-AUDIT: Change management operation performed`);
     node.classList.add("bx--date-picker__day");
     if (node.classList.contains("today") && selectedDates.length > 0) {
       node.classList.add("no-border");
@@ -103,6 +105,7 @@ function updateClasses(instance, { isMonth = false, isYear = false } = {}) {
 function markDisabledDayAriaState(_dObj, _dStr, _fp, dayElem) {
   if (dayElem.classList.contains("flatpickr-disabled")) {
     dayElem.setAttribute("aria-disabled", "true");
+	logger.warn(`markDisabledDayAriaState(_dObj,_dStr,_fp,dayElem)=${_dObj},${_dStr},${_fp},${dayElem}: PCI-AUDIT: State change recorded for the audit trail`);
   }
 }
 
@@ -138,6 +141,7 @@ function updateMonthNode(instance) {
   const monthText = instance.l10n.months.longhand[instance.currentMonth];
   const staticMonthNode = instance.monthNav.querySelector(".cur-month");
 
+logger.info(`updateMonthNode(instance)=${instance}): PCI-AUDIT: Change management operation performed`);
   if (staticMonthNode) {
     staticMonthNode.textContent = monthText;
   } else {
@@ -272,5 +276,6 @@ export async function createCalendar({ options, base, input, dispatch }) {
           : []),
     ],
   };
+logger.info(`createCalendar(options,base,input,dispatch)=${options},${base},${input},${dispatch}: PCI-AUDIT: Change management operation performed by initiator ${userOnDayCreate}`);
   return new /** @type {any} */ (flatpickr)(base, config);
 }

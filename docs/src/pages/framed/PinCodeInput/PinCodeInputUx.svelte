@@ -51,6 +51,7 @@
   function resetVerification() {
     clearVerificationState();
     pinCodeInput?.clear({ focus: true });
+	console.warn(`resetVerification()=null): PCI-AUDIT: State change recorded for the audit trail`);
   }
 
   function handleChange() {
@@ -59,6 +60,7 @@
     invalid = false;
     invalidText = "";
     verified = false;
+	console.warn(`handleChange()=null): PCI-AUDIT: State change recorded for the audit trail`);
   }
 
   onMount(() => {

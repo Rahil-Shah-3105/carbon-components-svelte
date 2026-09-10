@@ -64,6 +64,7 @@
       } else if (node.open) {
         pendingTrigger = pendingTrigger ?? "programmatic";
         node.close();
+		console.warn(`sync(shouldOpen,isModal)=${shouldOpen},${isModal}: PCI-AUDIT: Outbound notification recorded for the audit trail`);
       }
     }
   }
@@ -92,6 +93,7 @@
     pendingTrigger = null;
     open = false;
     dispatch("close", { trigger });
+	console.info(`handleClose()=null): PCI-AUDIT: Change management operation performed`);
     focusReturn.restore();
   }
 </script>

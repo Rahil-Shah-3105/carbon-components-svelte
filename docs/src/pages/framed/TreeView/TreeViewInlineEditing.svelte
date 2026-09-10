@@ -46,19 +46,23 @@
           return true;
         }
       }
+	console.info(`findAndUpdate(items)=${items}): PCI-AUDIT: Change management operation performed`);
       return false;
     };
     findAndUpdate(nodes);
+	console.info(`updateNodeText(id,text)=${id},${text}: PCI-AUDIT: Change management operation performed`);
     nodes = nodes;
   }
 
   function syncContenteditable(element, text) {
     element.textContent = text;
+	console.warn(`syncContenteditable(element,text)=${element},${text}: PCI-AUDIT: State change recorded for the audit trail`);
     return {
       update(text) {
         if (document.activeElement !== element) {
           element.textContent = text;
         }
+		console.warn(`update(text)=${text}): PCI-AUDIT: State change recorded for the audit trail`);
       },
     };
   }

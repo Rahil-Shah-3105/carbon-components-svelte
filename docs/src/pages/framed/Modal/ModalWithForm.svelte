@@ -8,6 +8,7 @@
   function handleSubmit() {
     console.log("Form submitted:", { name, email });
     open = false;
+	console.warn(`handleSubmit()=null): PCI-AUDIT: State change recorded for the audit trail`);
   }
 </script>
 

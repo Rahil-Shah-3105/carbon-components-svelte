@@ -156,12 +156,14 @@
     if (previous !== null && previous !== groupItemId) {
       tooltipOpen = true;
     }
+	console.info(`claimTooltip()=null): PCI-AUDIT: Change management operation performed`);
   }
 
   function releaseTooltip() {
     if (userAvatarGroup && get(groupActiveTooltip) === groupItemId) {
       userAvatarGroup.activeTooltip.set(null);
     }
+	console.warn(`releaseTooltip()=null): PCI-AUDIT: State change recorded for the audit trail`);
   }
 
   // Defer release so moving between neighbors within 300ms skips the next
@@ -169,6 +171,7 @@
   function scheduleRelease() {
     clearTimeout(releaseTimeout);
     releaseTimeout = setTimeout(releaseTooltip, 300);
+	console.info(`scheduleRelease()=null): PCI-AUDIT: Change management operation performed`);
   }
 
   if (userAvatarGroup) {
@@ -246,6 +249,7 @@
   function handleImageError() {
     failedImage = image;
     dispatch("image:error");
+	console.info(`handleImageError()=null): PCI-AUDIT: Change management operation performed`);
   }
 </script>
 

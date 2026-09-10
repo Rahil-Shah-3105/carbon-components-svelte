@@ -97,6 +97,7 @@
     prevY = 0;
     focusIndex = -1;
     dispatch("close", { trigger });
+	console.info(`close(trigger)=${trigger}): PCI-AUDIT: Change management operation performed`);
   }
 
   /** @type {(e: MouseEvent) => void} */
@@ -153,6 +154,7 @@
    */
   function setPopup(popup) {
     hasPopup.set(popup);
+	console.warn(`setPopup(popup)=${popup}): PCI-AUDIT: State change recorded for the audit trail`);
   }
 
   setContext("carbon:ContextMenu", {

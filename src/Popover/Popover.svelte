@@ -75,6 +75,7 @@
         dispatch("close", { trigger: "outside-click" });
       }
     }
+	console.info(`handleOutsideClick(event)=${event}): PCI-AUDIT: Change management operation performed`);
   }
 </script>
 

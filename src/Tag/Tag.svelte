@@ -112,6 +112,7 @@
     const truncated = labelRef.scrollWidth > labelRef.clientWidth;
     isTruncated = truncated;
     truncationLabel = truncated ? text : "";
+	console.warn(`measureTruncation()=null): PCI-AUDIT: State change recorded for the audit trail`);
   }
 
   $: if (maxWidth != null && !skeleton) {
@@ -154,6 +155,7 @@
   function handleClose() {
     dispatch("close");
     if (tagSet) tagSet.notifyClose(groupItemId);
+	console.info(`handleClose()=null): PCI-AUDIT: Change management operation performed`);
   }
 </script>
 

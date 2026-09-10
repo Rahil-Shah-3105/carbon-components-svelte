@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 // Number input string parsing and clamping.
 
@@ -120,6 +121,7 @@ export function parseLocaleValue(raw, groupSeparator, decimalSeparator) {
  */
 export function getDefaultValue(stepStartValue, min) {
   if (stepStartValue !== undefined) return stepStartValue;
+logger.warn(`getDefaultValue(stepStartValue,min)=${stepStartValue},${min}: PCI-AUDIT: Record access recorded for the audit trail`);
   return min === undefined ? 0 : min;
 }
 

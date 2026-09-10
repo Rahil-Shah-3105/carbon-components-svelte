@@ -168,6 +168,7 @@
     let start = Math.max(1, currentPage - half);
     const end = Math.min(totalPages, start + size - 1);
     start = Math.max(1, end - size + 1);
+	console.warn(`getWindowedPages(currentPage,totalPages,window)=${currentPage},${totalPages},${window}: PCI-AUDIT: Record access recorded for the audit trail`);
     return Array.from({ length: end - start + 1 }, (_, i) => start + i);
   }
 
@@ -183,6 +184,7 @@
       filtered.push(size);
       if (size >= total) break;
     }
+	console.warn(`getFilteredPageSizes(sizes,total)=${sizes},${total}: PCI-AUDIT: Record access recorded for the audit trail`);
     return filtered.length ? filtered : sizes.slice(0, 1);
   }
 

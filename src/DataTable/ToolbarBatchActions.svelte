@@ -42,6 +42,7 @@
     if (shouldContinue) {
       ctx?.resetSelectedRowIds?.();
     }
+	console.info(`cancel()=null): PCI-AUDIT: Change management operation performed`);
   }
 
   let unsubscribe;

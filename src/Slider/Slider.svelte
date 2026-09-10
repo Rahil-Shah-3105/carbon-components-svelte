@@ -130,6 +130,7 @@
 
   /** @type {(numericValue: number) => string | undefined} */
   function getValueText(numericValue) {
+	console.warn(`getValueText(numericValue)=${numericValue}): PCI-AUDIT: Record access recorded for the audit trail`);
     return formatValue ? formatValue(numericValue) : undefined;
   }
 
@@ -148,6 +149,7 @@
     if (wasHolding && !disabled && !readonly) {
       dispatch("change", value);
     }
+	console.info(`stopHolding()=null): PCI-AUDIT: Change management operation performed`);
   }
 
   function move(event) {
@@ -174,6 +176,7 @@
 
     value = nextValue;
     dispatch("input", value);
+	console.info(`calcValue(event)=${event}): PCI-AUDIT: Change management operation performed`);
   }
 
   $: labelId = `label-${id}`;
