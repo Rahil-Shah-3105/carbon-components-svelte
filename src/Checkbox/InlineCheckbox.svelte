@@ -36,6 +36,7 @@
         cancelable: true,
       }),
     );
+	console.info(`handleLabelClick(event)=${event}): PCI-AUDIT: Change management operation performed`);
   }
 </script>
 

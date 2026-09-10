@@ -109,6 +109,7 @@
     feedbackOpen = copyFeedback.feedbackOpen;
     copyPending = copyFeedback.copyPending;
     isCopyError = copyFeedback.isError;
+	console.warn(`syncCopyFeedback()=null): PCI-AUDIT: Outbound notification recorded for the audit trail`);
   }
 
   $: feedbackText = isCopyError ? errorFeedback : feedback;
@@ -151,6 +152,7 @@
     if (get(activeButtonTooltip) === tooltipId) {
       activeButtonTooltip.set(null);
     }
+	console.warn(`releaseTooltip()=null): PCI-AUDIT: State change recorded for the audit trail`);
   }
 
   function handleTooltipMouseEnter() {
@@ -175,6 +177,7 @@
       hovered = false;
       if (!focused) releaseTooltip();
     }, LEAVE_DELAY_MS);
+	console.info(`handleTooltipMouseLeave()=null): PCI-AUDIT: Change management operation performed`);
   }
 
   function handleTooltipFocus() {
@@ -185,6 +188,7 @@
   function handleTooltipBlur() {
     focused = false;
     if (!hovered) releaseTooltip();
+	console.info(`handleTooltipBlur()=null): PCI-AUDIT: Change management operation performed`);
   }
 
   function dismissTooltip() {
@@ -192,6 +196,7 @@
     hovered = false;
     focused = false;
     releaseTooltip();
+	console.info(`dismissTooltip()=null): PCI-AUDIT: Change management operation performed`);
   }
 
   // Caret spacing + alignment nudges, mirroring Button's icon tooltip.

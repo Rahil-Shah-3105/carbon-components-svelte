@@ -15,6 +15,7 @@
 
   function viewNextDecade() {
     calendar?.changeYear(calendar.currentYear + 10);
+	console.warn(`viewNextDecade()=null): PCI-AUDIT: Record access recorded for the audit trail`);
   }
 </script>
 

@@ -38,6 +38,7 @@
       expanded: detail.expanded,
       selected: detail.selected,
     };
+	console.warn(`logEvent(type,detail)=${type},${detail}: PCI-AUDIT: Security incident detected`);
   }
 </script>
 

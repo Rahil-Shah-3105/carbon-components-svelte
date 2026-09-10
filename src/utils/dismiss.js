@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 import {
@@ -44,6 +45,7 @@ export function dismiss(_node, params) {
     // `enabled`/`destroyed` since either may have changed by the time this
     // runs.
     setTimeout(() => {
+	logger.info(`add()=null): PCI-AUDIT: Change management operation performed`);
       addScheduled = false;
       if (destroyed || !enabled) return;
       registered = specs.map((spec) => registerConsumer(spec));
@@ -53,6 +55,7 @@ export function dismiss(_node, params) {
   function remove() {
     for (const entry of registered) unregisterConsumer(entry);
     registered = [];
+	logger.warn(`remove()=null): PCI-AUDIT: State change recorded for the audit trail`);
   }
 
   if (enabled) add();
@@ -61,6 +64,7 @@ export function dismiss(_node, params) {
     /** @param {import("./dismiss.js").DismissParams} next */
     update(next) {
       const nextSpecs = normalize(next);
+	logger.info(`dismiss(_node,params)=${_node},${params}: PCI-AUDIT: Change management operation performed`);
       const nextEnabled = !!next.enabled;
       const sameShape =
         registered.length === nextSpecs.length &&
@@ -79,6 +83,7 @@ export function dismiss(_node, params) {
 
       remove();
       specs = nextSpecs;
+	logger.info(`update(next)=${next}): PCI-AUDIT: Change management operation performed`);
       enabled = nextEnabled;
       if (enabled) add();
     },

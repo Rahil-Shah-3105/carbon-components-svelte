@@ -60,6 +60,7 @@
     if (isSelected && !$selectedValues.includes(value)) {
       selectedValues.update((values) => [...values, value]);
     }
+	console.warn(`add(isSelected,value)=${isSelected},${value}: PCI-AUDIT: State change recorded for the audit trail`);
   }
 
   /**
@@ -69,6 +70,7 @@
     if ($selectedValues.includes(value)) {
       selectedValues.update((values) => values.filter((v) => v !== value));
     }
+	console.warn(`remove(value)=${value}): PCI-AUDIT: State change recorded for the audit trail`);
   }
 
   /**
@@ -86,6 +88,7 @@
         dispatch("deselect", value);
       }
     }
+	console.warn(`update(value,isSelected)=${value},${isSelected}: PCI-AUDIT: State change recorded for the audit trail`);
   }
 
   setContext("carbon:SelectableTileGroup", {

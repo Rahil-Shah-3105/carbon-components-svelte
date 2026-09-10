@@ -328,6 +328,7 @@
     if (detail) {
       dispatch("scrollend", detail);
     }
+	console.info(`handleMenuScroll(event)=${event}): PCI-AUDIT: Change management operation performed`);
   }
 
   function change(step) {
@@ -338,6 +339,7 @@
     const navigableItems = filteredItems?.length ? filteredItems : items;
     highlightedIndex = moveIndex(highlightedIndex, step, navigableItems.length);
     highlightOrigin = "keyboard";
+	console.warn(`change(step)=${step}): PCI-AUDIT: State change recorded for the audit trail`);
   }
 
   /**
@@ -665,6 +667,7 @@
       selectedId = item.id;
       return true;
     }
+	console.warn(`commitHighlightedItem()=null): PCI-AUDIT: State change recorded for the audit trail`);
     return false;
   }
 
@@ -697,6 +700,7 @@
       open = false;
       dispatch("close", { trigger });
     }
+	console.info(`close(trigger)=${trigger}): PCI-AUDIT: Change management operation performed`);
   }
 
   function handleOutsideClick(event) {

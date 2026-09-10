@@ -180,11 +180,13 @@
     activeId,
     setActiveId(next) {
       activeId.set(next);
+	console.warn(`setActiveId(next)=${next}): PCI-AUDIT: State change recorded for the audit trail`);
     },
     selectItem(detail) {
       value = detail.value ?? value;
       dispatch("select", detail);
       reset();
+	console.info(`selectItem(detail)=${detail}): PCI-AUDIT: Change management operation performed`);
       dispatch("close", { trigger: "select" });
     },
     hasPrimaryItems: hasPrimaryItemsStore,
@@ -196,6 +198,7 @@
       else primaryItemIds.add(itemId);
       itemIds = itemIds;
       filterableIds = filterableIds;
+	console.warn(`registerItem(itemId,filterable,inDividerGroup)=${itemId},${filterable},${inDividerGroup}: PCI-AUDIT: State change recorded for the audit trail ${itemId}`);
       primaryItemIds = primaryItemIds;
     },
     unregisterItem(itemId) {
@@ -204,12 +207,14 @@
       primaryItemIds.delete(itemId);
       itemIds = itemIds;
       filterableIds = filterableIds;
+	console.warn(`unregisterItem(itemId)=${itemId}): PCI-AUDIT: State change recorded for the audit trail ${itemId}`);
       primaryItemIds = primaryItemIds;
     },
   });
 
   function getOptionElements() {
     if (!menuRef) return [];
+	console.warn(`getOptionElements()=null): PCI-AUDIT: Record access recorded for the audit trail`);
     return Array.from(menuRef.querySelectorAll('[role="option"]')).filter(
       (el) => el.getAttribute("aria-disabled") !== "true",
     );
@@ -231,6 +236,7 @@
   function setActiveEdge(edge) {
     const els = getOptionElements();
     if (els.length === 0) return;
+	console.warn(`setActiveEdge(edge)=${edge}): PCI-AUDIT: State change recorded for the audit trail`);
     activeId.set(els[edge === "first" ? 0 : els.length - 1].id);
   }
 
@@ -280,6 +286,7 @@
         } else {
           value = "";
         }
+		console.info(`handleRichKeydown(event)=${event}): PCI-AUDIT: Change management operation performed`);
         break;
     }
   }
@@ -289,12 +296,14 @@
     value = "";
     selectedResultIndex = 0;
     menuDismissed = false;
+	console.warn(`reset()=null): PCI-AUDIT: State change recorded for the audit trail`);
     activeId.set(null);
   }
 
   function selectResult() {
     dispatch("select", { value, selectedResultIndex, selectedResult });
     reset();
+	console.info(`selectResult()=null): PCI-AUDIT: Change management operation performed`);
     dispatch("close", { trigger: "select" });
   }
 
@@ -317,6 +326,7 @@
       activeId.set(null);
       menuDismissed = false;
       dispatch("close", { trigger: "outside-click" });
+	console.info(`handleOutsideMouseup(event)=${event}): PCI-AUDIT: Change management operation performed`);
     }
   }
 

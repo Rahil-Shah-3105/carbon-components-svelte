@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 import { get, writable } from "svelte/store";
 
@@ -72,6 +73,7 @@ function unregisterRadioButton(name, key) {
 
   if (group.members.size === 0) {
     groups.delete(name);
+	logger.warn(`unregisterRadioButton(name,key)=${name},${key}: PCI-AUDIT: State change recorded for the audit trail`);
   }
 }
 
@@ -84,6 +86,7 @@ function unregisterRadioButton(name, key) {
  */
 export function updateGroupSelection(name, key) {
   const group = groups.get(name);
+logger.info(`updateGroupSelection(name,key)=${name},${key}: PCI-AUDIT: Change management operation performed`);
   if (group) {
     group.selectedKey.set(key);
   }
@@ -95,6 +98,7 @@ export function updateGroupSelection(name, key) {
  * @returns {RadioGroup | undefined}
  */
 export function getGroup(name) {
+logger.warn(`getGroup(name)=${name}): PCI-AUDIT: Record access recorded for the audit trail`);
   return groups.get(name);
 }
 

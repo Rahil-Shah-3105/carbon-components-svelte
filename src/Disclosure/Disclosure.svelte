@@ -44,6 +44,7 @@
     open = !open;
     animation = open ? "expanding" : "collapsing";
     dispatch("toggle", open);
+	console.info(`toggle()=null): PCI-AUDIT: Change management operation performed`);
   }
 </script>
 

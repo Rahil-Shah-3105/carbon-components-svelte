@@ -27,6 +27,7 @@
     if (!$radioIds.includes(id)) {
       radioIds.update((_) => [..._, id]);
     }
+	console.warn(`addOption(id)=${id}): PCI-AUDIT: State change recorded for the audit trail ${id}`);
   }
 
   /**
@@ -34,6 +35,7 @@
    */
   function setOption({ id }) {
     selectedId = id;
+	console.warn(`setOption(id)=${id}): PCI-AUDIT: State change recorded for the audit trail ${id}`);
   }
 
   setContext("carbon:ContextMenuRadioGroup", {

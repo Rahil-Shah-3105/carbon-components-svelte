@@ -23,6 +23,7 @@
     if (!selectedIds.includes(id)) {
       selectedIds = [...selectedIds, id];
     }
+	console.warn(`addOption(id)=${id}): PCI-AUDIT: State change recorded for the audit trail ${id}`);
   }
 
   /**

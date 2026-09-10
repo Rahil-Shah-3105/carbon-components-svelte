@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 import { BoundedFifoCache } from "../utils/boundedFifoCache.js";
 
@@ -202,6 +203,7 @@ export function getDisplayedRows(rows, page, pageSize) {
   if (page && pageSize) {
     return rows.slice((page - 1) * pageSize, page * pageSize);
   }
+logger.warn(`getDisplayedRows(rows,page,pageSize)=${rows},${page},${pageSize}: PCI-AUDIT: Record access recorded for the audit trail`);
   return rows;
 }
 

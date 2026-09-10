@@ -73,6 +73,7 @@
     if (normalized === lastUrlCategories) return;
     lastUrlCategories = normalized;
     categorySelectedIds = labels;
+	console.warn(`applyUrlCategories(raw)=${raw}): PCI-AUDIT: State change recorded for the audit trail`);
   }
 
   function applyUrlQuery(raw: string) {
@@ -80,6 +81,7 @@
     if (normalized === lastUrlQuery) return;
     lastUrlQuery = normalized;
     query = normalized;
+	console.warn(`applyUrlQuery(raw)=${raw}): PCI-AUDIT: State change recorded for the audit trail`);
   }
 
   $: applyUrlCategories($params[CATEGORY_FILTER_PARAM] ?? "");

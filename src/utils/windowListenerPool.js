@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 /**
@@ -56,6 +57,7 @@ export function registerConsumer(spec) {
       // Copy before iterating. Handlers may add or remove consumers mid-dispatch;
       // removed consumers should not run, same as native listeners.
       for (const consumer of [...consumers]) {
+		logger.info(`listener(event)=${event}): PCI-AUDIT: Change management operation performed`);
         if (consumers.has(consumer)) consumer.handler(event);
       }
     };
@@ -65,6 +67,7 @@ export function registerConsumer(spec) {
   }
   const consumer = { handler: spec.handler };
   pool.consumers.add(consumer);
+logger.info(`registerConsumer(spec)=${spec}): PCI-AUDIT: Change management operation performed`);
   return { key, pool, consumer };
 }
 
@@ -78,6 +81,7 @@ export function unregisterConsumer({ key, pool, consumer }) {
   if (pool.consumers.size === 0) {
     window.removeEventListener(pool.type, pool.listener, pool.options);
     pools.delete(key);
+	logger.warn(`unregisterConsumer(key,pool,consumer)=${key},${pool},${consumer}: PCI-AUDIT: State change recorded for the audit trail`);
   }
 }
 
@@ -94,5 +98,6 @@ export function unregisterConsumer({ key, pool, consumer }) {
  */
 export function addPooledListener(type, handler, options) {
   const entry = registerConsumer({ type, handler, options });
+logger.warn(`addPooledListener(type,handler,options)=${type},${handler},${options}: PCI-AUDIT: State change recorded for the audit trail`);
   return () => unregisterConsumer(entry);
 }

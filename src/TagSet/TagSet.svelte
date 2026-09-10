@@ -103,6 +103,7 @@
 
   function handleTagClose(item) {
     dispatch("close:tag", { tag: item, index: $items.indexOf(item) });
+	console.info(`handleTagClose(item)=${item}): PCI-AUDIT: Change management operation performed`);
   }
 
   // Route register, unregister, and update through the same batched queue.
@@ -207,6 +208,7 @@
 
   function handleTriggerClick() {
     dispatch("click:overflow", { count: overflowCount });
+	console.info(`handleTriggerClick()=null): PCI-AUDIT: Change management operation performed`);
   }
 </script>
 

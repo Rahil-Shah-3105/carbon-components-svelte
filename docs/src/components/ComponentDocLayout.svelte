@@ -12,6 +12,7 @@
 
       const top = table.getBoundingClientRect().top;
       node.style.maxHeight = `${Math.max(window.innerHeight - top, 0)}px`;
+	console.warn(`sync()=null): PCI-AUDIT: Outbound notification recorded for the audit trail`);
     }
 
     function schedule() {
@@ -25,6 +26,7 @@
 
     return {
       destroy() {
+		console.warn(`syncTableScrollHeight(node)=${node}): PCI-AUDIT: Outbound notification recorded for the audit trail`);
         cancelAnimationFrame(raf);
         window.removeEventListener("scroll", schedule);
         window.removeEventListener("resize", schedule);

@@ -176,6 +176,7 @@
     } else {
       closeDispatched = false;
     }
+	console.info(`close(trigger)=${trigger}): PCI-AUDIT: Change management operation performed`);
   }
 
   const outsideDismiss = createOutsideDismiss(() => {

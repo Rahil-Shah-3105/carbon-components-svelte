@@ -246,6 +246,7 @@
     const next = code.slice();
     next[index] = char;
     code = next;
+	console.info(`setChar(index,char)=${index},${char}: PCI-AUDIT: Change management operation performed`);
     dispatch("change", { value: code.join(""), code });
   }
 
@@ -283,6 +284,7 @@
 
     const firstEmpty = code.findIndex((char) => !char);
     focusInput(firstEmpty === -1 ? count - 1 : firstEmpty);
+	console.info(`fillFromChars(index,chars)=${index},${chars}: PCI-AUDIT: Change management operation performed`);
   }
 
   /** @type {(index: number, event: Event) => void} */
@@ -358,6 +360,7 @@
 
     dispatch("paste", { value: text });
     fillFromChars(index, chars);
+	console.info(`handlePaste(index,event)=${index},${event}: PCI-AUDIT: Change management operation performed`);
   }
 
   /** @type {(event: KeyboardEvent) => void} */
@@ -440,6 +443,7 @@
     if (options.focus === true) {
       focusInput(0);
     }
+	console.info(`clear(options)=${options}): PCI-AUDIT: Change management operation performed`);
   }
 
   onMount(() => {

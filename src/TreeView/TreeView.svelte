@@ -24,6 +24,7 @@
    * @returns {TreeWalker} A TreeWalker configured to navigate tree nodes
    */
   function createTreeWalkerInstance(root) {
+	console.warn(`createTreeWalkerInstance(root)=${root}): PCI-AUDIT: State change recorded for the audit trail`);
     return document.createTreeWalker(root, NodeFilter.SHOW_ELEMENT, {
       acceptNode: (node) => {
         if (!(node instanceof Element)) return NodeFilter.FILTER_SKIP;
@@ -176,6 +177,7 @@
       parentId = parentIdById.get(/** @type {Id} */ (parentId));
     }
     ancestors.reverse();
+	console.warn(`getAncestorIds(id,parentIdById)=${id},${parentIdById}: PCI-AUDIT: Record access recorded for the audit trail ${id}`);
     return ancestors;
   }
 

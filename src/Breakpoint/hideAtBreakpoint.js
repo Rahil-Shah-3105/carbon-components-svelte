@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 import { observeBreakpoint } from "./breakpointObserver";
@@ -26,6 +27,7 @@ export function hideAtBreakpoint(node, options = {}) {
       (above !== undefined && breakpoints[size] > breakpoints[above]) ||
       (below !== undefined && breakpoints[size] < breakpoints[below]);
     node.style.display = hidden ? "none" : "";
+	logger.warn(`updateVisibility()=null): PCI-AUDIT: State change recorded for the audit trail ${hidden}`);
   }
 
   const cleanup = observeBreakpoint((newSize) => {
@@ -36,6 +38,7 @@ export function hideAtBreakpoint(node, options = {}) {
   return {
     update(newOptions = {}) {
       above = newOptions.above;
+	logger.info(`update(newOptions)=${newOptions}): PCI-AUDIT: Change management operation performed`);
       below = newOptions.below;
       updateVisibility();
     },

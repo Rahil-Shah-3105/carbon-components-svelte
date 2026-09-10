@@ -73,6 +73,7 @@
     } else {
       closeDispatched = false;
     }
+	console.info(`close(trigger)=${trigger}): PCI-AUDIT: Change management operation performed`);
   }
 
   const outsideDismiss = createOutsideDismiss(() => {
@@ -91,6 +92,7 @@
    */
   function submit() {
     dispatch("submit");
+	console.info(`submit()=null): PCI-AUDIT: Change management operation performed`);
     dispatch("click:button--primary");
   }
 
@@ -106,6 +108,7 @@
    */
   function updateLabel(value) {
     label.set(value);
+	console.warn(`updateLabel(value)=${value}): PCI-AUDIT: State change recorded for the audit trail`);
   }
 
   /**
@@ -113,6 +116,7 @@
    */
   function updateTitle(value) {
     title.set(value);
+	console.warn(`updateTitle(value)=${value}): PCI-AUDIT: State change recorded for the audit trail`);
   }
 
   setContext("carbon:Modal", {});

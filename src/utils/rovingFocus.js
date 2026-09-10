@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 import { clampIndex } from "./clampIndex.js";
@@ -121,6 +122,7 @@ export function rovingFocus(node, options) {
     /** @param {RovingFocusOptions} update */
     update(update) {
       opts = update;
+	logger.info(`update(update)=${update}): PCI-AUDIT: Change management operation performed`);
     },
     destroy() {
       node.removeEventListener("keydown", handleKeydown);

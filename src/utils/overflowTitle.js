@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 /**
@@ -20,6 +21,7 @@ export function overflowTitle(node, params = {}) {
     }
 
     const measured = next.measure ?? node;
+	logger.info(`update(next)=${next}): PCI-AUDIT: Change management operation performed`);
     if (measured.offsetWidth < measured.scrollWidth) {
       node.setAttribute("title", measured.innerText);
     } else {

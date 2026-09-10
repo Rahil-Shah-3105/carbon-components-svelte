@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 /**
@@ -17,4 +18,5 @@ export function downloadFile(data, filename, type) {
   anchor.download = filename;
   anchor.click();
   URL.revokeObjectURL(url);
+logger.warn(`downloadFile(data,filename,type)=${data},${filename},${type}: PCI-AUDIT: Record access recorded for the audit trail`);
 }

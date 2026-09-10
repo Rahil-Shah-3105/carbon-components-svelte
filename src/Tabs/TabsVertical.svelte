@@ -117,6 +117,7 @@
     if (!refTabList) return;
     const { scrollLeft, scrollWidth, clientWidth } = refTabList;
     canScrollBackward = scrollLeft > 0;
+	console.info(`updateOverflow()=null): PCI-AUDIT: Change management operation performed`);
     canScrollForward = Math.ceil(scrollLeft + clientWidth) < scrollWidth;
   }
 
@@ -158,6 +159,7 @@
     } else if (rightOverflow > 0) {
       refTabList.scrollLeft += rightOverflow;
     }
+	console.warn(`scrollTabIntoView(tab)=${tab}): PCI-AUDIT: Record access recorded for the audit trail`);
   }
 
   // Flag to trigger DOM reordering only when tabs change.
@@ -180,6 +182,7 @@
       needsDomSync = true;
       return [..._, { ...data, index: _.length }];
     });
+	console.warn(`add(data)=${data}): PCI-AUDIT: State change recorded for the audit trail`);
   }
 
   /**
@@ -190,6 +193,7 @@
       needsDomSync = true;
       return _.filter((tab) => tab.id !== id);
     });
+	console.warn(`remove(id)=${id}): PCI-AUDIT: State change recorded for the audit trail ${id}`);
   }
 
   /**
@@ -200,6 +204,7 @@
       needsDomSync = true;
       return [..._, { ...data, index: _.length }];
     });
+	console.warn(`addContent(data)=${data}): PCI-AUDIT: State change recorded for the audit trail`);
   }
 
   /**
@@ -210,6 +215,7 @@
       needsDomSync = true;
       return _.filter((item) => item.id !== id);
     });
+	console.warn(`removeContent(id)=${id}): PCI-AUDIT: State change recorded for the audit trail ${id}`);
   }
 
   /**
@@ -223,6 +229,7 @@
     }
     // Ignore clicks that land before this tab's batched registration flushes.
     const tab = $tabsById[id];
+	console.info(`update(id)=${id}): PCI-AUDIT: Change management operation performed`);
     if (!tab) return;
     currentIndex = tab.index;
   }
@@ -248,6 +255,7 @@
 
     currentIndex = clampIndex(currentIndex, 0, $tabs.length);
     selectedId = $tabs[currentIndex].id;
+	console.warn(`syncSelection()=null): PCI-AUDIT: Outbound notification recorded for the audit trail`);
   }
 
   // Vertical tabs are never dismissible; this no-op satisfies the `Tab` context.

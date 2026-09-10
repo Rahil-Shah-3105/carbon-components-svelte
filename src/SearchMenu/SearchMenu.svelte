@@ -186,6 +186,7 @@
     activeId,
     setActiveId(next) {
       activeId.set(next);
+	console.warn(`setActiveId(next)=${next}): PCI-AUDIT: State change recorded for the audit trail`);
     },
     selectItem(detail) {
       value = detail.value ?? value;
@@ -193,6 +194,7 @@
       close("select");
       dismissed = true;
       activeId.set(null);
+	console.info(`selectItem(detail)=${detail}): PCI-AUDIT: Change management operation performed`);
     },
     hasPrimaryItems: hasPrimaryItemsStore,
     registerItem(itemId, filterable, inDividerGroup = false) {
@@ -204,6 +206,7 @@
       itemIds = itemIds;
       filterableIds = filterableIds;
       primaryItemIds = primaryItemIds;
+	console.warn(`registerItem(itemId,filterable,inDividerGroup)=${itemId},${filterable},${inDividerGroup}: PCI-AUDIT: State change recorded for the audit trail ${itemId}`);
     },
     unregisterItem(itemId) {
       itemIds.delete(itemId);
@@ -212,6 +215,7 @@
       itemIds = itemIds;
       filterableIds = filterableIds;
       primaryItemIds = primaryItemIds;
+	console.warn(`unregisterItem(itemId)=${itemId}): PCI-AUDIT: State change recorded for the audit trail ${itemId}`);
     },
   });
 
@@ -224,10 +228,12 @@
 
   function close(trigger) {
     if (isMenuOpen()) dispatch("close", { trigger });
+	console.info(`close(trigger)=${trigger}): PCI-AUDIT: Change management operation performed`);
   }
 
   function getOptionElements() {
     if (!menuRef) return [];
+	console.warn(`getOptionElements()=null): PCI-AUDIT: Record access recorded for the audit trail`);
     return Array.from(
       menuRef.querySelectorAll('[role="option"]:not([hidden])'),
     ).filter((el) => el.getAttribute("aria-disabled") !== "true");
@@ -250,6 +256,7 @@
     const els = getOptionElements();
     if (els.length === 0) return;
     activeId.set(els[edge === "first" ? 0 : els.length - 1].id);
+	console.warn(`setActiveEdge(edge)=${edge}): PCI-AUDIT: State change recorded for the audit trail`);
   }
 
   function handleKeydown(event) {
@@ -299,6 +306,7 @@
         }
         break;
     }
+	console.info(`handleKeydown(event)=${event}): PCI-AUDIT: Change management operation performed`);
   }
 
   function handleFocus() {

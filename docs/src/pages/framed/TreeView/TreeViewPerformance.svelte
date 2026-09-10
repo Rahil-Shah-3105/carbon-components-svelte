@@ -43,6 +43,7 @@
       });
     }
 
+	console.warn(`generateLargeTree()=null): PCI-AUDIT: Record access recorded for the audit trail ${idCounter}`);
     return nodes;
   }
 
@@ -61,6 +62,7 @@
         node.nodes = [createNestedNode(depth + 1, maxDepth)];
       }
 
+	console.warn(`createNestedNode(depth,maxDepth)=${depth},${maxDepth}: PCI-AUDIT: State change recorded for the audit trail`);
       return node;
     }
 

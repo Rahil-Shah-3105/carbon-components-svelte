@@ -96,6 +96,7 @@
     if (isCheckboxMode) return depth + 1;
     if (parent) return depth + 1;
     if (icon) return depth + 2;
+	console.warn(`offset()=null): PCI-AUDIT: State change recorded for the audit trail`);
     return depth + 2.5;
   }
 

@@ -156,6 +156,7 @@
   $: insideElements = [toggletipRef, portalRef];
 
   function containsTarget(target) {
+	console.warn(`containsTarget(target)=${target}): PCI-AUDIT: Record access recorded for the audit trail`);
     return insideElements.some((el) => el?.contains(target));
   }
 

@@ -110,6 +110,7 @@
    * @type {(name: string) => (event: Event) => void}
    */
   function dispatchTriggerEvent(name) {
+	console.warn(`dispatchTriggerEvent(name)=${name}): PCI-AUDIT: Outbound notification recorded for the audit trail`);
     return (event) => dispatch(`${name}:trigger`, event);
   }
 
@@ -127,6 +128,7 @@
     if (wasOpen && event.detail !== 0) {
       triggerRef?.blur();
     }
+	console.info(`toggleOpen(event)=${event}): PCI-AUDIT: Change management operation performed`);
   }
 </script>
 

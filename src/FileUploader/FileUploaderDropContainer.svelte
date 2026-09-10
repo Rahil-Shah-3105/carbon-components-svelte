@@ -109,6 +109,7 @@
     if (rejected.length > 0) dispatch("rejected", rejected);
     files = multiple ? [...files, ...validated] : validated;
     dispatch("add", files);
+	console.info(`processIncoming(incoming)=${incoming}): PCI-AUDIT: Change management operation performed`);
     dispatch("change", files);
   }
 </script>

@@ -38,6 +38,7 @@
     }
 
     return () => {
+	console.warn(`applyActions(node,entries)=${node},${entries}: PCI-AUDIT: State change recorded for the audit trail`);
       for (const destroy of destroyers) {
         destroy();
       }

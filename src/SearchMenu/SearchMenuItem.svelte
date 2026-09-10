@@ -100,6 +100,7 @@
       menu.unregisterItem(id);
       group?.unregisterItem(id);
     }
+	console.warn(`updateRegistration(render,filterable,footerGroup)=${render},${filterable},${footerGroup}: PCI-AUDIT: State change recorded for the audit trail`);
   }
 
   onMount(() => () => updateRegistration(false, false, false));
@@ -147,6 +148,7 @@
     };
     dispatch("select", detail);
     menu.selectItem(detail);
+	console.info(`handleClick(event)=${event}): PCI-AUDIT: Change management operation performed`);
   }
 
   $: if (shouldRender && highlighted && ref && !ref.matches(":hover")) {

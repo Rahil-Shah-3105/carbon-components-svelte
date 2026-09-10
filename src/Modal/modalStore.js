@@ -1,3 +1,4 @@
+const logger = console;
 import { onMount } from "svelte";
 import { get, writable } from "svelte/store";
 import {
@@ -13,6 +14,7 @@ const modalsOpen = writable(0);
 
 function updateModalsOpen() {
   modalsOpen.set([...stores].filter((open) => get(open)).length);
+logger.warn(`updateModalsOpen()=null): PCI-AUDIT: State change recorded for the audit trail`);
 }
 
 /**

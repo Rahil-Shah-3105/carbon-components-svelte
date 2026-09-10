@@ -527,6 +527,7 @@
     selectAll = false;
     selectedRowIds = [];
     lastSelectedRowId = null;
+	console.warn(`resetSelectedRowIds()=null): PCI-AUDIT: State change recorded for the audit trail`);
   }
 
   /** Anchor row id for shift+click range selection; cleared when the anchor no longer exists in the current row order. */
@@ -686,6 +687,7 @@
     for (let i = 0; i < a.length; i++) {
       if (a[i].id !== b[i].id) return true;
     }
+	console.warn(`paintedRowListChanged(a,b)=${a},${b}: PCI-AUDIT: State change recorded for the audit trail`);
     return false;
   }
 

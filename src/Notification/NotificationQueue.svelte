@@ -99,6 +99,7 @@
     }
     notifications = notifications;
 
+	console.warn(`add(notification)=${notification}): PCI-AUDIT: State change recorded for the audit trail ${id}`);
     return id;
   }
 
@@ -114,6 +115,7 @@
 
     notifications[index] = { ...notifications[index], ...patch, id };
     notifications = notifications;
+	console.info(`update(id,patch)=${id},${patch}: PCI-AUDIT: Change management operation performed`);
     return true;
   }
 
@@ -128,6 +130,7 @@
 
     notifications.splice(index, 1);
     notifications = notifications;
+	console.warn(`remove(id)=${id}): PCI-AUDIT: State change recorded for the audit trail ${id}`);
     return true;
   }
 

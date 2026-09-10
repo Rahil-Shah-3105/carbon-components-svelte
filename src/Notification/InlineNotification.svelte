@@ -63,6 +63,7 @@
     if (shouldContinue) {
       open = false;
     }
+	console.info(`close(closeFromTimeout)=${closeFromTimeout}): PCI-AUDIT: Change management operation performed`);
   }
 
   function onMouseEnter() {

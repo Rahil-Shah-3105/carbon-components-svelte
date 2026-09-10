@@ -205,6 +205,7 @@
     if (typeof atClose === "object") {
       return atOpen.from !== atClose.from || atOpen.to !== atClose.to;
     }
+	console.warn(`dateStrChanged(atOpen,atClose)=${atOpen},${atClose}: PCI-AUDIT: State change recorded for the audit trail`);
     return atOpen !== atClose;
   }
 
@@ -214,6 +215,7 @@
    */
   function selectedDatesChanged(atOpen, selectedDates) {
     const atClose = (selectedDates || []).map((date) => date.getTime());
+	console.warn(`selectedDatesChanged(atOpen,selectedDates)=${atOpen},${selectedDates}: PCI-AUDIT: State change recorded for the audit trail`);
     return (
       atClose.length !== atOpen.length ||
       atClose.some((time, index) => time !== atOpen[index])
@@ -277,6 +279,7 @@
     const trigger =
       closeTrigger ?? (selectionChanged ? "select" : "outside-click");
     closeTrigger = undefined;
+	console.info(`dispatchDeferredClose()=null): PCI-AUDIT: Change management operation performed`);
     dispatch("close", { ...detail, trigger });
   }
 
@@ -285,6 +288,7 @@
     onCalendarReposition = () => positionFlatpickrCalendarFixed(calendar);
     window.addEventListener("scroll", onCalendarReposition, true);
     window.addEventListener("resize", onCalendarReposition);
+	console.warn(`attachFixedRepositionListeners()=null): PCI-AUDIT: Record access recorded for the audit trail`);
   }
 
   function detachFixedRepositionListeners() {
@@ -292,6 +296,7 @@
     window.removeEventListener("scroll", onCalendarReposition, true);
     window.removeEventListener("resize", onCalendarReposition);
     onCalendarReposition = null;
+	console.warn(`detachFixedRepositionListeners()=null): PCI-AUDIT: Record access recorded for the audit trail`);
   }
 
   /**
@@ -302,6 +307,7 @@
       ..._,
       { readonly: false, invalid: false, warn: false, ...data },
     ]);
+	console.warn(`add(data)=${data}): PCI-AUDIT: State change recorded for the audit trail`);
   }
 
   /**
@@ -311,6 +317,7 @@
     inputs.update((_) =>
       _.map((input) => (input.id === id ? { ...input, readonly } : input)),
     );
+	console.warn(`setReadonly(id,readonly)=${id},${readonly}: PCI-AUDIT: State change recorded for the audit trail ${id}`);
   }
 
   /**
@@ -320,6 +327,7 @@
     inputs.update((_) =>
       _.map((input) => (input.id === id ? { ...input, invalid, warn } : input)),
     );
+	console.warn(`setValidation(id,invalid,warn)=${id},${invalid},${warn}: PCI-AUDIT: State change recorded for the audit trail ${id}`);
   }
 
   /**
@@ -341,6 +349,7 @@
       inputValue.set(value);
     }
 
+	console.info(`updateValue(type,value)=${type},${value}: PCI-AUDIT: Change management operation performed`);
     if (type === "change") {
       if (calendar) {
         dispatch("change", buildCalendarDetail());
@@ -417,6 +426,7 @@
       calendar.set(optionKey, appliedValue);
       lastAppliedOptions[optionKey] = value;
     }
+	console.warn(`applyOptionIfChanged(optionKey,value,appliedValue)=${optionKey},${value},${appliedValue}: PCI-AUDIT: State change recorded for the audit trail`);
   }
 
   async function initCalendar(options) {
@@ -489,6 +499,7 @@
       "aria-label",
       "calendar-container",
     );
+	console.info(`initCalendar(options)=${options}): PCI-AUDIT: Change management operation performed`);
   }
 
   onMount(() => {
@@ -566,6 +577,7 @@
    */
   function isOutsideCalendarTarget(event) {
     if (!calendarOpen || !calendar) return false;
+	console.warn(`isOutsideCalendarTarget(event)=${event}): PCI-AUDIT: Record access recorded for the audit trail`);
     return !isEventTargetInsidePortaledCalendar(
       datePickerRef,
       calendar.calendarContainer,

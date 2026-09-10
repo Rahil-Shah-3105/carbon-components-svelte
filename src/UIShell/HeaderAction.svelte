@@ -106,6 +106,7 @@
       isOpen = false;
       dispatch("close", { trigger: "outside-click" });
     }
+	console.info(`handleOutsideClick(event)=${event}): PCI-AUDIT: Change management operation performed`);
   }
 
   function handleKeydown(event) {
@@ -114,6 +115,7 @@
       dispatch("close", { trigger: "escape-key" });
       ref?.focus();
     }
+	console.info(`handleKeydown(event)=${event}): PCI-AUDIT: Change management operation performed`);
   }
 </script>
 

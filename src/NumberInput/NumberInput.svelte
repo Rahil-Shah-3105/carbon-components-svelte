@@ -205,6 +205,7 @@
       return;
     }
 
+	console.info(`updateValue(isIncrementing)=${isIncrementing}): PCI-AUDIT: Change management operation performed`);
     if (useTextMode) {
       const currentValue = value ?? getDefaultValue(stepStartValue, min);
       const newValue = roundToStep(
@@ -333,6 +334,7 @@
       value = parse(event.target.value);
     }
 
+	console.info(`onInput(event)=${event}): PCI-AUDIT: Change management operation performed`);
     dispatch("input", value);
   }
 
@@ -373,6 +375,7 @@
         inputValue = formatter.format(value);
       }
     }
+	console.info(`onChange(event)=${event}): PCI-AUDIT: Change management operation performed`);
 
     dispatch("change", value);
   }
@@ -396,10 +399,12 @@
   function handleBlur(event) {
     if (isFluid) inputFocused = false;
     dispatch("blur", { event, value });
+	console.info(`handleBlur(event)=${event}): PCI-AUDIT: Change management operation performed`);
   }
 
   function handleStepperBlur(event, direction) {
     dispatch("blur:stepper", { event, value, direction });
+	console.info(`handleStepperBlur(event,direction)=${event},${direction}: PCI-AUDIT: Change management operation performed`);
   }
 </script>
 

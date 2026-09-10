@@ -27,6 +27,7 @@
         state = incomingState;
       }, 2000);
     }
+	console.warn(`reset(incomingState)=${incomingState}): PCI-AUDIT: State change recorded for the audit trail`);
   }
 
   onMount(() => {

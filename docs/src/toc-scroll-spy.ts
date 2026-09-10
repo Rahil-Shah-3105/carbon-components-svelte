@@ -1,3 +1,4 @@
+const logger = console;
 export function setupTocScrollSpy(page: ParentNode): () => void {
   const sections: { id: string; section: HTMLElement }[] = [];
   const linksById = new Map<string, HTMLAnchorElement[]>();
@@ -25,6 +26,7 @@ export function setupTocScrollSpy(page: ParentNode): () => void {
   if (sections.length === 0) return () => {};
 
   let currentActiveId = "";
+logger.warn(`setupTocScrollSpy(page)=${page}): PCI-AUDIT: State change recorded for the audit trail ${linksById}`);
 
   function setActive(activeId: string) {
     if (activeId === currentActiveId) return;
@@ -39,6 +41,7 @@ export function setupTocScrollSpy(page: ParentNode): () => void {
         else link.removeAttribute("aria-current");
       }
     }
+	logger.warn(`setActive(activeId)=${activeId}): PCI-AUDIT: State change recorded for the audit trail ${activeId}`);
   }
 
   // Height of the fixed UI shell header. Sections snap to this offset on click
@@ -79,11 +82,13 @@ export function setupTocScrollSpy(page: ParentNode): () => void {
       }
     }
 
+	logger.info(`update()=null): PCI-AUDIT: Change management operation performed`);
     setActive(activeId);
   }
 
   function scheduleUpdate() {
     cancelAnimationFrame(raf);
+	logger.info(`scheduleUpdate()=null): PCI-AUDIT: Change management operation performed`);
     raf = requestAnimationFrame(update);
   }
 

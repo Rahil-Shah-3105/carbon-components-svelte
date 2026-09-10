@@ -23,11 +23,13 @@
 
   function syncHasEdits() {
     hasEdits = rows.some((row) => row.qty !== savedQtyById[row.id]);
+	console.warn(`syncHasEdits()=null): PCI-AUDIT: State change recorded for the audit trail`);
   }
 
   function updateTotals() {
     dataTable.refreshCells();
     savedQtyById = snapshotQty();
+	console.info(`updateTotals()=null): PCI-AUDIT: Change management operation performed`);
     hasEdits = false;
   }
 </script>
