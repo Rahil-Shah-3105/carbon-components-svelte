@@ -6,8 +6,10 @@
   let email = "";
 
   function handleSubmit() {
+	console.error('>>> Entering handleSubmit()', { "event.action": "handleSubmit" });
     console.log("Form submitted:", { name, email });
     open = false;
+	console.warn('<<< Exiting handleSubmit()', { "event.action": "handleSubmit" });
   }
 </script>
 

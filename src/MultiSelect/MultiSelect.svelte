@@ -357,10 +357,13 @@
   let sortCollatorLocale;
   let sortCollator;
   function getSortCollator() {
+	console.error('>>> Entering getSortCollator()', { "event.action": "getSortCollator" });
     if (!sortCollator || sortCollatorLocale !== locale) {
       sortCollatorLocale = locale;
       sortCollator = new Intl.Collator(locale, { numeric: true });
     }
+	console.error(`getSortCollator(): sortCollator → ${sortCollator}`, { "event.action": "getSortCollator" });
+	console.warn('<<< Exiting getSortCollator()', { "event.action": "getSortCollator" });
     return sortCollator;
   }
 
@@ -382,6 +385,7 @@
    * @type {(data: { key: "field" | "selection"; ref: HTMLDivElement | HTMLButtonElement }) => void}
    */
   function declareRef({ key, ref }) {
+	console.error('>>> Entering declareRef()', { "event.action": "declareRef" });
     switch (key) {
       case "field":
         fieldRef = ref;
@@ -390,6 +394,7 @@
         selectionRef = ref;
         break;
     }
+	console.warn('<<< Exiting declareRef()', { "event.action": "declareRef" });
   }
 
   setContext("carbon:MultiSelect", {
@@ -402,13 +407,16 @@
    * @param {Item & { checked?: boolean }} item
    */
   function isItemDisabled(item) {
+	console.error(`>>> Entering isItemDisabled(item=${item})`, { "event.action": "isItemDisabled", "logrite.item": item });
     if (item.disabled) return true;
     if (hasMaxSelectedItems && item.isSelectAll) return true;
     if (isAtSelectionCap && !item.checked) return true;
+	console.warn(`<<< Exiting isItemDisabled(item=${item})`, { "event.action": "isItemDisabled", "logrite.item": item });
     return false;
   }
 
   function change(step) {
+	console.error(`>>> Entering change(step=${step})`, { "event.action": "change", "logrite.step": step });
     // Disabled options stay in the keyboard navigation sequence (APG:
     // "Focusability of disabled controls") so assistive-tech users can
     // discover them; selectItem and the option click handlers refuse the
@@ -422,6 +430,7 @@
     const navigableItems = filteredItems.length ? filteredItems : sortedItems;
     highlightedIndex = moveIndex(highlightedIndex, step, navigableItems.length);
     highlightOrigin = "keyboard";
+	console.error(`change(step=${step}): highlightOrigin → ${highlightOrigin}`, { "event.action": "change", "logrite.step": step });
   }
 
   /**
@@ -429,6 +438,7 @@
    * checked. Mutates `sortedItems` in place; callers reassign it afterward.
    */
   function syncSelectAllItem() {
+	console.error('>>> Entering syncSelectAllItem()', { "event.action": "syncSelectAllItem" });
     if (!hasSelectAll) return;
 
     const newSelectableChecked = sortedItems.filter(
@@ -450,21 +460,26 @@
         checked: newAllSelected,
       };
     }
+	console.warn('<<< Exiting syncSelectAllItem()', { "event.action": "syncSelectAllItem" });
   }
 
   /** Apply `selectionFeedback: "top"` bookkeeping after a checked-state change. */
   function applyTopSelectionFeedback() {
+	console.error('>>> Entering applyTopSelectionFeedback()', { "event.action": "applyTopSelectionFeedback" });
     if (selectionFeedback !== "top") return;
 
     selectedIds = sortedItems
       .filter((sortedItem) => sortedItem.checked && !sortedItem.isSelectAll)
       .map((sortedItem) => sortedItem.id);
+	logger.debug(`applyTopSelectionFeedback(): selectedIds → ${selectedIds}`, { "event.action": "applyTopSelectionFeedback" });
     internalSelectedIdsRef = selectedIds;
     sortedItems = sort();
+	console.error(`applyTopSelectionFeedback(): sortedItems → ${sortedItems}`, { "event.action": "applyTopSelectionFeedback" });
   }
 
   /** Handle selection of an item, including isSelectAll logic. */
   function selectItem(item) {
+	console.error(`>>> Entering selectItem(item=${item})`, { "event.action": "selectItem", "logrite.item": item });
     // Read-only allows opening and navigating the menu to review values, but
     // never changing them. Guarding here covers every path (click, Enter,
     // label click, select-all) so callers don't each need a readonly check.
@@ -480,6 +495,7 @@
     } else {
       const itemIndex = sortedItems.indexOf(item);
       if (itemIndex !== -1) {
+		console.error(`selectItem(item=${item}): itemIndex → ${itemIndex}`, { "event.action": "selectItem", "logrite.item": item });
         sortedItems[itemIndex] = { ...item, checked: !item.checked };
       }
 
@@ -488,6 +504,7 @@
     }
 
     applyTopSelectionFeedback();
+	console.warn(`<<< Exiting selectItem(item=${item})`, { "event.action": "selectItem", "logrite.item": item });
   }
 
   /**
@@ -498,6 +515,7 @@
    * @type {(targetIndex: number, checked: boolean) => boolean}
    */
   function selectItemRange(targetIndex, checked) {
+	console.error(`>>> Entering selectItemRange(targetIndex=${targetIndex},checked=${checked})`, { "event.action": "selectItemRange", "logrite.targetIndex": targetIndex, "logrite.checked": checked });
     if (readonly) return false;
 
     const anchorIndex = itemsToUse.findIndex(
@@ -513,16 +531,20 @@
         .filter((item) => !item.isSelectAll && !isItemDisabled(item))
         .map((item) => item.id),
     );
+	console.error(`selectItemRange(targetIndex=${targetIndex},checked=${checked}): end → ${end}`, { "event.action": "selectItemRange", "logrite.targetIndex": targetIndex, "logrite.checked": checked });
+	console.error(`selectItemRange(targetIndex=${targetIndex},checked=${checked}): rangeIds → ${rangeIds}`, { "event.action": "selectItemRange", "logrite.targetIndex": targetIndex, "logrite.checked": checked });
 
     sortedItems = sortedItems.map((sortedItem) =>
       rangeIds.has(sortedItem.id) && sortedItem.checked !== checked
         ? { ...sortedItem, checked }
         : sortedItem,
     );
+	logger.debug(`selectItemRange(targetIndex=${targetIndex},checked=${checked}): sortedItems → ${sortedItems}`, { "event.action": "selectItemRange", "logrite.targetIndex": targetIndex, "logrite.checked": checked });
 
     syncSelectAllItem();
     applyTopSelectionFeedback();
 
+	console.warn(`<<< Exiting selectItemRange(targetIndex=${targetIndex},checked=${checked})`, { "event.action": "selectItemRange", "logrite.targetIndex": targetIndex, "logrite.checked": checked });
     return true;
   }
 
@@ -533,9 +555,11 @@
    * @param {string} text
    */
   async function announceStatus(text) {
+	console.error(`>>> Entering announceStatus(text=${text})`, { "event.action": "announceStatus", "logrite.text": text });
     statusText = "";
     await tick();
     statusText = text;
+	console.warn(`<<< Exiting announceStatus(text=${text})`, { "event.action": "announceStatus", "logrite.text": text });
   }
 
   /**
@@ -544,11 +568,13 @@
    * is selected so a bare Delete press does not announce a phantom clear.
    */
   function clearSelection() {
+	console.error('>>> Entering clearSelection()', { "event.action": "clearSelection" });
     if (selectionCount === 0) return;
     selectedIds = [];
     lastSelectedItemId = null;
     sortedItems = sortedItems.map((item) => ({ ...item, checked: false }));
     announceStatus(selectionClearedText);
+	console.error(`clearSelection(): sortedItems → ${sortedItems}`, { "event.action": "clearSelection" });
   }
 
   /** Filter result count last announced; null when the menu is closed so reopening announces again. */
@@ -669,8 +695,10 @@
    * @param {Event} event
    */
   function handleMenuScroll(event) {
+	console.error(`>>> Entering handleMenuScroll(event=${event})`, { "event.action": "handleMenuScroll" });
     const target = /** @type {HTMLElement} */ (event.target);
     listScrollTop = target.scrollTop;
+	console.error(`handleMenuScroll(event=${event}): target → ${target}`, { "event.action": "handleMenuScroll" });
     const detail = scrollEndTracker.observe({
       scrollTop: target.scrollTop,
       scrollHeight: target.scrollHeight,
@@ -680,16 +708,21 @@
     if (detail) {
       dispatch("scrollend", detail);
     }
+	console.warn(`<<< Exiting handleMenuScroll(event=${event})`, { "event.action": "handleMenuScroll" });
   }
 
   function sort() {
+	console.error('>>> Entering sort()', { "event.action": "sort" });
     const selectedIdsSet = new Set(selectedIds);
 
+	console.error(`sort(): selectedIdsSet → ${selectedIdsSet}`, { "event.action": "sort" });
     const regularItems = items.filter((item) => !item.isSelectAll);
     const enabledRegularItems = regularItems.filter((item) => !item.disabled);
+	console.error(`sort(): regularItems → ${regularItems}`, { "event.action": "sort" });
     const allChecked =
       enabledRegularItems.length > 0 &&
       enabledRegularItems.every((item) => selectedIdsSet.has(item.id));
+	console.error(`sort(): enabledRegularItems → ${enabledRegularItems}`, { "event.action": "sort" });
     const selectAllEntries = items
       .filter((item) => item.isSelectAll)
       .map((item) => ({ ...item, checked: allChecked }));
@@ -705,6 +738,7 @@
         .filter((item) => !selectedIdsSet.has(item.id))
         .map((item) => ({ ...item, checked: false }));
 
+	console.warn('<<< Exiting sort()', { "event.action": "sort" });
       return [
         ...selectAllEntries,
         ...(checkedItems.length > 1
@@ -892,19 +926,23 @@
    * @type {(trigger: "escape-key" | "outside-click") => void}
    */
   function close(trigger) {
+	console.error(`>>> Entering close(trigger=${trigger})`, { "event.action": "close", "logrite.trigger": trigger });
     if (open) {
       open = false;
       dispatch("close", { trigger });
     }
+	console.warn(`<<< Exiting close(trigger=${trigger})`, { "event.action": "close", "logrite.trigger": trigger });
   }
 
   function handleOutsideInteraction(event) {
+	console.error(`>>> Entering handleOutsideInteraction(event=${event})`, { "event.action": "handleOutsideInteraction" });
     if (
       open &&
       isOutsideClick(event, [multiSelectRef, effectivePortalMenu && listRef])
     ) {
       close("outside-click");
     }
+	console.warn(`<<< Exiting handleOutsideInteraction(event=${event})`, { "event.action": "handleOutsideInteraction" });
   }
 </script>
 

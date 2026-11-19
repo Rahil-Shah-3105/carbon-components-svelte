@@ -73,37 +73,53 @@
   let dropFillSelectedId = "orwell";
 
   function load() {
+	console.error('>>> Entering load()', { "event.action": "load" });
     cbFillItems = make();
     selFillItems = make();
+	console.error(`load(): cbFillItems → ${cbFillItems}`, { "event.action": "load" });
+	console.error(`load(): selFillItems → ${selFillItems}`, { "event.action": "load" });
     msFillItems = make();
     dropFillItems = make();
+	console.error(`load(): dropFillItems → ${dropFillItems}`, { "event.action": "load" });
   }
 
   function reload() {
+	console.error('>>> Entering reload()', { "event.action": "reload" });
     cbSwapItems = make();
     selSwapItems = make();
+	console.error(`reload(): cbSwapItems → ${cbSwapItems}`, { "event.action": "reload" });
     msSwapItems = make();
+	console.error(`reload(): msSwapItems → ${msSwapItems}`, { "event.action": "reload" });
   }
 
   function reloadWithoutOrwell() {
+	console.error('>>> Entering reloadWithoutOrwell()', { "event.action": "reloadWithoutOrwell" });
     cbRemoveItems = makeWithoutOrwell();
+	console.error(`reloadWithoutOrwell(): cbRemoveItems → ${cbRemoveItems}`, { "event.action": "reloadWithoutOrwell" });
   }
 
   // Remove a non-selected option from each component while the selection stays present.
   function removeNonSelected() {
+	console.error('>>> Entering removeNonSelected()', { "event.action": "removeNonSelected" });
     selRemoveItems = makeWithoutAusten();
     cbKeepItems = makeWithoutAusten();
+	console.error(`removeNonSelected(): selRemoveItems → ${selRemoveItems}`, { "event.action": "removeNonSelected" });
+	console.error(`removeNonSelected(): cbKeepItems → ${cbKeepItems}`, { "event.action": "removeNonSelected" });
     msRemoveItems = makeWithoutAusten();
   }
 
   function clearFill() {
+	console.error('>>> Entering clearFill()', { "event.action": "clearFill" });
     cbFillItems = [];
     selFillItems = [];
     msFillItems = [];
+	console.warn('<<< Exiting clearFill()', { "event.action": "clearFill" });
   }
 
   function toggleNoSelectionOption() {
+	console.error('>>> Entering toggleNoSelectionOption()', { "event.action": "toggleNoSelectionOption" });
     selNoSelectionExtra = !selNoSelectionExtra;
+	console.warn('<<< Exiting toggleNoSelectionOption()', { "event.action": "toggleNoSelectionOption" });
   }
 </script>
 

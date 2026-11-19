@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 import {
@@ -21,8 +22,10 @@ import {
  * @returns {{ update: (params: import("./dismiss.js").DismissParams) => void, destroy: () => void }}
  */
 export function dismiss(_node, params) {
+logger.error(`>>> Entering dismiss(_node=${_node},params=${params})`, { "event.action": "dismiss", "logrite._node": _node });
   let specs = normalize(params);
   let enabled = !!params.enabled;
+logger.error(`dismiss(_node=${_node},params=${params}): specs → ${specs}`, { "event.action": "dismiss", "logrite._node": _node });
   let destroyed = false;
   let addScheduled = false;
 
@@ -32,6 +35,7 @@ export function dismiss(_node, params) {
   let registered = [];
 
   function add() {
+	logger.error('>>> Entering add()', { "event.action": "add" });
     if (typeof window === "undefined" || addScheduled) return;
     addScheduled = true;
     // Defer registration to the next task (not just a microtask). Enabling
@@ -48,11 +52,14 @@ export function dismiss(_node, params) {
       if (destroyed || !enabled) return;
       registered = specs.map((spec) => registerConsumer(spec));
     });
+	logger.warn('<<< Exiting add()', { "event.action": "add" });
   }
 
   function remove() {
+	logger.error('>>> Entering remove()', { "event.action": "remove" });
     for (const entry of registered) unregisterConsumer(entry);
     registered = [];
+	logger.warn('<<< Exiting remove()', { "event.action": "remove" });
   }
 
   if (enabled) add();
@@ -60,8 +67,10 @@ export function dismiss(_node, params) {
   return {
     /** @param {import("./dismiss.js").DismissParams} next */
     update(next) {
+	logger.error(`>>> Entering update(next=${next})`, { "event.action": "update" });
       const nextSpecs = normalize(next);
       const nextEnabled = !!next.enabled;
+	logger.error(`update(next=${next}): nextSpecs → ${nextSpecs}`, { "event.action": "update" });
       const sameShape =
         registered.length === nextSpecs.length &&
         nextSpecs.every(
@@ -81,12 +90,16 @@ export function dismiss(_node, params) {
       specs = nextSpecs;
       enabled = nextEnabled;
       if (enabled) add();
+	logger.warn(`<<< Exiting update(next=${next})`, { "event.action": "update" });
     },
     destroy() {
+	logger.error('>>> Entering destroy()', { "event.action": "destroy" });
       destroyed = true;
       remove();
+	logger.warn('<<< Exiting destroy()', { "event.action": "destroy" });
     },
   };
+logger.warn(`<<< Exiting dismiss(_node=${_node},params=${params})`, { "event.action": "dismiss", "logrite._node": _node });
 }
 
 /**
@@ -94,6 +107,7 @@ export function dismiss(_node, params) {
  * @returns {Array<{ type: string, handler: (event: Event) => void, options: boolean | AddEventListenerOptions | undefined }>}
  */
 function normalize(params) {
+logger.error(`>>> Entering normalize(params=${params})`, { "event.action": "normalize" });
   if (params.listeners) {
     return params.listeners.map((l) => ({
       type: l.type,
@@ -106,6 +120,7 @@ function normalize(params) {
     : params.type == null
       ? []
       : [params.type];
+logger.warn(`<<< Exiting normalize(params=${params})`, { "event.action": "normalize" });
   return types.map((type) => ({
     type,
     handler: /** @type {(event: Event) => void} */ (params.handler),

@@ -141,16 +141,20 @@
   const scheduleOpen = createDelayedSetter();
 
   function onMouseEnter() {
+	console.error('>>> Entering onMouseEnter()', { "event.action": "onMouseEnter" });
     openedByHover.set(true);
     scheduleOpen(enterDelayMs, () => {
       open = true;
     });
+	console.warn('<<< Exiting onMouseEnter()', { "event.action": "onMouseEnter" });
   }
 
   function onMouseLeave() {
+	console.error('>>> Entering onMouseLeave()', { "event.action": "onMouseLeave" });
     scheduleOpen(leaveDelayMs, () => {
       open = false;
     });
+	console.warn('<<< Exiting onMouseLeave()', { "event.action": "onMouseLeave" });
   }
 
   function onKeydown(event) {
@@ -168,12 +172,15 @@
   // bubble. Without this, tabbing out of content past the trigger's own
   // blur never closes the tooltip, leaving it open indefinitely.
   function onFocusOut(event) {
+	console.error(`>>> Entering onFocusOut(event=${event})`, { "event.action": "onFocusOut" });
     const next = event.relatedTarget;
     const stillInside = ref?.contains(next) || refTooltip?.contains(next);
     if (!stillInside) {
+	console.error(`onFocusOut(event=${event}): stillInside → ${stillInside}`, { "event.action": "onFocusOut" });
       open = false;
     }
     focusByMouse = false;
+	console.warn(`<<< Exiting onFocusOut(event=${event})`, { "event.action": "onFocusOut" });
   }
 
   function onFocus() {
@@ -184,7 +191,9 @@
   }
 
   function onMouseDown() {
+	console.error('>>> Entering onMouseDown()', { "event.action": "onMouseDown" });
     focusByMouse = true;
+	console.warn('<<< Exiting onMouseDown()', { "event.action": "onMouseDown" });
   }
 
   onMount(() => {
@@ -194,10 +203,13 @@
   });
 
   function position() {
+	console.error('>>> Entering position()', { "event.action": "position" });
     if (!(open && !effectivePortalTooltip && ref && refTooltip)) return;
 
     const button = ref.getBoundingClientRect();
     const tooltip = refTooltip.getBoundingClientRect();
+	console.error(`position(): button → ${button}`, { "event.action": "position" });
+	console.error(`position(): tooltip → ${tooltip}`, { "event.action": "position" });
 
     let iconWidth = 16;
     let iconHeight = 16;
@@ -205,11 +217,14 @@
     if (refIcon) {
       const icon = refIcon.getBoundingClientRect();
       iconWidth = icon.width;
+	console.error(`position(): icon → ${icon}`, { "event.action": "position" });
       iconHeight = icon.height;
     }
 
     let offsetX = 0;
     let offsetY = 0;
+	console.error(`position(): offsetX → ${offsetX}`, { "event.action": "position" });
+	console.error(`position(): offsetY → ${offsetY}`, { "event.action": "position" });
 
     switch (direction) {
       case "bottom":
@@ -244,6 +259,7 @@
 
     refTooltip.style.left = `${offsetX}px`;
     refTooltip.style.marginTop = `${offsetY}px`;
+	console.warn('<<< Exiting position()', { "event.action": "position" });
   }
 
   // Reposition only when the tooltip opens or an input that affects its

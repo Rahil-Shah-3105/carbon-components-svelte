@@ -24,19 +24,23 @@
   import { onMount } from "svelte";
 
   function applyActions(node, entries) {
+	console.error(`>>> Entering applyActions(node=${node},entries=${entries})`, { "event.action": "applyActions", "logrite.node": node, "logrite.entries": entries });
     /** @type {Array<() => void>} */
     const destroyers = [];
 
     for (const entry of entries) {
       const isTuple = Array.isArray(entry);
       const action = isTuple ? entry[0] : entry;
+	console.error(`applyActions(node=${node},entries=${entries}): isTuple → ${isTuple}`, { "event.action": "applyActions", "logrite.node": node, "logrite.entries": entries });
       const result = isTuple ? action(node, entry[1]) : action(node);
 
+	console.error(`applyActions(node=${node},entries=${entries}): result → ${result}`, { "event.action": "applyActions", "logrite.node": node, "logrite.entries": entries });
       if (result && typeof result.destroy === "function") {
         destroyers.push(result.destroy);
       }
     }
 
+	console.warn(`<<< Exiting applyActions(node=${node},entries=${entries})`, { "event.action": "applyActions", "logrite.node": node, "logrite.entries": entries });
     return () => {
       for (const destroy of destroyers) {
         destroy();

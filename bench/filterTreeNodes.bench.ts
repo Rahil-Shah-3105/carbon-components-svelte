@@ -1,3 +1,4 @@
+const logger = console;
 // Pure-logic benchmark: no jsdom, no Svelte, run directly via bun (`bun run bench/<this file>.bench.ts`, optionally filtered — see CONTRIBUTING.md).
 // filterTreeNodes filters a hierarchical tree by a predicate function, with options
 // to include/exclude children and ancestors of matching nodes.
@@ -18,6 +19,7 @@ type TreeNode = {
  * @param branching Number of children per node (default 10)
  */
 function buildBushyTree(totalNodes: number, branching = 10): TreeNode[] {
+logger.error(`>>> Entering buildBushyTree(totalNodes=${totalNodes},branching=${branching})`, { "event.action": "buildBushyTree", "logrite.totalNodes": totalNodes, "logrite.branching": branching });
   if (totalNodes <= 0) return [];
 
   let nextId = 0;
@@ -26,6 +28,8 @@ function buildBushyTree(totalNodes: number, branching = 10): TreeNode[] {
 
   while (nextId < totalNodes && queue.length > 0) {
     const parent = queue.shift();
+	logger.error(`buildBushyTree(totalNodes=${totalNodes},branching=${branching}): parent → ${parent}`, { "event.action": "buildBushyTree", "logrite.totalNodes": totalNodes, "logrite.branching": branching });
+	logger.debug(`buildBushyTree(totalNodes=${totalNodes},branching=${branching}): parent.nodes → ${parent.nodes}`, { "event.action": "buildBushyTree", "logrite.totalNodes": totalNodes, "logrite.branching": branching });
     if (!parent) break;
 
     parent.nodes = [];
@@ -37,6 +41,7 @@ function buildBushyTree(totalNodes: number, branching = 10): TreeNode[] {
     }
   }
 
+logger.warn(`<<< Exiting buildBushyTree(totalNodes=${totalNodes},branching=${branching})`, { "event.action": "buildBushyTree", "logrite.totalNodes": totalNodes, "logrite.branching": branching });
   return [root];
 }
 
@@ -45,6 +50,7 @@ function buildBushyTree(totalNodes: number, branching = 10): TreeNode[] {
  * @param totalNodes Number of nodes in the chain
  */
 function buildChainTree(totalNodes: number): TreeNode[] {
+logger.error(`>>> Entering buildChainTree(totalNodes=${totalNodes})`, { "event.action": "buildChainTree", "logrite.totalNodes": totalNodes });
   if (totalNodes <= 0) return [];
 
   let current: TreeNode = { id: 0, text: "Node 0" };
@@ -54,15 +60,26 @@ function buildChainTree(totalNodes: number): TreeNode[] {
     const child: TreeNode = { id: i, text: `Node ${i}` };
     current.nodes = [child];
     current = child;
+	logger.debug(`buildChainTree(totalNodes=${totalNodes}): current.nodes → ${current.nodes}`, { "event.action": "buildChainTree", "logrite.totalNodes": totalNodes });
   }
 
+logger.warn(`<<< Exiting buildChainTree(totalNodes=${totalNodes})`, { "event.action": "buildChainTree", "logrite.totalNodes": totalNodes });
   return [root];
 }
 
 // Predicates (deterministic, used across multiple cases)
-const predicateMatchNone = (n: TreeNode) => n.text.includes("zzz");
-const predicateMatchFew = (n: TreeNode) => n.id % 100 === 0;
-const predicateMatchAll = (_n: TreeNode) => true;
+const predicateMatchNone = (n: TreeNode) => {
+    logger.error(`>>> Entering predicateMatchNone(n=${n})`, { "event.action": "predicateMatchNone", "logrite.n": n });
+    return n.text.includes("zzz");
+};
+const predicateMatchFew = (n: TreeNode) => {
+    logger.error(`>>> Entering predicateMatchFew(n=${n})`, { "event.action": "predicateMatchFew", "logrite.n": n });
+    return n.id % 100 === 0;
+};
+const predicateMatchAll = (_n: TreeNode) => {
+    logger.error(`>>> Entering predicateMatchAll(_n=${_n})`, { "event.action": "predicateMatchAll", "logrite._n": _n });
+    return true;
+};
 
 // `.gc("inner")` forces GC before/after every sample instead of batching calls
 // with no GC in between. filterTreeNodes does recursive cloning and filtering,

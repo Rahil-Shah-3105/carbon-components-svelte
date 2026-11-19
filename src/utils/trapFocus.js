@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 // taken from github.com/carbon-design-system/carbon/packages/react/src/internal/keyboard/navigation.js
@@ -18,6 +19,7 @@ const selectorTabbable = `
  * @returns {void}
  */
 export function trapFocus({ container, event }) {
+logger.error(`>>> Entering trapFocus(container=${container},event=${event})`, { "event.action": "trapFocus", "logrite.container": container });
   const tabbable = /** @type {HTMLElement[]} */ (
     Array.from(container.querySelectorAll(selectorTabbable))
   ).filter((el) => {
@@ -61,4 +63,5 @@ export function trapFocus({ container, event }) {
 
   tabbable[index].focus();
   event.preventDefault();
+logger.warn(`<<< Exiting trapFocus(container=${container},event=${event})`, { "event.action": "trapFocus", "logrite.container": container });
 }

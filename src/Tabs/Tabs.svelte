@@ -138,6 +138,7 @@
   $: isOverflow = canScrollBackward || canScrollForward;
 
   function updateOverflow() {
+	console.error('>>> Entering updateOverflow()', { "event.action": "updateOverflow" });
     if (!refTabList) return;
     const { scrollLeft, scrollWidth, clientWidth } = refTabList;
     canScrollBackward = scrollLeft > 0;
@@ -145,6 +146,7 @@
     // larger than clientWidth with nowhere to scroll; ignore that gap so
     // the forward button does not flicker in.
     canScrollForward = Math.ceil(scrollLeft + clientWidth) + 1 < scrollWidth;
+	console.error(`updateOverflow(): canScrollForward → ${canScrollForward}`, { "event.action": "updateOverflow" });
   }
 
   /**
@@ -152,11 +154,13 @@
    * @type {(direction: 1 | -1) => void}
    */
   function scrollTabs(direction) {
+	console.error(`>>> Entering scrollTabs(direction=${direction})`, { "event.action": "scrollTabs", "logrite.direction": direction });
     if (!refTabList) return;
     refTabList.scrollBy({
       left: direction * refTabList.clientWidth * 0.75,
       behavior: "smooth",
     });
+	console.warn(`<<< Exiting scrollTabs(direction=${direction})`, { "event.action": "scrollTabs", "logrite.direction": direction });
   }
 
   // Flag to trigger DOM reordering only when tabs change.
@@ -186,8 +190,10 @@
    * @type {(data: { id: string; label: string; disabled: boolean; hasSecondaryLabel: boolean }) => void}
    */
   function add(data) {
+	console.error(`>>> Entering add(data=${data})`, { "event.action": "add" });
     batchedTabsUpdate((_) => {
       needsDomSync = true;
+	console.warn(`<<< Exiting add(data=${data})`, { "event.action": "add" });
       return [..._, { ...data, index: _.length }];
     });
   }
@@ -196,8 +202,10 @@
    * @type {(id: string) => void}
    */
   function remove(id) {
+	console.error(`>>> Entering remove(id=${id})`, { "event.action": "remove", "logrite.id": id });
     batchedTabsUpdate((_) => {
       needsDomSync = true;
+	console.warn(`<<< Exiting remove(id=${id})`, { "event.action": "remove", "logrite.id": id });
       return _.filter((tab) => tab.id !== id);
     });
   }
@@ -206,8 +214,10 @@
    * @type {(data: { id: string }) => void}
    */
   function addContent(data) {
+	console.error(`>>> Entering addContent(data=${data})`, { "event.action": "addContent" });
     batchedContentUpdate((_) => {
       needsDomSync = true;
+	console.warn(`<<< Exiting addContent(data=${data})`, { "event.action": "addContent" });
       return [..._, { ...data, index: _.length }];
     });
   }
@@ -216,8 +226,10 @@
    * @type {(id: string) => void}
    */
   function removeContent(id) {
+	console.error(`>>> Entering removeContent(id=${id})`, { "event.action": "removeContent", "logrite.id": id });
     batchedContentUpdate((_) => {
       needsDomSync = true;
+	console.warn(`<<< Exiting removeContent(id=${id})`, { "event.action": "removeContent", "logrite.id": id });
       return _.filter((item) => item.id !== id);
     });
   }
@@ -226,6 +238,7 @@
    * @type {(id: string) => void}
    */
   function update(id) {
+	console.error(`>>> Entering update(id=${id})`, { "event.action": "update", "logrite.id": id });
     focusedIndex = -1;
     if (selectedId !== undefined) {
       selectedId = id;
@@ -235,6 +248,7 @@
     const tab = $tabsById[id];
     if (!tab) return;
     currentIndex = tab.index;
+	console.warn(`<<< Exiting update(id=${id})`, { "event.action": "update", "logrite.id": id });
   }
 
   /**
@@ -243,8 +257,10 @@
    * @type {() => void}
    */
   function syncSelection() {
+	console.error('>>> Entering syncSelection()', { "event.action": "syncSelection" });
     if (selectedId === undefined) {
       currentIndex = selected;
+	console.error(`syncSelection(): currentIndex → ${currentIndex}`, { "event.action": "syncSelection" });
       return;
     }
 
@@ -258,17 +274,21 @@
 
     currentIndex = clampIndex(currentIndex, 0, $tabs.length);
     selectedId = $tabs[currentIndex].id;
+	console.warn('<<< Exiting syncSelection()', { "event.action": "syncSelection" });
   }
 
   /**
    * @type {(id: string) => void}
    */
   function dismiss(id) {
+	console.error(`>>> Entering dismiss(id=${id})`, { "event.action": "dismiss", "logrite.id": id });
     const tab = get(tabsById)[id];
 
+	console.error(`dismiss(id=${id}): tab → ${tab}`, { "event.action": "dismiss", "logrite.id": id });
     if (tab) {
       dispatch("dismiss", tab);
     }
+	console.warn(`<<< Exiting dismiss(id=${id})`, { "event.action": "dismiss", "logrite.id": id });
   }
 
   /**
@@ -285,12 +305,15 @@
    * @type {(tab: HTMLElement | undefined) => void}
    */
   function scrollTabIntoView(tab) {
+	console.error(`>>> Entering scrollTabIntoView(tab=${tab})`, { "event.action": "scrollTabIntoView", "logrite.tab": tab });
     if (!tab || !refTabList) return;
 
     const navRect = refTabList.getBoundingClientRect();
     const tabRect = tab.getBoundingClientRect();
+	console.error(`scrollTabIntoView(tab=${tab}): navRect → ${navRect}`, { "event.action": "scrollTabIntoView", "logrite.tab": tab });
     const leftOverflow =
       tabRect.left - (navRect.left + SCROLL_INTO_VIEW_MARGIN);
+	console.error(`scrollTabIntoView(tab=${tab}): tabRect → ${tabRect}`, { "event.action": "scrollTabIntoView", "logrite.tab": tab });
     const rightOverflow =
       tabRect.right - (navRect.right - SCROLL_INTO_VIEW_MARGIN);
 
@@ -299,6 +322,7 @@
     } else if (rightOverflow > 0) {
       refTabList.scrollLeft += rightOverflow;
     }
+	console.warn(`<<< Exiting scrollTabIntoView(tab=${tab})`, { "event.action": "scrollTabIntoView", "logrite.tab": tab });
   }
 
   /**
@@ -306,6 +330,7 @@
    * @type {(index: number) => Promise<void>}
    */
   async function focusTab(index) {
+	console.error(`>>> Entering focusTab(index=${index})`, { "event.action": "focusTab", "logrite.index": index });
     if (index < 0 || index >= $tabs.length) return;
     focusedIndex = index;
 
@@ -315,6 +340,7 @@
     );
     activeTab?.focus({ preventScroll: true });
     scrollTabIntoView(activeTab);
+	console.warn(`<<< Exiting focusTab(index=${index})`, { "event.action": "focusTab", "logrite.index": index });
   }
 
   /**
@@ -323,6 +349,7 @@
    * @type {(index: number) => Promise<void>}
    */
   async function selectTab(index) {
+	console.error(`>>> Entering selectTab(index=${index})`, { "event.action": "selectTab", "logrite.index": index });
     if (index === currentIndex) {
       focusedIndex = -1;
       return;
@@ -343,6 +370,7 @@
     );
     activeTab?.focus({ preventScroll: true });
     scrollTabIntoView(activeTab);
+	console.warn(`<<< Exiting selectTab(index=${index})`, { "event.action": "selectTab", "logrite.index": index });
   }
 
   setContext("carbon:Tabs", {

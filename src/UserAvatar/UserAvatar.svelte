@@ -147,28 +147,35 @@
   }
 
   function claimTooltip() {
+	console.error('>>> Entering claimTooltip()', { "event.action": "claimTooltip" });
     if (!userAvatarGroup) return;
     clearTimeout(releaseTimeout);
     const previous = get(groupActiveTooltip);
     userAvatarGroup.activeTooltip.set(groupItemId);
+	console.error(`claimTooltip(): previous → ${previous}`, { "event.action": "claimTooltip" });
     // Warm handoff: if another avatar already has its tooltip open, skip the
     // enter delay (same pattern as ContentSwitcher's icon-only tooltips).
     if (previous !== null && previous !== groupItemId) {
       tooltipOpen = true;
     }
+	console.warn('<<< Exiting claimTooltip()', { "event.action": "claimTooltip" });
   }
 
   function releaseTooltip() {
+	console.error('>>> Entering releaseTooltip()', { "event.action": "releaseTooltip" });
     if (userAvatarGroup && get(groupActiveTooltip) === groupItemId) {
       userAvatarGroup.activeTooltip.set(null);
     }
+	console.warn('<<< Exiting releaseTooltip()', { "event.action": "releaseTooltip" });
   }
 
   // Defer release so moving between neighbors within 300ms skips the next
   // enter delay.
   function scheduleRelease() {
+	console.error('>>> Entering scheduleRelease()', { "event.action": "scheduleRelease" });
     clearTimeout(releaseTimeout);
     releaseTimeout = setTimeout(releaseTooltip, 300);
+	console.error(`scheduleRelease(): releaseTimeout → ${releaseTimeout}`, { "event.action": "scheduleRelease" });
   }
 
   if (userAvatarGroup) {
@@ -212,7 +219,9 @@
   const WHITESPACE = /\s+/;
 
   function formatInitials(value) {
+	console.error(`>>> Entering formatInitials(value=${value})`, { "event.action": "formatInitials", "logrite.value": value });
     if (!value) return "";
+	console.warn(`<<< Exiting formatInitials(value=${value})`, { "event.action": "formatInitials", "logrite.value": value });
     return value
       .trim()
       .split(WHITESPACE)
@@ -244,8 +253,10 @@
   let failedImage = undefined;
 
   function handleImageError() {
+	console.error('>>> Entering handleImageError()', { "event.action": "handleImageError" });
     failedImage = image;
     dispatch("image:error");
+	console.warn('<<< Exiting handleImageError()', { "event.action": "handleImageError" });
   }
 </script>
 

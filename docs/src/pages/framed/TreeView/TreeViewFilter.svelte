@@ -103,6 +103,7 @@
 
   $: if (searchValue.trim() !== "" && filteredNodes.length > 0) {
     const extractIds = (nodes) => {
+	console.error(`>>> Entering extractIds(nodes=${nodes})`, { "event.action": "extractIds", "logrite.nodes": nodes });
       const ids = [];
       for (const node of nodes) {
         ids.push(node.id);
@@ -110,6 +111,7 @@
           ids.push(...extractIds(node.nodes));
         }
       }
+	console.warn(`<<< Exiting extractIds(nodes=${nodes})`, { "event.action": "extractIds", "logrite.nodes": nodes });
       return ids;
     };
     expandedIds = extractIds(filteredNodes);

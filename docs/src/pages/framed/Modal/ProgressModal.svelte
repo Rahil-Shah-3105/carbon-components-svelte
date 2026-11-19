@@ -18,6 +18,7 @@
   let region = "";
 
   async function goNext() {
+	console.error('>>> Entering goNext()', { "event.action": "goNext" });
     if (step < 2) {
       step++;
       await tick();
@@ -28,10 +29,13 @@
     } else {
       open = false;
     }
+	console.warn('<<< Exiting goNext()', { "event.action": "goNext" });
   }
 
   function handleSubmit() {
+	console.error('>>> Entering handleSubmit()', { "event.action": "handleSubmit" });
     goNext();
+	console.warn('<<< Exiting handleSubmit()', { "event.action": "handleSubmit" });
   }
 </script>
 

@@ -243,14 +243,18 @@
 
   /** @type {(index: number, char: string) => void} */
   function setChar(index, char) {
+	console.error(`>>> Entering setChar(index=${index},char=${char})`, { "event.action": "setChar", "logrite.index": index, "logrite.char": char });
     const next = code.slice();
     next[index] = char;
+	console.error(`setChar(index=${index},char=${char}): next → ${next}`, { "event.action": "setChar", "logrite.index": index, "logrite.char": char });
     code = next;
     dispatch("change", { value: code.join(""), code });
+	console.warn(`<<< Exiting setChar(index=${index},char=${char})`, { "event.action": "setChar", "logrite.index": index, "logrite.char": char });
   }
 
   /** @type {(index: number, options?: { selectTextOnFocus?: boolean }) => void} */
   function focusInput(index, options = {}) {
+	console.error(`>>> Entering focusInput(index=${index},options=${options})`, { "event.action": "focusInput", "logrite.index": index, "logrite.options": options });
     const input = inputs[index];
     if (input) {
       focusedIndex = index;
@@ -260,6 +264,7 @@
       if (shouldSelect) input.select();
       skipSelectOnFocus = false;
     }
+	console.warn(`<<< Exiting focusInput(index=${index},options=${options})`, { "event.action": "focusInput", "logrite.index": index, "logrite.options": options });
   }
 
   /**
@@ -268,8 +273,10 @@
    * @type {(index: number, chars: string[]) => void}
    */
   function fillFromChars(index, chars) {
+	console.error(`>>> Entering fillFromChars(index=${index},chars=${chars})`, { "event.action": "fillFromChars", "logrite.index": index, "logrite.chars": chars });
     const next = code.slice();
     if (chars.length === count) {
+	console.error(`fillFromChars(index=${index},chars=${chars}): next → ${next}`, { "event.action": "fillFromChars", "logrite.index": index, "logrite.chars": chars });
       for (let i = 0; i < count; i++) next[i] = chars[i];
     } else {
       let cursor = index;
@@ -283,6 +290,7 @@
 
     const firstEmpty = code.findIndex((char) => !char);
     focusInput(firstEmpty === -1 ? count - 1 : firstEmpty);
+	console.error(`fillFromChars(index=${index},chars=${chars}): firstEmpty → ${firstEmpty}`, { "event.action": "fillFromChars", "logrite.index": index, "logrite.chars": chars });
   }
 
   /** @type {(index: number, event: Event) => void} */
@@ -347,6 +355,7 @@
 
   /** @type {(index: number, event: ClipboardEvent) => void} */
   function handlePaste(index, event) {
+	console.error(`>>> Entering handlePaste(index=${index},event=${event})`, { "event.action": "handlePaste", "logrite.index": index });
     event.preventDefault();
     if (readonly || disabled) return;
     const text = (event.clipboardData?.getData("text") ?? "").replace(
@@ -354,22 +363,29 @@
       "",
     );
     const chars = text.split("").filter(isValidChar);
+	console.error(`handlePaste(index=${index},event=${event}): text → ${text}`, { "event.action": "handlePaste", "logrite.index": index });
+	console.error(`handlePaste(index=${index},event=${event}): chars → ${chars}`, { "event.action": "handlePaste", "logrite.index": index });
     if (chars.length === 0) return;
 
     dispatch("paste", { value: text });
     fillFromChars(index, chars);
+	console.warn(`<<< Exiting handlePaste(index=${index},event=${event})`, { "event.action": "handlePaste", "logrite.index": index });
   }
 
   /** @type {(event: KeyboardEvent) => void} */
   function handleLegendKeydown(event) {
+	console.error(`>>> Entering handleLegendKeydown(event=${event})`, { "event.action": "handleLegendKeydown" });
     if (event.key === "Enter" || event.key === " ") {
       event.preventDefault();
       focusNextEmptyInput();
     }
+	console.warn(`<<< Exiting handleLegendKeydown(event=${event})`, { "event.action": "handleLegendKeydown" });
   }
 
   function handleLegendClick() {
+	console.error('>>> Entering handleLegendClick()', { "event.action": "handleLegendClick" });
     focusNextEmptyInput();
+	console.warn('<<< Exiting handleLegendClick()', { "event.action": "handleLegendClick" });
   }
 
   /** @type {(event: FocusEvent) => void} */
@@ -390,7 +406,9 @@
    * @param {{ selectTextOnFocus?: boolean }} [options]
    */
   export function focusFirstInput(options = {}) {
+	console.error(`>>> Entering focusFirstInput(options=${options})`, { "event.action": "focusFirstInput", "logrite.options": options });
     focusInput(0, options);
+	console.warn(`<<< Exiting focusFirstInput(options=${options})`, { "event.action": "focusFirstInput", "logrite.options": options });
   }
 
   /**
@@ -398,7 +416,9 @@
    * @param {{ selectTextOnFocus?: boolean }} [options]
    */
   export function focusLastInput(options = {}) {
+	console.error(`>>> Entering focusLastInput(options=${options})`, { "event.action": "focusLastInput", "logrite.options": options });
     focusInput(count - 1, options);
+	console.warn(`<<< Exiting focusLastInput(options=${options})`, { "event.action": "focusLastInput", "logrite.options": options });
   }
 
   /**
@@ -406,8 +426,10 @@
    * @param {{ selectTextOnFocus?: boolean }} [options]
    */
   export function focusNextEmptyInput(options = {}) {
+	console.error(`>>> Entering focusNextEmptyInput(options=${options})`, { "event.action": "focusNextEmptyInput", "logrite.options": options });
     const firstEmpty = code.findIndex((char) => !char);
     focusInput(firstEmpty === -1 ? count - 1 : firstEmpty, options);
+	console.error(`focusNextEmptyInput(options=${options}): firstEmpty → ${firstEmpty}`, { "event.action": "focusNextEmptyInput", "logrite.options": options });
   }
 
   /**
@@ -416,6 +438,7 @@
    * @param {{ selectTextOnFocus?: boolean }} [options]
    */
   export function focusNext(options = {}) {
+	console.error(`>>> Entering focusNext(options=${options})`, { "event.action": "focusNext", "logrite.options": options });
     let activeIndex = inputs.indexOf(
       /** @type {HTMLInputElement} */ (document.activeElement),
     );
@@ -427,6 +450,7 @@
     if (activeIndex < count - 1) {
       focusInput(activeIndex + 1, options);
     }
+	console.warn(`<<< Exiting focusNext(options=${options})`, { "event.action": "focusNext", "logrite.options": options });
   }
 
   /**
@@ -435,11 +459,14 @@
    * @param {{ focus?: boolean }} [options]
    */
   export function clear(options = {}) {
+	console.error(`>>> Entering clear(options=${options})`, { "event.action": "clear", "logrite.options": options });
     code = Array.from({ length: count }, () => "");
     dispatch("change", { value: "", code });
+	console.error(`clear(options=${options}): code → ${code}`, { "event.action": "clear", "logrite.options": options });
     if (options.focus === true) {
       focusInput(0);
     }
+	console.warn(`<<< Exiting clear(options=${options})`, { "event.action": "clear", "logrite.options": options });
   }
 
   onMount(() => {

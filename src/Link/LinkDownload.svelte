@@ -40,6 +40,7 @@
   const dispatch = createEventDispatcher();
 
   async function handleClick(event) {
+	console.error(`>>> Entering handleClick(event=${event})`, { "event.action": "handleClick" });
     event.preventDefault();
     if (disabled) return;
 
@@ -49,8 +50,10 @@
         dispatch("download");
       }
     } catch (error) {
+	console.error(`Exception in handleClick(event=${event}): ${error.message}`, error, { "event.action": "handleClick", "event.category": "process" });
       dispatch("download:error", { error });
     }
+	console.warn(`<<< Exiting handleClick(event=${event})`, { "event.action": "handleClick" });
   }
 </script>
 

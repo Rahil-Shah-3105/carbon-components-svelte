@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 // Clamped index movement for keyboard navigation. Stops at the ends instead of wrapping.
 
@@ -11,8 +12,10 @@
  * @returns {number}
  */
 export function clampIndex(index, step, length) {
+logger.error(`>>> Entering clampIndex(index=${index},step=${step},length=${length})`, { "event.action": "clampIndex", "logrite.index": index, "logrite.step": step, "logrite.length": length });
   if (length <= 0) return -1;
   if (index < 0) return step < 0 ? length - 1 : 0;
   const next = index + step;
+logger.warn(`<<< Exiting clampIndex(index=${index},step=${step},length=${length})`, { "event.action": "clampIndex", "logrite.index": index, "logrite.step": step, "logrite.length": length });
   return Math.min(Math.max(next, 0), length - 1);
 }

@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 /**
@@ -14,11 +15,14 @@
  * @returns {boolean}
  */
 export function isOutsideClick(event, elements) {
+logger.error(`>>> Entering isOutsideClick(event=${event},elements=${elements})`, { "event.action": "isOutsideClick", "logrite.elements": elements });
   const { target } = event;
   const path =
     typeof event.composedPath === "function" ? event.composedPath() : [];
   if (!(target instanceof Node) && !path.length) return false;
   const list = Array.isArray(elements) ? elements : [elements];
+logger.error(`isOutsideClick(event=${event},elements=${elements}): list → ${list}`, { "event.action": "isOutsideClick", "logrite.elements": elements });
+logger.warn(`<<< Exiting isOutsideClick(event=${event},elements=${elements})`, { "event.action": "isOutsideClick", "logrite.elements": elements });
   return list.every((el) => {
     if (!el) return true;
     if (target instanceof Node && el.contains(target)) return false;

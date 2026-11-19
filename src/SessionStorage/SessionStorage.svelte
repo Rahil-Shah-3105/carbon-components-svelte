@@ -40,7 +40,9 @@
    * ```
    */
   export function clearItem() {
+	console.error('>>> Entering clearItem()', { "event.action": "clearItem" });
     storage.removeItem(key);
+	console.warn('<<< Exiting clearItem()', { "event.action": "clearItem" });
   }
 
   /**
@@ -56,7 +58,9 @@
    * ```
    */
   export function clearAll() {
+	console.error('>>> Entering clearAll()', { "event.action": "clearAll" });
     storage.clear();
+	console.warn('<<< Exiting clearAll()', { "event.action": "clearAll" });
   }
 
   import { createEventDispatcher, onMount, tick } from "svelte";
@@ -80,27 +84,33 @@
 
   /** @param {string} [serialized] */
   function setItem(serialized = serializeStoredValue(value)) {
+	console.error(`>>> Entering setItem(serialized=${serialized})`, { "event.action": "setItem", "logrite.serialized": serialized });
     storage.setItem(key, serialized, (error) => {
       dispatch("error", { error });
     });
+	console.warn(`<<< Exiting setItem(serialized=${serialized})`, { "event.action": "setItem", "logrite.serialized": serialized });
   }
 
   function handleStorageChange(event) {
+	console.error(`>>> Entering handleStorageChange(event=${event})`, { "event.action": "handleStorageChange" });
     if (event.key !== key) return;
 
     const prevValue = parseStoredValue(prevSerialized);
 
+	console.error(`handleStorageChange(event=${event}): prevValue → ${prevValue}`, { "event.action": "handleStorageChange" });
     if (event.newValue === null) {
       // Another document removed the key (or called clear()).
       // Reset so the next local mutation does not re-persist stale state.
       value = /** @type {T} */ (undefined);
       prevSerialized = serializeStoredValue(value);
+	console.error(`handleStorageChange(event=${event}): value → ${value}`, { "event.action": "handleStorageChange" });
     } else {
       value = parseStoredValue(event.newValue);
       prevSerialized = event.newValue;
     }
 
     dispatch("update", { prevValue, value });
+	console.warn(`<<< Exiting handleStorageChange(event=${event})`, { "event.action": "handleStorageChange" });
   }
 
   onMount(() => {

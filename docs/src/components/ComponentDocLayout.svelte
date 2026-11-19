@@ -4,19 +4,25 @@
   export let aside = true;
 
   function syncTableScrollHeight(node: HTMLDivElement) {
+	console.error(`>>> Entering syncTableScrollHeight(node=${node})`, { "event.action": "syncTableScrollHeight", "logrite.node": node });
     let raf = 0;
 
     function sync() {
+	console.error('>>> Entering sync()', { "event.action": "sync" });
       const table = node.closest(".table");
       if (!(table instanceof HTMLElement)) return;
+	console.error(`sync(): table → ${table}`, { "event.action": "sync" });
 
       const top = table.getBoundingClientRect().top;
       node.style.maxHeight = `${Math.max(window.innerHeight - top, 0)}px`;
+	console.error(`sync(): top → ${top}`, { "event.action": "sync" });
     }
 
     function schedule() {
+	console.error('>>> Entering schedule()', { "event.action": "schedule" });
       cancelAnimationFrame(raf);
       raf = requestAnimationFrame(sync);
+	console.error(`schedule(): raf → ${raf}`, { "event.action": "schedule" });
     }
 
     schedule();
@@ -25,12 +31,15 @@
 
     return {
       destroy() {
+		console.error('>>> Entering destroy()', { "event.action": "destroy" });
         cancelAnimationFrame(raf);
         window.removeEventListener("scroll", schedule);
         window.removeEventListener("resize", schedule);
         node.style.maxHeight = "";
+		console.warn('<<< Exiting destroy()', { "event.action": "destroy" });
       },
     };
+	console.warn(`<<< Exiting syncTableScrollHeight(node=${node})`, { "event.action": "syncTableScrollHeight", "logrite.node": node });
   }
 </script>
 

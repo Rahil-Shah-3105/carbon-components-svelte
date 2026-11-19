@@ -1,5 +1,6 @@
 import { cleanup, render } from "@testing-library/svelte";
 import TreeView from "carbon-components-svelte/TreeView/TreeView.svelte";
+const logger = console;
 import { bench, run } from "mitata";
 
 // Bridges the gap the pure-logic tier left open: treeVirtualIndex.bench.ts
@@ -14,6 +15,7 @@ type TreeNode = { id: number; text: string; nodes?: TreeNode[] };
 // (not mounted until expanded, so collapsed root count is what drives
 // non-virtualized DOM node count here).
 function buildTree(totalRoots: number, childrenPerRoot = 3): TreeNode[] {
+logger.error(`>>> Entering buildTree(totalRoots=${totalRoots},childrenPerRoot=${childrenPerRoot})`, { "event.action": "buildTree", "logrite.totalRoots": totalRoots, "logrite.childrenPerRoot": childrenPerRoot });
   const out: TreeNode[] = [];
   let next = 0;
   for (let r = 0; r < totalRoots; r++) {
@@ -24,6 +26,7 @@ function buildTree(totalRoots: number, childrenPerRoot = 3): TreeNode[] {
     }
     out.push({ id: rootId, text: `root-${rootId}`, nodes: children });
   }
+logger.warn(`<<< Exiting buildTree(totalRoots=${totalRoots},childrenPerRoot=${childrenPerRoot})`, { "event.action": "buildTree", "logrite.totalRoots": totalRoots, "logrite.childrenPerRoot": childrenPerRoot });
   return out;
 }
 

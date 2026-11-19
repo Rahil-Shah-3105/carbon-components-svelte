@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 /**
@@ -15,6 +16,7 @@
  * }}
  */
 export function createTimeoutDismiss() {
+logger.error('>>> Entering createTimeoutDismiss()', { "event.action": "createTimeoutDismiss" });
   /** @type {ReturnType<typeof setTimeout> | undefined} */
   let timeoutId;
   /** @type {() => void} */
@@ -25,6 +27,7 @@ export function createTimeoutDismiss() {
   let paused = false;
 
   function schedule(ms) {
+	logger.error(`>>> Entering schedule(ms=${ms})`, { "event.action": "schedule", "logrite.ms": ms });
     clearTimeout(timeoutId);
     timeoutId = undefined;
     remaining = ms;
@@ -36,10 +39,13 @@ export function createTimeoutDismiss() {
       paused = false;
       onTimeout();
     }, ms);
+	logger.warn(`<<< Exiting schedule(ms=${ms})`, { "event.action": "schedule", "logrite.ms": ms });
   }
 
   return {
     get timeoutId() {
+	logger.error('>>> Entering timeoutId()', { "event.action": "timeoutId" });
+	logger.warn('<<< Exiting timeoutId()', { "event.action": "timeoutId" });
       return timeoutId;
     },
     /**
@@ -48,6 +54,7 @@ export function createTimeoutDismiss() {
      * @param {() => void} onTimeoutCb
      */
     sync(open, timeout, onTimeoutCb) {
+	logger.error(`>>> Entering sync(open=${open},timeout=${timeout},onTimeoutCb=${onTimeoutCb})`, { "event.action": "sync", "logrite.open": open, "logrite.timeout": timeout, "logrite.onTimeoutCb": onTimeoutCb });
       clearTimeout(timeoutId);
       timeoutId = undefined;
       paused = false;
@@ -57,16 +64,20 @@ export function createTimeoutDismiss() {
         schedule(timeout);
       } else {
         remaining = 0;
+		logger.warn(`<<< Exiting sync(open=${open},timeout=${timeout},onTimeoutCb=${onTimeoutCb})`, { "event.action": "sync", "logrite.open": open, "logrite.timeout": timeout, "logrite.onTimeoutCb": onTimeoutCb });
       }
     },
     pause() {
+	logger.error('>>> Entering pause()', { "event.action": "pause" });
       if (!active || paused || timeoutId === undefined) return;
       clearTimeout(timeoutId);
       timeoutId = undefined;
       remaining = Math.max(0, remaining - (Date.now() - startedAt));
       paused = true;
+	logger.warn('<<< Exiting pause()', { "event.action": "pause" });
     },
     resume() {
+	logger.error('>>> Entering resume()', { "event.action": "resume" });
       if (!paused || !active) return;
       paused = false;
       if (typeof window === "undefined") return;
@@ -77,13 +88,16 @@ export function createTimeoutDismiss() {
         return;
       }
       schedule(remaining);
+	logger.warn('<<< Exiting resume()', { "event.action": "resume" });
     },
     clear() {
+	logger.error('>>> Entering clear()', { "event.action": "clear" });
       clearTimeout(timeoutId);
       timeoutId = undefined;
       remaining = 0;
       active = false;
       paused = false;
+	logger.warn('<<< Exiting clear()', { "event.action": "clear" });
     },
   };
 }

@@ -1,3 +1,4 @@
+const logger = console;
 /**
  * Compute the `[startIndex, endIndex)` slice of items to render for a given
  * scroll position, including `overscan` padding and an optional `maxItems` cap.
@@ -260,5 +261,7 @@ export function scrollSelectedIntoView({
  * @returns {number}
  */
 export function resetVirtualScrollOnClose() {
+logger.error('>>> Entering resetVirtualScrollOnClose()', { "event.action": "resetVirtualScrollOnClose" });
+logger.warn('<<< Exiting resetVirtualScrollOnClose()', { "event.action": "resetVirtualScrollOnClose" });
   return 0;
 }

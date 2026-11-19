@@ -78,21 +78,28 @@
     hasIcon && !disabled && (hovered || focused) && $activeTooltip === id;
 
   function claim() {
+	console.error('>>> Entering claim()', { "event.action": "claim" });
     activeTooltip.set(id);
+	console.warn('<<< Exiting claim()', { "event.action": "claim" });
   }
 
   function release() {
+	console.error('>>> Entering release()', { "event.action": "release" });
     if (!hovered && !focused && get(activeTooltip) === id) {
       activeTooltip.set(null);
     }
+	console.warn('<<< Exiting release()', { "event.action": "release" });
   }
 
   function reveal() {
+	console.error('>>> Entering reveal()', { "event.action": "reveal" });
     hovered = true;
     claim();
+	console.warn('<<< Exiting reveal()', { "event.action": "reveal" });
   }
 
   function showTooltip() {
+	console.error('>>> Entering showTooltip()', { "event.action": "showTooltip" });
     clearTimeout(openTimeout);
     // Skip the enter delay when another tooltip is already open (warm handoff).
     if (get(activeTooltip) !== null && get(activeTooltip) !== id) {
@@ -100,14 +107,18 @@
     } else {
       openTimeout = setTimeout(reveal, ENTER_DELAY_MS);
     }
+	console.error(`showTooltip(): openTimeout → ${openTimeout}`, { "event.action": "showTooltip" });
   }
 
   function hideTooltip() {
+	console.error('>>> Entering hideTooltip()', { "event.action": "hideTooltip" });
     clearTimeout(openTimeout);
     openTimeout = setTimeout(() => {
+	logger.debug(`hideTooltip(): openTimeout → ${openTimeout}`, { "event.action": "hideTooltip" });
       hovered = false;
       release();
     }, LEAVE_DELAY_MS);
+	console.warn('<<< Exiting hideTooltip()', { "event.action": "hideTooltip" });
   }
 
   onMount(() => {

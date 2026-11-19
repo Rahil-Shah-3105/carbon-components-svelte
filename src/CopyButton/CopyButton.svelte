@@ -105,10 +105,12 @@
   let isCopyError = false;
 
   function syncCopyFeedback() {
+	console.error('>>> Entering syncCopyFeedback()', { "event.action": "syncCopyFeedback" });
     animation = copyFeedback.animation;
     feedbackOpen = copyFeedback.feedbackOpen;
     copyPending = copyFeedback.copyPending;
     isCopyError = copyFeedback.isError;
+	console.warn('<<< Exiting syncCopyFeedback()', { "event.action": "syncCopyFeedback" });
   }
 
   $: feedbackText = isCopyError ? errorFeedback : feedback;
@@ -144,16 +146,21 @@
   $: tooltipText = feedbackOpen ? feedbackText : iconDescription;
 
   function claimTooltip() {
+	console.error('>>> Entering claimTooltip()', { "event.action": "claimTooltip" });
     activeButtonTooltip.set(tooltipId);
+	console.warn('<<< Exiting claimTooltip()', { "event.action": "claimTooltip" });
   }
 
   function releaseTooltip() {
+	console.error('>>> Entering releaseTooltip()', { "event.action": "releaseTooltip" });
     if (get(activeButtonTooltip) === tooltipId) {
       activeButtonTooltip.set(null);
     }
+	console.warn('<<< Exiting releaseTooltip()', { "event.action": "releaseTooltip" });
   }
 
   function handleTooltipMouseEnter() {
+	console.error('>>> Entering handleTooltipMouseEnter()', { "event.action": "handleTooltipMouseEnter" });
     clearTimeout(tooltipTimeout);
     // Skip the enter delay when another icon tooltip is already open so moving
     // between adjacent buttons feels instant.
@@ -162,44 +169,57 @@
       get(activeButtonTooltip) !== tooltipId;
     tooltipTimeout = setTimeout(
       () => {
+		logger.debug(`handleTooltipMouseEnter(): tooltipTimeout → ${tooltipTimeout}`, { "event.action": "handleTooltipMouseEnter" });
         hovered = true;
         claimTooltip();
       },
       warmHandoff ? 0 : ENTER_DELAY_MS,
     );
+	console.warn('<<< Exiting handleTooltipMouseEnter()', { "event.action": "handleTooltipMouseEnter" });
   }
 
   function handleTooltipMouseLeave() {
+	console.error('>>> Entering handleTooltipMouseLeave()', { "event.action": "handleTooltipMouseLeave" });
     clearTimeout(tooltipTimeout);
     tooltipTimeout = setTimeout(() => {
+	logger.debug(`handleTooltipMouseLeave(): tooltipTimeout → ${tooltipTimeout}`, { "event.action": "handleTooltipMouseLeave" });
       hovered = false;
       if (!focused) releaseTooltip();
     }, LEAVE_DELAY_MS);
+	console.warn('<<< Exiting handleTooltipMouseLeave()', { "event.action": "handleTooltipMouseLeave" });
   }
 
   function handleTooltipFocus() {
+	console.error('>>> Entering handleTooltipFocus()', { "event.action": "handleTooltipFocus" });
     focused = true;
     claimTooltip();
+	console.warn('<<< Exiting handleTooltipFocus()', { "event.action": "handleTooltipFocus" });
   }
 
   function handleTooltipBlur() {
+	console.error('>>> Entering handleTooltipBlur()', { "event.action": "handleTooltipBlur" });
     focused = false;
     if (!hovered) releaseTooltip();
+	console.warn('<<< Exiting handleTooltipBlur()', { "event.action": "handleTooltipBlur" });
   }
 
   function dismissTooltip() {
+	console.error('>>> Entering dismissTooltip()', { "event.action": "dismissTooltip" });
     clearTimeout(tooltipTimeout);
     hovered = false;
     focused = false;
     releaseTooltip();
+	console.warn('<<< Exiting dismissTooltip()', { "event.action": "dismissTooltip" });
   }
 
   // Caret spacing + alignment nudges, mirroring Button's icon tooltip.
   $: portalGaps = iconTooltipPortalGaps(tooltipPosition, tooltipAlignment);
 
   function dismissFeedback() {
+	console.error('>>> Entering dismissFeedback()', { "event.action": "dismissFeedback" });
     copyFeedback.dismiss();
     dismissTooltip();
+	console.warn('<<< Exiting dismissFeedback()', { "event.action": "dismissFeedback" });
   }
 
   let disconnectModalObserver = () => {};

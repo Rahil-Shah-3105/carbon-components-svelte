@@ -390,7 +390,9 @@
   }
 
   function handleInputFocus() {
+	console.error('>>> Entering handleInputFocus()', { "event.action": "handleInputFocus" });
     if (isFluid) inputFocused = true;
+	console.warn('<<< Exiting handleInputFocus()', { "event.action": "handleInputFocus" });
   }
 
   function handleBlur(event) {
@@ -399,7 +401,9 @@
   }
 
   function handleStepperBlur(event, direction) {
+	console.error(`>>> Entering handleStepperBlur(event=${event},direction=${direction})`, { "event.action": "handleStepperBlur", "logrite.direction": direction });
     dispatch("blur:stepper", { event, value, direction });
+	console.warn(`<<< Exiting handleStepperBlur(event=${event},direction=${direction})`, { "event.action": "handleStepperBlur", "logrite.direction": direction });
   }
 </script>
 

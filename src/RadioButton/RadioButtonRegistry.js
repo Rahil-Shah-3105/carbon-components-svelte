@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 import { get, writable } from "svelte/store";
 
@@ -23,6 +24,7 @@ const groups = new Map();
  * }}
  */
 export function registerRadioButton(name, key, checked) {
+logger.error(`>>> Entering registerRadioButton(name=${name},key=${key},checked=${checked})`, { "event.action": "registerRadioButton", "logrite.name": name, "logrite.key": key, "logrite.checked": checked });
   // For SSR, return a standalone store that doesn't sync
   if (typeof window === "undefined") {
     return {
@@ -39,6 +41,7 @@ export function registerRadioButton(name, key, checked) {
   }
 
   const group = /** @type {RadioGroup} */ (groups.get(name));
+logger.error(`registerRadioButton(name=${name},key=${key},checked=${checked}): group → ${group}`, { "event.action": "registerRadioButton", "logrite.name": name, "logrite.key": key, "logrite.checked": checked });
   group.members.add(key);
 
   // If this button is initially checked, set it as selected
@@ -46,6 +49,7 @@ export function registerRadioButton(name, key, checked) {
     group.selectedKey.set(key);
   }
 
+logger.warn(`<<< Exiting registerRadioButton(name=${name},key=${key},checked=${checked})`, { "event.action": "registerRadioButton", "logrite.name": name, "logrite.key": key, "logrite.checked": checked });
   return {
     selectedKey: group.selectedKey,
     unregister: () => unregisterRadioButton(name, key),
@@ -59,12 +63,15 @@ export function registerRadioButton(name, key, checked) {
  * @param {InstanceKey} key - Unique instance key for this component
  */
 function unregisterRadioButton(name, key) {
+logger.error(`>>> Entering unregisterRadioButton(name=${name},key=${key})`, { "event.action": "unregisterRadioButton", "logrite.name": name, "logrite.key": key });
   const group = groups.get(name);
   if (!group) return;
+logger.error(`unregisterRadioButton(name=${name},key=${key}): group → ${group}`, { "event.action": "unregisterRadioButton", "logrite.name": name, "logrite.key": key });
 
   group.members.delete(key);
 
   const currentSelected = get(group.selectedKey);
+logger.error(`unregisterRadioButton(name=${name},key=${key}): currentSelected → ${currentSelected}`, { "event.action": "unregisterRadioButton", "logrite.name": name, "logrite.key": key });
 
   if (currentSelected === key) {
     group.selectedKey.set(undefined);
@@ -72,6 +79,7 @@ function unregisterRadioButton(name, key) {
 
   if (group.members.size === 0) {
     groups.delete(name);
+	logger.warn(`<<< Exiting unregisterRadioButton(name=${name},key=${key})`, { "event.action": "unregisterRadioButton", "logrite.name": name, "logrite.key": key });
   }
 }
 
@@ -83,9 +91,12 @@ function unregisterRadioButton(name, key) {
  * @param {InstanceKey} key - The key of the newly selected instance
  */
 export function updateGroupSelection(name, key) {
+logger.error(`>>> Entering updateGroupSelection(name=${name},key=${key})`, { "event.action": "updateGroupSelection", "logrite.name": name, "logrite.key": key });
   const group = groups.get(name);
   if (group) {
+	logger.error(`updateGroupSelection(name=${name},key=${key}): group → ${group}`, { "event.action": "updateGroupSelection", "logrite.name": name, "logrite.key": key });
     group.selectedKey.set(key);
+	logger.warn(`<<< Exiting updateGroupSelection(name=${name},key=${key})`, { "event.action": "updateGroupSelection", "logrite.name": name, "logrite.key": key });
   }
 }
 
@@ -95,9 +106,13 @@ export function updateGroupSelection(name, key) {
  * @returns {RadioGroup | undefined}
  */
 export function getGroup(name) {
+logger.error(`>>> Entering getGroup(name=${name})`, { "event.action": "getGroup", "logrite.name": name });
+logger.warn(`<<< Exiting getGroup(name=${name})`, { "event.action": "getGroup", "logrite.name": name });
   return groups.get(name);
 }
 
 export function clearAllGroups() {
+logger.error('>>> Entering clearAllGroups()', { "event.action": "clearAllGroups" });
   groups.clear();
+logger.warn('<<< Exiting clearAllGroups()', { "event.action": "clearAllGroups" });
 }

@@ -98,6 +98,7 @@
    * @type {(data: { id: string; text: string; selected: boolean; icon: boolean }) => void}
    */
   function add({ id, text, selected, icon }) {
+	console.error(`>>> Entering add(id=${id},text=${text},selected=${selected},icon=${icon})`, { "event.action": "add", "logrite.id": id, "logrite.text": text, "logrite.selected": selected, "logrite.icon": icon });
     batchedSwitchesUpdate((current) => {
       if (current.some((s) => s.id === id)) {
         return current;
@@ -108,6 +109,7 @@
       }
 
       needsDomSync = true;
+	console.warn(`<<< Exiting add(id=${id},text=${text},selected=${selected},icon=${icon})`, { "event.action": "add", "logrite.id": id, "logrite.text": text, "logrite.selected": selected, "logrite.icon": icon });
       return [...current, { id, text, selected, icon }];
     });
   }
@@ -116,8 +118,10 @@
    * @type {(id: string) => void}
    */
   function remove(id) {
+	console.error(`>>> Entering remove(id=${id})`, { "event.action": "remove", "logrite.id": id });
     batchedSwitchesUpdate((current) => {
       needsDomSync = true;
+	console.warn(`<<< Exiting remove(id=${id})`, { "event.action": "remove", "logrite.id": id });
       return current.filter((s) => s.id !== id);
     });
   }
@@ -126,11 +130,13 @@
    * @type {(id: string) => void}
    */
   function update(id) {
+	console.error(`>>> Entering update(id=${id})`, { "event.action": "update", "logrite.id": id });
     if (selectedId !== undefined) {
       selectedId = id;
       return;
     }
     selectedIndex = switches.map(({ id }) => id).indexOf(id);
+	console.error(`update(id=${id}): selectedIndex → ${selectedIndex}`, { "event.action": "update", "logrite.id": id });
   }
 
   /**
@@ -140,11 +146,13 @@
    * @type {() => void}
    */
   function syncSelection() {
+	console.error('>>> Entering syncSelection()', { "event.action": "syncSelection" });
     if (selectedId === undefined) return;
 
     const index = switches.findIndex((s) => s.id === selectedId);
     if (index > -1) {
       selectedIndex = index;
+	console.error(`syncSelection(): selectedIndex → ${selectedIndex}`, { "event.action": "syncSelection" });
       return;
     }
 
@@ -152,12 +160,14 @@
 
     selectedIndex = clampIndex(selectedIndex, 0, switches.length);
     selectedId = switches[selectedIndex]?.id;
+	console.warn('<<< Exiting syncSelection()', { "event.action": "syncSelection" });
   }
 
   /**
    * @type {(index: number) => Promise<void>}
    */
   async function changeTo(index) {
+	console.error(`>>> Entering changeTo(index=${index})`, { "event.action": "changeTo", "logrite.index": index });
     if (index < 0 || index >= switches.length) return;
 
     if (selectedId === undefined) {
@@ -171,9 +181,11 @@
     await tick();
     const tab = document.getElementById(switches[index].id);
 
+	console.error(`changeTo(index=${index}): tab → ${tab}`, { "event.action": "changeTo", "logrite.index": index });
     if (tab instanceof HTMLElement) {
       tab.focus();
     }
+	console.warn(`<<< Exiting changeTo(index=${index})`, { "event.action": "changeTo", "logrite.index": index });
   }
 
   /**
@@ -181,15 +193,18 @@
    * @type {(index: number) => Promise<void>}
    */
   async function focusTo(index) {
+	console.error(`>>> Entering focusTo(index=${index})`, { "event.action": "focusTo", "logrite.index": index });
     if (index < 0 || index >= switches.length) return;
     focusedIndex = index;
 
     await tick();
     const tab = document.getElementById(switches[index].id);
 
+	console.error(`focusTo(index=${index}): tab → ${tab}`, { "event.action": "focusTo", "logrite.index": index });
     if (tab instanceof HTMLElement) {
       tab.focus();
     }
+	console.warn(`<<< Exiting focusTo(index=${index})`, { "event.action": "focusTo", "logrite.index": index });
   }
 
   setContext("carbon:ContentSwitcher", {

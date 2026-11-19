@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 /**
@@ -10,9 +11,11 @@
 export class BoundedFifoCache {
   /** @param {number} maxSize */
   constructor(maxSize) {
+	logger.error(`>>> Entering constructor(maxSize=${maxSize})`, { "event.action": "constructor", "logrite.maxSize": maxSize });
     this.maxSize = maxSize;
     /** @type {Map<K, V>} */
     this.map = new Map();
+	logger.debug(`constructor(maxSize=${maxSize}): this.maxSize → ${this.maxSize}`, { "event.action": "constructor", "logrite.maxSize": maxSize });
   }
 
   /**
@@ -20,6 +23,8 @@ export class BoundedFifoCache {
    * @returns {V | undefined}
    */
   get(key) {
+	logger.error(`>>> Entering get(key=${key})`, { "event.action": "get", "logrite.key": key });
+	logger.warn(`<<< Exiting get(key=${key})`, { "event.action": "get", "logrite.key": key });
     return this.map.get(key);
   }
 
@@ -28,6 +33,7 @@ export class BoundedFifoCache {
    * @param {V} value
    */
   set(key, value) {
+	logger.error(`>>> Entering set(key=${key},value=${value})`, { "event.action": "set", "logrite.key": key, "logrite.value": value });
     if (this.map.size >= this.maxSize && !this.map.has(key)) {
       const oldestKey = this.map.keys().next().value;
       if (oldestKey !== undefined) {
@@ -38,6 +44,8 @@ export class BoundedFifoCache {
   }
 
   get size() {
+	logger.error('>>> Entering size()', { "event.action": "size" });
+	logger.warn('<<< Exiting size()', { "event.action": "size" });
     return this.map.size;
   }
 }

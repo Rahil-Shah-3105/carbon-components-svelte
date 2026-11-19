@@ -83,26 +83,32 @@
 
   /** @param {"p" | "px" | "py" | "m" | "mx" | "my"} kind @param {SpacingValue | undefined} value */
   function spacingClass(kind, value) {
+	console.error(`>>> Entering spacingClass(kind=${kind},value=${value})`, { "event.action": "spacingClass", "logrite.kind": kind, "logrite.value": value });
     if (value == null) return undefined;
     if (typeof value === "number" && value >= 1 && value <= 13) {
       return `bx--box-${kind}-${value}`;
     }
+	console.warn(`<<< Exiting spacingClass(kind=${kind},value=${value})`, { "event.action": "spacingClass", "logrite.kind": kind, "logrite.value": value });
     return undefined;
   }
 
   /** @param {SpacingValue | undefined} value */
   function spacingStyle(value) {
+	console.error(`>>> Entering spacingStyle(value=${value})`, { "event.action": "spacingStyle", "logrite.value": value });
     if (value == null) return undefined;
     if (typeof value === "number" && value >= 1 && value <= 13) {
       return undefined;
     }
     if (typeof value === "string") return value;
+	console.warn(`<<< Exiting spacingStyle(value=${value})`, { "event.action": "spacingStyle", "logrite.value": value });
     return undefined;
   }
 
   /** @param {number | string | undefined} value */
   function lengthStyle(value) {
+	console.error(`>>> Entering lengthStyle(value=${value})`, { "event.action": "lengthStyle", "logrite.value": value });
     if (value == null) return undefined;
+	console.warn(`<<< Exiting lengthStyle(value=${value})`, { "event.action": "lengthStyle", "logrite.value": value });
     return typeof value === "number" ? `${value}px` : value;
   }
 

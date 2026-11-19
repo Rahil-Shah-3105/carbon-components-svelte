@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 import { clampIndex } from "./clampIndex.js";
@@ -32,17 +33,22 @@ import { moveIndex, nextEnabledIndex } from "./moveIndex.js";
  * @param {RovingFocusOptions} options
  */
 export function rovingFocus(node, options) {
+logger.error(`>>> Entering rovingFocus(node=${node},options=${options})`, { "event.action": "rovingFocus", "logrite.node": node, "logrite.options": options });
   let opts = options;
 
   /** @param {HTMLElement} el */
   function defaultIsDisabled(el) {
+	logger.error(`>>> Entering defaultIsDisabled(el=${el})`, { "event.action": "defaultIsDisabled", "logrite.el": el });
+	logger.warn(`<<< Exiting defaultIsDisabled(el=${el})`, { "event.action": "defaultIsDisabled", "logrite.el": el });
     return (
       el.hasAttribute("disabled") || el.getAttribute("aria-disabled") === "true"
     );
   }
 
   function getItems() {
+	logger.error('>>> Entering getItems()', { "event.action": "getItems" });
     if (opts.getItems) return opts.getItems();
+	logger.warn('<<< Exiting getItems()', { "event.action": "getItems" });
     return /** @type {HTMLElement[]} */ (
       Array.from(node.querySelectorAll(opts.selector))
     );
@@ -53,11 +59,13 @@ export function rovingFocus(node, options) {
    * @param {number} direction
    */
   function moveBy(items, direction) {
+	logger.error(`>>> Entering moveBy(items=${items},direction=${direction})`, { "event.action": "moveBy", "logrite.items": items, "logrite.direction": direction });
     const index = opts.getActiveIndex();
     if (opts.skipDisabled) {
       const isDisabled = opts.isDisabled ?? defaultIsDisabled;
       return nextEnabledIndex({ items, index, step: direction, isDisabled });
     }
+	logger.warn(`<<< Exiting moveBy(items=${items},direction=${direction})`, { "event.action": "moveBy", "logrite.items": items, "logrite.direction": direction });
     return opts.wrap === false
       ? clampIndex(index, direction, items.length)
       : moveIndex(index, direction, items.length);
@@ -68,10 +76,12 @@ export function rovingFocus(node, options) {
    * @param {1 | -1} direction - 1 for the first item, -1 for the last.
    */
   function edge(items, direction) {
+	logger.error(`>>> Entering edge(items=${items},direction=${direction})`, { "event.action": "edge", "logrite.items": items, "logrite.direction": direction });
     if (!opts.skipDisabled) {
       return direction === 1 ? 0 : items.length - 1;
     }
     const isDisabled = opts.isDisabled ?? defaultIsDisabled;
+	logger.warn(`<<< Exiting edge(items=${items},direction=${direction})`, { "event.action": "edge", "logrite.items": items, "logrite.direction": direction });
     return nextEnabledIndex({ items, index: -1, step: direction, isDisabled });
   }
 
@@ -120,10 +130,15 @@ export function rovingFocus(node, options) {
   return {
     /** @param {RovingFocusOptions} update */
     update(update) {
+	logger.error(`>>> Entering update(update=${update})`, { "event.action": "update", "logrite.update": update });
       opts = update;
+	logger.warn(`<<< Exiting update(update=${update})`, { "event.action": "update", "logrite.update": update });
     },
     destroy() {
+	logger.error('>>> Entering destroy()', { "event.action": "destroy" });
       node.removeEventListener("keydown", handleKeydown);
+	logger.warn('<<< Exiting destroy()', { "event.action": "destroy" });
     },
   };
+logger.warn(`<<< Exiting rovingFocus(node=${node},options=${options})`, { "event.action": "rovingFocus", "logrite.node": node, "logrite.options": options });
 }

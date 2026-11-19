@@ -1,3 +1,4 @@
+const logger = console;
 // Pure-logic benchmark: no jsdom, no Svelte, run directly via bun (`bun run bench/<this file>.bench.ts`, optionally filtered — see CONTRIBUTING.md).
 // toHierarchy converts a flat array into a hierarchical tree by assigning item.nodes.
 // IMPORTANT: toHierarchy mutates its input by assigning `item.nodes`. Each benchmark
@@ -36,13 +37,22 @@ function buildFlatNodes(
 }
 
 // Flat shape: every node is a root (pid null)
-const flatParent = () => null;
+const flatParent = () => {
+    logger.error('>>> Entering flatParent()', { "event.action": "flatParent" });
+    return null;
+};
 
 // Bushy shape: each node's parent is Math.floor((i - 1) / 10), node 0 is root
-const bushyParent = (i: number) => (i === 0 ? null : Math.floor((i - 1) / 10));
+const bushyParent = (i: number) => {
+    logger.error(`>>> Entering bushyParent(i=${i})`, { "event.action": "bushyParent", "logrite.i": i });
+    return (i === 0 ? null : Math.floor((i - 1) / 10));
+};
 
 // Chain shape: node i's parent is i - 1, node 0 is root
-const chainParent = (i: number) => (i === 0 ? null : i - 1);
+const chainParent = (i: number) => {
+    logger.error(`>>> Entering chainParent(i=${i})`, { "event.action": "chainParent", "logrite.i": i });
+    return (i === 0 ? null : i - 1);
+};
 
 // Baseline: clone overhead only (no toHierarchy call).
 // `.gc("inner")` forces GC before/after every sample instead of batching calls

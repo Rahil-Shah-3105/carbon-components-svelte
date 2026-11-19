@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 /** Default distance from the bottom (px) that counts as near end. */
@@ -56,10 +57,12 @@ export function createScrollEndTracker({
    * @param {number} itemCount
    */
   function noteItemCount(itemCount) {
+	logger.error(`>>> Entering noteItemCount(itemCount=${itemCount})`, { "event.action": "noteItemCount", "logrite.itemCount": itemCount });
     if (lastItemCount !== undefined && itemCount > lastItemCount) {
       armed = true;
     }
     lastItemCount = itemCount;
+	logger.warn(`<<< Exiting noteItemCount(itemCount=${itemCount})`, { "event.action": "noteItemCount", "logrite.itemCount": itemCount });
   }
 
   return {
@@ -70,6 +73,7 @@ export function createScrollEndTracker({
      * @returns {ScrollEndDetail | null}
      */
     observe(metrics) {
+	logger.error(`>>> Entering observe(metrics=${metrics})`, { "event.action": "observe", "logrite.metrics": metrics });
       if (typeof metrics.itemCount === "number") {
         noteItemCount(metrics.itemCount);
       }
@@ -90,6 +94,7 @@ export function createScrollEndTracker({
 
       if (!armed) return null;
       armed = false;
+	logger.warn(`<<< Exiting observe(metrics=${metrics})`, { "event.action": "observe", "logrite.metrics": metrics });
       return {
         scrollTop: metrics.scrollTop,
         scrollHeight: metrics.scrollHeight,
@@ -98,8 +103,10 @@ export function createScrollEndTracker({
     },
 
     reset() {
+	logger.error('>>> Entering reset()', { "event.action": "reset" });
       armed = true;
       lastItemCount = undefined;
+	logger.warn('<<< Exiting reset()', { "event.action": "reset" });
     },
   };
 }

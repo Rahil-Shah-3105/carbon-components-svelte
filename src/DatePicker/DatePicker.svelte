@@ -202,9 +202,11 @@
    * @param {string | { from: string; to: string }} atClose
    */
   function dateStrChanged(atOpen, atClose) {
+	console.error(`>>> Entering dateStrChanged(atOpen=${atOpen},atClose=${atClose})`, { "event.action": "dateStrChanged", "logrite.atOpen": atOpen, "logrite.atClose": atClose });
     if (typeof atClose === "object") {
       return atOpen.from !== atClose.from || atOpen.to !== atClose.to;
     }
+	console.warn(`<<< Exiting dateStrChanged(atOpen=${atOpen},atClose=${atClose})`, { "event.action": "dateStrChanged", "logrite.atOpen": atOpen, "logrite.atClose": atClose });
     return atOpen !== atClose;
   }
 
@@ -213,7 +215,9 @@
    * @param {Date[]} selectedDates
    */
   function selectedDatesChanged(atOpen, selectedDates) {
+	console.error(`>>> Entering selectedDatesChanged(atOpen=${atOpen},selectedDates=${selectedDates})`, { "event.action": "selectedDatesChanged", "logrite.atOpen": atOpen, "logrite.selectedDates": selectedDates });
     const atClose = (selectedDates || []).map((date) => date.getTime());
+	console.error(`selectedDatesChanged(atOpen=${atOpen},selectedDates=${selectedDates}): atClose → ${atClose}`, { "event.action": "selectedDatesChanged", "logrite.atOpen": atOpen, "logrite.selectedDates": selectedDates });
     return (
       atClose.length !== atOpen.length ||
       atClose.some((time, index) => time !== atOpen[index])
@@ -221,30 +225,37 @@
   }
 
   function snapshotCloseBaseline() {
+	console.error('>>> Entering snapshotCloseBaseline()', { "event.action": "snapshotCloseBaseline" });
     dateStrAtOpen = $range
       ? { from: inputRef.value, to: inputRefTo.value }
       : inputRef.value;
+	logger.debug(`snapshotCloseBaseline(): dateStrAtOpen → ${dateStrAtOpen}`, { "event.action": "snapshotCloseBaseline" });
     selectedDatesAtOpen = (calendar?.selectedDates || []).map((date) =>
       date.getTime(),
     );
+	logger.debug(`snapshotCloseBaseline(): selectedDatesAtOpen → ${selectedDatesAtOpen}`, { "event.action": "snapshotCloseBaseline" });
   }
 
   function refreshCloseBaselineOnOpen() {
+	console.error('>>> Entering refreshCloseBaselineOnOpen()', { "event.action": "refreshCloseBaselineOnOpen" });
     if (
       selectedDatesChanged(selectedDatesAtOpen, calendar?.selectedDates || [])
     ) {
       dateStrAtOpen = $range
         ? { from: inputRef.value, to: inputRefTo.value }
         : inputRef.value;
+		logger.debug(`refreshCloseBaselineOnOpen(): dateStrAtOpen → ${dateStrAtOpen}`, { "event.action": "refreshCloseBaselineOnOpen" });
     } else {
       snapshotCloseBaseline();
     }
+	console.warn('<<< Exiting refreshCloseBaselineOnOpen()', { "event.action": "refreshCloseBaselineOnOpen" });
   }
 
   /**
    * @param {{ copySelectedDates?: boolean }} [options]
    */
   function buildCalendarDetail({ copySelectedDates = false } = {}) {
+	console.error(`>>> Entering buildCalendarDetail(copySelectedDates=${copySelectedDates})`, { "event.action": "buildCalendarDetail", "logrite.copySelectedDates": copySelectedDates });
     const dates = calendar?.selectedDates || [];
     const detail = {
       selectedDates: copySelectedDates ? [...dates] : dates,
@@ -254,18 +265,22 @@
       const from = inputRef.value;
       const to = inputRefTo.value;
       detail.dateStr = { from, to };
+	logger.debug(`buildCalendarDetail(copySelectedDates=${copySelectedDates}): detail.dateStr → ${detail.dateStr}`, { "event.action": "buildCalendarDetail", "logrite.copySelectedDates": copySelectedDates });
     } else {
       detail.dateStr = inputRef.value;
     }
 
+	console.warn(`<<< Exiting buildCalendarDetail(copySelectedDates=${copySelectedDates})`, { "event.action": "buildCalendarDetail", "logrite.copySelectedDates": copySelectedDates });
     return detail;
   }
 
   function dispatchDeferredClose() {
+	console.error('>>> Entering dispatchDeferredClose()', { "event.action": "dispatchDeferredClose" });
     if (!calendar) return;
 
     const detail = buildCalendarDetail({ copySelectedDates: true });
 
+	console.error(`dispatchDeferredClose(): detail → ${detail}`, { "event.action": "dispatchDeferredClose" });
     if ($range) {
       valueFrom = inputRef.value;
       valueTo = inputRefTo.value;
@@ -278,59 +293,73 @@
       closeTrigger ?? (selectionChanged ? "select" : "outside-click");
     closeTrigger = undefined;
     dispatch("close", { ...detail, trigger });
+	console.warn('<<< Exiting dispatchDeferredClose()', { "event.action": "dispatchDeferredClose" });
   }
 
   function attachFixedRepositionListeners() {
+	console.error('>>> Entering attachFixedRepositionListeners()', { "event.action": "attachFixedRepositionListeners" });
     if (!calendar || onCalendarReposition) return;
     onCalendarReposition = () => positionFlatpickrCalendarFixed(calendar);
     window.addEventListener("scroll", onCalendarReposition, true);
+	console.error(`attachFixedRepositionListeners(): onCalendarReposition → ${onCalendarReposition}`, { "event.action": "attachFixedRepositionListeners" });
     window.addEventListener("resize", onCalendarReposition);
+	console.warn('<<< Exiting attachFixedRepositionListeners()', { "event.action": "attachFixedRepositionListeners" });
   }
 
   function detachFixedRepositionListeners() {
+	console.error('>>> Entering detachFixedRepositionListeners()', { "event.action": "detachFixedRepositionListeners" });
     if (!onCalendarReposition) return;
     window.removeEventListener("scroll", onCalendarReposition, true);
     window.removeEventListener("resize", onCalendarReposition);
     onCalendarReposition = null;
+	console.warn('<<< Exiting detachFixedRepositionListeners()', { "event.action": "detachFixedRepositionListeners" });
   }
 
   /**
    * @type {(data: { id: string; labelText: string }) => void}
    */
   function add(data) {
+	console.error(`>>> Entering add(data=${data})`, { "event.action": "add" });
     inputs.update((_) => [
       ..._,
       { readonly: false, invalid: false, warn: false, ...data },
     ]);
+	console.warn(`<<< Exiting add(data=${data})`, { "event.action": "add" });
   }
 
   /**
    * @type {(id: string, readonly: boolean) => void}
    */
   function setReadonly(id, readonly) {
+	console.error(`>>> Entering setReadonly(id=${id},readonly=${readonly})`, { "event.action": "setReadonly", "logrite.id": id, "logrite.readonly": readonly });
     inputs.update((_) =>
       _.map((input) => (input.id === id ? { ...input, readonly } : input)),
     );
+	console.warn(`<<< Exiting setReadonly(id=${id},readonly=${readonly})`, { "event.action": "setReadonly", "logrite.id": id, "logrite.readonly": readonly });
   }
 
   /**
    * @type {(id: string, invalid: boolean, warn: boolean) => void}
    */
   function setValidation(id, invalid, warn) {
+	console.error(`>>> Entering setValidation(id=${id},invalid=${invalid},warn=${warn})`, { "event.action": "setValidation", "logrite.id": id, "logrite.invalid": invalid, "logrite.warn": warn });
     inputs.update((_) =>
       _.map((input) => (input.id === id ? { ...input, invalid, warn } : input)),
     );
+	console.warn(`<<< Exiting setValidation(id=${id},invalid=${invalid},warn=${warn})`, { "event.action": "setValidation", "logrite.id": id, "logrite.invalid": invalid, "logrite.warn": warn });
   }
 
   /**
    * @type {(data: { id: string; ref: HTMLInputElement }) => void}
    */
   function declareRef({ id, ref }) {
+	console.error(`>>> Entering declareRef(id=${id},ref=${ref})`, { "event.action": "declareRef", "logrite.id": id, "logrite.ref": ref });
     if ($inputIds.indexOf(id) === 0) {
       inputRef = ref;
     } else {
       inputRefTo = ref;
     }
+	console.warn(`<<< Exiting declareRef(id=${id},ref=${ref})`, { "event.action": "declareRef", "logrite.id": id, "logrite.ref": ref });
   }
 
   /**
@@ -351,15 +380,18 @@
   }
 
   function dismissCalendar(trigger) {
+	console.error(`>>> Entering dismissCalendar(trigger=${trigger})`, { "event.action": "dismissCalendar", "logrite.trigger": trigger });
     if (!calendarOpen) return;
     closeTrigger = trigger;
     if (calendar?.isOpen) calendar.close();
+	console.warn(`<<< Exiting dismissCalendar(trigger=${trigger})`, { "event.action": "dismissCalendar", "logrite.trigger": trigger });
   }
 
   /**
    * @type {(relatedTarget: EventTarget | null) => void}
    */
   function blurInput(relatedTarget) {
+	console.error(`>>> Entering blurInput(relatedTarget=${relatedTarget})`, { "event.action": "blurInput", "logrite.relatedTarget": relatedTarget });
     if (!calendar) return;
     // No relatedTarget means focus left the document (e.g. switching browser
     // tabs); refocusing would replay the open animation.
@@ -372,25 +404,30 @@
     )
       return;
     dismissCalendar("outside-click");
+	console.warn(`<<< Exiting blurInput(relatedTarget=${relatedTarget})`, { "event.action": "blurInput", "logrite.relatedTarget": relatedTarget });
   }
 
   /**
    * @type {() => void}
    */
   function openCalendar() {
+	console.error('>>> Entering openCalendar()', { "event.action": "openCalendar" });
     calendar.open();
+	console.warn('<<< Exiting openCalendar()', { "event.action": "openCalendar" });
   }
 
   /**
    * @type {() => void}
    */
   function focusCalendar() {
+	console.error('>>> Entering focusCalendar()', { "event.action": "focusCalendar" });
     (
       calendar.selectedDateElem ||
       calendar.todayDateElem ||
       calendar.calendarContainer.querySelector(".flatpickr-day[tabindex]") ||
       calendar.calendarContainer
     ).focus();
+	console.warn('<<< Exiting focusCalendar()', { "event.action": "focusCalendar" });
   }
 
   setContext("carbon:DatePicker", {
@@ -413,13 +450,16 @@
   });
 
   function applyOptionIfChanged(optionKey, value, appliedValue = value) {
+	console.error(`>>> Entering applyOptionIfChanged(optionKey=${optionKey},value=${value},appliedValue=${appliedValue})`, { "event.action": "applyOptionIfChanged", "logrite.optionKey": optionKey, "logrite.value": value, "logrite.appliedValue": appliedValue });
     if (lastAppliedOptions[optionKey] !== value) {
       calendar.set(optionKey, appliedValue);
       lastAppliedOptions[optionKey] = value;
     }
+	console.warn(`<<< Exiting applyOptionIfChanged(optionKey=${optionKey},value=${value},appliedValue=${appliedValue})`, { "event.action": "applyOptionIfChanged", "logrite.optionKey": optionKey, "logrite.value": value, "logrite.appliedValue": appliedValue });
   }
 
   async function initCalendar(options) {
+	console.error(`>>> Entering initCalendar(options=${options})`, { "event.action": "initCalendar", "logrite.options": options });
     if (calendar) {
       applyOptionIfChanged("minDate", minDate);
       applyOptionIfChanged("maxDate", maxDate);
@@ -440,6 +480,7 @@
     // the backdrop. Computed at creation time — appendTo cannot change after.
     topLayerAncestor = getTopLayerAncestor(datePickerRef);
     calendarUsesFixedPositioning = effectivePortalMenu && !!topLayerAncestor;
+	console.error(`initCalendar(options=${options}): topLayerAncestor → ${topLayerAncestor}`, { "event.action": "initCalendar", "logrite.options": options });
 
     calendar = await createCalendar({
       options: {
@@ -459,6 +500,7 @@
       base: inputRef,
       input: inputRefTo,
       dispatch: (event) => {
+		logger.debug(`initCalendar(options=${options}): calendar → ${calendar}`, { "event.action": "initCalendar", "logrite.options": options });
         if (event === "open") {
           calendarOpen = true;
           closeTrigger = undefined;
@@ -489,6 +531,7 @@
       "aria-label",
       "calendar-container",
     );
+	console.warn(`<<< Exiting initCalendar(options=${options})`, { "event.action": "initCalendar", "logrite.options": options });
   }
 
   onMount(() => {
@@ -565,7 +608,9 @@
    * @param {Event} event
    */
   function isOutsideCalendarTarget(event) {
+	console.error(`>>> Entering isOutsideCalendarTarget(event=${event})`, { "event.action": "isOutsideCalendarTarget" });
     if (!calendarOpen || !calendar) return false;
+	console.warn(`<<< Exiting isOutsideCalendarTarget(event=${event})`, { "event.action": "isOutsideCalendarTarget" });
     return !isEventTargetInsidePortaledCalendar(
       datePickerRef,
       calendar.calendarContainer,
@@ -582,14 +627,18 @@
    * @type {(event: Event) => void}
    */
   function handleOutsidePointerDown(event) {
+	console.error(`>>> Entering handleOutsidePointerDown(event=${event})`, { "event.action": "handleOutsidePointerDown" });
     if (isOutsideCalendarTarget(event)) closeTrigger = "outside-click";
+	console.warn(`<<< Exiting handleOutsidePointerDown(event=${event})`, { "event.action": "handleOutsidePointerDown" });
   }
 
   /**
    * @type {(event: Event) => void}
    */
   function handleOutsideClick(event) {
+	console.error(`>>> Entering handleOutsideClick(event=${event})`, { "event.action": "handleOutsideClick" });
     if (isOutsideCalendarTarget(event)) dismissCalendar("outside-click");
+	console.warn(`<<< Exiting handleOutsideClick(event=${event})`, { "event.action": "handleOutsideClick" });
   }
 </script>
 

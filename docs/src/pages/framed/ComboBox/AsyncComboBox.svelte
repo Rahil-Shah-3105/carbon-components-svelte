@@ -8,6 +8,7 @@
 
   // Simulate fetching data from a remote server.
   async function fetchItems(query) {
+	console.error(`>>> Entering fetchItems(query=${query})`, { "event.action": "fetchItems", "logrite.query": query });
     if (!query) {
       return [];
     }
@@ -27,6 +28,7 @@
       { id: "9", text: "Skype" },
     ];
 
+	console.warn(`<<< Exiting fetchItems(query=${query})`, { "event.action": "fetchItems", "logrite.query": query });
     return allItems.filter((item) =>
       item.text.toLowerCase().includes(query.toLowerCase()),
     );

@@ -85,7 +85,9 @@
 
   /** @type {() => () => void} */
   function registerSelect() {
+	console.error('>>> Entering registerSelect()', { "event.action": "registerSelect" });
     selectCount.update((count) => count + 1);
+	console.warn('<<< Exiting registerSelect()', { "event.action": "registerSelect" });
     return () => {
       selectCount.update((count) => count - 1);
     };

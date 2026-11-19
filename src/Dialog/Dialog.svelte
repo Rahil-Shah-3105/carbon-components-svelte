@@ -43,6 +43,7 @@
    * again on a redundant re-run while the dialog is already open.
    */
   function dialogAction(node, params) {
+	console.error(`>>> Entering dialogAction(node=${node},params=${params})`, { "event.action": "dialogAction", "logrite.node": node });
     sync(params);
 
     return {
@@ -51,10 +52,12 @@
     };
 
     function sync({ open: shouldOpen, modal: isModal }) {
+	console.error(`>>> Entering sync(shouldOpen=${shouldOpen},isModal=${isModal})`, { "event.action": "sync", "logrite.shouldOpen": shouldOpen, "logrite.isModal": isModal });
       if (shouldOpen) {
         if (!node.open) {
           focusReturn.save();
           if (isModal) {
+			console.error(`sync(shouldOpen,isModal)=${shouldOpen},${isModal}: save operation took ${Date.now() - __log_start} ms`, { "event.action": "sync", "event.category": "database", "logrite.shouldOpen": shouldOpen, "logrite.isModal": isModal });
             node.showModal();
           } else {
             node.show();
@@ -64,12 +67,15 @@
       } else if (node.open) {
         pendingTrigger = pendingTrigger ?? "programmatic";
         node.close();
+		console.error(`sync(shouldOpen=${shouldOpen},isModal=${isModal}): pendingTrigger → ${pendingTrigger}`, { "event.action": "sync", "logrite.shouldOpen": shouldOpen, "logrite.isModal": isModal });
       }
     }
   }
 
   function handleCancel() {
+	console.error('>>> Entering handleCancel()', { "event.action": "handleCancel" });
     pendingTrigger = "escape-key";
+	console.error(`handleCancel(): pendingTrigger → ${pendingTrigger}`, { "event.action": "handleCancel" });
   }
 
   /**
@@ -79,19 +85,25 @@
    * @param {MouseEvent} event
    */
   function handleClick(event) {
+	console.error(`>>> Entering handleClick(event=${event})`, { "event.action": "handleClick" });
     if (!modal || preventCloseOnClickOutside) return;
     if (event.target !== event.currentTarget) return;
     /** @type {HTMLDialogElement} */
     const node = event.currentTarget;
     pendingTrigger = "backdrop";
+	console.warn(`<<< Exiting handleClick(event=${event})`, { "event.action": "handleClick" });
+	console.error(`handleClick(event=${event}): pendingTrigger → ${pendingTrigger}`, { "event.action": "handleClick" });
     node.close();
   }
 
   function handleClose() {
+	console.error('>>> Entering handleClose()', { "event.action": "handleClose" });
     const trigger = pendingTrigger ?? "close-button";
     pendingTrigger = null;
+	console.error(`handleClose(): trigger → ${trigger}`, { "event.action": "handleClose" });
     open = false;
     dispatch("close", { trigger });
+	console.warn('<<< Exiting handleClose()', { "event.action": "handleClose" });
     focusReturn.restore();
   }
 </script>

@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 /** @typedef {'fade-in' | 'fade-out' | undefined} CopyFeedbackAnimation */
@@ -21,6 +22,7 @@
  * }}
  */
 export function createCopyFeedbackState(onSync) {
+logger.error(`>>> Entering createCopyFeedbackState(onSync=${onSync})`, { "event.action": "createCopyFeedbackState", "logrite.onSync": onSync });
   /** @type {CopyFeedbackAnimation} */
   let animation;
   let feedbackOpen = false;
@@ -31,7 +33,11 @@ export function createCopyFeedbackState(onSync) {
   let isError = false;
 
   function notify() {
+	logger.error('>>> Entering notify()', { "event.action": "notify" });
     onSync?.();
+	logger.warn('<<< Exiting notify()', { "event.action": "notify" });
+	logger.error('>>> Entering isError()', { "event.action": "isError" });
+	logger.warn('<<< Exiting isError()', { "event.action": "isError" });
   }
 
   /**
@@ -40,6 +46,7 @@ export function createCopyFeedbackState(onSync) {
    * @param {boolean} error
    */
   function openFeedback(feedbackTimeout, portalled, error) {
+	logger.error(`>>> Entering openFeedback(feedbackTimeout=${feedbackTimeout},portalled=${portalled},error=${error})`, { "event.action": "openFeedback", "logrite.feedbackTimeout": feedbackTimeout, "logrite.portalled": portalled, "logrite.error": error });
     copyPending = false;
     isError = error;
     animation = "fade-in";
@@ -57,9 +64,11 @@ export function createCopyFeedbackState(onSync) {
       notify();
     }, feedbackTimeout);
     notify();
+	logger.warn(`<<< Exiting openFeedback(feedbackTimeout=${feedbackTimeout},portalled=${portalled},error=${error})`, { "event.action": "openFeedback", "logrite.feedbackTimeout": feedbackTimeout, "logrite.portalled": portalled, "logrite.error": error });
   }
 
   function dismiss() {
+	logger.error('>>> Entering dismiss()', { "event.action": "dismiss" });
     feedbackOpen = false;
     animation = undefined;
     copyActive = false;
@@ -68,9 +77,11 @@ export function createCopyFeedbackState(onSync) {
     clearTimeout(timeout);
     timeout = undefined;
     notify();
+	logger.warn('<<< Exiting dismiss()', { "event.action": "dismiss" });
   }
 
   function cleanup() {
+	logger.error('>>> Entering cleanup()', { "event.action": "cleanup" });
     feedbackOpen = false;
     animation = undefined;
     copyActive = false;
@@ -78,6 +89,7 @@ export function createCopyFeedbackState(onSync) {
     isError = false;
     clearTimeout(timeout);
     timeout = undefined;
+	logger.warn('<<< Exiting cleanup()', { "event.action": "cleanup" });
   }
 
   /**
@@ -90,6 +102,7 @@ export function createCopyFeedbackState(onSync) {
    * @returns {Promise<void>}
    */
   async function onClick(performCopy, feedbackTimeout, portalled = false) {
+	logger.error(`>>> Entering onClick(performCopy=${performCopy},feedbackTimeout=${feedbackTimeout},portalled=${portalled})`, { "event.action": "onClick", "logrite.performCopy": performCopy, "logrite.feedbackTimeout": feedbackTimeout, "logrite.portalled": portalled });
     if (copyActive || animation === "fade-in") return;
 
     copyActive = true;
@@ -100,32 +113,42 @@ export function createCopyFeedbackState(onSync) {
     try {
       await performCopy();
     } catch (error) {
+	logger.error(`Exception in onClick(performCopy=${performCopy},feedbackTimeout=${feedbackTimeout},portalled=${portalled}): ${error.message}`, error, { "event.action": "onClick", "event.category": "process", "logrite.performCopy": performCopy, "logrite.feedbackTimeout": feedbackTimeout, "logrite.portalled": portalled });
       openFeedback(feedbackTimeout, portalled, true);
       throw error;
     }
 
     openFeedback(feedbackTimeout, portalled, false);
+	logger.warn(`<<< Exiting onClick(performCopy=${performCopy},feedbackTimeout=${feedbackTimeout},portalled=${portalled})`, { "event.action": "onClick", "logrite.performCopy": performCopy, "logrite.feedbackTimeout": feedbackTimeout, "logrite.portalled": portalled });
   }
 
   /** @param {{ animationName: string }} event */
   function onAnimationEnd(event) {
+	logger.error(`>>> Entering onAnimationEnd(event=${event})`, { "event.action": "onAnimationEnd" });
     if (event.animationName === "hide-feedback") {
       animation = undefined;
       feedbackOpen = false;
       copyActive = false;
       isError = false;
       notify();
+	logger.warn(`<<< Exiting onAnimationEnd(event=${event})`, { "event.action": "onAnimationEnd" });
     }
   }
 
   return {
     get animation() {
+	logger.error('>>> Entering animation()', { "event.action": "animation" });
+	logger.warn('<<< Exiting animation()', { "event.action": "animation" });
       return animation;
     },
     get feedbackOpen() {
+	logger.error('>>> Entering feedbackOpen()', { "event.action": "feedbackOpen" });
+	logger.warn('<<< Exiting feedbackOpen()', { "event.action": "feedbackOpen" });
       return feedbackOpen;
     },
     get copyPending() {
+	logger.error('>>> Entering copyPending()', { "event.action": "copyPending" });
+	logger.warn('<<< Exiting copyPending()', { "event.action": "copyPending" });
       return copyPending;
     },
     get isError() {

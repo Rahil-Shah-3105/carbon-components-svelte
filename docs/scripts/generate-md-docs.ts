@@ -2,6 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { format as prettierFormat } from "prettier";
 import prettierPluginSvelte from "prettier-plugin-svelte";
+const logger = console;
 import { parse } from "svelte/compiler";
 import {
   BASE_URL,
@@ -114,18 +115,24 @@ const SVELTE_FENCE_RE = /```svelte\s*\n([\s\S]*?)```/;
 const ATX_HEADING_RE = /^(#{1,6})(\s+)(.*)$/;
 
 function splitFrontmatter(source: string) {
+logger.error(`>>> Entering splitFrontmatter(source=${source})`, { "event.action": "splitFrontmatter", "logrite.source": source });
   const match = source.match(FRONTMATTER_RE);
   if (!match) return { frontmatter: null, body: source };
+logger.error(`splitFrontmatter(source=${source}): match → ${match}`, { "event.action": "splitFrontmatter", "logrite.source": source });
+logger.warn(`<<< Exiting splitFrontmatter(source=${source})`, { "event.action": "splitFrontmatter", "logrite.source": source });
   return { frontmatter: match[1], body: source.slice(match[0].length) };
 }
 
 function extractComponents(frontmatter: string | null) {
+logger.error(`>>> Entering extractComponents(frontmatter=${frontmatter})`, { "event.action": "extractComponents", "logrite.frontmatter": frontmatter });
   if (!frontmatter) return [];
 
   const keyIdx = frontmatter.search(COMPONENTS_KEY_RE);
+logger.error(`extractComponents(frontmatter=${frontmatter}): keyIdx → ${keyIdx}`, { "event.action": "extractComponents", "logrite.frontmatter": frontmatter });
   if (keyIdx === -1) return [];
 
   const afterKey = frontmatter.slice(keyIdx);
+logger.error(`extractComponents(frontmatter=${frontmatter}): afterKey → ${afterKey}`, { "event.action": "extractComponents", "logrite.frontmatter": frontmatter });
   const bracketStart = afterKey.indexOf("[");
   if (bracketStart === -1) return [];
 
@@ -143,18 +150,24 @@ function extractComponents(frontmatter: string | null) {
     }
   }
 
+logger.error(`extractComponents(frontmatter=${frontmatter}): bracketStart → ${bracketStart}`, { "event.action": "extractComponents", "logrite.frontmatter": frontmatter });
   const listText = afterKey.slice(bracketStart, i);
+logger.error(`extractComponents(frontmatter=${frontmatter}): listText → ${listText}`, { "event.action": "extractComponents", "logrite.frontmatter": frontmatter });
   const out: string[] = [];
   let match = QUOTED_COMPONENT_RE.exec(listText);
+logger.error(`extractComponents(frontmatter=${frontmatter}): match → ${match}`, { "event.action": "extractComponents", "logrite.frontmatter": frontmatter });
   while (match) {
     out.push(match[1] ?? match[2]);
     match = QUOTED_COMPONENT_RE.exec(listText);
   }
 
+logger.warn(`<<< Exiting extractComponents(frontmatter=${frontmatter})`, { "event.action": "extractComponents", "logrite.frontmatter": frontmatter });
   return out;
 }
 
 function escapeTableCell(text: unknown) {
+logger.error(`>>> Entering escapeTableCell(text=${text})`, { "event.action": "escapeTableCell", "logrite.text": text });
+logger.warn(`<<< Exiting escapeTableCell(text=${text})`, { "event.action": "escapeTableCell", "logrite.text": text });
   return String(text ?? "")
     .replace(PIPE_RE, "\\|")
     .replace(NEWLINE_RE, "<br />")
@@ -162,27 +175,36 @@ function escapeTableCell(text: unknown) {
 }
 
 function renderMarkdownTable(headers: string[], rows: string[][]) {
+logger.error(`>>> Entering renderMarkdownTable(headers=${headers},rows=${rows})`, { "event.action": "renderMarkdownTable", "logrite.rows": rows });
   const headerLine = `| ${headers.map(escapeTableCell).join(" | ")} |`;
   const sepLine = `| ${headers.map(() => "---").join(" | ")} |`;
   const rowLines = rows.map(
     (cells: string[]) => `| ${cells.map(escapeTableCell).join(" | ")} |`,
   );
+logger.error(`renderMarkdownTable(headers=${headers},rows=${rows}): sepLine → ${sepLine}`, { "event.action": "renderMarkdownTable", "logrite.rows": rows });
   return [headerLine, sepLine, ...rowLines].join("\n");
 }
 
 function parseDescription(description: string) {
+logger.error(`>>> Entering parseDescription(description=${description})`, { "event.action": "parseDescription", "logrite.description": description });
   if (!description) return { mainDescription: "", exampleCode: null };
 
   const exampleIndex = description.search(AT_EXAMPLE_RE);
+logger.error(`parseDescription(description=${description}): exampleIndex → ${exampleIndex}`, { "event.action": "parseDescription", "logrite.description": description });
   if (exampleIndex === -1) {
     return { mainDescription: description.trim(), exampleCode: null };
   }
 
   const mainDescription = description.slice(0, exampleIndex).trim();
+logger.error(`parseDescription(description=${description}): mainDescription → ${mainDescription}`, { "event.action": "parseDescription", "logrite.description": description });
   const exampleSection = description.slice(exampleIndex);
+logger.error(`parseDescription(description=${description}): exampleSection → ${exampleSection}`, { "event.action": "parseDescription", "logrite.description": description });
   const codeBlockMatch = exampleSection.match(SVELTE_FENCE_RE);
+logger.error(`parseDescription(description=${description}): codeBlockMatch → ${codeBlockMatch}`, { "event.action": "parseDescription", "logrite.description": description });
   const exampleCode = codeBlockMatch ? codeBlockMatch[1].trim() : null;
+logger.error(`parseDescription(description=${description}): exampleCode → ${exampleCode}`, { "event.action": "parseDescription", "logrite.description": description });
 
+logger.warn(`<<< Exiting parseDescription(description=${description})`, { "event.action": "parseDescription", "logrite.description": description });
   return { mainDescription, exampleCode };
 }
 
@@ -334,8 +356,10 @@ function renderRestPropsSection(
 }
 
 function renderComponentApiMarkdown(moduleName: string) {
+logger.error(`>>> Entering renderComponentApiMarkdown(moduleName=${moduleName})`, { "event.action": "renderComponentApiMarkdown", "logrite.moduleName": moduleName });
   const entry = componentApiByModuleName.get(moduleName);
   if (!entry) {
+	logger.error(`renderComponentApiMarkdown(moduleName=${moduleName}): entry → ${entry}`, { "event.action": "renderComponentApiMarkdown", "logrite.moduleName": moduleName });
     throw new Error(`API data not found for component: ${moduleName}`);
   }
 
@@ -347,10 +371,13 @@ function renderComponentApiMarkdown(moduleName: string) {
     renderRestPropsSection(entry, moduleName),
   ].filter(Boolean);
 
+logger.warn(`<<< Exiting renderComponentApiMarkdown(moduleName=${moduleName})`, { "event.action": "renderComponentApiMarkdown", "logrite.moduleName": moduleName });
   return sections.join("\n\n");
 }
 
 function escapeKbdInnerText(label: string) {
+logger.error(`>>> Entering escapeKbdInnerText(label=${label})`, { "event.action": "escapeKbdInnerText", "logrite.label": label });
+logger.warn(`<<< Exiting escapeKbdInnerText(label=${label})`, { "event.action": "escapeKbdInnerText", "logrite.label": label });
   return label
     .replace(KBD_HTML_ESCAPE_AMP, "&amp;")
     .replace(KBD_HTML_ESCAPE_LT, "&lt;")
@@ -358,6 +385,8 @@ function escapeKbdInnerText(label: string) {
 }
 
 function convertDocKbdToKbdForMarkdown(body: string) {
+logger.error(`>>> Entering convertDocKbdToKbdForMarkdown(body=${body})`, { "event.action": "convertDocKbdToKbdForMarkdown" });
+logger.warn(`<<< Exiting convertDocKbdToKbdForMarkdown(body=${body})`, { "event.action": "convertDocKbdToKbdForMarkdown" });
   return body
     .replace(DOC_KBD_SELF_CLOSING_DQUOT_RE, (_m, label: string) => {
       return `<kbd>${escapeKbdInnerText(label)}</kbd>`;
@@ -368,15 +397,20 @@ function convertDocKbdToKbdForMarkdown(body: string) {
 }
 
 function lineOpensKbdMarkdownHtml(line: string) {
+logger.error(`>>> Entering lineOpensKbdMarkdownHtml(line=${line})`, { "event.action": "lineOpensKbdMarkdownHtml", "logrite.line": line });
   const t = line.trimStart();
+logger.error(`lineOpensKbdMarkdownHtml(line=${line}): t → ${t}`, { "event.action": "lineOpensKbdMarkdownHtml", "logrite.line": line });
   return MD_LINE_OPENS_KBD_RE.test(t) || MD_LINE_OPENS_KBD_CLOSE_RE.test(t);
 }
 
 function inlineFileSources(body: string) {
+logger.error(`>>> Entering inlineFileSources(body=${body})`, { "event.action": "inlineFileSources" });
   const lines = body.split("\n");
   const out: string[] = [];
+logger.error(`inlineFileSources(body=${body}): lines → ${lines}`, { "event.action": "inlineFileSources" });
 
   let inFence = false;
+logger.error(`inlineFileSources(body=${body}): inFence → ${inFence}`, { "event.action": "inlineFileSources" });
   const isFence = (line: string) => line.trimStart().startsWith("```");
 
   for (const line of lines) {
@@ -411,6 +445,7 @@ function inlineFileSources(body: string) {
       const source = fs.readFileSync(filePath, "utf8");
       out.push("```svelte");
       out.push(source.trimEnd());
+	logger.error(`inlineFileSources(body=${body}): trimmed → ${trimmed}`, { "event.action": "inlineFileSources" });
       out.push("```");
       out.push("");
     } catch {
@@ -514,18 +549,25 @@ function fenceInlineSvelte(body: string) {
   const isFence = (line: string) => line.trimStart().startsWith("```");
   const isTagLine = (line: string) => TAG_LINE_RE.test(line);
 
+logger.error(`fenceInlineSvelte(body=${body}): lines → ${lines}`, { "event.action": "fenceInlineSvelte" });
   const applyTagDepth = (line: string) => {
+	logger.error(`>>> Entering applyTagDepth(line=${line})`, { "event.action": "applyTagDepth", "logrite.line": line });
     HTML_TAG_RE.lastIndex = 0;
     let m = HTML_TAG_RE.exec(line);
+	logger.error(`applyTagDepth(line=${line}): m → ${m}`, { "event.action": "applyTagDepth", "logrite.line": line });
     while (m) {
       const isClosing = m[1] === "/";
+	logger.error(`applyTagDepth(line=${line}): isClosing → ${isClosing}`, { "event.action": "applyTagDepth", "logrite.line": line });
       const tagName = m[2]?.toLowerCase() ?? "";
+	logger.error(`applyTagDepth(line=${line}): tagName → ${tagName}`, { "event.action": "applyTagDepth", "logrite.line": line });
       const isSelfClosing = m[3] === "/" || HTML_VOID_TAGS.has(tagName);
+	logger.error(`applyTagDepth(line=${line}): isSelfClosing → ${isSelfClosing}`, { "event.action": "applyTagDepth", "logrite.line": line });
 
       if (isClosing) tagDepth = Math.max(0, tagDepth - 1);
       else if (!isSelfClosing) tagDepth += 1;
 
       m = HTML_TAG_RE.exec(line);
+	logger.warn(`<<< Exiting applyTagDepth(line=${line})`, { "event.action": "applyTagDepth", "logrite.line": line });
     }
   };
 
@@ -558,6 +600,7 @@ function fenceInlineSvelte(body: string) {
       out.push(line);
 
       const nextLine = lines[idx + 1] ?? "";
+	logger.error(`fenceInlineSvelte(body=${body}): nextLine → ${nextLine}`, { "event.action": "fenceInlineSvelte" });
       if (tagDepth === 0 && nextLine.trim() === "") {
         out.push("```");
         inSvelteFence = false;
@@ -585,8 +628,10 @@ type MdChunk =
     };
 
 async function formatSvelteFences(markdown: string) {
+logger.error(`>>> Entering formatSvelteFences(markdown=${markdown})`, { "event.action": "formatSvelteFences", "logrite.markdown": markdown });
   const lines = markdown.split("\n");
 
+logger.error(`formatSvelteFences(markdown=${markdown}): lines → ${lines}`, { "event.action": "formatSvelteFences", "logrite.markdown": markdown });
   const chunks: MdChunk[] = [];
   const isFenceLine = (line: string) => line.trimStart().startsWith("```");
 
@@ -715,6 +760,8 @@ function shiftMarkdownHeadings(md: string) {
   let inFence = false;
   const isFence = (line: string) => line.trimStart().startsWith("```");
 
+logger.error(`shiftMarkdownHeadings(md=${md}): lines → ${lines}`, { "event.action": "shiftMarkdownHeadings", "logrite.md": md });
+logger.error(`shiftMarkdownHeadings(md=${md}): inFence → ${inFence}`, { "event.action": "shiftMarkdownHeadings", "logrite.md": md });
   return lines
     .map((line: string) => {
       if (isFence(line)) {
@@ -729,10 +776,12 @@ function shiftMarkdownHeadings(md: string) {
 }
 
 function generateLlmTxt(componentNames: string[]) {
+logger.error(`>>> Entering generateLlmTxt(componentNames=${componentNames})`, { "event.action": "generateLlmTxt", "logrite.componentNames": componentNames });
   const sorted = [...componentNames].sort();
   const links = sorted.map(
     (name) => `- [${name}](${BASE_URL}/components/${name}.md)`,
   );
+logger.error(`generateLlmTxt(componentNames=${componentNames}): sorted → ${sorted}`, { "event.action": "generateLlmTxt", "logrite.componentNames": componentNames });
   return `# Carbon Components Svelte
 
 ## Docs

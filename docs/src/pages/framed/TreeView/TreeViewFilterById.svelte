@@ -59,18 +59,24 @@
   let expandedIds = [];
 
   function filterBySingleId() {
+	console.error('>>> Entering filterBySingleId()', { "event.action": "filterBySingleId" });
     filteredNodes = filterTreeById(allNodes, "1-1-1");
     expandedIds = ["1", "1-1", "1-1-1"];
+	console.error(`filterBySingleId(): expandedIds → ${expandedIds}`, { "event.action": "filterBySingleId" });
   }
 
   function filterByMultipleIds() {
+	console.error('>>> Entering filterByMultipleIds()', { "event.action": "filterByMultipleIds" });
     filteredNodes = filterTreeById(allNodes, ["1-1-1", "1-2-1", "2-1"]);
     expandedIds = ["1", "1-1", "1-1-1", "1-2", "1-2-1", "2", "2-1"];
+	console.error(`filterByMultipleIds(): filteredNodes → ${filteredNodes}`, { "event.action": "filterByMultipleIds" });
   }
 
   function resetFilter() {
+	console.error('>>> Entering resetFilter()', { "event.action": "resetFilter" });
     filteredNodes = allNodes;
     expandedIds = [];
+	console.warn('<<< Exiting resetFilter()', { "event.action": "resetFilter" });
   }
 </script>
 

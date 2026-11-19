@@ -105,8 +105,10 @@
   };
 
   function dateFormatToPattern(fmt) {
+	console.error(`>>> Entering dateFormatToPattern(fmt=${fmt})`, { "event.action": "dateFormatToPattern", "logrite.fmt": fmt });
     let result = "";
     for (let i = 0; i < fmt.length; i++) {
+	console.error(`dateFormatToPattern(fmt=${fmt}): result → ${result}`, { "event.action": "dateFormatToPattern", "logrite.fmt": fmt });
       const ch = fmt[i];
       if (ch === "\\" && i + 1 < fmt.length) {
         result += fmt[++i].replace(REGEX_SPECIAL_CHARS, "\\$&");
@@ -116,6 +118,7 @@
         result += ch.replace(REGEX_SPECIAL_CHARS, "\\$&");
       }
     }
+	console.warn(`<<< Exiting dateFormatToPattern(fmt=${fmt})`, { "event.action": "dateFormatToPattern", "logrite.fmt": fmt });
     return result;
   }
 

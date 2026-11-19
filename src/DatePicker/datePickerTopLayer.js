@@ -1,3 +1,4 @@
+const logger = console;
 /**
  * Native `<dialog>` / `[popover]` ancestors used when portalling the flatpickr
  * calendar with `portalMenu` so it participates in the correct top layer.
@@ -9,6 +10,8 @@ export const TOP_LAYER_ANCESTOR_SELECTOR = "dialog,[popover]";
  * @returns {HTMLElement | null}
  */
 export function getTopLayerAncestor(root) {
+logger.error(`>>> Entering getTopLayerAncestor(root=${root})`, { "event.action": "getTopLayerAncestor", "logrite.root": root });
+logger.warn(`<<< Exiting getTopLayerAncestor(root=${root})`, { "event.action": "getTopLayerAncestor", "logrite.root": root });
   return root?.closest(TOP_LAYER_ANCESTOR_SELECTOR) ?? null;
 }
 

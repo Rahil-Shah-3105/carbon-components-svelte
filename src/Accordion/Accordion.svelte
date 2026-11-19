@@ -50,9 +50,11 @@
   const openId = writable(null);
 
   function notifyOpen(id) {
+	console.error(`>>> Entering notifyOpen(id=${id})`, { "event.action": "notifyOpen", "logrite.id": id });
     if (type === "single") {
       openId.set(id);
     }
+	console.warn(`<<< Exiting notifyOpen(id=${id})`, { "event.action": "notifyOpen", "logrite.id": id });
   }
 
   setContext("carbon:Accordion", { disableItems, openId, notifyOpen });

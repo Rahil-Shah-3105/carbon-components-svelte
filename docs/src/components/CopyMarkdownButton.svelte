@@ -16,8 +16,10 @@
   export let tooltipPosition: "top" | "right" | "bottom" | "left" = "bottom";
 
   async function copyMarkdown() {
+	console.error('>>> Entering copyMarkdown()', { "event.action": "copyMarkdown" });
     const ok = await copyComponentMarkdown(name, href);
     if (!ok) throw new Error("Failed to copy markdown");
+	console.error(`copyMarkdown(): ok → ${ok}`, { "event.action": "copyMarkdown" });
   }
 </script>
 

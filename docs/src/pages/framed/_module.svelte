@@ -8,6 +8,7 @@
   const validThemes = ["white", "g10", "g80", "g90", "g100"];
 
   function applyTheme(theme) {
+	console.error(`>>> Entering applyTheme(theme=${theme})`, { "event.action": "applyTheme", "logrite.theme": theme });
     if (validThemes.includes(theme)) {
       document.documentElement.setAttribute("theme", theme);
       document.documentElement.style.setProperty(
@@ -15,6 +16,7 @@
         ["white", "g10"].includes(theme) ? "light" : "dark",
       );
     }
+	console.warn(`<<< Exiting applyTheme(theme=${theme})`, { "event.action": "applyTheme", "logrite.theme": theme });
   }
 
   onMount(() => {
@@ -30,7 +32,9 @@
 
     // Listen for cross-document storage changes (e.g., from the parent docs page).
     function handleStorage(event) {
+	console.error(`>>> Entering handleStorage(event=${event})`, { "event.action": "handleStorage" });
       if (event.key === "theme") applyTheme(event.newValue);
+	console.warn(`<<< Exiting handleStorage(event=${event})`, { "event.action": "handleStorage" });
     }
 
     window.addEventListener("storage", handleStorage);

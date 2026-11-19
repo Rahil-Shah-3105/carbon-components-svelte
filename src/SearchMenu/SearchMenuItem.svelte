@@ -91,6 +91,7 @@
   $: updateRegistration(shouldRender, isFilterable, inDividerGroup);
 
   function updateRegistration(render, filterable, footerGroup) {
+	console.error(`>>> Entering updateRegistration(render=${render},filterable=${filterable},footerGroup=${footerGroup})`, { "event.action": "updateRegistration", "logrite.render": render, "logrite.filterable": filterable, "logrite.footerGroup": footerGroup });
     if (render) {
       registered = true;
       menu.registerItem(id, filterable, footerGroup);
@@ -100,6 +101,7 @@
       menu.unregisterItem(id);
       group?.unregisterItem(id);
     }
+	console.warn(`<<< Exiting updateRegistration(render=${render},filterable=${filterable},footerGroup=${footerGroup})`, { "event.action": "updateRegistration", "logrite.render": render, "logrite.filterable": filterable, "logrite.footerGroup": footerGroup });
   }
 
   onMount(() => () => updateRegistration(false, false, false));
@@ -108,6 +110,8 @@
    * Tolerate custom matchers that omit `indices` so highlighting still works.
    */
   function normalizeMatch(result) {
+	console.error(`>>> Entering normalizeMatch(result=${result})`, { "event.action": "normalizeMatch", "logrite.result": result });
+	console.warn(`<<< Exiting normalizeMatch(result=${result})`, { "event.action": "normalizeMatch", "logrite.result": result });
     return {
       matched: Boolean(result?.matched),
       indices: result?.indices ?? [],
@@ -115,6 +119,8 @@
   }
 
   function escapeHtml(raw) {
+	console.error(`>>> Entering escapeHtml(raw=${raw})`, { "event.action": "escapeHtml", "logrite.raw": raw });
+	console.warn(`<<< Exiting escapeHtml(raw=${raw})`, { "event.action": "escapeHtml", "logrite.raw": raw });
     return raw
       .replace(/&/g, "&amp;")
       .replace(/</g, "&lt;")
@@ -122,9 +128,11 @@
   }
 
   function segmentsToHtml(parts) {
+	console.error(`>>> Entering segmentsToHtml(parts=${parts})`, { "event.action": "segmentsToHtml", "logrite.parts": parts });
     // Build the highlighted label as one HTML string. Rendering matched and
     // unmatched runs as separate template nodes pads the text with the
     // whitespace Svelte inserts between siblings, which corrupts the word.
+	console.warn(`<<< Exiting segmentsToHtml(parts=${parts})`, { "event.action": "segmentsToHtml", "logrite.parts": parts });
     return parts
       .map((part) =>
         part.match
@@ -135,6 +143,7 @@
   }
 
   function handleClick(event) {
+	console.error(`>>> Entering handleClick(event=${event})`, { "event.action": "handleClick" });
     if (disabled) {
       event.preventDefault();
       event.stopPropagation();
@@ -147,6 +156,7 @@
     };
     dispatch("select", detail);
     menu.selectItem(detail);
+	console.warn(`<<< Exiting handleClick(event=${event})`, { "event.action": "handleClick" });
   }
 
   $: if (shouldRender && highlighted && ref && !ref.matches(":hover")) {

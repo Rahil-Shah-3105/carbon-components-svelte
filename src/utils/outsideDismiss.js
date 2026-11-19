@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 /**
@@ -12,17 +13,22 @@
  * @returns {{ pressInside: () => void, release: () => void }}
  */
 export function createOutsideDismiss(onDismiss) {
+logger.error(`>>> Entering createOutsideDismiss(onDismiss=${onDismiss})`, { "event.action": "createOutsideDismiss", "logrite.onDismiss": onDismiss });
   let pressedInside = false;
 
   return {
     /** Wire to the dialog container's `on:mousedown`. */
     pressInside() {
+	logger.error('>>> Entering pressInside()', { "event.action": "pressInside" });
       pressedInside = true;
+	logger.warn('<<< Exiting pressInside()', { "event.action": "pressInside" });
     },
     /** Wire to the surface's `on:mouseup`; dismisses only if the press began outside. */
     release() {
+	logger.error('>>> Entering release()', { "event.action": "release" });
       if (!pressedInside) onDismiss();
       pressedInside = false;
+	logger.warn('<<< Exiting release()', { "event.action": "release" });
     },
   };
 }

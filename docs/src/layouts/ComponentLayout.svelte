@@ -39,6 +39,8 @@
   const themeItems = DOC_THEMES.map((t) => ({ id: t, text: themeLabels[t] }));
 
   function isCarbonTheme(value: string | null): value is CarbonTheme {
+	console.error(`>>> Entering isCarbonTheme(value=${value})`, { "event.action": "isCarbonTheme", "logrite.value": value });
+	console.warn(`<<< Exiting isCarbonTheme(value=${value})`, { "event.action": "isCarbonTheme", "logrite.value": value });
     return value !== null && DOC_THEMES.includes(value as CarbonTheme);
   }
 
@@ -84,8 +86,10 @@
   }
 
   async function initTocSpy(name: string) {
+	console.error(`>>> Entering initTocSpy(name=${name})`, { "event.action": "initTocSpy", "logrite.name": name });
     destroyTocSpy?.();
     destroyTocSpy = undefined;
+	logger.debug(`initTocSpy(name=${name}): destroyTocSpy → ${destroyTocSpy}`, { "event.action": "initTocSpy", "logrite.name": name });
     const token = ++tocSpyToken;
     await tick();
 
@@ -93,8 +97,10 @@
 
     const page = document.querySelector(`[data-component="${name}"]`);
     if (page) {
+	console.error(`initTocSpy(name=${name}): page → ${page}`, { "event.action": "initTocSpy", "logrite.name": name });
       destroyTocSpy = setupTocScrollSpy(page);
     }
+	console.error(`initTocSpy(name=${name}): destroyTocSpy → ${destroyTocSpy}`, { "event.action": "initTocSpy", "logrite.name": name });
   }
 
   $: sourceCode = sourceRepoUrlForFilePath(

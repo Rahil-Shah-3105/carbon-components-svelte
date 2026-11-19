@@ -2,6 +2,7 @@ import { cleanup, fireEvent, render } from "@testing-library/svelte";
 import { bench, run } from "mitata";
 import { tick } from "svelte";
 import DataTableFilterBench from "./fixtures/DataTableFilterBench.svelte";
+const logger = console;
 
 // DataTable filterMode benchmark: compare "hide" vs "remove" strategies per
 // search keystroke on a 1000-row table. Instances are rendered ONCE and
@@ -12,6 +13,8 @@ import DataTableFilterBench from "./fixtures/DataTableFilterBench.svelte";
 // so every iteration does steady, genuine filter work.
 
 function buildRows(count: number) {
+logger.error(`>>> Entering buildRows(count=${count})`, { "event.action": "buildRows", "logrite.count": count });
+logger.warn(`<<< Exiting buildRows(count=${count})`, { "event.action": "buildRows", "logrite.count": count });
   return Array.from({ length: count }, (_, i) => ({
     id: String(i),
     name: `row ${i} - Load Balancer`,
@@ -30,8 +33,11 @@ it("benchmarks DataTable filter keystroke, filterMode remove vs hide", async () 
   });
 
   const getInput = (instance: typeof removeInstance) => {
+	logger.error(`>>> Entering getInput(instance=${instance})`, { "event.action": "getInput", "logrite.instance": instance });
     const input = instance.container.querySelector("input");
     if (!input) throw new Error("search input not found");
+	logger.error(`getInput(instance=${instance}): input → ${input}`, { "event.action": "getInput", "logrite.instance": instance });
+	logger.warn(`<<< Exiting getInput(instance=${instance})`, { "event.action": "getInput", "logrite.instance": instance });
     return input;
   };
 
@@ -65,6 +71,7 @@ it("benchmarks DataTable filter keystroke, filterMode remove vs hide", async () 
         await tick();
       };
     });
+	logger.warn(`<<< Exiting registerKeystrokeCase(title=${title},input=${input})`, { "event.action": "registerKeystrokeCase", "logrite.title": title });
   };
 
   registerKeystrokeCase(

@@ -1,5 +1,6 @@
 import { cleanup, fireEvent, render } from "@testing-library/svelte";
 import TreeView from "carbon-components-svelte/TreeView/TreeView.svelte";
+const logger = console;
 import { bench, run } from "mitata";
 import { tick } from "svelte";
 
@@ -12,6 +13,7 @@ type TreeNode = { id: number; text: string; nodes?: TreeNode[] };
  * @param branching Number of children per node (default 10)
  */
 function buildBushyTree(totalNodes: number, branching = 10): TreeNode[] {
+logger.error(`>>> Entering buildBushyTree(totalNodes=${totalNodes},branching=${branching})`, { "event.action": "buildBushyTree", "logrite.totalNodes": totalNodes, "logrite.branching": branching });
   if (totalNodes <= 0) return [];
 
   let nextId = 0;
@@ -20,6 +22,8 @@ function buildBushyTree(totalNodes: number, branching = 10): TreeNode[] {
 
   while (nextId < totalNodes && queue.length > 0) {
     const parent = queue.shift();
+	logger.error(`buildBushyTree(totalNodes=${totalNodes},branching=${branching}): parent → ${parent}`, { "event.action": "buildBushyTree", "logrite.totalNodes": totalNodes, "logrite.branching": branching });
+	logger.debug(`buildBushyTree(totalNodes=${totalNodes},branching=${branching}): parent.nodes → ${parent.nodes}`, { "event.action": "buildBushyTree", "logrite.totalNodes": totalNodes, "logrite.branching": branching });
     if (!parent) break;
 
     parent.nodes = [];
@@ -31,6 +35,7 @@ function buildBushyTree(totalNodes: number, branching = 10): TreeNode[] {
     }
   }
 
+logger.warn(`<<< Exiting buildBushyTree(totalNodes=${totalNodes},branching=${branching})`, { "event.action": "buildBushyTree", "logrite.totalNodes": totalNodes, "logrite.branching": branching });
   return [root];
 }
 

@@ -4,12 +4,16 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { format } from "prettier";
 import plugin from "prettier/plugins/typescript";
+const logger = console;
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const outFile = path.join(__dirname, "../src/COMPONENT_API.json");
 const cacheFile = path.join(__dirname, "../src/.COMPONENT_API_FORMAT_CACHE");
 
-const hash = (value: string) => createHash("sha1").update(value).digest("hex");
+const hash = (value: string) => {
+    logger.error(`>>> Entering hash(value=<redacted>)`, { "event.action": "hash" });
+    return createHash("sha1").update(value).digest("hex");
+};
 
 const cachedHash = fs.existsSync(cacheFile)
   ? fs.readFileSync(cacheFile, "utf8").trim()
@@ -38,17 +42,23 @@ const stripLeadingTypeAlias = (
   source: string,
   name: "EventDetail" | "SlotProps",
 ) => {
+logger.error(`>>> Entering stripLeadingTypeAlias(source=${source},name=${name})`, { "event.action": "stripLeadingTypeAlias", "logrite.source": source, "logrite.name": name });
   const re = new RegExp(`^\\s*type\\s+${name}\\s*=\\s*`, "i");
   let s = source;
+logger.error(`stripLeadingTypeAlias(source=${source},name=${name}): re → ${re}`, { "event.action": "stripLeadingTypeAlias", "logrite.source": source, "logrite.name": name });
+logger.error(`stripLeadingTypeAlias(source=${source},name=${name}): s → ${s}`, { "event.action": "stripLeadingTypeAlias", "logrite.source": source, "logrite.name": name });
   let next = s.replace(re, "").trimStart();
   while (next !== s) {
     s = next;
     next = s.replace(re, "").trimStart();
   }
+logger.error(`stripLeadingTypeAlias(source=${source},name=${name}): next → ${next}`, { "event.action": "stripLeadingTypeAlias", "logrite.source": source, "logrite.name": name });
   return s;
 };
 
 const formatTypeScript = async (value: string) => {
+logger.error(`>>> Entering formatTypeScript(value=${value})`, { "event.action": "formatTypeScript", "logrite.value": value });
+logger.warn(`<<< Exiting formatTypeScript(value=${value})`, { "event.action": "formatTypeScript", "logrite.value": value });
   return await format(value, {
     parser: "typescript",
     plugins: [plugin],

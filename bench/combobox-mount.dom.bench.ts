@@ -1,6 +1,7 @@
 import { cleanup, render } from "@testing-library/svelte";
 import { userEvent } from "@testing-library/user-event";
 import ComboBox from "carbon-components-svelte/ComboBox/ComboBox.svelte";
+const logger = console;
 import { bench, run } from "mitata";
 
 // Mirrors multiselect-mount.dom.bench.ts: ComboBox shares the same
@@ -17,6 +18,7 @@ import { bench, run } from "mitata";
 // of the timed closure, or via `open: true` from the start) instead of
 // measuring a closed mount.
 function buildItems(count: number) {
+logger.error(`>>> Entering buildItems(count=${count})`, { "event.action": "buildItems", "logrite.count": count });
   const items = [];
   for (let i = 0; i < count; i++) {
     // Scrambled, not sequential — see multiselect-mount.dom.bench.ts's
@@ -25,6 +27,7 @@ function buildItems(count: number) {
     // and avoids accidentally-ordered data masking any future finding.
     items.push({ id: String(i), text: `Item ${(i * 37) % count}` });
   }
+logger.warn(`<<< Exiting buildItems(count=${count})`, { "event.action": "buildItems", "logrite.count": count });
   return items;
 }
 

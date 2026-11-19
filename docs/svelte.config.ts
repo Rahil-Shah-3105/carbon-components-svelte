@@ -24,6 +24,7 @@ import "prismjs/components/prism-clike.js";
 import "prismjs/components/prism-javascript.js";
 import "prismjs/components/prism-typescript.js";
 import "prism-svelte";
+const logger = console;
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -122,10 +123,14 @@ function snippetMayNeedCarbonImportScan(source: string): boolean {
 }
 
 function createImportsUncached(source: string) {
+logger.error(`>>> Entering createImportsUncached(source=${source})`, { "event.action": "createImportsUncached", "logrite.source": source });
   const inlineComponents = new Set<string>();
   const icons = new Set<string>();
+logger.error(`createImportsUncached(source=${source}): inlineComponents → ${inlineComponents}`, { "event.action": "createImportsUncached", "logrite.source": source });
+logger.error(`createImportsUncached(source=${source}): icons → ${icons}`, { "event.action": "createImportsUncached", "logrite.source": source });
   const actions = new Set<string>();
   let usesDocKbd = false;
+logger.error(`createImportsUncached(source=${source}): actions → ${actions}`, { "event.action": "createImportsUncached", "logrite.source": source });
 
   // heuristic to guess if the inline component or expression name is a Carbon icon
   const isIcon = (text: string) =>
@@ -133,6 +138,7 @@ function createImportsUncached(source: string) {
 
   walk(parse(source) as unknown as Parameters<typeof walk>[0], {
     enter(node) {
+	logger.error(`>>> Entering enter(node=${node})`, { "event.action": "enter", "logrite.node": node });
       const n = node as {
         type?: string;
         name?: string;
@@ -160,6 +166,7 @@ function createImportsUncached(source: string) {
       } else if (n.type === "Action" && n.name) {
         actions.add(n.name);
       }
+	logger.warn(`<<< Exiting enter(node=${node})`, { "event.action": "enter", "logrite.node": node });
     },
   });
 
@@ -188,6 +195,7 @@ function createImportsUncached(source: string) {
 
   if (lines.length === 0) return "";
 
+logger.warn(`<<< Exiting createImportsUncached(source=${source})`, { "event.action": "createImportsUncached", "logrite.source": source });
   return `<script>
 ${lines.join("\n")}
 </script>
@@ -196,20 +204,28 @@ ${lines.join("\n")}
 }
 
 function createImports(source: string) {
+logger.error(`>>> Entering createImports(source=${source})`, { "event.action": "createImports", "logrite.source": source });
   const cached = createImportsCache.get(source);
   if (cached !== undefined) return cached;
+logger.error(`createImports(source=${source}): cached → ${cached}`, { "event.action": "createImports", "logrite.source": source });
   const result = snippetMayNeedCarbonImportScan(source)
     ? createImportsUncached(source)
     : "";
   createImportsCache.set(source, result);
+logger.error(`createImports(source=${source}): result → ${result}`, { "event.action": "createImports", "logrite.source": source });
+logger.warn(`<<< Exiting createImports(source=${source})`, { "event.action": "createImports", "logrite.source": source });
   return result;
 }
 
 async function formatAndHighlightPreviewSvelte(combinedSource: string) {
+logger.error(`>>> Entering formatAndHighlightPreviewSvelte(combinedSource=${combinedSource})`, { "event.action": "formatAndHighlightPreviewSvelte", "logrite.combinedSource": combinedSource });
   const mode = SKIP_MDSVEX_PRETTIER ? "raw" : "fmt";
   const cacheKey = `${mode}:${hashKey(combinedSource)}`;
+logger.error(`formatAndHighlightPreviewSvelte(combinedSource=${combinedSource}): mode → ${mode}`, { "event.action": "formatAndHighlightPreviewSvelte", "logrite.combinedSource": combinedSource });
+logger.error(`formatAndHighlightPreviewSvelte(combinedSource=${combinedSource}): cacheKey → ${cacheKey}`, { "event.action": "formatAndHighlightPreviewSvelte", "logrite.combinedSource": combinedSource });
   const cached = previewCodeCache.get(cacheKey);
   if (cached) return cached;
+logger.error(`formatAndHighlightPreviewSvelte(combinedSource=${combinedSource}): cached → ${cached}`, { "event.action": "formatAndHighlightPreviewSvelte", "logrite.combinedSource": combinedSource });
 
   const formattedCode = SKIP_MDSVEX_PRETTIER
     ? combinedSource
@@ -221,6 +237,7 @@ async function formatAndHighlightPreviewSvelte(combinedSource: string) {
   );
   const out = { formattedCode, highlightedCode };
   previewCodeCache.set(cacheKey, out);
+logger.warn(`<<< Exiting formatAndHighlightPreviewSvelte(combinedSource=${combinedSource})`, { "event.action": "formatAndHighlightPreviewSvelte", "logrite.combinedSource": combinedSource });
   return out;
 }
 
@@ -248,6 +265,7 @@ async function formatAndHighlightFileSourceSvelte(
 }
 
 function plugin() {
+logger.error('>>> Entering plugin()', { "event.action": "plugin" });
   /** mdsvex / remark can surface `html` nodes that carry fenced-block metadata on `lang`. */
   async function visitHtml(
     node: { lang?: string; value: string } & import("unist").Node,
@@ -259,6 +277,7 @@ function plugin() {
       !NO_PREVIEW_HTML_RE.test(node.value)
     ) {
       const scriptBlock = createImports(node.value);
+	logger.error(`plugin(): scriptBlock → ${scriptBlock}`, { "event.action": "plugin" });
       const { formattedCode, highlightedCode } =
         await formatAndHighlightPreviewSvelte(scriptBlock + node.value);
 
@@ -267,11 +286,16 @@ function plugin() {
 
     if (node.value.startsWith("<FileSource")) {
       const srcMatch = node.value.match(FILE_SOURCE_SRC_REGEX);
+	logger.error(`plugin(): srcMatch → ${srcMatch}`, { "event.action": "plugin" });
       const src = srcMatch ? srcMatch[1] : "";
+	logger.error(`plugin(): src → ${src}`, { "event.action": "plugin" });
 
       const filePath = path.join(__dirname, "src/pages", `${src}.svelte`);
+	logger.error(`plugin(): filePath → ${filePath}`, { "event.action": "plugin" });
       const sourceCode = fs.readFileSync(filePath, "utf-8");
+	logger.error(`plugin(): sourceCode → ${sourceCode}`, { "event.action": "plugin" });
       const mtimeMs = fs.statSync(filePath).mtimeMs;
+	logger.error(`plugin(): mtimeMs → ${mtimeMs}`, { "event.action": "plugin" });
       const { formattedCode, highlightedCode } =
         await formatAndHighlightFileSourceSvelte(src, sourceCode, mtimeMs);
 
@@ -279,6 +303,7 @@ function plugin() {
     }
   }
 
+logger.warn('<<< Exiting plugin()', { "event.action": "plugin" });
   return async (tree: Parameters<typeof visit>[0]) => {
     const jobs: Promise<void>[] = [];
     visit(tree, "html", (node) => {
@@ -368,6 +393,8 @@ function paragraphToHtml(node: Paragraph): string {
 }
 
 function heroIntro() {
+logger.error('>>> Entering heroIntro()', { "event.action": "heroIntro" });
+	logger.debug(`heroIntro(): file.data → ${file.data}`, { "event.action": "heroIntro" });
   return (
     tree: Parameters<typeof visit>[0],
     file: { path?: string; data?: { fm?: Record<string, string> } },
@@ -413,6 +440,7 @@ function heroIntro() {
       children.splice(introIndices[i], 1);
     }
   };
+logger.warn('<<< Exiting heroIntro()', { "event.action": "heroIntro" });
 }
 
 /** h2 intro that leads to subsections or a table—not a multi-paragraph demo block. */
@@ -452,8 +480,10 @@ function tocLinkClasses(level: number): string {
 }
 
 function carbonify() {
+logger.error('>>> Entering carbonify()', { "event.action": "carbonify" });
   return (tree: Parameters<typeof visit>[0]) => {
     visit(tree, (node, index, parent) => {
+	logger.warn('<<< Exiting carbonify()', { "event.action": "carbonify" });
       switch (node.type) {
         case "link":
           node.data = { hProperties: { class: "bx--link bx--link--muted" } };
@@ -611,6 +641,7 @@ export default {
     }),
     {
       markup({ content, filename }: { content: string; filename: string }) {
+		logger.error('>>> Entering markup()', { "event.action": "markup" });
         if (NODE_MODULES_REGEX.test(filename)) return null;
         if (!filename.match(PAGES_COMPONENTS_REGEX)) return null;
 
@@ -656,6 +687,7 @@ export default {
           }
         }
 
+		logger.warn('<<< Exiting markup()', { "event.action": "markup" });
         return { code };
       },
     },

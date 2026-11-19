@@ -118,6 +118,7 @@
   $: displayIcon = isIndented ? (selected ? Checkmark : undefined) : icon;
 
   function handleClick(event) {
+	console.error(`>>> Entering handleClick(event=${event})`, { "event.action": "handleClick" });
     if (disabled) return;
 
     // Selection runs first so preventDefault only skips the close.
@@ -131,27 +132,37 @@
 
     const shouldClose = dispatch("click", event, { cancelable: true });
 
+	console.error(`handleClick(event=${event}): shouldClose → ${shouldClose}`, { "event.action": "handleClick" });
     if (shouldClose) {
       ctx.close("select");
     }
+	console.warn(`<<< Exiting handleClick(event=${event})`, { "event.action": "handleClick" });
   }
 
   function openSubmenu() {
+	console.error('>>> Entering openSubmenu()', { "event.action": "openSubmenu" });
     if (disabled) return;
     hoverIntent.open();
+	console.warn('<<< Exiting openSubmenu()', { "event.action": "openSubmenu" });
   }
 
   function scheduleOpenSubmenu() {
+	console.error('>>> Entering scheduleOpenSubmenu()', { "event.action": "scheduleOpenSubmenu" });
     if (disabled) return;
     hoverIntent.scheduleOpen();
+	console.warn('<<< Exiting scheduleOpenSubmenu()', { "event.action": "scheduleOpenSubmenu" });
   }
 
   function scheduleCloseSubmenu() {
+	console.error('>>> Entering scheduleCloseSubmenu()', { "event.action": "scheduleCloseSubmenu" });
     hoverIntent.scheduleClose();
+	console.warn('<<< Exiting scheduleCloseSubmenu()', { "event.action": "scheduleCloseSubmenu" });
   }
 
   function cancelCloseSubmenu() {
+	console.error('>>> Entering cancelCloseSubmenu()', { "event.action": "cancelCloseSubmenu" });
     hoverIntent.cancelClose();
+	console.warn('<<< Exiting cancelCloseSubmenu()', { "event.action": "cancelCloseSubmenu" });
   }
 
   onMount(() => {

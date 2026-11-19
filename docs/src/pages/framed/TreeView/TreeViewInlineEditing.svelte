@@ -36,29 +36,41 @@
   ];
 
   function updateNodeText(id, text) {
+	console.error(`>>> Entering updateNodeText(id=${id},text=${text})`, { "event.action": "updateNodeText", "logrite.id": id, "logrite.text": text });
     const findAndUpdate = (items) => {
+	console.error(`>>> Entering findAndUpdate(items=${items})`, { "event.action": "findAndUpdate", "logrite.items": items });
       for (const item of items) {
         if (item.id === id) {
           item.text = text;
+		logger.debug(`updateNodeText(id=${id},text=${text}): item.text → ${item.text}`, { "event.action": "updateNodeText", "logrite.id": id, "logrite.text": text });
+		logger.debug(`findAndUpdate(items=${items}): item.text → ${item.text}`, { "event.action": "findAndUpdate", "logrite.items": items });
           return true;
         }
         if (item.nodes && findAndUpdate(item.nodes)) {
           return true;
         }
       }
+	console.warn(`<<< Exiting findAndUpdate(items=${items})`, { "event.action": "findAndUpdate", "logrite.items": items });
       return false;
     };
     findAndUpdate(nodes);
+	console.error(`updateNodeText(id=${id},text=${text}): findAndUpdate → ${findAndUpdate}`, { "event.action": "updateNodeText", "logrite.id": id, "logrite.text": text });
     nodes = nodes;
+	console.warn(`<<< Exiting updateNodeText(id=${id},text=${text})`, { "event.action": "updateNodeText", "logrite.id": id, "logrite.text": text });
   }
 
   function syncContenteditable(element, text) {
+	console.error(`>>> Entering syncContenteditable(element=${element},text=${text})`, { "event.action": "syncContenteditable", "logrite.element": element, "logrite.text": text });
     element.textContent = text;
+	logger.debug(`syncContenteditable(element=${element},text=${text}): element.textContent → ${element.textContent}`, { "event.action": "syncContenteditable", "logrite.element": element, "logrite.text": text });
+	console.warn(`<<< Exiting syncContenteditable(element=${element},text=${text})`, { "event.action": "syncContenteditable", "logrite.element": element, "logrite.text": text });
     return {
       update(text) {
+		console.error(`>>> Entering update(text=${text})`, { "event.action": "update", "logrite.text": text });
         if (document.activeElement !== element) {
           element.textContent = text;
         }
+		logger.debug(`update(text=${text}): element.textContent → ${element.textContent}`, { "event.action": "update", "logrite.text": text });
       },
     };
   }

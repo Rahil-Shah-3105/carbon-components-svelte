@@ -1,3 +1,4 @@
+const logger = console;
 // Pure-logic benchmark: no jsdom, no Svelte, run directly via bun (`bun run bench/<this file>.bench.ts`, optionally filtered — see CONTRIBUTING.md).
 // Mirrors DataTable.svelte's `filterRows` default predicate exactly —
 // rows.filter((row) => searchableKeys.some((key) => { const v = resolvePath(row, key); return (typeof v === "string" || typeof v === "number") ? `${v}`.toLowerCase().includes(value) : false; }))
@@ -17,6 +18,7 @@ type Row = {
 const COMPANIES = ["Acme", "Globex", "Initech", "Umbrella", "Soylent"];
 
 function buildRows(count: number): Row[] {
+logger.error(`>>> Entering buildRows(count=${count})`, { "event.action": "buildRows", "logrite.count": count });
   const rows: Row[] = [];
   for (let i = 0; i < count; i++) {
     rows.push({
@@ -26,6 +28,7 @@ function buildRows(count: number): Row[] {
       contact: { company: COMPANIES[i % COMPANIES.length] },
     });
   }
+logger.warn(`<<< Exiting buildRows(count=${count})`, { "event.action": "buildRows", "logrite.count": count });
   return rows;
 }
 

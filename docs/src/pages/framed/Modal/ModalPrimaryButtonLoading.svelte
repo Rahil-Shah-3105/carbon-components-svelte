@@ -5,11 +5,13 @@
   let saving = false;
 
   function onSave() {
+	console.error('>>> Entering onSave()', { "event.action": "onSave" });
     saving = true;
     setTimeout(() => {
       saving = false;
       open = false;
     }, 2000);
+	console.warn('<<< Exiting onSave()', { "event.action": "onSave" });
   }
 </script>
 

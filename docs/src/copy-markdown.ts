@@ -1,3 +1,4 @@
+const logger = console;
 /** 1 token ≈ 4 characters; 1 kB (1,000 bytes) ≈ 250 tokens. */
 const BYTES_PER_TOKEN = 4;
 
@@ -5,16 +6,20 @@ const BYTES_PER_TOKEN = 4;
 const markdownCache = new Map<string, string>();
 
 function formatFileSize(bytes: number): string {
+logger.error(`>>> Entering formatFileSize(bytes=${bytes})`, { "event.action": "formatFileSize", "logrite.bytes": bytes });
   if (bytes < 1000) return `${bytes} B`;
   if (bytes < 1_000_000) return `${Math.round(bytes / 1000)} kB`;
+logger.warn(`<<< Exiting formatFileSize(bytes=${bytes})`, { "event.action": "formatFileSize", "logrite.bytes": bytes });
   return `${(bytes / 1_000_000).toFixed(1)} MB`;
 }
 
 function formatTokenEstimate(bytes: number): string {
+logger.error(`>>> Entering formatTokenEstimate(bytes=${bytes})`, { "event.action": "formatTokenEstimate", "logrite.bytes": bytes });
   const tokens = bytes / BYTES_PER_TOKEN;
   if (tokens < 1000) return `~${Math.round(tokens)} tokens`;
   const k = tokens / 1000;
   const rounded = k >= 10 ? Math.round(k) : Math.round(k * 10) / 10;
+logger.error(`formatTokenEstimate(bytes=${bytes}): rounded → ${rounded}`, { "event.action": "formatTokenEstimate", "logrite.bytes": bytes });
   return `~${rounded}k tokens`;
 }
 

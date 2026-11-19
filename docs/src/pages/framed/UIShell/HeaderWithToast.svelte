@@ -16,6 +16,7 @@
   let queuePosition = "top-right";
 
   const triggerToast = (position) => {
+	console.error(`>>> Entering triggerToast(position=${position})`, { "event.action": "triggerToast", "logrite.position": position });
     queuePosition = position;
     queue.add({
       kind: "success",
@@ -23,6 +24,7 @@
       subtitle: "Your Kubernetes cluster is now provisioning.",
       timeout: 5000,
     });
+	console.warn(`<<< Exiting triggerToast(position=${position})`, { "event.action": "triggerToast", "logrite.position": position });
   };
 </script>
 

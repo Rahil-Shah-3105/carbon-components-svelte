@@ -45,11 +45,14 @@
   let refMenu = null;
 
   function close() {
+	console.error('>>> Entering close()', { "event.action": "close" });
     isOpen = false;
     dispatch("close");
+	console.warn('<<< Exiting close()', { "event.action": "close" });
   }
 
   function handleOutsideClick(event) {
+	console.error(`>>> Entering handleOutsideClick(event=${event})`, { "event.action": "handleOutsideClick" });
     if (
       isOpen &&
       !preventCloseOnClickOutside &&
@@ -57,6 +60,7 @@
     ) {
       close();
     }
+	console.warn(`<<< Exiting handleOutsideClick(event=${event})`, { "event.action": "handleOutsideClick" });
   }
 
   function handleKeydown(event) {

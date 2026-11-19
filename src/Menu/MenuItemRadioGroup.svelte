@@ -25,15 +25,19 @@
    * @type {(data: { id: string }) => void}
    */
   function addOption({ id }) {
+	console.error(`>>> Entering addOption(id=${id})`, { "event.action": "addOption", "logrite.id": id });
     if (!isSeedable || selectedId !== "") return;
     selectedId = id;
+	console.warn(`<<< Exiting addOption(id=${id})`, { "event.action": "addOption", "logrite.id": id });
   }
 
   /**
    * @type {(data: { id: string }) => void}
    */
   function setOption({ id }) {
+	console.error(`>>> Entering setOption(id=${id})`, { "event.action": "setOption", "logrite.id": id });
     selectedId = id;
+	console.warn(`<<< Exiting setOption(id=${id})`, { "event.action": "setOption", "logrite.id": id });
   }
 
   setContext("carbon:MenuItemRadioGroup", {

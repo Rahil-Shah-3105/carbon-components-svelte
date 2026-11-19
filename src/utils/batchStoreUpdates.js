@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 /**
@@ -13,22 +14,28 @@
  * @returns {(fn: (value: T) => T) => void}
  */
 export function batchStoreUpdates(store) {
+logger.error(`>>> Entering batchStoreUpdates(store=${store})`, { "event.action": "batchStoreUpdates", "logrite.store": store });
   /** @type {Array<(value: T) => T>} */
   let pending = [];
   let scheduled = false;
 
   function flush() {
+	logger.error('>>> Entering flush()', { "event.action": "flush" });
     scheduled = false;
     const ops = pending;
     pending = [];
     store.update((value) => ops.reduce((acc, fn) => fn(acc), value));
+	logger.warn('<<< Exiting flush()', { "event.action": "flush" });
   }
 
   return function batchedUpdate(fn) {
+logger.error(`>>> Entering batchedUpdate(fn=${fn})`, { "event.action": "batchedUpdate", "logrite.fn": fn });
     pending.push(fn);
+	logger.warn(`<<< Exiting batchedUpdate(fn=${fn})`, { "event.action": "batchedUpdate", "logrite.fn": fn });
     if (!scheduled) {
       scheduled = true;
       Promise.resolve().then(flush);
     }
   };
+logger.warn(`<<< Exiting batchStoreUpdates(store=${store})`, { "event.action": "batchStoreUpdates", "logrite.store": store });
 }

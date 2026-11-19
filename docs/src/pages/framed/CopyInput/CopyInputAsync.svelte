@@ -8,18 +8,22 @@
   let cachedToken = null;
 
   async function prefetchToken() {
+	console.error('>>> Entering prefetchToken()', { "event.action": "prefetchToken" });
     if (cachedToken) return;
 
     await new Promise((resolve) => setTimeout(resolve, 300));
     cachedToken = secretToken;
+	console.warn('<<< Exiting prefetchToken()', { "event.action": "prefetchToken" });
   }
 
   async function copyToken() {
+	console.error('>>> Entering copyToken()', { "event.action": "copyToken" });
     if (!cachedToken) {
       await prefetchToken();
     }
 
     await navigator.clipboard.writeText(cachedToken);
+	console.warn('<<< Exiting copyToken()', { "event.action": "copyToken" });
   }
 </script>
 

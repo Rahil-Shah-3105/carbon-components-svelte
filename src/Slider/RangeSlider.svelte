@@ -151,78 +151,98 @@
 
   /** @type {(label: string, numericValue: number) => string | number} */
   function formatRangeLabel(label, numericValue) {
+	console.error(`>>> Entering formatRangeLabel(label=${label},numericValue=${numericValue})`, { "event.action": "formatRangeLabel", "logrite.label": label, "logrite.numericValue": numericValue });
     if (label) return label;
     if (formatValue) return formatValue(numericValue);
+	console.warn(`<<< Exiting formatRangeLabel(label=${label},numericValue=${numericValue})`, { "event.action": "formatRangeLabel", "logrite.label": label, "logrite.numericValue": numericValue });
     return label || numericValue;
   }
 
   /** @type {(numericValue: number) => string | undefined} */
   function getValueText(numericValue) {
+	console.error(`>>> Entering getValueText(numericValue=${numericValue})`, { "event.action": "getValueText", "logrite.numericValue": numericValue });
+	console.warn(`<<< Exiting getValueText(numericValue=${numericValue})`, { "event.action": "getValueText", "logrite.numericValue": numericValue });
     return formatValue ? formatValue(numericValue) : undefined;
   }
 
   /** @type {(e: PointerLikeEvent) => number | null} */
   function getClientX(event) {
+	console.error(`>>> Entering getClientX(event=${event})`, { "event.action": "getClientX" });
     if ("touches" in event) return event.touches[0]?.clientX ?? null;
+	console.warn(`<<< Exiting getClientX(event=${event})`, { "event.action": "getClientX" });
     return event.clientX;
   }
 
   /** @type {(e: PointerLikeEvent) => ActiveHandle} */
   function pickHandle(event) {
+	console.error(`>>> Entering pickHandle(event=${event})`, { "event.action": "pickHandle" });
     if (event.target === lowerThumbRef) return "lower";
     if (event.target === upperThumbRef) return "upper";
     const clientX = getClientX(event);
     if (clientX == null) return activeHandle;
+	console.error(`pickHandle(event=${event}): clientX → ${clientX}`, { "event.action": "pickHandle" });
     const lowerRect = lowerThumbRef?.getBoundingClientRect();
     const upperRect = upperThumbRef?.getBoundingClientRect();
+	console.error(`pickHandle(event=${event}): lowerRect → ${lowerRect}`, { "event.action": "pickHandle" });
     const dLower = lowerRect
       ? Math.abs(lowerRect.left + lowerRect.width / 2 - clientX)
       : Number.POSITIVE_INFINITY;
+	console.error(`pickHandle(event=${event}): upperRect → ${upperRect}`, { "event.action": "pickHandle" });
     const dUpper = upperRect
       ? Math.abs(upperRect.left + upperRect.width / 2 - clientX)
       : Number.POSITIVE_INFINITY;
+	console.warn(`<<< Exiting pickHandle(event=${event})`, { "event.action": "pickHandle" });
     return dLower <= dUpper ? "lower" : "upper";
   }
 
   /** @type {(e: MouseEvent | TouchEvent) => void} */
   function startInteraction(event) {
+	console.error(`>>> Entering startInteraction(event=${event})`, { "event.action": "startInteraction" });
     if (disabled || readonly) return;
     activeHandle = pickHandle(event);
     if (activeHandle === "lower") {
+	console.error(`startInteraction(event=${event}): activeHandle → ${activeHandle}`, { "event.action": "startInteraction" });
       lowerThumbRef?.focus({ preventScroll: true });
     } else {
       upperThumbRef?.focus({ preventScroll: true });
     }
     currentEvent = event;
     holding = true;
+	console.warn(`<<< Exiting startInteraction(event=${event})`, { "event.action": "startInteraction" });
     dragging = true;
   }
 
   /** @type {() => void} */
   function stopHolding() {
+	console.error('>>> Entering stopHolding()', { "event.action": "stopHolding" });
     const wasHolding = holding;
     holding = false;
     dragging = false;
     currentEvent = null;
     if (wasHolding && !disabled && !readonly) {
       dispatch("change", { value, valueUpper });
+	console.warn('<<< Exiting stopHolding()', { "event.action": "stopHolding" });
     }
   }
 
   /** @type {(e: PointerLikeEvent) => void} */
   function move(event) {
+	console.error(`>>> Entering move(event=${event})`, { "event.action": "move" });
     if (holding) {
       currentEvent = event;
       dragging = true;
+	console.warn(`<<< Exiting move(event=${event})`, { "event.action": "move" });
     }
   }
 
   /** @type {(e: PointerLikeEvent | null) => void} */
   function calcValue(event) {
+	console.error(`>>> Entering calcValue(event=${event})`, { "event.action": "calcValue" });
     if (disabled || readonly || !event || !trackRef) return;
 
     const offsetX = getClientX(event);
     if (offsetX == null) return;
+	console.error(`calcValue(event=${event}): offsetX → ${offsetX}`, { "event.action": "calcValue" });
     const { left, width } = trackRef.getBoundingClientRect();
     let nextValue =
       min +
@@ -240,6 +260,7 @@
     } else {
       if (nextValue < value) nextValue = value;
       valueUpper = nextValue;
+	console.warn(`<<< Exiting calcValue(event=${event})`, { "event.action": "calcValue" });
     }
     dispatch("input", { value, valueUpper });
   }

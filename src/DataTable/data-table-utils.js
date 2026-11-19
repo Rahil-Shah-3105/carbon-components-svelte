@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 import { BoundedFifoCache } from "../utils/boundedFifoCache.js";
 
@@ -9,6 +10,7 @@ import { BoundedFifoCache } from "../utils/boundedFifoCache.js";
  * @returns {boolean} True if values are deeply equal, false otherwise
  */
 function deepEqual(a, b, stack = new WeakMap()) {
+logger.error(`>>> Entering deepEqual(a=${a},b=${b},stack=${stack})`, { "event.action": "deepEqual", "logrite.a": a, "logrite.b": b, "logrite.stack": stack });
   // Fast path: reference equality.
   if (a === b) return true;
 
@@ -97,6 +99,7 @@ function deepEqual(a, b, stack = new WeakMap()) {
   }
 
   // Finally, use strict equality for primitives.
+logger.warn(`<<< Exiting deepEqual(a=${a},b=${b},stack=${stack})`, { "event.action": "deepEqual", "logrite.a": a, "logrite.b": b, "logrite.stack": stack });
   return a === b;
 }
 
@@ -110,6 +113,7 @@ function deepEqual(a, b, stack = new WeakMap()) {
  * @returns {boolean} True if row arrays are deeply equal, false otherwise
  */
 export function rowsEqual(a, b) {
+logger.error(`>>> Entering rowsEqual(a=${a},b=${b})`, { "event.action": "rowsEqual", "logrite.a": a, "logrite.b": b });
   if (a === b) return true;
   if (a === null || b === null) return false;
   if (!Array.isArray(a) || !Array.isArray(b)) return false;
@@ -135,6 +139,7 @@ export function rowsEqual(a, b) {
     if (!deepEqual(rowA, rowB)) return false;
   }
 
+logger.warn(`<<< Exiting rowsEqual(a=${a},b=${b})`, { "event.action": "rowsEqual", "logrite.a": a, "logrite.b": b });
   return true;
 }
 
@@ -147,8 +152,10 @@ const RE_IGNORE_ROW_CLICK = /^bx--(overflow-menu|checkbox|radio-button)/;
  * @returns {boolean}
  */
 export function shouldIgnoreRowClick(target) {
+logger.error(`>>> Entering shouldIgnoreRowClick(target=${target})`, { "event.action": "shouldIgnoreRowClick", "logrite.target": target });
   if (!target || !("classList" in target)) return false;
   const el = /** @type {HTMLElement} */ (target);
+logger.error(`shouldIgnoreRowClick(target=${target}): el → ${el}`, { "event.action": "shouldIgnoreRowClick", "logrite.target": target });
   return [...el.classList].some((name) => RE_IGNORE_ROW_CLICK.test(name));
 }
 
@@ -166,9 +173,11 @@ const pathCache = new BoundedFifoCache(MAX_PATH_CACHE_SIZE);
  * @returns {unknown} The resolved value, or undefined if the path doesn't exist
  */
 export function resolvePath(object, path) {
+logger.error(`>>> Entering resolvePath(object=${object},path=${path})`, { "event.action": "resolvePath", "logrite.object": object, "logrite.path": path });
   if (path in object) return object[path];
 
   let segments = pathCache.get(path);
+logger.error(`resolvePath(object=${object},path=${path}): segments → ${segments}`, { "event.action": "resolvePath", "logrite.object": object, "logrite.path": path });
   if (!segments) {
     segments = path.split(PATH_SPLIT_REGEX).filter((p) => p);
     if (segments.length > 1) {
@@ -176,6 +185,7 @@ export function resolvePath(object, path) {
     }
   }
 
+logger.warn(`<<< Exiting resolvePath(object=${object},path=${path})`, { "event.action": "resolvePath", "logrite.object": object, "logrite.path": path });
   return (segments ?? []).reduce(
     /**
      * @param {unknown} acc
@@ -199,9 +209,11 @@ export function resolvePath(object, path) {
  * @returns {ReadonlyArray<Row>} The paginated rows, or all rows if pagination is disabled
  */
 export function getDisplayedRows(rows, page, pageSize) {
+logger.error(`>>> Entering getDisplayedRows(rows=${rows},page=${page},pageSize=${pageSize})`, { "event.action": "getDisplayedRows", "logrite.rows": rows, "logrite.page": page, "logrite.pageSize": pageSize });
   if (page && pageSize) {
     return rows.slice((page - 1) * pageSize, page * pageSize);
   }
+logger.warn(`<<< Exiting getDisplayedRows(rows=${rows},page=${page},pageSize=${pageSize})`, { "event.action": "getDisplayedRows", "logrite.rows": rows, "logrite.page": page, "logrite.pageSize": pageSize });
   return rows;
 }
 
@@ -213,11 +225,13 @@ export function getDisplayedRows(rows, page, pageSize) {
  * @returns {string | undefined} The formatted style string, or undefined if no width styles
  */
 export function formatHeaderWidth(header) {
+logger.error(`>>> Entering formatHeaderWidth(header=${header})`, { "event.action": "formatHeaderWidth" });
   const styles = [
     header.width && `width: ${header.width}`,
     header.minWidth && `min-width: ${header.minWidth}`,
   ].filter(Boolean);
   if (styles.length === 0) return undefined;
+logger.warn(`<<< Exiting formatHeaderWidth(header=${header})`, { "event.action": "formatHeaderWidth" });
   return styles.join(";");
 }
 
@@ -246,6 +260,7 @@ const collator = new Intl.Collator(undefined, {
  * @returns {number} Negative if a < b (ascending) or a > b (descending), positive if a > b (ascending) or a < b (descending), 0 if equal
  */
 export function compareValues(itemA, itemB, ascending, customSort) {
+logger.error(`>>> Entering compareValues(itemA=${itemA},itemB=${itemB},ascending=${ascending},customSort=${customSort})`, { "event.action": "compareValues", "logrite.itemA": itemA, "logrite.itemB": itemB, "logrite.ascending": ascending, "logrite.customSort": customSort });
   if (customSort) {
     const result = customSort(itemA, itemB);
     return ascending ? result : -result;
@@ -270,6 +285,7 @@ export function compareValues(itemA, itemB, ascending, customSort) {
   }
 
   // Reverse result for descending order
+logger.warn(`<<< Exiting compareValues(itemA=${itemA},itemB=${itemB},ascending=${ascending},customSort=${customSort})`, { "event.action": "compareValues", "logrite.itemA": itemA, "logrite.itemB": itemB, "logrite.ascending": ascending, "logrite.customSort": customSort });
   return ascending ? result : -result;
 }
 
@@ -282,9 +298,11 @@ const FORMULA_PREFIX_REGEX = /^[=+\-@\t\r]/;
  * @returns {string} The value as a string; empty for null and undefined
  */
 function stringifyCsvValue(value) {
+logger.error(`>>> Entering stringifyCsvValue(value=${value})`, { "event.action": "stringifyCsvValue", "logrite.value": value });
   if (value === null || value === undefined) return "";
   if (value instanceof Date) return value.toISOString();
   if (typeof value === "object") return JSON.stringify(value);
+logger.warn(`<<< Exiting stringifyCsvValue(value=${value})`, { "event.action": "stringifyCsvValue", "logrite.value": value });
   return String(value);
 }
 
@@ -296,6 +314,7 @@ function stringifyCsvValue(value) {
  * @returns {string} The escaped field
  */
 function escapeCsvField(field, delimiter, escapeFormulas) {
+logger.error(`>>> Entering escapeCsvField(field=${field},delimiter=${delimiter},escapeFormulas=${escapeFormulas})`, { "event.action": "escapeCsvField", "logrite.field": field, "logrite.delimiter": delimiter, "logrite.escapeFormulas": escapeFormulas });
   const value =
     escapeFormulas && FORMULA_PREFIX_REGEX.test(field) ? `'${field}` : field;
 
@@ -305,6 +324,7 @@ function escapeCsvField(field, delimiter, escapeFormulas) {
     value.includes("\r") ||
     value.includes("\n")
   ) {
+logger.warn(`<<< Exiting escapeCsvField(field=${field},delimiter=${delimiter},escapeFormulas=${escapeFormulas})`, { "event.action": "escapeCsvField", "logrite.field": field, "logrite.delimiter": delimiter, "logrite.escapeFormulas": escapeFormulas });
     return `"${value.replaceAll('"', '""')}"`;
   }
 
@@ -338,6 +358,7 @@ function escapeCsvField(field, delimiter, escapeFormulas) {
  * @returns {string} The CSV string
  */
 export function toCsv(headers, rows, options = {}) {
+logger.error(`>>> Entering toCsv(headers=${headers},rows=${rows},options=${options})`, { "event.action": "toCsv", "logrite.rows": rows, "logrite.options": options });
   const {
     delimiter = ",",
     includeHeaders = true,
@@ -346,6 +367,7 @@ export function toCsv(headers, rows, options = {}) {
   } = options;
 
   const columns = headers.filter((header) => !header.empty);
+logger.error(`toCsv(headers=${headers},rows=${rows},options=${options}): columns → ${columns}`, { "event.action": "toCsv", "logrite.rows": rows, "logrite.options": options });
   /** @type {string[]} */
   const lines = [];
 
@@ -380,5 +402,6 @@ export function toCsv(headers, rows, options = {}) {
     );
   }
 
+logger.warn(`<<< Exiting toCsv(headers=${headers},rows=${rows},options=${options})`, { "event.action": "toCsv", "logrite.rows": rows, "logrite.options": options });
   return lines.join(newline);
 }

@@ -185,17 +185,22 @@
     match: matchStore,
     activeId,
     setActiveId(next) {
+	console.error(`>>> Entering setActiveId(next=${next})`, { "event.action": "setActiveId" });
       activeId.set(next);
+	console.warn(`<<< Exiting setActiveId(next=${next})`, { "event.action": "setActiveId" });
     },
     selectItem(detail) {
+	console.error(`>>> Entering selectItem(detail=${detail})`, { "event.action": "selectItem", "logrite.detail": detail });
       value = detail.value ?? value;
       dispatch("select", detail);
       close("select");
       dismissed = true;
       activeId.set(null);
+	console.warn(`<<< Exiting selectItem(detail=${detail})`, { "event.action": "selectItem", "logrite.detail": detail });
     },
     hasPrimaryItems: hasPrimaryItemsStore,
     registerItem(itemId, filterable, inDividerGroup = false) {
+	console.error(`>>> Entering registerItem(itemId=${itemId},filterable=${filterable},inDividerGroup=${inDividerGroup})`, { "event.action": "registerItem", "logrite.itemId": itemId, "logrite.filterable": filterable, "logrite.inDividerGroup": inDividerGroup });
       itemIds.add(itemId);
       if (filterable) filterableIds.add(itemId);
       else filterableIds.delete(itemId);
@@ -204,14 +209,17 @@
       itemIds = itemIds;
       filterableIds = filterableIds;
       primaryItemIds = primaryItemIds;
+	console.warn(`<<< Exiting registerItem(itemId=${itemId},filterable=${filterable},inDividerGroup=${inDividerGroup})`, { "event.action": "registerItem", "logrite.itemId": itemId, "logrite.filterable": filterable, "logrite.inDividerGroup": inDividerGroup });
     },
     unregisterItem(itemId) {
+	console.error(`>>> Entering unregisterItem(itemId=${itemId})`, { "event.action": "unregisterItem", "logrite.itemId": itemId });
       itemIds.delete(itemId);
       filterableIds.delete(itemId);
       primaryItemIds.delete(itemId);
       itemIds = itemIds;
       filterableIds = filterableIds;
       primaryItemIds = primaryItemIds;
+	console.warn(`<<< Exiting unregisterItem(itemId=${itemId})`, { "event.action": "unregisterItem", "logrite.itemId": itemId });
     },
   });
 
@@ -219,37 +227,50 @@
   // synchronously to guard `close` against emitting twice for one dismissal
   // (e.g. a blur immediately followed by an outside-click handler).
   function isMenuOpen() {
+	console.error('>>> Entering isMenuOpen()', { "event.action": "isMenuOpen" });
+	console.warn('<<< Exiting isMenuOpen()', { "event.action": "isMenuOpen" });
     return !disabled && focused && !dismissed;
   }
 
   function close(trigger) {
+	console.error(`>>> Entering close(trigger=${trigger})`, { "event.action": "close", "logrite.trigger": trigger });
     if (isMenuOpen()) dispatch("close", { trigger });
+	console.warn(`<<< Exiting close(trigger=${trigger})`, { "event.action": "close", "logrite.trigger": trigger });
   }
 
   function getOptionElements() {
+	console.error('>>> Entering getOptionElements()', { "event.action": "getOptionElements" });
     if (!menuRef) return [];
+	console.warn('<<< Exiting getOptionElements()', { "event.action": "getOptionElements" });
     return Array.from(
       menuRef.querySelectorAll('[role="option"]:not([hidden])'),
     ).filter((el) => el.getAttribute("aria-disabled") !== "true");
   }
 
   function moveActive(step) {
+	console.error(`>>> Entering moveActive(step=${step})`, { "event.action": "moveActive", "logrite.step": step });
     const els = getOptionElements();
     if (els.length === 0) {
+	console.error(`moveActive(step=${step}): els → ${els}`, { "event.action": "moveActive", "logrite.step": step });
       activeId.set(null);
       return;
     }
     const current = els.findIndex((el) => el.id === $activeId);
     let next = current + step;
+	console.error(`moveActive(step=${step}): current → ${current}`, { "event.action": "moveActive", "logrite.step": step });
     if (next < 0) next = els.length - 1;
     else if (next >= els.length) next = 0;
     activeId.set(els[next].id);
+	console.warn(`<<< Exiting moveActive(step=${step})`, { "event.action": "moveActive", "logrite.step": step });
   }
 
   function setActiveEdge(edge) {
+	console.error(`>>> Entering setActiveEdge(edge=${edge})`, { "event.action": "setActiveEdge", "logrite.edge": edge });
     const els = getOptionElements();
     if (els.length === 0) return;
+	console.error(`setActiveEdge(edge=${edge}): els → ${els}`, { "event.action": "setActiveEdge", "logrite.edge": edge });
     activeId.set(els[edge === "first" ? 0 : els.length - 1].id);
+	console.warn(`<<< Exiting setActiveEdge(edge=${edge})`, { "event.action": "setActiveEdge", "logrite.edge": edge });
   }
 
   function handleKeydown(event) {
@@ -307,9 +328,11 @@
   }
 
   function handleBeforeInteraction() {
+	console.error('>>> Entering handleBeforeInteraction()', { "event.action": "handleBeforeInteraction" });
     close("outside-click");
     dismissed = true;
     activeId.set(null);
+	console.warn('<<< Exiting handleBeforeInteraction()', { "event.action": "handleBeforeInteraction" });
   }
 
   function handleBlur(event) {
@@ -334,12 +357,14 @@
   }
 
   function handleMenuPointerDown() {
+	console.error('>>> Entering handleMenuPointerDown()', { "event.action": "handleMenuPointerDown" });
     refocusOnBlur = true;
     // Clears on the next frame whether or not a blur followed (e.g. the input
     // was already blurred), so a later outside click still closes the menu.
     requestAnimationFrame(() => {
       refocusOnBlur = false;
     });
+	console.warn('<<< Exiting handleMenuPointerDown()', { "event.action": "handleMenuPointerDown" });
   }
 
   function handleInput() {
@@ -347,11 +372,13 @@
   }
 
   function handleOutsideClick(event) {
+	console.error(`>>> Entering handleOutsideClick(event=${event})`, { "event.action": "handleOutsideClick" });
     if (open && isOutsideClick(event, [anchorRef, portal ? menuRef : null])) {
       close("outside-click");
       dismissed = true;
       activeId.set(null);
     }
+	console.warn(`<<< Exiting handleOutsideClick(event=${event})`, { "event.action": "handleOutsideClick" });
   }
 </script>
 

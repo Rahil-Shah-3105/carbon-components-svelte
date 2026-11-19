@@ -99,7 +99,9 @@
   const dispatch = createEventDispatcher();
 
   function parse(raw) {
+	console.error(`>>> Entering parse(raw=${raw})`, { "event.action": "parse", "logrite.raw": raw });
     if ($$restProps.type !== "number") return raw;
+	console.warn(`<<< Exiting parse(raw=${raw})`, { "event.action": "parse", "logrite.raw": raw });
     return raw === "" ? null : Number(raw);
   }
 

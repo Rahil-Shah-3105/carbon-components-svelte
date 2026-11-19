@@ -22,12 +22,15 @@
   };
 
   function fetchChildren(id) {
+	console.error(`>>> Entering fetchChildren(id=${id})`, { "event.action": "fetchChildren", "logrite.id": id });
+	console.warn(`<<< Exiting fetchChildren(id=${id})`, { "event.action": "fetchChildren", "logrite.id": id });
     return new Promise((resolve) => {
       setTimeout(() => resolve(childrenByParentId[id] ?? []), 1000);
     });
   }
 
   async function handleToggle(event) {
+	console.error(`>>> Entering handleToggle(event=${event})`, { "event.action": "handleToggle" });
     const node = event.detail;
 
     // Only fetch once: a node with `hasChildren` but no `nodes` yet.
@@ -35,9 +38,11 @@
 
     const children = await fetchChildren(node.id);
 
+	console.error(`handleToggle(event=${event}): children → ${children}`, { "event.action": "handleToggle" });
     nodes = nodes.map((n) =>
       n.id === node.id ? { ...n, nodes: children } : n,
     );
+	logger.debug(`handleToggle(event=${event}): nodes → ${nodes}`, { "event.action": "handleToggle" });
   }
 </script>
 

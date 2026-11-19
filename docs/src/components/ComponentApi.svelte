@@ -85,26 +85,34 @@
   const EXAMPLE_CODE_BLOCK_REGEX = /```svelte\s*\n([\s\S]*?)```/;
 
   function parseDescription(description: string) {
+	console.error(`>>> Entering parseDescription(description=${description})`, { "event.action": "parseDescription", "logrite.description": description });
     if (!description) {
       return { mainDescription: "", exampleCode: null };
     }
 
     const exampleIndex = description.indexOf("@example");
     if (exampleIndex === -1) {
+	console.error(`parseDescription(description=${description}): exampleIndex → ${exampleIndex}`, { "event.action": "parseDescription", "logrite.description": description });
       return { mainDescription: description, exampleCode: null };
     }
 
     const mainDescription = description.slice(0, exampleIndex).trim();
     const exampleSection = description.slice(exampleIndex);
+	console.error(`parseDescription(description=${description}): mainDescription → ${mainDescription}`, { "event.action": "parseDescription", "logrite.description": description });
+	console.error(`parseDescription(description=${description}): exampleSection → ${exampleSection}`, { "event.action": "parseDescription", "logrite.description": description });
 
     // Extract code block from example section
     const codeBlockMatch = exampleSection.match(EXAMPLE_CODE_BLOCK_REGEX);
     const exampleCode = codeBlockMatch ? codeBlockMatch[1].trim() : null;
+	console.error(`parseDescription(description=${description}): codeBlockMatch → ${codeBlockMatch}`, { "event.action": "parseDescription", "logrite.description": description });
+	console.error(`parseDescription(description=${description}): exampleCode → ${exampleCode}`, { "event.action": "parseDescription", "logrite.description": description });
 
+	console.warn(`<<< Exiting parseDescription(description=${description})`, { "event.action": "parseDescription", "logrite.description": description });
     return { mainDescription, exampleCode };
   }
 
   function formatDescriptionHtml(description: string) {
+	console.error(`>>> Entering formatDescriptionHtml(description=${description})`, { "event.action": "formatDescriptionHtml", "logrite.description": description });
     return description
       .replace(/</g, "&lt;")
       .replace(/>/g, "&gt;")
@@ -112,11 +120,14 @@
       .replace(/https?:\/\/[^\s<]+/g, (url) => {
         const trailing = url.match(/[.,;:!?)\]]+$/)?.[0] ?? "";
         const href = url.slice(0, url.length - trailing.length);
+		console.warn(`<<< Exiting formatDescriptionHtml(description=${description})`, { "event.action": "formatDescriptionHtml", "logrite.description": description });
         return `<a class="bx--link" href="${href}" target="_blank" rel="noopener noreferrer">${href}</a>${trailing}`;
       });
   }
 
   function codeBlockType(value: string | undefined | null) {
+	console.error(`>>> Entering codeBlockType(value=${value})`, { "event.action": "codeBlockType", "logrite.value": value });
+	console.warn(`<<< Exiting codeBlockType(value=${value})`, { "event.action": "codeBlockType", "logrite.value": value });
     return (value ?? "").includes("\n") ? "multi" : "inline";
   }
 

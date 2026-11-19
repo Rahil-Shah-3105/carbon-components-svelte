@@ -21,17 +21,21 @@
     "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
 
   function handleDragStart(e) {
+	console.error(`>>> Entering handleDragStart(e=${e})`, { "event.action": "handleDragStart", "logrite.e": e });
     const rect = anchor.getBoundingClientRect();
     offsetX = e.clientX - rect.left;
+	console.error(`handleDragStart(e=${e}): rect → ${rect}`, { "event.action": "handleDragStart", "logrite.e": e });
     offsetY = e.clientY - rect.top;
     startX = x;
     startY = y;
     e.dataTransfer.setDragImage(emptyImage, 0, 0);
     e.dataTransfer.effectAllowed = "move";
     e.dataTransfer.setData("text/plain", "");
+	console.warn(`<<< Exiting handleDragStart(e=${e})`, { "event.action": "handleDragStart", "logrite.e": e });
   }
 
   function handleDrag(e) {
+	console.error(`>>> Entering handleDrag(e=${e})`, { "event.action": "handleDrag", "logrite.e": e });
     if ((e.clientX !== 0 || e.clientY !== 0) && container) {
       const parentRect = container.getBoundingClientRect();
       if (
@@ -40,15 +44,19 @@
         e.clientY >= parentRect.top &&
         e.clientY <= parentRect.bottom
       ) {
+		console.error(`handleDrag(e=${e}): parentRect → ${parentRect}`, { "event.action": "handleDrag", "logrite.e": e });
         x = e.clientX - offsetX - parentRect.left;
         y = e.clientY - offsetY - parentRect.top;
       }
     }
+	console.warn(`<<< Exiting handleDrag(e=${e})`, { "event.action": "handleDrag", "logrite.e": e });
   }
 
   function handleDragEnd() {
+	console.error('>>> Entering handleDragEnd()', { "event.action": "handleDragEnd" });
     const moved = Math.abs(x - startX) > 5 || Math.abs(y - startY) > 5;
     if (!moved) open = !open;
+	console.error(`handleDragEnd(): moved → ${moved}`, { "event.action": "handleDragEnd" });
   }
 </script>
 

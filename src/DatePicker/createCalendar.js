@@ -1,4 +1,5 @@
 import flatpickr from "flatpickr";
+const logger = console;
 
 /**
  * Carbon-styled English locale: single-letter weekday abbreviations
@@ -26,6 +27,8 @@ const ENGLISH_LOCALE = {
  * @returns {unknown}
  */
 export function resolveLocale(locale) {
+logger.error(`>>> Entering resolveLocale(locale=${locale})`, { "event.action": "resolveLocale", "logrite.locale": locale });
+logger.warn(`<<< Exiting resolveLocale(locale=${locale})`, { "event.action": "resolveLocale", "logrite.locale": locale });
   return locale === "en" ? ENGLISH_LOCALE : locale;
 }
 
@@ -50,6 +53,7 @@ export function resolveLocale(locale) {
  * @param {{ isMonth?: boolean; isYear?: boolean }} [modifiers]
  */
 function updateClasses(instance, { isMonth = false, isYear = false } = {}) {
+logger.error(`>>> Entering updateClasses(instance=${instance},isMonth=${isMonth},isYear=${isYear})`, { "event.action": "updateClasses", "logrite.instance": instance, "logrite.isMonth": isMonth, "logrite.isYear": isYear });
   const {
     calendarContainer,
     days,
@@ -83,6 +87,7 @@ function updateClasses(instance, { isMonth = false, isYear = false } = {}) {
       node.classList.add("no-border");
     } else if (node.classList.contains("today") && selectedDates.length === 0) {
       node.classList.remove("no-border");
+	logger.warn(`<<< Exiting updateClasses(instance=${instance},isMonth=${isMonth},isYear=${isYear})`, { "event.action": "updateClasses", "logrite.instance": instance, "logrite.isMonth": isMonth, "logrite.isYear": isYear });
     }
   }
 }
@@ -101,8 +106,10 @@ function updateClasses(instance, { isMonth = false, isYear = false } = {}) {
  * @param {HTMLElement} dayElem
  */
 function markDisabledDayAriaState(_dObj, _dStr, _fp, dayElem) {
+logger.error(`>>> Entering markDisabledDayAriaState(_dObj=${_dObj},_dStr=${_dStr},_fp=${_fp},dayElem=${dayElem})`, { "event.action": "markDisabledDayAriaState", "logrite._dObj": _dObj, "logrite._dStr": _dStr, "logrite._fp": _fp, "logrite.dayElem": dayElem });
   if (dayElem.classList.contains("flatpickr-disabled")) {
     dayElem.setAttribute("aria-disabled", "true");
+	logger.warn(`<<< Exiting markDisabledDayAriaState(_dObj=${_dObj},_dStr=${_dStr},_fp=${_fp},dayElem=${dayElem})`, { "event.action": "markDisabledDayAriaState", "logrite._dObj": _dObj, "logrite._dStr": _dStr, "logrite._fp": _fp, "logrite.dayElem": dayElem });
   }
 }
 
@@ -115,10 +122,12 @@ function markDisabledDayAriaState(_dObj, _dStr, _fp, dayElem) {
  * @param {FlatpickrInstance} instance
  */
 function markTodayMonth(instance) {
+logger.error(`>>> Entering markTodayMonth(instance=${instance})`, { "event.action": "markTodayMonth", "logrite.instance": instance });
   const now = new Date();
   for (const node of instance.rContainer?.querySelectorAll(
     ".flatpickr-monthSelect-month",
   ) ?? []) {
+	logger.error(`markTodayMonth(instance=${instance}): now → ${now}`, { "event.action": "markTodayMonth", "logrite.instance": instance });
     const isToday =
       node.dateObj.getFullYear() === now.getFullYear() &&
       node.dateObj.getMonth() === now.getMonth();
@@ -127,6 +136,7 @@ function markTodayMonth(instance) {
       node.setAttribute("aria-current", "date");
     } else {
       node.removeAttribute("aria-current");
+	logger.warn(`<<< Exiting markTodayMonth(instance=${instance})`, { "event.action": "markTodayMonth", "logrite.instance": instance });
     }
   }
 }
@@ -135,17 +145,23 @@ function markTodayMonth(instance) {
  * @param {FlatpickrInstance} instance
  */
 function updateMonthNode(instance) {
+logger.error(`>>> Entering updateMonthNode(instance=${instance})`, { "event.action": "updateMonthNode", "logrite.instance": instance });
   const monthText = instance.l10n.months.longhand[instance.currentMonth];
   const staticMonthNode = instance.monthNav.querySelector(".cur-month");
+logger.error(`updateMonthNode(instance=${instance}): staticMonthNode → ${staticMonthNode}`, { "event.action": "updateMonthNode", "logrite.instance": instance });
+logger.debug(`updateMonthNode(instance=${instance}): staticMonthNode.textContent → ${staticMonthNode.textContent}`, { "event.action": "updateMonthNode", "logrite.instance": instance });
 
   if (staticMonthNode) {
     staticMonthNode.textContent = monthText;
   } else {
     const monthSelectNode = instance.monthsDropdownContainer;
     const span = document.createElement("span");
+	logger.error(`updateMonthNode(instance=${instance}): span → ${span}`, { "event.action": "updateMonthNode", "logrite.instance": instance });
+	logger.debug(`updateMonthNode(instance=${instance}): span.textContent → ${span.textContent}`, { "event.action": "updateMonthNode", "logrite.instance": instance });
     span.setAttribute("class", "cur-month");
     span.textContent = monthText;
     monthSelectNode.parentNode?.replaceChild(span, monthSelectNode);
+	logger.warn(`<<< Exiting updateMonthNode(instance=${instance})`, { "event.action": "updateMonthNode", "logrite.instance": instance });
   }
 }
 
@@ -163,6 +179,7 @@ function updateMonthNode(instance) {
  * @returns {Promise<FlatpickrInstance>}
  */
 export async function createCalendar({ options, base, input, dispatch }) {
+logger.error(`>>> Entering createCalendar(options=${options},base=${base},input=${input},dispatch=${dispatch})`, { "event.action": "createCalendar", "logrite.options": options, "logrite.base": base, "logrite.dispatch": dispatch });
   /** @type {((new (config: { position: string; input: HTMLInputElement }) => unknown) | undefined)} */
   let RangePlugin;
   /** @type {((config?: { shorthand?: boolean; dateFormat?: string; altFormat?: string }) => unknown) | undefined} */
@@ -182,6 +199,7 @@ export async function createCalendar({ options, base, input, dispatch }) {
 
   if (options.mode === "year") {
     const importee = await import("./yearSelectPlugin.js");
+	logger.error(`createCalendar(options=${options},base=${base},input=${input},dispatch=${dispatch}): importee → ${importee}`, { "event.action": "createCalendar", "logrite.options": options, "logrite.base": base, "logrite.dispatch": dispatch });
     yearSelectPlugin = importee.default;
   }
 
@@ -272,5 +290,6 @@ export async function createCalendar({ options, base, input, dispatch }) {
           : []),
     ],
   };
+logger.error(`createCalendar(options=${options},base=${base},input=${input},dispatch=${dispatch}): config → ${config}`, { "event.action": "createCalendar", "logrite.options": options, "logrite.base": base, "logrite.dispatch": dispatch });
   return new /** @type {any} */ (flatpickr)(base, config);
 }

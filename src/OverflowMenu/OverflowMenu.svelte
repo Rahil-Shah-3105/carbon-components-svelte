@@ -144,24 +144,29 @@
    * @type {(data: { id: string; text: string; primaryFocus: boolean; disabled: boolean }) => void}
    */
   function add({ id, text, primaryFocus, disabled }) {
+	console.error(`>>> Entering add(id=${id},text=${text},primaryFocus=${primaryFocus},disabled=${disabled})`, { "event.action": "add", "logrite.id": id, "logrite.text": text, "logrite.primaryFocus": primaryFocus, "logrite.disabled": disabled });
     batchedItemsUpdate((_) => {
       if (primaryFocus) {
         currentIndex.set(_.length);
       }
 
+	console.warn(`<<< Exiting add(id=${id},text=${text},primaryFocus=${primaryFocus},disabled=${disabled})`, { "event.action": "add", "logrite.id": id, "logrite.text": text, "logrite.primaryFocus": primaryFocus, "logrite.disabled": disabled });
       return [..._, { id, text, primaryFocus, disabled, index: _.length }];
     });
   }
 
   /** @type {(id: string) => void} */
   function remove(id) {
+	console.error(`>>> Entering remove(id=${id})`, { "event.action": "remove", "logrite.id": id });
     batchedItemsUpdate((_) => _.filter((item) => item.id !== id));
+	console.warn(`<<< Exiting remove(id=${id})`, { "event.action": "remove", "logrite.id": id });
   }
 
   /**
    * @type {(id: string, item: { id: string; text: string; primaryFocus: boolean; disabled: boolean; index: number }) => void}
    */
   function update(id, item) {
+	console.error(`>>> Entering update(id=${id},item=${item})`, { "event.action": "update", "logrite.id": id, "logrite.item": item });
     currentId.set(id);
 
     const shouldContinue = dispatch(
@@ -172,17 +177,22 @@
     if (shouldContinue) {
       open = false;
     }
+	console.warn(`<<< Exiting update(id=${id},item=${item})`, { "event.action": "update", "logrite.id": id, "logrite.item": item });
   }
 
   function first() {
+	console.error('>>> Entering first()', { "event.action": "first" });
     const index = $items.findIndex((_) => !_.disabled);
     if (index >= 0) currentIndex.set(index);
+	console.warn('<<< Exiting first()', { "event.action": "first" });
   }
 
   function last() {
+	console.error('>>> Entering last()', { "event.action": "last" });
     for (let index = $items.length - 1; index >= 0; index--) {
       if (!$items[index].disabled) {
         currentIndex.set(index);
+		console.warn('<<< Exiting last()', { "event.action": "last" });
         return;
       }
     }
@@ -274,6 +284,7 @@
     typeof maxHeight === "number" ? `${maxHeight}px` : maxHeight;
 
   function handleOutsideClick(event) {
+	console.error(`>>> Entering handleOutsideClick(event=${event})`, { "event.action": "handleOutsideClick" });
     if (menuRef && isOutsideClick(event, [buttonRef, menuRef])) {
       const shouldContinue = dispatch(
         "close",
@@ -284,6 +295,7 @@
         open = false;
       }
     }
+	console.warn(`<<< Exiting handleOutsideClick(event=${event})`, { "event.action": "handleOutsideClick" });
   }
 </script>
 

@@ -406,7 +406,9 @@
     container.style.maxHeight = `${calculatedContainerHeight}px`;
     container.style.overflowY = "auto";
     function handleScroll() {
+	console.error('>>> Entering handleScroll()', { "event.action": "handleScroll" });
       tableBodyScrollTop = container.scrollTop || 0;
+	console.warn('<<< Exiting handleScroll()', { "event.action": "handleScroll" });
     }
     container.addEventListener("scroll", handleScroll, { passive: true });
     scrollListenerCleanup = () => {
@@ -451,20 +453,25 @@
    * @type {(searchValue: string, customFilter?: (row: Row, value: string) => boolean) => ReadonlyArray<Row["id"]>}
    */
   function filterRows(searchValue, customFilter) {
+	console.error(`>>> Entering filterRows(searchValue=${searchValue},customFilter=${customFilter})`, { "event.action": "filterRows", "logrite.searchValue": searchValue, "logrite.customFilter": customFilter });
     lastSearchValue = searchValue;
     lastCustomFilter = customFilter;
     const value = searchValue.trim().toLowerCase();
 
+	console.error(`filterRows(searchValue=${searchValue},customFilter=${customFilter}): value → ${value}`, { "event.action": "filterRows", "logrite.searchValue": searchValue, "logrite.customFilter": customFilter });
     if (value.length === 0) {
       // Reset to original rows.
       const ids = originalRows.map((row) => row.id);
       matchedRowIdsSet = new Set(ids);
+	console.error(`filterRows(searchValue=${searchValue},customFilter=${customFilter}): ids → ${ids}`, { "event.action": "filterRows", "logrite.searchValue": searchValue, "logrite.customFilter": customFilter });
+	console.error(`filterRows(searchValue=${searchValue},customFilter=${customFilter}): matchedRowIdsSet → ${matchedRowIdsSet}`, { "event.action": "filterRows", "logrite.searchValue": searchValue, "logrite.customFilter": customFilter });
       tableRows.set(originalRows);
       return ids;
     }
 
     let filteredRows = [];
 
+	console.error(`filterRows(searchValue=${searchValue},customFilter=${customFilter}): filteredRows → ${filteredRows}`, { "event.action": "filterRows", "logrite.searchValue": searchValue, "logrite.customFilter": customFilter });
     if (typeof customFilter === "function") {
       // Apply custom filter if provided.
       filteredRows = originalRows.filter((row) => customFilter(row, value));
@@ -495,6 +502,7 @@
     // "hide" mode keeps every row mounted and drives visibility via `matchedRowIdsSet`;
     // otherwise shrink the rendered set as before.
     tableRows.set(hideMode ? originalRows : filteredRows);
+	console.warn(`<<< Exiting filterRows(searchValue=${searchValue},customFilter=${customFilter})`, { "event.action": "filterRows", "logrite.searchValue": searchValue, "logrite.customFilter": customFilter });
     return ids;
   }
 
@@ -524,9 +532,11 @@
    * @type {() => void}
    */
   function resetSelectedRowIds() {
+	console.error('>>> Entering resetSelectedRowIds()', { "event.action": "resetSelectedRowIds" });
     selectAll = false;
     selectedRowIds = [];
     lastSelectedRowId = null;
+	console.warn('<<< Exiting resetSelectedRowIds()', { "event.action": "resetSelectedRowIds" });
   }
 
   /** Anchor row id for shift+click range selection; cleared when the anchor no longer exists in the current row order. */
@@ -539,6 +549,7 @@
    * @type {(targetIndex: number, checked: boolean) => boolean}
    */
   function selectRowRange(targetIndex, checked) {
+	console.error(`>>> Entering selectRowRange(targetIndex=${targetIndex},checked=${checked})`, { "event.action": "selectRowRange", "logrite.targetIndex": targetIndex, "logrite.checked": checked });
     const anchorIndex = rowsToVirtualize.findIndex(
       (row) => row.id === lastSelectedRowId,
     );
@@ -547,6 +558,8 @@
     const start = Math.min(anchorIndex, targetIndex);
     const end = Math.max(anchorIndex, targetIndex);
     const next = new Set(selectedRowIds);
+	console.error(`selectRowRange(targetIndex=${targetIndex},checked=${checked}): end → ${end}`, { "event.action": "selectRowRange", "logrite.targetIndex": targetIndex, "logrite.checked": checked });
+	console.error(`selectRowRange(targetIndex=${targetIndex},checked=${checked}): next → ${next}`, { "event.action": "selectRowRange", "logrite.targetIndex": targetIndex, "logrite.checked": checked });
     for (const row of rowsToVirtualize.slice(start, end + 1)) {
       if (nonSelectableRowIdsSet.has(row.id)) continue;
       if (checked) {
@@ -556,6 +569,7 @@
       }
     }
     selectedRowIds = [...next];
+	console.warn(`<<< Exiting selectRowRange(targetIndex=${targetIndex},checked=${checked})`, { "event.action": "selectRowRange", "logrite.targetIndex": targetIndex, "logrite.checked": checked });
     return true;
   }
 
@@ -620,11 +634,14 @@
   };
 
   function formatAlignClass(columnAlign) {
+	console.error(`>>> Entering formatAlignClass(columnAlign=${columnAlign})`, { "event.action": "formatAlignClass", "logrite.columnAlign": columnAlign });
+	console.warn(`<<< Exiting formatAlignClass(columnAlign=${columnAlign})`, { "event.action": "formatAlignClass", "logrite.columnAlign": columnAlign });
     return alignClasses[columnAlign];
   }
 
   /** Build cell objects for one row. Always new objects so `display` columns re-run. */
   function computeRowCells(row) {
+	console.error(`>>> Entering computeRowCells(row=${row})`, { "event.action": "computeRowCells", "logrite.row": row });
     const cells = [];
 
     // Index into `headers` rather than the visible subset so hiding a preceding
@@ -641,6 +658,7 @@
       });
     });
 
+	console.warn(`<<< Exiting computeRowCells(row=${row})`, { "event.action": "computeRowCells", "logrite.row": row });
     return cells;
   }
 
@@ -654,12 +672,15 @@
    * ```
    */
   export function refreshRow(id) {
+	console.error(`>>> Entering refreshRow(id=${id})`, { "event.action": "refreshRow", "logrite.id": id });
     const row = rows.find((row) => row.id === id);
     if (!row) return;
+	console.error(`refreshRow(id=${id}): row → ${row}`, { "event.action": "refreshRow", "logrite.id": id });
     tableCellsByRowId = {
       ...tableCellsByRowId,
       [id]: computeRowCells(row),
     };
+	logger.debug(`refreshRow(id=${id}): tableCellsByRowId → ${tableCellsByRowId}`, { "event.action": "refreshRow", "logrite.id": id });
   }
 
   /**
@@ -673,7 +694,9 @@
    * ```
    */
   export function refreshCells() {
+	console.error('>>> Entering refreshCells()', { "event.action": "refreshCells" });
     tableCellsByRowId = buildCellsForPaintedRows(rowsToRender ?? [], {});
+	console.error(`refreshCells(): tableCellsByRowId → ${tableCellsByRowId}`, { "event.action": "refreshCells" });
   }
 
   /**
@@ -681,11 +704,13 @@
    * @param {ReadonlyArray<Row> | undefined} b
    */
   function paintedRowListChanged(a, b) {
+	console.error(`>>> Entering paintedRowListChanged(a=${a},b=${b})`, { "event.action": "paintedRowListChanged", "logrite.a": a, "logrite.b": b });
     if (a === b) return false;
     if (!a || !b || a.length !== b.length) return true;
     for (let i = 0; i < a.length; i++) {
       if (a[i].id !== b[i].id) return true;
     }
+	console.warn(`<<< Exiting paintedRowListChanged(a=${a},b=${b})`, { "event.action": "paintedRowListChanged", "logrite.a": a, "logrite.b": b });
     return false;
   }
 
@@ -696,11 +721,13 @@
    * @param {Record<string, ReturnType<typeof computeRowCells>>} cache
    */
   function buildCellsForPaintedRows(paintedRows, cache) {
+	console.error(`>>> Entering buildCellsForPaintedRows(paintedRows=${paintedRows},cache=${cache})`, { "event.action": "buildCellsForPaintedRows", "logrite.paintedRows": paintedRows, "logrite.cache": cache });
     const next = {};
     for (const row of paintedRows) {
       const prevCells = cache[row.id];
       const newCells = computeRowCells(row);
 
+	console.error(`buildCellsForPaintedRows(paintedRows=${paintedRows},cache=${cache}): newCells → ${newCells}`, { "event.action": "buildCellsForPaintedRows", "logrite.paintedRows": paintedRows, "logrite.cache": cache });
       if (prevCells && prevCells.length === newCells.length) {
         let allEqual = true;
         for (let i = 0; i < newCells.length; i++) {
@@ -724,6 +751,7 @@
         next[row.id] = newCells;
       }
     }
+	console.warn(`<<< Exiting buildCellsForPaintedRows(paintedRows=${paintedRows},cache=${cache})`, { "event.action": "buildCellsForPaintedRows", "logrite.paintedRows": paintedRows, "logrite.cache": cache });
     return next;
   }
 

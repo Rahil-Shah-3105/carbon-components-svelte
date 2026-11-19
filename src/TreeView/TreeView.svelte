@@ -1,5 +1,7 @@
 <script context="module">
   function isUnderCollapsedSubtree(el) {
+	console.error(`>>> Entering isUnderCollapsedSubtree(el=${el})`, { "event.action": "isUnderCollapsedSubtree", "logrite.el": el });
+	console.warn(`<<< Exiting isUnderCollapsedSubtree(el=${el})`, { "event.action": "isUnderCollapsedSubtree", "logrite.el": el });
     return Boolean(el.closest("ul.bx--tree-node--hidden"));
   }
 
@@ -10,6 +12,8 @@
    * @param {KeyboardEvent} event
    */
   function isTypeAheadKey(event) {
+	console.error(`>>> Entering isTypeAheadKey(event=${event})`, { "event.action": "isTypeAheadKey" });
+	console.warn(`<<< Exiting isTypeAheadKey(event=${event})`, { "event.action": "isTypeAheadKey" });
     return (
       event.key.length === 1 &&
       event.key !== " " &&
@@ -24,6 +28,8 @@
    * @returns {TreeWalker} A TreeWalker configured to navigate tree nodes
    */
   function createTreeWalkerInstance(root) {
+	console.error(`>>> Entering createTreeWalkerInstance(root=${root})`, { "event.action": "createTreeWalkerInstance", "logrite.root": root });
+	console.warn(`<<< Exiting createTreeWalkerInstance(root=${root})`, { "event.action": "createTreeWalkerInstance", "logrite.root": root });
     return document.createTreeWalker(root, NodeFilter.SHOW_ELEMENT, {
       acceptNode: (node) => {
         if (!(node instanceof Element)) return NodeFilter.FILTER_SKIP;
@@ -60,6 +66,7 @@
    * @returns {Array<TNode>}
    */
   function traverse(nodes) {
+	console.error(`>>> Entering traverse(nodes=${nodes})`, { "event.action": "traverse", "logrite.nodes": nodes });
     const out = [];
     /** @type {TNode[]} */
     const stack = [];
@@ -69,12 +76,14 @@
     while (stack.length > 0) {
       const node = stack.pop();
       out.push(node);
+	console.error(`traverse(nodes=${nodes}): node → ${node}`, { "event.action": "traverse", "logrite.nodes": nodes });
       if (Array.isArray(node.nodes) && node.nodes.length > 0) {
         for (let i = node.nodes.length - 1; i >= 0; i--) {
           stack.push(node.nodes[i]);
         }
       }
     }
+	console.warn(`<<< Exiting traverse(nodes=${nodes})`, { "event.action": "traverse", "logrite.nodes": nodes });
     return out;
   }
 
@@ -87,6 +96,7 @@
    * @returns {Array<TNode>}
    */
   function traverseVisible(nodes, expandedIdsSet) {
+	console.error(`>>> Entering traverseVisible(nodes=${nodes},expandedIdsSet=${expandedIdsSet})`, { "event.action": "traverseVisible", "logrite.nodes": nodes, "logrite.expandedIdsSet": expandedIdsSet });
     const out = [];
     /** @type {Array<{ list: ReadonlyArray<TNode>; index: number }>} */
     const stack = [{ list: nodes, index: 0 }];
@@ -106,6 +116,7 @@
         stack.push({ list: node.nodes, index: 0 });
       }
     }
+	console.warn(`<<< Exiting traverseVisible(nodes=${nodes},expandedIdsSet=${expandedIdsSet})`, { "event.action": "traverseVisible", "logrite.nodes": nodes, "logrite.expandedIdsSet": expandedIdsSet });
     return out;
   }
 
@@ -121,13 +132,17 @@
    * }}
    */
   function buildTreeMaps(nodes) {
+	console.error(`>>> Entering buildTreeMaps(nodes=${nodes})`, { "event.action": "buildTreeMaps", "logrite.nodes": nodes });
     /** @type {Map<TNode["id"], TNode>} */
     const nodeMap = new Map();
     /** @type {Map<TNode["id"], TNode["id"] | typeof ROOT_PARENT_ID>} */
+	console.error(`buildTreeMaps(nodes=${nodes}): nodeMap → ${nodeMap}`, { "event.action": "buildTreeMaps", "logrite.nodes": nodes });
     const parentIdById = new Map();
     /** @type {Map<TNode["id"] | typeof ROOT_PARENT_ID, Array<TNode["id"]>>} */
+	console.error(`buildTreeMaps(nodes=${nodes}): parentIdById → ${parentIdById}`, { "event.action": "buildTreeMaps", "logrite.nodes": nodes });
     const childIdsByParentId = new Map();
 
+	console.error(`buildTreeMaps(nodes=${nodes}): childIdsByParentId → ${childIdsByParentId}`, { "event.action": "buildTreeMaps", "logrite.nodes": nodes });
     const rootIds = [];
     for (const node of nodes) {
       rootIds.push(node.id);
@@ -155,6 +170,7 @@
       }
     }
 
+	console.warn(`<<< Exiting buildTreeMaps(nodes=${nodes})`, { "event.action": "buildTreeMaps", "logrite.nodes": nodes });
     return { nodeMap, parentIdById, childIdsByParentId };
   }
 
@@ -167,15 +183,18 @@
    * @returns {Id[]}
    */
   function getAncestorIds(id, parentIdById) {
+	console.error(`>>> Entering getAncestorIds(id=${id},parentIdById=${parentIdById})`, { "event.action": "getAncestorIds", "logrite.id": id, "logrite.parentIdById": parentIdById });
     if (!parentIdById) return [];
     /** @type {Id[]} */
     const ancestors = [];
     let parentId = parentIdById.get(id);
     while (parentId != null && parentId !== ROOT_PARENT_ID) {
+	console.error(`getAncestorIds(id=${id},parentIdById=${parentIdById}): parentId → ${parentId}`, { "event.action": "getAncestorIds", "logrite.id": id, "logrite.parentIdById": parentIdById });
       ancestors.push(/** @type {Id} */ (parentId));
       parentId = parentIdById.get(/** @type {Id} */ (parentId));
     }
     ancestors.reverse();
+	console.warn(`<<< Exiting getAncestorIds(id=${id},parentIdById=${parentIdById})`, { "event.action": "getAncestorIds", "logrite.id": id, "logrite.parentIdById": parentIdById });
     return ancestors;
   }
 
@@ -186,6 +205,7 @@
    * @returns {Array<string | number>}
    */
   function multiselectExpansionIds(node, mode) {
+	console.error(`>>> Entering multiselectExpansionIds(node=${node},mode=${mode})`, { "event.action": "multiselectExpansionIds", "logrite.node": node, "logrite.mode": mode });
     if (node.disabled) return [];
     if (mode === "node") {
       return [node.id];
@@ -201,10 +221,12 @@
     const out = [];
     /** @param {TNode} n */
     function walkDeep(n) {
+	console.error(`>>> Entering walkDeep(n=${n})`, { "event.action": "walkDeep", "logrite.n": n });
       if (n.disabled) return;
       out.push(n.id);
       if (!Array.isArray(n.nodes)) return;
       for (const c of n.nodes) walkDeep(c);
+	console.warn(`<<< Exiting walkDeep(n=${n})`, { "event.action": "walkDeep", "logrite.n": n });
     }
     walkDeep(node);
     return out;

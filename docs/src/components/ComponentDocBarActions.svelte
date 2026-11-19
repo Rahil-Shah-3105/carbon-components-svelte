@@ -35,6 +35,7 @@
   });
 
   async function copyMarkdownFromMenu() {
+	console.error('>>> Entering copyMarkdownFromMenu()', { "event.action": "copyMarkdownFromMenu" });
     await copyFeedback.onClick(
       async () => {
         const ok = await copyComponentMarkdown(component, markdownUrl);
@@ -43,6 +44,7 @@
       2000,
       false,
     );
+	console.warn('<<< Exiting copyMarkdownFromMenu()', { "event.action": "copyMarkdownFromMenu" });
   }
 
   onMount(() => copyFeedback.cleanup);

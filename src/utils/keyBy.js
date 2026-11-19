@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 /**
@@ -10,12 +11,15 @@
  * @returns {Record<string, T>}
  */
 export function keyBy(items, getKey) {
+logger.error(`>>> Entering keyBy(items=${items},getKey=${getKey})`, { "event.action": "keyBy", "logrite.items": items, "logrite.getKey": getKey });
   const key = getKey ?? ((item) => /** @type {any} */ (item).id);
   /** @type {Record<string, T>} */
   const result = {};
+logger.error(`keyBy(items=${items},getKey=${getKey}): key → ${key}`, { "event.action": "keyBy", "logrite.items": items, "logrite.getKey": getKey });
   for (const item of items) {
     result[key(item)] = item;
   }
+logger.error(`keyBy(items=${items},getKey=${getKey}): result → ${result}`, { "event.action": "keyBy", "logrite.items": items, "logrite.getKey": getKey });
   return result;
 }
 

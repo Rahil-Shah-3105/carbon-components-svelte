@@ -60,11 +60,13 @@
   ];
 
   function toggleColumn(key) {
+	console.error(`>>> Entering toggleColumn(key=${key})`, { "event.action": "toggleColumn", "logrite.key": key });
     headers = headers.map((header) =>
       header.key === key
         ? { ...header, columnHidden: !header.columnHidden }
         : header,
     );
+	logger.debug(`toggleColumn(key=${key}): headers → ${headers}`, { "event.action": "toggleColumn", "logrite.key": key });
   }
 </script>
 

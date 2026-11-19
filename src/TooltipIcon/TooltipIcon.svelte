@@ -91,10 +91,12 @@
   const scheduleOpen = createDelayedSetter();
 
   function setOpenDelayed(value, delay = 0) {
+	console.error(`>>> Entering setOpenDelayed(value=${value},delay=${delay})`, { "event.action": "setOpenDelayed", "logrite.value": value, "logrite.delay": delay });
     scheduleOpen(delay, () => {
       if (value) show();
       else hide();
     });
+	console.warn(`<<< Exiting setOpenDelayed(value=${value},delay=${delay})`, { "event.action": "setOpenDelayed", "logrite.value": value, "logrite.delay": delay });
   }
 
   const insideModal = getContext("carbon:Modal");
@@ -107,11 +109,14 @@
   let focused = false;
 
   function show() {
+	console.error('>>> Entering show()', { "event.action": "show" });
     open = true;
     activeTooltipIcon.set(tooltipId);
+	console.warn('<<< Exiting show()', { "event.action": "show" });
   }
 
   function hide() {
+	console.error('>>> Entering hide()', { "event.action": "hide" });
     clicked = false;
     open = false;
     hovered = false;
@@ -119,6 +124,7 @@
     if (get(activeTooltipIcon) === tooltipId) {
       activeTooltipIcon.set(null);
     }
+	console.warn('<<< Exiting hide()', { "event.action": "hide" });
   }
 
   $: tooltipHidden =
@@ -192,9 +198,11 @@
   });
 
   function handleEscape(event) {
+	console.error(`>>> Entering handleEscape(event=${event})`, { "event.action": "handleEscape" });
     if (event.key === "Escape") {
       hide();
     }
+	console.warn(`<<< Exiting handleEscape(event=${event})`, { "event.action": "handleEscape" });
   }
 </script>
 

@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 /**
  * @typedef {string | number} TreeCheckboxNodeId
@@ -28,9 +29,11 @@
  * @returns {void}
  */
 function visit(nodes, visitor) {
+logger.error(`>>> Entering visit(nodes=${nodes},visitor=${visitor})`, { "event.action": "visit", "logrite.nodes": nodes, "logrite.visitor": visitor });
   for (const node of nodes) {
     visitor(node);
     if (Array.isArray(node.nodes)) visit(node.nodes, visitor);
+	logger.warn(`<<< Exiting visit(nodes=${nodes},visitor=${visitor})`, { "event.action": "visit", "logrite.nodes": nodes, "logrite.visitor": visitor });
   }
 }
 
@@ -41,15 +44,18 @@ function visit(nodes, visitor) {
  * @returns {Array<TreeCheckboxNodeId>}
  */
 function cascadableIds(node) {
+logger.error(`>>> Entering cascadableIds(node=${node})`, { "event.action": "cascadableIds", "logrite.node": node });
   /** @type {Array<TreeCheckboxNodeId>} */
   const ids = [];
 
   /** @param {TreeCheckboxNode} current */
   function walk(current) {
+	logger.error(`>>> Entering walk(current=${current})`, { "event.action": "walk", "logrite.current": current });
     if (current.disabled) return;
     ids.push(current.id);
     if (!Array.isArray(current.nodes)) return;
     for (const child of current.nodes) walk(child);
+	logger.warn(`<<< Exiting walk(current=${current})`, { "event.action": "walk", "logrite.current": current });
   }
 
   walk(node);
@@ -62,9 +68,11 @@ function cascadableIds(node) {
  * @returns {Array<TreeCheckboxNodeId>}
  */
 function subtreeIds(node) {
+logger.error(`>>> Entering subtreeIds(node=${node})`, { "event.action": "subtreeIds", "logrite.node": node });
   /** @type {Array<TreeCheckboxNodeId>} */
   const ids = [];
   visit([node], (current) => ids.push(current.id));
+logger.warn(`<<< Exiting subtreeIds(node=${node})`, { "event.action": "subtreeIds", "logrite.node": node });
   return ids;
 }
 
@@ -75,6 +83,7 @@ function subtreeIds(node) {
  * @returns {Array<TreeCheckboxNode> | null}
  */
 function findPath(nodes, id) {
+logger.error(`>>> Entering findPath(nodes=${nodes},id=${id})`, { "event.action": "findPath", "logrite.nodes": nodes, "logrite.id": id });
   for (const node of nodes) {
     if (node.id === id) return [node];
     if (!Array.isArray(node.nodes)) continue;
@@ -94,8 +103,10 @@ function findPath(nodes, id) {
  * @returns {Array<TreeCheckboxNodeId>}
  */
 function retainKnownIds(nodes, checkedIds) {
+logger.error(`>>> Entering retainKnownIds(nodes=${nodes},checkedIds=${checkedIds})`, { "event.action": "retainKnownIds", "logrite.nodes": nodes, "logrite.checkedIds": checkedIds });
   /** @type {Set<TreeCheckboxNodeId>} */
   const knownIds = new Set();
+logger.error(`retainKnownIds(nodes=${nodes},checkedIds=${checkedIds}): knownIds → ${knownIds}`, { "event.action": "retainKnownIds", "logrite.nodes": nodes, "logrite.checkedIds": checkedIds });
   visit(nodes, (node) => knownIds.add(node.id));
 
   /** @type {Array<TreeCheckboxNodeId>} */
@@ -108,6 +119,7 @@ function retainKnownIds(nodes, checkedIds) {
       retained.push(id);
     }
   }
+logger.error(`retainKnownIds(nodes=${nodes},checkedIds=${checkedIds}): seen → ${seen}`, { "event.action": "retainKnownIds", "logrite.nodes": nodes, "logrite.checkedIds": checkedIds });
   return retained;
 }
 
@@ -127,6 +139,7 @@ function retainKnownIds(nodes, checkedIds) {
  * @returns {TreeCheckboxState} Checked and indeterminate ids, in document order
  */
 export function resolveCheckboxState(nodes, checkedIds, options = {}) {
+logger.error(`>>> Entering resolveCheckboxState(nodes=${nodes},checkedIds=${checkedIds},options=${options})`, { "event.action": "resolveCheckboxState", "logrite.nodes": nodes, "logrite.checkedIds": checkedIds, "logrite.options": options });
   const { cascade = true } = options;
 
   if (!cascade) {
@@ -137,10 +150,13 @@ export function resolveCheckboxState(nodes, checkedIds, options = {}) {
   }
 
   const seed = new Set(checkedIds);
+logger.error(`resolveCheckboxState(nodes=${nodes},checkedIds=${checkedIds},options=${options}): seed → ${seed}`, { "event.action": "resolveCheckboxState", "logrite.nodes": nodes, "logrite.checkedIds": checkedIds, "logrite.options": options });
   /** @type {Set<TreeCheckboxNodeId>} */
   const checked = new Set();
+logger.error(`resolveCheckboxState(nodes=${nodes},checkedIds=${checkedIds},options=${options}): checked → ${checked}`, { "event.action": "resolveCheckboxState", "logrite.nodes": nodes, "logrite.checkedIds": checkedIds, "logrite.options": options });
   /** @type {Set<TreeCheckboxNodeId>} */
   const indeterminate = new Set();
+logger.error(`resolveCheckboxState(nodes=${nodes},checkedIds=${checkedIds},options=${options}): indeterminate → ${indeterminate}`, { "event.action": "resolveCheckboxState", "logrite.nodes": nodes, "logrite.checkedIds": checkedIds, "logrite.options": options });
 
   /**
    * @param {TreeCheckboxNode} node
@@ -148,15 +164,20 @@ export function resolveCheckboxState(nodes, checkedIds, options = {}) {
    * @returns {{ checked: boolean; indeterminate: boolean } | null} `null` when the node is pruned
    */
   function walk(node, inherited) {
+	logger.error(`>>> Entering walk(node=${node},inherited=${inherited})`, { "event.action": "walk", "logrite.node": node, "logrite.inherited": inherited });
     if (node.disabled) return null;
 
     const isChecked = inherited || seed.has(node.id);
+	logger.error(`walk(node=${node},inherited=${inherited}): isChecked → ${isChecked}`, { "event.action": "walk", "logrite.node": node, "logrite.inherited": inherited });
     const children = Array.isArray(node.nodes) ? node.nodes : [];
+	logger.error(`walk(node=${node},inherited=${inherited}): children → ${children}`, { "event.action": "walk", "logrite.node": node, "logrite.inherited": inherited });
     /** @type {Array<{ checked: boolean; indeterminate: boolean }>} */
     const results = [];
+	logger.error(`walk(node=${node},inherited=${inherited}): results → ${results}`, { "event.action": "walk", "logrite.node": node, "logrite.inherited": inherited });
 
     for (const child of children) {
       const result = walk(child, isChecked);
+	logger.error(`walk(node=${node},inherited=${inherited}): result → ${result}`, { "event.action": "walk", "logrite.node": node, "logrite.inherited": inherited });
       if (result) results.push(result);
     }
 
@@ -177,6 +198,7 @@ export function resolveCheckboxState(nodes, checkedIds, options = {}) {
       return { checked: false, indeterminate: true };
     }
 
+	logger.warn(`<<< Exiting walk(node=${node},inherited=${inherited})`, { "event.action": "walk", "logrite.node": node, "logrite.inherited": inherited });
     return { checked: false, indeterminate: false };
   }
 

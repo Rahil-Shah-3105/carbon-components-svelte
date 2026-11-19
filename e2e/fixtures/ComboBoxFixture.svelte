@@ -8,7 +8,9 @@
   ];
 
   function shouldFilterItem(item, value) {
+	console.error(`>>> Entering shouldFilterItem(item=${item},value=${value})`, { "event.action": "shouldFilterItem", "logrite.item": item, "logrite.value": value });
     if (!value) return true;
+	console.warn(`<<< Exiting shouldFilterItem(item=${item},value=${value})`, { "event.action": "shouldFilterItem", "logrite.item": item, "logrite.value": value });
     return item.text.toLowerCase().includes(value.toLowerCase());
   }
 </script>

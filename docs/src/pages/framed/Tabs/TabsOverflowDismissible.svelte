@@ -8,7 +8,9 @@
   }));
 
   function handleDismiss({ detail }) {
+	console.error(`>>> Entering handleDismiss(detail=${detail})`, { "event.action": "handleDismiss", "logrite.detail": detail });
     tabs = tabs.filter((tab) => tab.id !== detail.id);
+	console.error(`handleDismiss(detail=${detail}): tabs → ${tabs}`, { "event.action": "handleDismiss", "logrite.detail": detail });
   }
 </script>
 

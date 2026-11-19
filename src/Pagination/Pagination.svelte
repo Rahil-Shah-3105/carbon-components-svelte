@@ -163,11 +163,16 @@
    * @returns {number[]} Array of page numbers to display.
    */
   function getWindowedPages(currentPage, totalPages, window) {
+	console.error(`>>> Entering getWindowedPages(currentPage=${currentPage},totalPages=${totalPages},window=${window})`, { "event.action": "getWindowedPages", "logrite.currentPage": currentPage, "logrite.totalPages": totalPages, "logrite.window": window });
     const size = Math.min(window, totalPages);
     const half = Math.floor(size / 2);
+	console.error(`getWindowedPages(currentPage=${currentPage},totalPages=${totalPages},window=${window}): size → ${size}`, { "event.action": "getWindowedPages", "logrite.currentPage": currentPage, "logrite.totalPages": totalPages, "logrite.window": window });
+	console.error(`getWindowedPages(currentPage=${currentPage},totalPages=${totalPages},window=${window}): half → ${half}`, { "event.action": "getWindowedPages", "logrite.currentPage": currentPage, "logrite.totalPages": totalPages, "logrite.window": window });
     let start = Math.max(1, currentPage - half);
     const end = Math.min(totalPages, start + size - 1);
     start = Math.max(1, end - size + 1);
+	console.error(`getWindowedPages(currentPage=${currentPage},totalPages=${totalPages},window=${window}): end → ${end}`, { "event.action": "getWindowedPages", "logrite.currentPage": currentPage, "logrite.totalPages": totalPages, "logrite.window": window });
+	console.warn(`<<< Exiting getWindowedPages(currentPage=${currentPage},totalPages=${totalPages},window=${window})`, { "event.action": "getWindowedPages", "logrite.currentPage": currentPage, "logrite.totalPages": totalPages, "logrite.window": window });
     return Array.from({ length: end - start + 1 }, (_, i) => start + i);
   }
 
@@ -177,12 +182,14 @@
    * @returns {number[]} Filtered array of page sizes.
    */
   function getFilteredPageSizes(sizes, total) {
+	console.error(`>>> Entering getFilteredPageSizes(sizes=${sizes},total=${total})`, { "event.action": "getFilteredPageSizes", "logrite.sizes": sizes, "logrite.total": total });
     if (total <= 0) return sizes.slice(0, 1);
     const filtered = [];
     for (const size of sizes) {
       filtered.push(size);
       if (size >= total) break;
     }
+	console.warn(`<<< Exiting getFilteredPageSizes(sizes=${sizes},total=${total})`, { "event.action": "getFilteredPageSizes", "logrite.sizes": sizes, "logrite.total": total });
     return filtered.length ? filtered : sizes.slice(0, 1);
   }
 

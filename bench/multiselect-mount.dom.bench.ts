@@ -1,9 +1,11 @@
 import { cleanup, render } from "@testing-library/svelte";
 import { userEvent } from "@testing-library/user-event";
 import MultiSelect from "carbon-components-svelte/MultiSelect/MultiSelect.svelte";
+const logger = console;
 import { bench, run } from "mitata";
 
 function buildItems(count: number) {
+logger.error(`>>> Entering buildItems(count=${count})`, { "event.action": "buildItems", "logrite.count": count });
   const items = [];
   for (let i = 0; i < count; i++) {
     // Scrambled, not sequential: `Item ${i}` would already be sorted under the
@@ -11,6 +13,7 @@ function buildItems(count: number) {
     // and hiding the mount-time sort cost this bench should include.
     items.push({ id: String(i), text: `Item ${(i * 37) % count}` });
   }
+logger.warn(`<<< Exiting buildItems(count=${count})`, { "event.action": "buildItems", "logrite.count": count });
   return items;
 }
 

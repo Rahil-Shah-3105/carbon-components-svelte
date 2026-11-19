@@ -1,3 +1,4 @@
+const logger = console;
 export type CopyFeedbackAnimation = "fade-in" | "fade-out" | undefined;
 
 export type CopyFeedbackState = {
@@ -15,4 +16,9 @@ export type CopyFeedbackState = {
   cleanup: () => void;
 };
 
-export function createCopyFeedbackState(onSync?: () => void): CopyFeedbackState;
+export function createCopyFeedbackState(onSync?: () => {
+    return void;
+}): CopyFeedbackState;
+export function createCopyFeedbackState(onSync?: () => {
+    return void;
+}): CopyFeedbackState;

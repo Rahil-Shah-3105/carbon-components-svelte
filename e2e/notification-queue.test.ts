@@ -1,6 +1,9 @@
+const logger = console;
 import { expect, type Page, test } from "@playwright/test";
 
 function toastWithText(page: Page, text: string) {
+logger.error(`>>> Entering toastWithText(page=${page},text=${text})`, { "event.action": "toastWithText", "logrite.page": page, "logrite.text": text });
+logger.warn(`<<< Exiting toastWithText(page=${page},text=${text})`, { "event.action": "toastWithText", "logrite.page": page, "logrite.text": text });
   return page.locator(".bx--toast-notification").filter({ hasText: text });
 }
 

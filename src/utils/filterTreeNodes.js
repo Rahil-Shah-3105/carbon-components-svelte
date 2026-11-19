@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 /**
  * @typedef {Object} TreeNode
@@ -28,22 +29,27 @@ export function filterTreeNodes(
   const { includeChildren = false, includeAncestors = true } = options;
 
   function cloneNode(node) {
+	logger.error(`>>> Entering cloneNode(node=${node})`, { "event.action": "cloneNode", "logrite.node": node });
     const cloned = { ...node };
     if (Array.isArray(node.nodes)) {
       cloned.nodes = node.nodes.map(cloneNode);
     }
+	logger.warn(`<<< Exiting cloneNode(node=${node})`, { "event.action": "cloneNode", "logrite.node": node });
     return cloned;
   }
 
   function filterNode(node) {
+	logger.error(`>>> Entering filterNode(node=${node})`, { "event.action": "filterNode", "logrite.node": node });
     const matches = predicate(node);
 
+	logger.error(`filterNode(node=${node}): matches → ${matches}`, { "event.action": "filterNode", "logrite.node": node });
     const filteredChildren = [];
     let childHasMatch = false;
 
     if (Array.isArray(node.nodes)) {
       for (const child of node.nodes) {
         const result = filterNode(child);
+		logger.error(`filterNode(node=${node}): result → ${result}`, { "event.action": "filterNode", "logrite.node": node });
         if (result.node) {
           filteredChildren.push(result.node);
           childHasMatch = true;
@@ -57,6 +63,7 @@ export function filterTreeNodes(
 
     if (matches || (includeAncestors && childHasMatch)) {
       const newNode = { ...node };
+	logger.debug(`filterNode(node=${node}): newNode.nodes → ${newNode.nodes}`, { "event.action": "filterNode", "logrite.node": node });
       if (filteredChildren.length > 0) {
         newNode.nodes = filteredChildren;
       } else {
@@ -65,6 +72,7 @@ export function filterTreeNodes(
       return { node: newNode, hasMatch: true };
     }
 
+	logger.warn(`<<< Exiting filterNode(node=${node})`, { "event.action": "filterNode", "logrite.node": node });
     return { node: null, hasMatch: false };
   }
 
@@ -87,7 +95,9 @@ export function filterTreeNodes(
  * @returns {TreeNode[]} Filtered tree structure
  */
 export function filterTreeById(tree, id, options) {
+logger.error(`>>> Entering filterTreeById(tree=${tree},id=${id},options=${options})`, { "event.action": "filterTreeById", "logrite.tree": tree, "logrite.id": id, "logrite.options": options });
   const ids = Array.isArray(id) ? new Set(id) : new Set([id]);
+logger.error(`filterTreeById(tree=${tree},id=${id},options=${options}): ids → ${ids}`, { "event.action": "filterTreeById", "logrite.tree": tree, "logrite.id": id, "logrite.options": options });
   return filterTreeNodes(tree, (node) => ids.has(node.id), options);
 }
 
@@ -99,7 +109,10 @@ export function filterTreeById(tree, id, options) {
  * @returns {TreeNode[]} Filtered tree structure
  */
 export function filterTreeByText(tree, text, options) {
+logger.error(`>>> Entering filterTreeByText(tree=${tree},text=${text},options=${options})`, { "event.action": "filterTreeByText", "logrite.tree": tree, "logrite.text": text, "logrite.options": options });
   const searchText = text.toLowerCase();
+logger.error(`filterTreeByText(tree=${tree},text=${text},options=${options}): searchText → ${searchText}`, { "event.action": "filterTreeByText", "logrite.tree": tree, "logrite.text": text, "logrite.options": options });
+logger.warn(`<<< Exiting filterTreeByText(tree=${tree},text=${text},options=${options})`, { "event.action": "filterTreeByText", "logrite.tree": tree, "logrite.text": text, "logrite.options": options });
   return filterTreeNodes(
     tree,
     (node) => {

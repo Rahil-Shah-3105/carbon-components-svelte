@@ -97,6 +97,8 @@
 
   /** Build highlighted label HTML from `segments`. */
   function toHtml(segments: { text: string; match: boolean }[]) {
+	console.error(`>>> Entering toHtml(segments=${segments})`, { "event.action": "toHtml", "logrite.segments": segments });
+	console.warn(`<<< Exiting toHtml(segments=${segments})`, { "event.action": "toHtml", "logrite.segments": segments });
     return segments
       .map((s) => {
         const escaped = s.text
@@ -118,24 +120,32 @@
    * present in this particular field at all.
    */
   function matchQuery(text: string, query: string) {
+	console.error(`>>> Entering matchQuery(text=${text},query=${query})`, { "event.action": "matchQuery", "logrite.text": text, "logrite.query": query });
     const terms = query.trim().split(/\s+/).filter(Boolean);
     if (terms.length === 0) return { matched: true, indices: [] as number[] };
+	console.error(`matchQuery(text=${text},query=${query}): terms → ${terms}`, { "event.action": "matchQuery", "logrite.text": text, "logrite.query": query });
     const indices = new Set<number>();
     let matched = false;
+	console.error(`matchQuery(text=${text},query=${query}): indices → ${indices}`, { "event.action": "matchQuery", "logrite.text": text, "logrite.query": query });
     for (const term of terms) {
       const result = fuzzyMatch(text, term);
       if (result.matched) {
+		console.error(`matchQuery(text=${text},query=${query}): result → ${result}`, { "event.action": "matchQuery", "logrite.text": text, "logrite.query": query });
         matched = true;
         for (const i of result.indices) indices.add(i);
+		console.error(`matchQuery(text=${text},query=${query}): matched → ${matched}`, { "event.action": "matchQuery", "logrite.text": text, "logrite.query": query });
       }
     }
+	console.warn(`<<< Exiting matchQuery(text=${text},query=${query})`, { "event.action": "matchQuery", "logrite.text": text, "logrite.query": query });
     return { matched, indices: [...indices].sort((a, b) => a - b) };
   }
 
   /** Highlight the current query in arbitrary text (e.g. a description). */
   function highlightHtml(text: string | undefined) {
+	console.error(`>>> Entering highlightHtml(text=${text})`, { "event.action": "highlightHtml", "logrite.text": text });
     if (!text) return "";
     const { matched, indices } = matchQuery(text, value);
+	console.warn(`<<< Exiting highlightHtml(text=${text})`, { "event.action": "highlightHtml", "logrite.text": text });
     return toHtml(highlightSegments(text, matched ? indices : []));
   }
 
@@ -183,6 +193,8 @@
   });
 
   function subheadingClass(index: number) {
+	console.error(`>>> Entering subheadingClass(index=${index})`, { "event.action": "subheadingClass", "logrite.index": index });
+	console.warn(`<<< Exiting subheadingClass(index=${index})`, { "event.action": "subheadingClass", "logrite.index": index });
     return index === 0
       ? "sidenav-subheading sidenav-subheading-first"
       : "sidenav-subheading";

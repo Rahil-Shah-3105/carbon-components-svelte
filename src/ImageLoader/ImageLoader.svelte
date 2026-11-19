@@ -57,13 +57,17 @@
    * ```
    */
   export function loadImage(url) {
+	console.error(`>>> Entering loadImage(url=${url})`, { "event.action": "loadImage", "logrite.url": url });
     if (image != null) image = null;
     loaded = false;
     error = false;
     image = new Image();
+	console.error(`loadImage(url=${url}): image → ${image}`, { "event.action": "loadImage", "logrite.url": url });
     image.src = url || src;
     image.onload = () => (loaded = true);
+	logger.debug(`loadImage(url=${url}): image.src → ${image.src}`, { "event.action": "loadImage", "logrite.url": url });
     image.onerror = () => (error = true);
+	console.warn(`<<< Exiting loadImage(url=${url})`, { "event.action": "loadImage", "logrite.url": url });
   }
 
   import { createEventDispatcher, onMount } from "svelte";

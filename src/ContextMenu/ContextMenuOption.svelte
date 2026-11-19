@@ -127,6 +127,7 @@
   });
 
   function handleClick(event, opts = {}) {
+	console.error(`>>> Entering handleClick(event=${event},opts=${opts})`, { "event.action": "handleClick", "logrite.opts": opts });
     if (disabled) return;
     if (subOptions) return;
 
@@ -145,9 +146,11 @@
 
     const shouldClose = dispatch("click", event, { cancelable: true });
 
+	console.error(`handleClick(event=${event},opts=${opts}): shouldClose → ${shouldClose}`, { "event.action": "handleClick", "logrite.opts": opts });
     if (shouldClose) {
       ctx.close("select");
     }
+	console.warn(`<<< Exiting handleClick(event=${event},opts=${opts})`, { "event.action": "handleClick", "logrite.opts": opts });
   }
 
   onMount(() => {

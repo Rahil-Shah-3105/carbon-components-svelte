@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 /**
@@ -33,6 +34,8 @@ const SEPARATORS = new Set([" ", "-", "_", "/", ".", ":", "@", "&"]);
  * @returns {boolean}
  */
 function isWordBoundary(text, index) {
+logger.error(`>>> Entering isWordBoundary(text=${text},index=${index})`, { "event.action": "isWordBoundary", "logrite.text": text, "logrite.index": index });
+logger.warn(`<<< Exiting isWordBoundary(text=${text},index=${index})`, { "event.action": "isWordBoundary", "logrite.text": text, "logrite.index": index });
   return index === 0 || SEPARATORS.has(text[index - 1]);
 }
 
@@ -45,8 +48,10 @@ function isWordBoundary(text, index) {
  * @returns {{ index: number, score: number } | null}
  */
 function bestSubstringMatch(lowerText, lowerQuery) {
+logger.error(`>>> Entering bestSubstringMatch(lowerText=${lowerText},lowerQuery=${lowerQuery})`, { "event.action": "bestSubstringMatch", "logrite.lowerText": lowerText, "logrite.lowerQuery": lowerQuery });
   let from = 0;
   let best = /** @type {{ index: number, score: number } | null} */ (null);
+logger.error(`bestSubstringMatch(lowerText=${lowerText},lowerQuery=${lowerQuery}): best → ${best}`, { "event.action": "bestSubstringMatch", "logrite.lowerText": lowerText, "logrite.lowerQuery": lowerQuery });
   let index = lowerText.indexOf(lowerQuery, from);
   while (index !== -1) {
     let score = 1000 - index;
@@ -56,6 +61,7 @@ function bestSubstringMatch(lowerText, lowerQuery) {
     from = index + 1;
     index = lowerText.indexOf(lowerQuery, from);
   }
+logger.warn(`<<< Exiting bestSubstringMatch(lowerText=${lowerText},lowerQuery=${lowerQuery})`, { "event.action": "bestSubstringMatch", "logrite.lowerText": lowerText, "logrite.lowerQuery": lowerQuery });
   return best;
 }
 
@@ -67,6 +73,7 @@ function bestSubstringMatch(lowerText, lowerQuery) {
  * @returns {{ indices: number[], score: number } | null}
  */
 function subsequenceMatch(lowerText, lowerQuery) {
+logger.error(`>>> Entering subsequenceMatch(lowerText=${lowerText},lowerQuery=${lowerQuery})`, { "event.action": "subsequenceMatch", "logrite.lowerText": lowerText, "logrite.lowerQuery": lowerQuery });
   const indices = [];
   let textIndex = 0;
   let score = 0;
@@ -86,6 +93,7 @@ function subsequenceMatch(lowerText, lowerQuery) {
     indices.push(found);
     prev = found;
   }
+logger.warn(`<<< Exiting subsequenceMatch(lowerText=${lowerText},lowerQuery=${lowerQuery})`, { "event.action": "subsequenceMatch", "logrite.lowerText": lowerText, "logrite.lowerQuery": lowerQuery });
   return { indices, score };
 }
 
@@ -98,9 +106,11 @@ function subsequenceMatch(lowerText, lowerQuery) {
  * @returns {number}
  */
 function substringQuality(haystack, pattern, index) {
+logger.error(`>>> Entering substringQuality(haystack=${haystack},pattern=${pattern},index=${index})`, { "event.action": "substringQuality", "logrite.haystack": haystack, "logrite.pattern": pattern, "logrite.index": index });
   if (index === 0) {
     return pattern.length === haystack.length ? QUALITY.exact : QUALITY.prefix;
   }
+logger.warn(`<<< Exiting substringQuality(haystack=${haystack},pattern=${pattern},index=${index})`, { "event.action": "substringQuality", "logrite.haystack": haystack, "logrite.pattern": pattern, "logrite.index": index });
   return isWordBoundary(haystack, index)
     ? QUALITY.wordBoundary
     : QUALITY.midWord;
@@ -114,12 +124,14 @@ function substringQuality(haystack, pattern, index) {
  * @returns {number}
  */
 function subsequenceQuality(indices) {
+logger.error(`>>> Entering subsequenceQuality(indices=${indices})`, { "event.action": "subsequenceQuality", "logrite.indices": indices });
   if (indices.length <= 1) return QUALITY.subsequenceBase;
   let adjacent = 0;
   for (let i = 1; i < indices.length; i++) {
     if (indices[i] === indices[i - 1] + 1) adjacent++;
   }
   const ratio = adjacent / (indices.length - 1);
+logger.error(`subsequenceQuality(indices=${indices}): ratio → ${ratio}`, { "event.action": "subsequenceQuality", "logrite.indices": indices });
   return QUALITY.subsequenceBase + QUALITY.subsequenceSpan * ratio;
 }
 
@@ -145,18 +157,25 @@ function subsequenceQuality(indices) {
  * @returns {FuzzyMatch}
  */
 export function fuzzyMatch(text, query, options = {}) {
+logger.error(`>>> Entering fuzzyMatch(text=${text},query=${query},options=${options})`, { "event.action": "fuzzyMatch", "logrite.text": text, "logrite.query": query, "logrite.options": options });
   const { threshold = 0, caseSensitive = false } = options;
   const source = text ?? "";
+logger.error(`fuzzyMatch(text=${text},query=${query},options=${options}): source → ${source}`, { "event.action": "fuzzyMatch", "logrite.text": text, "logrite.query": query, "logrite.options": options });
   const needle = (query ?? "").trim();
+logger.error(`fuzzyMatch(text=${text},query=${query},options=${options}): needle → ${needle}`, { "event.action": "fuzzyMatch", "logrite.text": text, "logrite.query": query, "logrite.options": options });
   if (needle === "") return { matched: true, score: 0, indices: [] };
 
   const haystack = caseSensitive ? source : source.toLowerCase();
+logger.error(`fuzzyMatch(text=${text},query=${query},options=${options}): haystack → ${haystack}`, { "event.action": "fuzzyMatch", "logrite.text": text, "logrite.query": query, "logrite.options": options });
   const pattern = caseSensitive ? needle : needle.toLowerCase();
+logger.error(`fuzzyMatch(text=${text},query=${query},options=${options}): pattern → ${pattern}`, { "event.action": "fuzzyMatch", "logrite.text": text, "logrite.query": query, "logrite.options": options });
 
   let score = 0;
+logger.error(`fuzzyMatch(text=${text},query=${query},options=${options}): score → ${score}`, { "event.action": "fuzzyMatch", "logrite.text": text, "logrite.query": query, "logrite.options": options });
   let indices = [];
 
   const substring = bestSubstringMatch(haystack, pattern);
+logger.error(`fuzzyMatch(text=${text},query=${query},options=${options}): substring → ${substring}`, { "event.action": "fuzzyMatch", "logrite.text": text, "logrite.query": query, "logrite.options": options });
   if (substring) {
     for (let i = substring.index; i < substring.index + pattern.length; i++) {
       indices.push(i);
@@ -164,6 +183,7 @@ export function fuzzyMatch(text, query, options = {}) {
     score = substringQuality(haystack, pattern, substring.index);
   } else {
     const subsequence = subsequenceMatch(haystack, pattern);
+	logger.error(`fuzzyMatch(text=${text},query=${query},options=${options}): subsequence → ${subsequence}`, { "event.action": "fuzzyMatch", "logrite.text": text, "logrite.query": query, "logrite.options": options });
     if (subsequence) {
       indices = subsequence.indices;
       score = subsequenceQuality(subsequence.indices);
@@ -172,6 +192,7 @@ export function fuzzyMatch(text, query, options = {}) {
     }
   }
 
+logger.warn(`<<< Exiting fuzzyMatch(text=${text},query=${query},options=${options})`, { "event.action": "fuzzyMatch", "logrite.text": text, "logrite.query": query, "logrite.options": options });
   return { matched: score >= threshold, score, indices };
 }
 
@@ -184,16 +205,20 @@ export function fuzzyMatch(text, query, options = {}) {
  * @returns {Array<{ text: string, match: boolean }>}
  */
 export function highlightSegments(text, indices) {
+logger.error(`>>> Entering highlightSegments(text=${text},indices=${indices})`, { "event.action": "highlightSegments", "logrite.text": text, "logrite.indices": indices });
   const source = text ?? "";
   if (!indices || indices.length === 0) {
+	logger.error(`highlightSegments(text=${text},indices=${indices}): source → ${source}`, { "event.action": "highlightSegments", "logrite.text": text, "logrite.indices": indices });
     return source ? [{ text: source, match: false }] : [];
   }
   const matched = new Set(indices);
+logger.error(`highlightSegments(text=${text},indices=${indices}): matched → ${matched}`, { "event.action": "highlightSegments", "logrite.text": text, "logrite.indices": indices });
   const segments = [];
   let current = "";
   let currentMatch = matched.has(0);
   for (let i = 0; i < source.length; i++) {
     const isMatch = matched.has(i);
+	logger.error(`highlightSegments(text=${text},indices=${indices}): isMatch → ${isMatch}`, { "event.action": "highlightSegments", "logrite.text": text, "logrite.indices": indices });
     if (isMatch === currentMatch) {
       current += source[i];
     } else {
@@ -203,5 +228,6 @@ export function highlightSegments(text, indices) {
     }
   }
   if (current) segments.push({ text: current, match: currentMatch });
+logger.warn(`<<< Exiting highlightSegments(text=${text},indices=${indices})`, { "event.action": "highlightSegments", "logrite.text": text, "logrite.indices": indices });
   return segments;
 }

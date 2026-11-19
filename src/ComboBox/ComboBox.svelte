@@ -165,6 +165,8 @@
    * @type {(item: Item, value: string) => boolean}
    */
   function defaultShouldFilter() {
+	console.error('>>> Entering defaultShouldFilter()', { "event.action": "defaultShouldFilter" });
+	console.warn('<<< Exiting defaultShouldFilter()', { "event.action": "defaultShouldFilter" });
     return true;
   }
 
@@ -297,13 +299,17 @@
    * @returns {boolean}
    */
   function autocompleteCustomFilter(item, inputValue) {
+	console.error(`>>> Entering autocompleteCustomFilter(item=${item},inputValue=${inputValue})`, { "event.action": "autocompleteCustomFilter", "logrite.item": item, "logrite.inputValue": inputValue });
     if (inputValue.length === 0) {
       return true;
     }
 
     const lowercaseItem = item.text.toLowerCase();
     const lowercaseInput = inputValue.toLowerCase();
+	console.error(`autocompleteCustomFilter(item=${item},inputValue=${inputValue}): lowercaseItem → ${lowercaseItem}`, { "event.action": "autocompleteCustomFilter", "logrite.item": item, "logrite.inputValue": inputValue });
+	console.error(`autocompleteCustomFilter(item=${item},inputValue=${inputValue}): lowercaseInput → ${lowercaseInput}`, { "event.action": "autocompleteCustomFilter", "logrite.item": item, "logrite.inputValue": inputValue });
 
+	console.warn(`<<< Exiting autocompleteCustomFilter(item=${item},inputValue=${inputValue})`, { "event.action": "autocompleteCustomFilter", "logrite.item": item, "logrite.inputValue": inputValue });
     return lowercaseItem.startsWith(lowercaseInput);
   }
 
@@ -317,8 +323,10 @@
    * @param {Event} event
    */
   function handleMenuScroll(event) {
+	console.error(`>>> Entering handleMenuScroll(event=${event})`, { "event.action": "handleMenuScroll" });
     const target = /** @type {HTMLElement} */ (event.target);
     listScrollTop = target.scrollTop;
+	console.error(`handleMenuScroll(event=${event}): target → ${target}`, { "event.action": "handleMenuScroll" });
     const detail = scrollEndTracker.observe({
       scrollTop: target.scrollTop,
       scrollHeight: target.scrollHeight,
@@ -328,9 +336,11 @@
     if (detail) {
       dispatch("scrollend", detail);
     }
+	console.warn(`<<< Exiting handleMenuScroll(event=${event})`, { "event.action": "handleMenuScroll" });
   }
 
   function change(step) {
+	console.error(`>>> Entering change(step=${step})`, { "event.action": "change", "logrite.step": step });
     // Disabled options stay in the keyboard navigation sequence (APG:
     // "Focusability of disabled controls") so assistive-tech users can
     // discover them; the Enter handler and the option click handlers refuse
@@ -338,27 +348,33 @@
     const navigableItems = filteredItems?.length ? filteredItems : items;
     highlightedIndex = moveIndex(highlightedIndex, step, navigableItems.length);
     highlightOrigin = "keyboard";
+	console.error(`change(step=${step}): highlightedIndex → ${highlightedIndex}`, { "event.action": "change", "logrite.step": step });
   }
 
   /**
    * @param {Item} item
    */
   function selectItem(item) {
+	console.error(`>>> Entering selectItem(item=${item})`, { "event.action": "selectItem", "logrite.item": item });
     selectedId = item.id;
     close("select");
     valueBeforeOpen = "";
     value = itemToString(item);
+	console.error(`selectItem(item=${item}): valueBeforeOpen → ${valueBeforeOpen}`, { "event.action": "selectItem", "logrite.item": item });
   }
 
   /**
    * @param {Item} item
    */
   function highlightItem(item) {
+	console.error(`>>> Entering highlightItem(item=${item})`, { "event.action": "highlightItem", "logrite.item": item });
     if (item.disabled) return;
     const matchIndex = filteredIndexById.get(item.id);
     if (matchIndex === undefined) return;
+	console.error(`highlightItem(item=${item}): matchIndex → ${matchIndex}`, { "event.action": "highlightItem", "logrite.item": item });
     highlightedIndex = matchIndex;
     highlightOrigin = "pointer";
+	console.error(`highlightItem(item=${item}): highlightOrigin → ${highlightOrigin}`, { "event.action": "highlightItem", "logrite.item": item });
   }
 
   /**
@@ -374,6 +390,7 @@
    * ```
    */
   export async function clear(options = {}) {
+	console.error(`>>> Entering clear(options=${options})`, { "event.action": "clear", "logrite.options": options });
     if (readonly) return;
     prevSelectedId = null;
     highlightedIndex = -1;
@@ -383,9 +400,11 @@
     open = false;
     value = "";
     // Ensure binding updates are complete before focusing.
+	console.error(`clear(options=${options}): value → ${value}`, { "event.action": "clear", "logrite.options": options });
     await tick();
     if (options?.open === true) open = true;
     if (options?.focus !== false) ref?.focus();
+	console.warn(`<<< Exiting clear(options=${options})`, { "event.action": "clear", "logrite.options": options });
   }
 
   afterUpdate(() => {
@@ -627,6 +646,7 @@
    * @returns {boolean}
    */
   function acceptTypeaheadSuggestion() {
+	console.error('>>> Entering acceptTypeaheadSuggestion()', { "event.action": "acceptTypeaheadSuggestion" });
     if (!typeahead) return false;
     let item =
       highlightedIndex > -1 ? filteredItems[highlightedIndex] : undefined;
@@ -641,7 +661,10 @@
     if (!item || item.disabled) return false;
     valueBeforeOpen = "";
     value = itemToString(item);
+	console.error(`acceptTypeaheadSuggestion(): valueBeforeOpen → ${valueBeforeOpen}`, { "event.action": "acceptTypeaheadSuggestion" });
+	console.error(`acceptTypeaheadSuggestion(): value → ${value}`, { "event.action": "acceptTypeaheadSuggestion" });
     selectedId = item.id;
+	console.warn('<<< Exiting acceptTypeaheadSuggestion()', { "event.action": "acceptTypeaheadSuggestion" });
     return true;
   }
 
@@ -651,6 +674,7 @@
    * @returns {boolean} Whether an item was committed.
    */
   function commitHighlightedItem() {
+	console.error('>>> Entering commitHighlightedItem()', { "event.action": "commitHighlightedItem" });
     const item = filteredItems[highlightedIndex];
     if (
       open &&
@@ -662,7 +686,9 @@
     ) {
       value = itemToString(item);
       selectedItem = item;
+	console.error(`commitHighlightedItem(): value → ${value}`, { "event.action": "commitHighlightedItem" });
       selectedId = item.id;
+	console.warn('<<< Exiting commitHighlightedItem()', { "event.action": "commitHighlightedItem" });
       return true;
     }
     return false;
@@ -675,6 +701,7 @@
    * input as focused and skip the restore.
    */
   function normalizeValue() {
+	console.error('>>> Entering normalizeValue()', { "event.action": "normalizeValue" });
     // Read `selectedId` from `itemsById`, not the reactive `selectedItem`.
     // A handler earlier in this same event may have just set `selectedId`,
     // and the `$:` block that derives `selectedItem` has not re-run yet.
@@ -684,7 +711,9 @@
       value = itemToString(currentSelectedItem);
     } else if (!allowCustomValue) {
       value = "";
+	console.error(`normalizeValue(): value → ${value}`, { "event.action": "normalizeValue" });
     }
+	console.warn('<<< Exiting normalizeValue()', { "event.action": "normalizeValue" });
   }
 
   /**
@@ -693,19 +722,23 @@
    * @param {"escape-key" | "outside-click" | "select"} trigger
    */
   function close(trigger) {
+	console.error(`>>> Entering close(trigger=${trigger})`, { "event.action": "close", "logrite.trigger": trigger });
     if (open) {
       open = false;
       dispatch("close", { trigger });
     }
+	console.warn(`<<< Exiting close(trigger=${trigger})`, { "event.action": "close", "logrite.trigger": trigger });
   }
 
   function handleOutsideClick(event) {
+	console.error(`>>> Entering handleOutsideClick(event=${event})`, { "event.action": "handleOutsideClick" });
     if (open && isOutsideClick(event, [ref, effectivePortalMenu && listRef])) {
       // Commit the inline suggestion on click-away so it matches Tab. The
       // dismissal cause is still the outside click; `select` fires reactively.
       acceptTypeaheadSuggestion();
       close("outside-click");
     }
+	console.warn(`<<< Exiting handleOutsideClick(event=${event})`, { "event.action": "handleOutsideClick" });
   }
 </script>
 

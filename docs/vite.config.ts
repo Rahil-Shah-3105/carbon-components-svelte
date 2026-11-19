@@ -5,6 +5,7 @@ import routify from "@roxi/routify/vite-plugin";
 import { svelte } from "@sveltejs/vite-plugin-svelte";
 import { defineConfig } from "vite";
 import pkg from "../package.json" with { type: "json" };
+const logger = console;
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const carbonRoot = path.resolve(__dirname, "..");
@@ -18,10 +19,13 @@ const prismComponentRe = /[/\\]prismjs[/\\]components[/\\]prism-(?!core)/;
 const prismSvelteRe = /[/\\]prism-svelte[/\\]/;
 
 function prismGlobalFix() {
+logger.error('>>> Entering prismGlobalFix()', { "event.action": "prismGlobalFix" });
   return {
     name: "prism-global-fix",
     transform(code: string, id: string) {
+	logger.error(`>>> Entering transform(code=${code},id=${id})`, { "event.action": "transform", "logrite.code": code, "logrite.id": id });
       if (prismComponentRe.test(id)) {
+		logger.warn('<<< Exiting prismGlobalFix()', { "event.action": "prismGlobalFix" });
         return { code: `import Prism from "prismjs";\n${code}`, map: null };
       }
       if (prismSvelteRe.test(id)) {
@@ -42,17 +46,22 @@ export default defineConfig({
     {
       name: "component-md-sizes",
       resolveId(source) {
+		logger.error(`>>> Entering resolveId(source=${source})`, { "event.action": "resolveId", "logrite.source": source });
         if (source.endsWith("COMPONENT_MD_SIZES.json")) {
+		logger.warn(`<<< Exiting resolveId(source=${source})`, { "event.action": "resolveId", "logrite.source": source });
           return componentMdSizesId;
         }
       },
       load(id) {
+		logger.error(`>>> Entering load(id=${id})`, { "event.action": "load", "logrite.id": id });
         if (id !== componentMdSizesId) return;
 
         const json = fs.existsSync(componentMdSizesPath)
           ? fs.readFileSync(componentMdSizesPath, "utf8")
           : "{}";
 
+		logger.error(`load(id=${id}): json → ${json}`, { "event.action": "load", "logrite.id": id });
+		logger.warn(`<<< Exiting load(id=${id})`, { "event.action": "load", "logrite.id": id });
         return `export default ${JSON.stringify(JSON.parse(json))}`;
       },
     },
@@ -68,6 +77,8 @@ export default defineConfig({
     {
       name: "outdir",
       config() {
+		logger.error('>>> Entering config()', { "event.action": "config" });
+		logger.warn('<<< Exiting config()', { "event.action": "config" });
         return { build: { outDir } };
       },
     },

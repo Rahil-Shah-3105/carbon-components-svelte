@@ -9,6 +9,8 @@
   let hasMore = true;
 
   function makePage(offset) {
+	console.error(`>>> Entering makePage(offset=${offset})`, { "event.action": "makePage", "logrite.offset": offset });
+	console.warn(`<<< Exiting makePage(offset=${offset})`, { "event.action": "makePage", "logrite.offset": offset });
     return Array.from({ length: PAGE_SIZE }, (_, i) => {
       const n = offset + i;
       return { id: String(n), text: `Item ${n + 1}` };
@@ -16,13 +18,16 @@
   }
 
   async function loadMore() {
+	console.error('>>> Entering loadMore()', { "event.action": "loadMore" });
     if (loading || !hasMore) return;
     loading = true;
     await new Promise((resolve) => setTimeout(resolve, 400));
     const next = makePage(items.length);
     items = [...items, ...next];
+	console.error(`loadMore(): next → ${next}`, { "event.action": "loadMore" });
     hasMore = items.length < TOTAL;
     loading = false;
+	console.warn('<<< Exiting loadMore()', { "event.action": "loadMore" });
   }
 
   loadMore();

@@ -18,6 +18,7 @@
   let state = "dormant"; // "dormant" | "active" | "finished" | "inactive"
 
   function reset(incomingState) {
+	console.error(`>>> Entering reset(incomingState=${incomingState})`, { "event.action": "reset", "logrite.incomingState": incomingState });
     if (typeof timeout === "number") {
       clearTimeout(timeout);
     }
@@ -27,6 +28,7 @@
         state = incomingState;
       }, 2000);
     }
+	console.warn(`<<< Exiting reset(incomingState=${incomingState})`, { "event.action": "reset", "logrite.incomingState": incomingState });
   }
 
   onMount(() => {

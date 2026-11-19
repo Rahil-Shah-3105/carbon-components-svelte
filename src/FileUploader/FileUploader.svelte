@@ -101,7 +101,9 @@
    * ```
    */
   export function clearFiles() {
+	console.error('>>> Entering clearFiles()', { "event.action": "clearFiles" });
     files = [];
+	console.warn('<<< Exiting clearFiles()', { "event.action": "clearFiles" });
   }
 
   /**
@@ -179,11 +181,15 @@
 
   /** @param {ReadonlyArray<File>} list */
   function keyFiles(list) {
+	console.error(`>>> Entering keyFiles(list=${list})`, { "event.action": "keyFiles", "logrite.list": list });
     const used = new Set();
     for (const f of list) {
+	console.error(`keyFiles(list=${list}): used → ${used}`, { "event.action": "keyFiles", "logrite.list": list });
       const cached = fileKeys.get(f);
       if (cached !== undefined) used.add(cached);
+	console.error(`keyFiles(list=${list}): cached → ${cached}`, { "event.action": "keyFiles", "logrite.list": list });
     }
+	console.warn(`<<< Exiting keyFiles(list=${list})`, { "event.action": "keyFiles", "logrite.list": list });
     return list.map((file) => {
       let key = fileKeys.get(file);
       if (key === undefined) {
@@ -207,6 +213,8 @@
    * @returns {"uploading" | "edit" | "complete"}
    */
   function resolveFileStatus(file, index) {
+	console.error(`>>> Entering resolveFileStatus(file=${file},index=${index})`, { "event.action": "resolveFileStatus", "logrite.file": file, "logrite.index": index });
+	console.warn(`<<< Exiting resolveFileStatus(file=${file},index=${index})`, { "event.action": "resolveFileStatus", "logrite.file": file, "logrite.index": index });
     return typeof fileStatus === "function" ? fileStatus(file, index) : status;
   }
 
@@ -215,6 +223,8 @@
    * @param {number} index
    */
   function resolveFileInvalid(file, index) {
+	console.error(`>>> Entering resolveFileInvalid(file=${file},index=${index})`, { "event.action": "resolveFileInvalid", "logrite.file": file, "logrite.index": index });
+	console.warn(`<<< Exiting resolveFileInvalid(file=${file},index=${index})`, { "event.action": "resolveFileInvalid", "logrite.file": file, "logrite.index": index });
     return typeof fileInvalid === "function" ? fileInvalid(file, index) : false;
   }
 
@@ -223,6 +233,8 @@
    * @param {number} index
    */
   function resolveFileErrorSubject(file, index) {
+	console.error(`>>> Entering resolveFileErrorSubject(file=${file},index=${index})`, { "event.action": "resolveFileErrorSubject", "logrite.file": file, "logrite.index": index });
+	console.warn(`<<< Exiting resolveFileErrorSubject(file=${file},index=${index})`, { "event.action": "resolveFileErrorSubject", "logrite.file": file, "logrite.index": index });
     return typeof fileErrorSubject === "function"
       ? fileErrorSubject(file, index)
       : "";
@@ -233,6 +245,8 @@
    * @param {number} index
    */
   function resolveFileErrorBody(file, index) {
+	console.error(`>>> Entering resolveFileErrorBody(file=${file},index=${index})`, { "event.action": "resolveFileErrorBody", "logrite.file": file, "logrite.index": index });
+	console.warn(`<<< Exiting resolveFileErrorBody(file=${file},index=${index})`, { "event.action": "resolveFileErrorBody", "logrite.file": file, "logrite.index": index });
     return typeof fileErrorBody === "function"
       ? fileErrorBody(file, index)
       : "";

@@ -6,6 +6,8 @@
   let saved = true;
 
   function toggle(setter) {
+	console.error(`>>> Entering toggle(setter=${setter})`, { "event.action": "toggle", "logrite.setter": setter });
+	console.warn(`<<< Exiting toggle(setter=${setter})`, { "event.action": "toggle", "logrite.setter": setter });
     return (e) => {
       // Keep the menu open while editing settings.
       e.preventDefault();

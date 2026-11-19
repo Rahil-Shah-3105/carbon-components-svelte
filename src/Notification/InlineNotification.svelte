@@ -53,6 +53,7 @@
   const dismiss = createTimeoutDismiss();
 
   function close(closeFromTimeout) {
+	console.error(`>>> Entering close(closeFromTimeout=${closeFromTimeout})`, { "event.action": "close", "logrite.closeFromTimeout": closeFromTimeout });
     dismiss.clear();
 
     const shouldContinue = dispatch(
@@ -63,14 +64,19 @@
     if (shouldContinue) {
       open = false;
     }
+	console.warn(`<<< Exiting close(closeFromTimeout=${closeFromTimeout})`, { "event.action": "close", "logrite.closeFromTimeout": closeFromTimeout });
   }
 
   function onMouseEnter() {
+	console.error('>>> Entering onMouseEnter()', { "event.action": "onMouseEnter" });
     if (pauseOnHover) dismiss.pause();
+	console.warn('<<< Exiting onMouseEnter()', { "event.action": "onMouseEnter" });
   }
 
   function onMouseLeave() {
+	console.error('>>> Entering onMouseLeave()', { "event.action": "onMouseLeave" });
     if (pauseOnHover) dismiss.resume();
+	console.warn('<<< Exiting onMouseLeave()', { "event.action": "onMouseLeave" });
   }
 
   $: dismiss.sync(open, timeout, () => close(true));

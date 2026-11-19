@@ -138,6 +138,7 @@
   };
 
   function handleClick(event) {
+	console.error(`>>> Entering handleClick(event=${event})`, { "event.action": "handleClick" });
     event.stopPropagation();
 
     if (disabled) {
@@ -147,10 +148,12 @@
 
     const shouldContinue = dispatch("click", event, { cancelable: true });
 
+	console.error(`handleClick(event=${event}): shouldContinue → ${shouldContinue}`, { "event.action": "handleClick" });
     // Only update (close menu) if preventDefault was not called.
     if (shouldContinue) {
       update(id, item);
     }
+	console.warn(`<<< Exiting handleClick(event=${event})`, { "event.action": "handleClick" });
   }
 </script>
 

@@ -466,8 +466,10 @@
    * @param {Event} event
    */
   function handleMenuScroll(event) {
+	console.error(`>>> Entering handleMenuScroll(event=${event})`, { "event.action": "handleMenuScroll" });
     const target = /** @type {HTMLElement} */ (event.target);
     listScrollTop = target.scrollTop;
+	console.error(`handleMenuScroll(event=${event}): target → ${target}`, { "event.action": "handleMenuScroll" });
     const detail = scrollEndTracker.observe({
       scrollTop: target.scrollTop,
       scrollHeight: target.scrollHeight,
@@ -477,18 +479,22 @@
     if (detail) {
       dispatch("scrollend", detail);
     }
+	console.warn(`<<< Exiting handleMenuScroll(event=${event})`, { "event.action": "handleMenuScroll" });
   }
 
   function change(step) {
+	console.error(`>>> Entering change(step=${step})`, { "event.action": "change", "logrite.step": step });
     // Disabled options stay in the keyboard navigation sequence (APG:
     // "Focusability of disabled controls") so assistive-tech users can
     // discover them; selectHighlighted and the option click handlers refuse
     // the actual selection.
     highlightedIndex = moveIndex(highlightedIndex, step, items.length);
     highlightOrigin = "keyboard";
+	console.error(`change(step=${step}): highlightedIndex → ${highlightedIndex}`, { "event.action": "change", "logrite.step": step });
   }
 
   function typeaheadSearch(character) {
+	console.error(`>>> Entering typeaheadSearch(character=${character})`, { "event.action": "typeaheadSearch", "logrite.character": character });
     if (items.length === 0) return;
 
     typeaheadBuffer += character.toLowerCase();
@@ -500,14 +506,18 @@
       itemToString,
       index: highlightedIndex,
     });
+	logger.debug(`typeaheadSearch(character=${character}): highlightedIndex → ${highlightedIndex}`, { "event.action": "typeaheadSearch", "logrite.character": character });
     highlightOrigin = "keyboard";
+	console.error(`typeaheadSearch(character=${character}): highlightOrigin → ${highlightOrigin}`, { "event.action": "typeaheadSearch", "logrite.character": character });
   }
 
   function dispatchSelect() {
+	console.error('>>> Entering dispatchSelect()', { "event.action": "dispatchSelect" });
     dispatch("select", {
       selectedId,
       selectedItem: itemsById.get(selectedId),
     });
+	console.warn('<<< Exiting dispatchSelect()', { "event.action": "dispatchSelect" });
   }
 
   /**
@@ -517,16 +527,20 @@
    * @param {string} text
    */
   async function announceStatus(text) {
+	console.error(`>>> Entering announceStatus(text=${text})`, { "event.action": "announceStatus", "logrite.text": text });
     statusText = "";
     await tick();
     statusText = text;
+	console.warn(`<<< Exiting announceStatus(text=${text})`, { "event.action": "announceStatus", "logrite.text": text });
   }
 
   function clearSelection() {
+	console.error('>>> Entering clearSelection()', { "event.action": "clearSelection" });
     if (readonly || selectedId === undefined) return;
     selectedId = undefined;
     open = false;
     announceStatus(selectionClearedText);
+	console.warn('<<< Exiting clearSelection()', { "event.action": "clearSelection" });
   }
 
   /**
@@ -536,13 +550,16 @@
    * @param {"escape-key" | "outside-click" | "select"} trigger
    */
   function close(trigger) {
+	console.error(`>>> Entering close(trigger=${trigger})`, { "event.action": "close", "logrite.trigger": trigger });
     if (open) {
       open = false;
       dispatch("close", { trigger });
     }
+	console.warn(`<<< Exiting close(trigger=${trigger})`, { "event.action": "close", "logrite.trigger": trigger });
   }
 
   function selectHighlighted() {
+	console.error('>>> Entering selectHighlighted()', { "event.action": "selectHighlighted" });
     if (!open) {
       open = true;
       return;
@@ -564,6 +581,7 @@
       // meaningful dismissal trigger, so close silently.
       open = false;
     }
+	console.warn('<<< Exiting selectHighlighted()', { "event.action": "selectHighlighted" });
   }
 
   $: dropdownListBoxClass = [
@@ -584,9 +602,11 @@
     .join(" ");
 
   function handleOutsideClick(event) {
+	console.error(`>>> Entering handleOutsideClick(event=${event})`, { "event.action": "handleOutsideClick" });
     if (open && isOutsideClick(event, [ref, effectivePortalMenu && listRef])) {
       close("outside-click");
     }
+	console.warn(`<<< Exiting handleOutsideClick(event=${event})`, { "event.action": "handleOutsideClick" });
   }
 </script>
 

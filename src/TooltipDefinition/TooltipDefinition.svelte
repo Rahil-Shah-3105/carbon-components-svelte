@@ -80,21 +80,29 @@
   const scheduleOpen = createDelayedSetter();
 
   function setOpenDelayed(value, delay = 0) {
+	console.error(`>>> Entering setOpenDelayed(value=${value},delay=${delay})`, { "event.action": "setOpenDelayed", "logrite.value": value, "logrite.delay": delay });
     scheduleOpen(delay, () => {
       open = value;
     });
+	console.warn(`<<< Exiting setOpenDelayed(value=${value},delay=${delay})`, { "event.action": "setOpenDelayed", "logrite.value": value, "logrite.delay": delay });
   }
 
   function hide() {
+	console.error('>>> Entering hide()', { "event.action": "hide" });
     open = false;
+	console.warn('<<< Exiting hide()', { "event.action": "hide" });
   }
 
   function show() {
+	console.error('>>> Entering show()', { "event.action": "show" });
     open = true;
+	console.warn('<<< Exiting show()', { "event.action": "show" });
   }
 
   function toggle() {
+	console.error('>>> Entering toggle()', { "event.action": "toggle" });
     open = !open;
+	console.warn('<<< Exiting toggle()', { "event.action": "toggle" });
   }
 
   let isInitialRender = true;
@@ -114,7 +122,9 @@
     };
   });
   function handleEscape(event) {
+	console.error(`>>> Entering handleEscape(event=${event})`, { "event.action": "handleEscape" });
     if (event.key === "Escape") hide();
+	console.warn(`<<< Exiting handleEscape(event=${event})`, { "event.action": "handleEscape" });
   }
 </script>
 

@@ -108,6 +108,7 @@
    * @type {(id: string, value: string | number) => void}
    */
   function setDefaultValue(id, value) {
+	console.error(`>>> Entering setDefaultValue(id=${id},value=${value})`, { "event.action": "setDefaultValue", "logrite.id": id, "logrite.value": value });
     if ($defaultValue === null) {
       defaultSelectId.set(id);
       defaultValue.set(value);
@@ -121,6 +122,7 @@
       ...types,
       [value]: typeof value,
     }));
+	console.warn(`<<< Exiting setDefaultValue(id=${id},value=${value})`, { "event.action": "setDefaultValue", "logrite.id": id, "logrite.value": value });
   }
 
   setContext("carbon:Select", {
@@ -143,10 +145,12 @@
 
   /** @type {(e: MouseEvent) => void} */
   function onMouseDown(event) {
+	console.error(`>>> Entering onMouseDown(event=${event})`, { "event.action": "onMouseDown" });
     if (readonly) {
       event.preventDefault();
       event.currentTarget.focus();
     }
+	console.warn(`<<< Exiting onMouseDown(event=${event})`, { "event.action": "onMouseDown" });
   }
 
   /** @type {(e: KeyboardEvent) => void} */
@@ -174,13 +178,16 @@
   // selectedIndex -1 comes back as value "", indistinguishable from an
   // empty-valued option being selected, so it must be re-asserted explicitly.
   function syncNativeSelectValue() {
+	console.error('>>> Entering syncNativeSelectValue()', { "event.action": "syncNativeSelectValue" });
     tick().then(() => {
       if (!ref) return;
       const nextValue = $selectedValue == null ? "" : String($selectedValue);
       if (ref.selectedIndex === -1 || ref.value !== nextValue) {
         ref.value = nextValue;
+		logger.debug(`syncNativeSelectValue(): ref.value → ${ref.value}`, { "event.action": "syncNativeSelectValue" });
       }
     });
+	console.warn('<<< Exiting syncNativeSelectValue()', { "event.action": "syncNativeSelectValue" });
   }
 
   $: errorId = `error-${id}`;

@@ -250,19 +250,24 @@
   let overflowY = undefined;
 
   function syncCopyFeedback() {
+	console.error('>>> Entering syncCopyFeedback()', { "event.action": "syncCopyFeedback" });
     animation = copyFeedback.animation;
     feedbackOpen = copyFeedback.feedbackOpen;
     copyPending = copyFeedback.copyPending;
     isCopyError = copyFeedback.isError;
+	console.warn('<<< Exiting syncCopyFeedback()', { "event.action": "syncCopyFeedback" });
   }
 
   $: feedbackText = isCopyError ? errorFeedback : feedback;
 
   function dismissFeedback() {
+	console.error('>>> Entering dismissFeedback()', { "event.action": "dismissFeedback" });
     copyFeedback.dismiss();
+	console.warn('<<< Exiting dismissFeedback()', { "event.action": "dismissFeedback" });
   }
 
   function measureHeight() {
+	console.error('>>> Entering measureHeight()', { "event.action": "measureHeight" });
     if (!ref) return;
     // Measure the snippet's full (unclipped) content height. The <pre> is never
     // the element with a max-height, so its rendered height always reflects the
@@ -275,8 +280,10 @@
     const padding =
       Number.parseFloat(style.paddingTop) +
       Number.parseFloat(style.paddingBottom);
+	console.error(`measureHeight(): style → ${style}`, { "event.action": "measureHeight" });
     const height = ref.getBoundingClientRect().height - padding;
     if (height <= 0) return;
+	console.error(`measureHeight(): height → ${height}`, { "event.action": "measureHeight" });
     const collapsedMaxHeight = maxCollapsedNumberOfRows * rowHeightInPixels;
     // Mirror Carbon React: the expand control is only useful when collapsed
     // content is capped and expanding can reveal more rows than that cap.
@@ -288,6 +295,7 @@
     // If the content no longer overflows, collapse so the expanded min-height
     // doesn't leave the snippet taller than its (now shorter) content.
     if (!exceedsThreshold && expanded) expanded = false;
+	console.warn('<<< Exiting measureHeight()', { "event.action": "measureHeight" });
   }
 
   $: expandText = expanded ? showLessText : showMoreText;

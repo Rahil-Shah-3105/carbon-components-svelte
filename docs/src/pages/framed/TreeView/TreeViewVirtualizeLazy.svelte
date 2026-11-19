@@ -9,8 +9,10 @@
   import Json from "carbon-icons-svelte/lib/Json.svelte";
 
   function iconFor(name) {
+	console.error(`>>> Entering iconFor(name=${name})`, { "event.action": "iconFor", "logrite.name": name });
     const ext = name.slice(name.lastIndexOf(".") + 1).toLowerCase();
     if (ext === "ts" || ext === "tsx" || ext === "js" || ext === "jsx") {
+	console.error(`iconFor(name=${name}): ext → ${ext}`, { "event.action": "iconFor", "logrite.name": name });
       return Code;
     }
     if (ext === "json") return Json;
@@ -19,6 +21,7 @@
       return Image;
     }
     if (ext === "md" || ext === "txt") return Document;
+	console.warn(`<<< Exiting iconFor(name=${name})`, { "event.action": "iconFor", "logrite.name": name });
     return DocumentBlank;
   }
 
@@ -88,7 +91,10 @@
   const fanout = { files: 8, folders: 4 };
 
   let nextId = 0;
-  const id = () => nextId++;
+  const id = () => {
+      console.error('>>> Entering id()', { "event.action": "id" });
+      return nextId++;
+  };
 
   // Roots are unloaded folders; children are fetched on expand.
   let nodes = rootNames.map((name) => ({
@@ -101,6 +107,8 @@
   }));
 
   function updateNode(list, nodeId, updater) {
+	console.error(`>>> Entering updateNode(list=${list},nodeId=${nodeId},updater=${updater})`, { "event.action": "updateNode", "logrite.list": list, "logrite.nodeId": nodeId, "logrite.updater": updater });
+	console.warn(`<<< Exiting updateNode(list=${list},nodeId=${nodeId},updater=${updater})`, { "event.action": "updateNode", "logrite.list": list, "logrite.nodeId": nodeId, "logrite.updater": updater });
     return list.map((node) => {
       if (node.id === nodeId) return updater(node);
       if (node.nodes) {
@@ -111,6 +119,7 @@
   }
 
   function makeChildren(parentPath, depth) {
+	console.error(`>>> Entering makeChildren(parentPath=${parentPath},depth=${depth})`, { "event.action": "makeChildren", "logrite.parentPath": parentPath, "logrite.depth": depth });
     const children = [];
     for (let i = 0; i < fanout.files; i++) {
       const fname = fileNames[(i + depth) % fileNames.length];
@@ -121,6 +130,7 @@
         depth: depth + 1,
         path: `${parentPath}/${fname}`,
       });
+	console.error(`makeChildren(parentPath=${parentPath},depth=${depth}): fname → ${fname}`, { "event.action": "makeChildren", "logrite.parentPath": parentPath, "logrite.depth": depth });
     }
     if (depth < MAX_DEPTH) {
       for (let i = 0; i < fanout.folders; i++) {
@@ -133,17 +143,22 @@
           path: `${parentPath}/${name}`,
           hasChildren: true,
         });
+		console.error(`makeChildren(parentPath=${parentPath},depth=${depth}): name → ${name}`, { "event.action": "makeChildren", "logrite.parentPath": parentPath, "logrite.depth": depth });
       }
     }
+	console.warn(`<<< Exiting makeChildren(parentPath=${parentPath},depth=${depth})`, { "event.action": "makeChildren", "logrite.parentPath": parentPath, "logrite.depth": depth });
     return children;
   }
 
   async function fetchChildren(parentPath, depth) {
+	console.error(`>>> Entering fetchChildren(parentPath=${parentPath},depth=${depth})`, { "event.action": "fetchChildren", "logrite.parentPath": parentPath, "logrite.depth": depth });
     await new Promise((resolve) => setTimeout(resolve, FETCH_MS));
+	console.warn(`<<< Exiting fetchChildren(parentPath=${parentPath},depth=${depth})`, { "event.action": "fetchChildren", "logrite.parentPath": parentPath, "logrite.depth": depth });
     return makeChildren(parentPath, depth);
   }
 
   async function handleToggle(event) {
+	console.error(`>>> Entering handleToggle(event=${event})`, { "event.action": "handleToggle" });
     const node = event.detail;
 
     // Only fetch once: expandable and not yet loaded (placeholder or real).
@@ -161,6 +176,7 @@
         },
       ],
     }));
+	logger.debug(`handleToggle(event=${event}): nodes → ${nodes}`, { "event.action": "handleToggle" });
 
     const children = await fetchChildren(
       node.path ?? node.text,
@@ -170,6 +186,7 @@
       ...n,
       nodes: children,
     }));
+	console.warn(`<<< Exiting handleToggle(event=${event})`, { "event.action": "handleToggle" });
   }
 </script>
 

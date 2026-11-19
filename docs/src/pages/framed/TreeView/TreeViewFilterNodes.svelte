@@ -59,18 +59,23 @@
   let expandedIds = [];
 
   function filterByExtension() {
+	console.error('>>> Entering filterByExtension()', { "event.action": "filterByExtension" });
     filteredNodes = filterTreeNodes(
       allNodes,
       (node) => node.text?.endsWith(".pdf") || node.text?.endsWith(".docx"),
     );
+	logger.debug(`filterByExtension(): filteredNodes → ${filteredNodes}`, { "event.action": "filterByExtension" });
     expandedIds = ["1", "1-1", "1-1-1", "1-2", "1-2-1"];
+	console.error(`filterByExtension(): expandedIds → ${expandedIds}`, { "event.action": "filterByExtension" });
   }
 
   function filterLeafNodes() {
+	console.error('>>> Entering filterLeafNodes()', { "event.action": "filterLeafNodes" });
     filteredNodes = filterTreeNodes(
       allNodes,
       (node) => !node.nodes || node.nodes.length === 0,
     );
+	logger.debug(`filterLeafNodes(): filteredNodes → ${filteredNodes}`, { "event.action": "filterLeafNodes" });
     expandedIds = [
       "1",
       "1-1",
@@ -88,18 +93,23 @@
       "3-1-1",
       "3-1-2",
     ];
+	logger.debug(`filterLeafNodes(): expandedIds → ${expandedIds}`, { "event.action": "filterLeafNodes" });
   }
 
   function filterWithChildren() {
+	console.error('>>> Entering filterWithChildren()', { "event.action": "filterWithChildren" });
     filteredNodes = filterTreeNodes(allNodes, (node) => node.id === "1-1", {
       includeChildren: true,
     });
     expandedIds = ["1", "1-1", "1-1-1", "1-1-2", "1-1-3"];
+	console.error(`filterWithChildren(): expandedIds → ${expandedIds}`, { "event.action": "filterWithChildren" });
   }
 
   function resetFilter() {
+	console.error('>>> Entering resetFilter()', { "event.action": "resetFilter" });
     filteredNodes = allNodes;
     expandedIds = [];
+	console.warn('<<< Exiting resetFilter()', { "event.action": "resetFilter" });
   }
 </script>
 

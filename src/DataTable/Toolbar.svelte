@@ -49,8 +49,10 @@
    * @type {(visible: boolean) => void}
    */
   function setOverflowVisible(visible) {
+	console.error(`>>> Entering setOverflowVisible(visible=${visible})`, { "event.action": "setOverflowVisible", "logrite.visible": visible });
     overflowVisible.set(visible);
     if (ref) ref.style.overflow = visible ? "visible" : "inherit";
+	console.warn(`<<< Exiting setOverflowVisible(visible=${visible})`, { "event.action": "setOverflowVisible", "logrite.visible": visible });
   }
 
   setContext("carbon:Toolbar", {

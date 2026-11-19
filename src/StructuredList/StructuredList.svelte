@@ -52,6 +52,7 @@
    * @type {(value: Value) => void}
    */
   function update(value) {
+	console.error(`>>> Entering update(value=${value})`, { "event.action": "update", "logrite.value": value });
     if (multiple) {
       selectedValue.update((current) => {
         const list = Array.isArray(current) ? current : [];
@@ -62,6 +63,7 @@
     } else {
       selectedValue.set(value);
     }
+	console.warn(`<<< Exiting update(value=${value})`, { "event.action": "update", "logrite.value": value });
   }
 
   setContext("carbon:StructuredListWrapper", {

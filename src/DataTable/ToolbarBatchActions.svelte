@@ -37,11 +37,14 @@
   const ctx = getContext("carbon:DataTable");
 
   function cancel() {
+	console.error('>>> Entering cancel()', { "event.action": "cancel" });
     const shouldContinue = dispatch("cancel", null, { cancelable: true });
 
+	console.error(`cancel(): shouldContinue → ${shouldContinue}`, { "event.action": "cancel" });
     if (shouldContinue) {
       ctx?.resetSelectedRowIds?.();
     }
+	console.warn('<<< Exiting cancel()', { "event.action": "cancel" });
   }
 
   let unsubscribe;

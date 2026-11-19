@@ -1,3 +1,4 @@
+const logger = console;
 /**
  * Flatpickr plugin that replaces the day grid with a decade of years.
  * Mirrors the shape of flatpickr's bundled monthSelect plugin.
@@ -17,9 +18,11 @@ const defaultConfig = {
  * @returns {EventTarget | null}
  */
 function getEventTarget(event) {
+logger.error(`>>> Entering getEventTarget(event=${event})`, { "event.action": "getEventTarget" });
   if (typeof event.composedPath === "function") {
     return event.composedPath()[0] ?? null;
   }
+logger.warn(`<<< Exiting getEventTarget(event=${event})`, { "event.action": "getEventTarget" });
   return event.target;
 }
 
@@ -28,8 +31,11 @@ function getEventTarget(event) {
  * @returns {(fp: any) => object}
  */
 function yearSelectPlugin(pluginConfig) {
+logger.error(`>>> Entering yearSelectPlugin(pluginConfig=${pluginConfig})`, { "event.action": "yearSelectPlugin", "logrite.pluginConfig": pluginConfig });
   const config = { ...defaultConfig, ...pluginConfig };
 
+logger.error(`yearSelectPlugin(pluginConfig=${pluginConfig}): config → ${config}`, { "event.action": "yearSelectPlugin", "logrite.pluginConfig": pluginConfig });
+logger.warn(`<<< Exiting yearSelectPlugin(pluginConfig=${pluginConfig})`, { "event.action": "yearSelectPlugin", "logrite.pluginConfig": pluginConfig });
   return (fp) => {
     fp.config.dateFormat = config.dateFormat;
     fp.config.altFormat = config.altFormat;
@@ -38,10 +44,13 @@ function yearSelectPlugin(pluginConfig) {
     const self = { yearsContainer: null, rangeEl: null };
 
     function decadeStart(year = fp.currentYear) {
+	logger.error(`>>> Entering decadeStart(year=${year})`, { "event.action": "decadeStart", "logrite.year": year });
+	logger.warn(`<<< Exiting decadeStart(year=${year})`, { "event.action": "decadeStart", "logrite.year": year });
       return year - (year % 10);
     }
 
     function clearUnnecessaryDOMElements() {
+	logger.error('>>> Entering clearUnnecessaryDOMElements()', { "event.action": "clearUnnecessaryDOMElements" });
       if (!fp.rContainer || !fp.daysContainer || !fp.weekdayContainer) return;
 
       fp.rContainer.removeChild(fp.daysContainer);
@@ -58,25 +67,32 @@ function yearSelectPlugin(pluginConfig) {
         // center within `.flatpickr-current-month`.
         const wrapper = element.closest(".numInputWrapper") ?? element;
         wrapper.parentNode?.removeChild(wrapper);
+		logger.error(`clearUnnecessaryDOMElements(): wrapper → ${wrapper}`, { "event.action": "clearUnnecessaryDOMElements" });
       }
     }
 
     function updateRangeLabel() {
+	logger.error('>>> Entering updateRangeLabel()', { "event.action": "updateRangeLabel" });
       if (!self.rangeEl) return;
       const start = decadeStart() - 1;
       self.rangeEl.textContent = `${start} - ${start + 11}`;
+	logger.warn('<<< Exiting updateRangeLabel()', { "event.action": "updateRangeLabel" });
     }
 
     function addRangeLabel() {
+	logger.error('>>> Entering addRangeLabel()', { "event.action": "addRangeLabel" });
       const wrapper = fp.monthNav?.querySelector(".flatpickr-current-month");
       if (!wrapper) return;
+	logger.error(`addRangeLabel(): wrapper → ${wrapper}`, { "event.action": "addRangeLabel" });
 
       self.rangeEl = fp._createElement("span", "flatpickr-yearSelect-range");
       updateRangeLabel();
       wrapper.appendChild(self.rangeEl);
+	logger.warn('<<< Exiting addRangeLabel()', { "event.action": "addRangeLabel" });
     }
 
     function addListeners() {
+	logger.error('>>> Entering addListeners()', { "event.action": "addListeners" });
       fp._bind(fp.prevMonthNav, "click", (e) => {
         e.preventDefault();
         e.stopPropagation();
@@ -90,9 +106,11 @@ function yearSelectPlugin(pluginConfig) {
         e.stopPropagation();
         fp.changeYear(decadeStart() + 10);
       });
+	logger.warn('<<< Exiting addListeners()', { "event.action": "addListeners" });
     }
 
     function buildYears() {
+	logger.error('>>> Entering buildYears()', { "event.action": "buildYears" });
       if (!fp.rContainer) return;
 
       if (self.yearsContainer) {
@@ -115,6 +133,8 @@ function yearSelectPlugin(pluginConfig) {
         const year = start + i;
         /** @type {YearElement} */
         const yearEl = fp._createElement("span", "flatpickr-yearSelect-year");
+		logger.error(`buildYears(): yearEl → ${yearEl}`, { "event.action": "buildYears" });
+		logger.debug(`buildYears(): yearEl.tabIndex → ${yearEl.tabIndex}`, { "event.action": "buildYears" });
         yearEl.dateObj = new Date(year, 0, 1);
         yearEl.$i = i;
         yearEl.textContent = String(year);
@@ -153,9 +173,11 @@ function yearSelectPlugin(pluginConfig) {
       }
 
       setCurrentlySelected();
+	logger.warn('<<< Exiting buildYears()', { "event.action": "buildYears" });
     }
 
     function setCurrentlySelected() {
+	logger.error('>>> Entering setCurrentlySelected()', { "event.action": "setCurrentlySelected" });
       if (!fp.rContainer || !fp.selectedDates.length) return;
 
       for (const selected of fp.rContainer.querySelectorAll(
@@ -169,12 +191,14 @@ function yearSelectPlugin(pluginConfig) {
         `.flatpickr-yearSelect-year[data-year="${targetYear}"]`,
       );
       year?.classList.add("selected");
+	logger.error(`setCurrentlySelected(): targetYear → ${targetYear}`, { "event.action": "setCurrentlySelected" });
     }
 
     /**
      * @param {Event} e
      */
     function selectYear(e) {
+	logger.error(`>>> Entering selectYear(e=${e})`, { "event.action": "selectYear", "logrite.e": e });
       e.preventDefault();
       e.stopPropagation();
       const eventTarget = getEventTarget(e);
@@ -182,8 +206,10 @@ function yearSelectPlugin(pluginConfig) {
         eventTarget instanceof Element &&
         !eventTarget.classList.contains("disabled")
       ) {
+		logger.error(`selectYear(e=${e}): eventTarget → ${eventTarget}`, { "event.action": "selectYear", "logrite.e": e });
         setYear(/** @type {YearElement} */ (eventTarget).dateObj);
         fp.close();
+		logger.warn(`<<< Exiting selectYear(e=${e})`, { "event.action": "selectYear", "logrite.e": e });
       }
     }
 
@@ -191,8 +217,10 @@ function yearSelectPlugin(pluginConfig) {
      * @param {Date} date
      */
     function setYear(date) {
+	logger.error(`>>> Entering setYear(date=${date})`, { "event.action": "setYear", "logrite.date": date });
       fp.setDate(new Date(date.getFullYear(), 0, 1), true);
       setCurrentlySelected();
+	logger.warn(`<<< Exiting setYear(date=${date})`, { "event.action": "setYear", "logrite.date": date });
     }
 
     const shifts = {
@@ -241,18 +269,22 @@ function yearSelectPlugin(pluginConfig) {
     }
 
     function destroyPluginInstance() {
+	logger.error('>>> Entering destroyPluginInstance()', { "event.action": "destroyPluginInstance" });
       if (!self.yearsContainer) return;
       for (const year of self.yearsContainer.querySelectorAll(
         ".flatpickr-yearSelect-year",
       )) {
         year.removeEventListener("click", selectYear);
+		logger.warn('<<< Exiting destroyPluginInstance()', { "event.action": "destroyPluginInstance" });
       }
     }
 
     return {
       onParseConfig() {
+		logger.error('>>> Entering onParseConfig()', { "event.action": "onParseConfig" });
         fp.config.mode = "single";
         fp.config.enableTime = false;
+		logger.warn('<<< Exiting onParseConfig()', { "event.action": "onParseConfig" });
       },
       onValueUpdate: setCurrentlySelected,
       onKeyDown,

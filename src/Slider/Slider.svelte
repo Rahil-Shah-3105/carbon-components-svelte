@@ -123,24 +123,31 @@
 
   /** @type {(label: string, numericValue: number) => string | number} */
   function formatRangeLabel(label, numericValue) {
+	console.error(`>>> Entering formatRangeLabel(label=${label},numericValue=${numericValue})`, { "event.action": "formatRangeLabel", "logrite.label": label, "logrite.numericValue": numericValue });
     if (label) return label;
     if (formatValue) return formatValue(numericValue);
+	console.warn(`<<< Exiting formatRangeLabel(label=${label},numericValue=${numericValue})`, { "event.action": "formatRangeLabel", "logrite.label": label, "logrite.numericValue": numericValue });
     return label ?? numericValue;
   }
 
   /** @type {(numericValue: number) => string | undefined} */
   function getValueText(numericValue) {
+	console.error(`>>> Entering getValueText(numericValue=${numericValue})`, { "event.action": "getValueText", "logrite.numericValue": numericValue });
+	console.warn(`<<< Exiting getValueText(numericValue=${numericValue})`, { "event.action": "getValueText", "logrite.numericValue": numericValue });
     return formatValue ? formatValue(numericValue) : undefined;
   }
 
   function startInteraction(event) {
+	console.error(`>>> Entering startInteraction(event=${event})`, { "event.action": "startInteraction" });
     if (disabled || readonly) return;
     currentEvent = event;
     holding = true;
     dragging = true;
+	console.warn(`<<< Exiting startInteraction(event=${event})`, { "event.action": "startInteraction" });
   }
 
   function stopHolding() {
+	console.error('>>> Entering stopHolding()', { "event.action": "stopHolding" });
     const wasHolding = holding;
     holding = false;
     dragging = false;
@@ -148,16 +155,20 @@
     if (wasHolding && !disabled && !readonly) {
       dispatch("change", value);
     }
+	console.warn('<<< Exiting stopHolding()', { "event.action": "stopHolding" });
   }
 
   function move(event) {
+	console.error(`>>> Entering move(event=${event})`, { "event.action": "move" });
     if (holding) {
       currentEvent = event;
       dragging = true;
     }
+	console.warn(`<<< Exiting move(event=${event})`, { "event.action": "move" });
   }
 
   function calcValue(event) {
+	console.error(`>>> Entering calcValue(event=${event})`, { "event.action": "calcValue" });
     if (disabled || readonly || !event) return;
 
     const offsetX = event.touches ? event.touches[0].clientX : event.clientX;
@@ -174,6 +185,7 @@
 
     value = nextValue;
     dispatch("input", value);
+	console.warn(`<<< Exiting calcValue(event=${event})`, { "event.action": "calcValue" });
   }
 
   $: labelId = `label-${id}`;

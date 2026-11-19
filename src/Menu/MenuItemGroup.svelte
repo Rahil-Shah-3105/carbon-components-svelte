@@ -26,22 +26,26 @@
    * @type {(data: { id: string }) => void}
    */
   function addOption({ id }) {
+	console.error(`>>> Entering addOption(id=${id})`, { "event.action": "addOption", "logrite.id": id });
     if (!isSeedable) return;
 
     if (!selectedIds.includes(id)) {
       selectedIds = [...selectedIds, id];
     }
+	console.warn(`<<< Exiting addOption(id=${id})`, { "event.action": "addOption", "logrite.id": id });
   }
 
   /**
    * @type {(data: { id: string }) => void}
    */
   function toggleOption({ id }) {
+	console.error(`>>> Entering toggleOption(id=${id})`, { "event.action": "toggleOption", "logrite.id": id });
     if (selectedIds.includes(id)) {
       selectedIds = selectedIds.filter((selectedId) => selectedId !== id);
     } else {
       selectedIds = [...selectedIds, id];
     }
+	console.warn(`<<< Exiting toggleOption(id=${id})`, { "event.action": "toggleOption", "logrite.id": id });
   }
 
   setContext("carbon:MenuItemGroup", {

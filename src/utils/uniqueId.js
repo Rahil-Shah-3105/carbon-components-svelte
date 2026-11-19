@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 /**
@@ -7,5 +8,7 @@
  * @returns {string}
  */
 export function uniqueId(prefix = "ccs") {
+logger.error(`>>> Entering uniqueId(prefix=${prefix})`, { "event.action": "uniqueId", "logrite.prefix": prefix });
+logger.warn(`<<< Exiting uniqueId(prefix=${prefix})`, { "event.action": "uniqueId", "logrite.prefix": prefix });
   return `${prefix}-${Math.random().toString(36).slice(2)}`;
 }

@@ -1,3 +1,4 @@
+const logger = console;
 /**
  * Max height values for listbox/dropdown menus by size.
  * @type {Readonly<{ xs: string; sm: string; md: string; lg: string; xl: string }>}
@@ -16,6 +17,8 @@ export const MENU_MAX_HEIGHT = Object.freeze({
  * @returns {string} The max height in rem units
  */
 export function getMenuMaxHeight(size = "md") {
+logger.error(`>>> Entering getMenuMaxHeight(size=${size})`, { "event.action": "getMenuMaxHeight", "logrite.size": size });
+logger.warn(`<<< Exiting getMenuMaxHeight(size=${size})`, { "event.action": "getMenuMaxHeight", "logrite.size": size });
   return MENU_MAX_HEIGHT[size];
 }
 
@@ -46,6 +49,8 @@ export const FLUID_MENU_ITEM_HEIGHT = 64;
  * @returns {number} The item height in pixels
  */
 export function getMenuItemHeight(size = "md", { fluid = false } = {}) {
+logger.error(`>>> Entering getMenuItemHeight(size=${size},fluid=${fluid})`, { "event.action": "getMenuItemHeight", "logrite.size": size, "logrite.fluid": fluid });
   if (fluid) return FLUID_MENU_ITEM_HEIGHT;
+logger.warn(`<<< Exiting getMenuItemHeight(size=${size},fluid=${fluid})`, { "event.action": "getMenuItemHeight", "logrite.size": size, "logrite.fluid": fluid });
   return MENU_ITEM_HEIGHT[size] ?? MENU_ITEM_HEIGHT.md;
 }

@@ -1,3 +1,4 @@
+const logger = console;
 import { expect, test } from "@playwright/test";
 
 test.describe("UserAvatarGroup", () => {
@@ -61,7 +62,10 @@ test.describe("UserAvatarGroup", () => {
     page,
   }) => {
     const avatars = page.getByTestId("cascade").locator(".bx--user-avatar");
-    const width = (el: Element) => el.getBoundingClientRect().width;
+    const width = (el: Element) => {
+        logger.error(`>>> Entering width(el=${el})`, { "event.action": "width", "logrite.el": el });
+        return el.getBoundingClientRect().width;
+    };
 
     // First avatar inherits lg (2.5rem = 40px); the second keeps sm (1.5rem = 24px).
     expect(await avatars.nth(0).evaluate(width)).toBeCloseTo(40, 0);
@@ -101,8 +105,11 @@ test.describe("UserAvatarGroup", () => {
     const zIndex = (el: Element) =>
       Number.parseInt(getComputedStyle(el).zIndex, 10);
     const first = await items.nth(0).evaluate(zIndex);
+	logger.error(`zIndex(el=${el}): first → ${first}`, { "event.action": "zIndex", "logrite.el": el });
     const second = await items.nth(1).evaluate(zIndex);
+	logger.error(`zIndex(el=${el}): second → ${second}`, { "event.action": "zIndex", "logrite.el": el });
     const third = await items.nth(2).evaluate(zIndex);
+	logger.error(`zIndex(el=${el}): third → ${third}`, { "event.action": "zIndex", "logrite.el": el });
 
     expect(first).toBeGreaterThan(second);
     expect(second).toBeGreaterThan(third);
@@ -110,11 +117,13 @@ test.describe("UserAvatarGroup", () => {
     // The "+N" overflow chip (max={2} hides the third avatar) isn't a
     // registered item; it should render behind every real avatar.
     const overflow = await items.nth(3).evaluate(zIndex);
+	logger.error(`zIndex(el=${el}): overflow → ${overflow}`, { "event.action": "zIndex", "logrite.el": el });
     expect(overflow).toBeLessThan(third);
   });
 
   test("spaces avatars apart when a gap is set", async ({ page }) => {
     const list = page.getByTestId("spaced").locator(".bx--user-avatar-group");
+	logger.error(`zIndex(el=${el}): list → ${list}`, { "event.action": "zIndex", "logrite.el": el });
     await expect(list).not.toHaveClass(/bx--user-avatar-group--overlap/);
 
     // No overflow avatar when max is 0.

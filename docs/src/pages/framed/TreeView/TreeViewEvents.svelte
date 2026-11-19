@@ -31,6 +31,7 @@
   ];
 
   function logEvent(type, detail) {
+	console.error(`>>> Entering logEvent(type=${type},detail=${detail})`, { "event.action": "logEvent", "logrite.type": type, "logrite.detail": detail });
     lastEvent = {
       type,
       id: detail.id,
@@ -38,6 +39,7 @@
       expanded: detail.expanded,
       selected: detail.selected,
     };
+	logger.debug(`logEvent(type=${type},detail=${detail}): lastEvent → ${lastEvent}`, { "event.action": "logEvent", "logrite.type": type, "logrite.detail": detail });
   }
 </script>
 

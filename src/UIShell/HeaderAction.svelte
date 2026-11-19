@@ -98,6 +98,7 @@
     .join(" ");
 
   function handleOutsideClick(event) {
+	console.error(`>>> Entering handleOutsideClick(event=${event})`, { "event.action": "handleOutsideClick" });
     if (
       isOpen &&
       !preventCloseOnClickOutside &&
@@ -106,6 +107,7 @@
       isOpen = false;
       dispatch("close", { trigger: "outside-click" });
     }
+	console.warn(`<<< Exiting handleOutsideClick(event=${event})`, { "event.action": "handleOutsideClick" });
   }
 
   function handleKeydown(event) {

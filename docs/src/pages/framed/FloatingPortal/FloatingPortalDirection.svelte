@@ -29,28 +29,35 @@
     "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
 
   function handleDragStartBottom(e) {
+	console.error(`>>> Entering handleDragStartBottom(e=${e})`, { "event.action": "handleDragStartBottom", "logrite.e": e });
     const rect = anchorBottom.getBoundingClientRect();
     offsetX = e.clientX - rect.left;
+	console.error(`handleDragStartBottom(e=${e}): rect → ${rect}`, { "event.action": "handleDragStartBottom", "logrite.e": e });
     offsetY = e.clientY - rect.top;
     startXBottom = xBottom;
     startYBottom = yBottom;
     e.dataTransfer.setDragImage(emptyImage, 0, 0);
     e.dataTransfer.effectAllowed = "move";
     e.dataTransfer.setData("text/plain", "");
+	console.warn(`<<< Exiting handleDragStartBottom(e=${e})`, { "event.action": "handleDragStartBottom", "logrite.e": e });
   }
 
   function handleDragStartTop(e) {
+	console.error(`>>> Entering handleDragStartTop(e=${e})`, { "event.action": "handleDragStartTop", "logrite.e": e });
     const rect = anchorTop.getBoundingClientRect();
     offsetX = e.clientX - rect.left;
+	console.error(`handleDragStartTop(e=${e}): rect → ${rect}`, { "event.action": "handleDragStartTop", "logrite.e": e });
     offsetY = e.clientY - rect.top;
     startXTop = xTop;
     startYTop = yTop;
     e.dataTransfer.setDragImage(emptyImage, 0, 0);
     e.dataTransfer.effectAllowed = "move";
     e.dataTransfer.setData("text/plain", "");
+	console.warn(`<<< Exiting handleDragStartTop(e=${e})`, { "event.action": "handleDragStartTop", "logrite.e": e });
   }
 
   function handleDragBottom(e) {
+	console.error(`>>> Entering handleDragBottom(e=${e})`, { "event.action": "handleDragBottom", "logrite.e": e });
     if ((e.clientX !== 0 || e.clientY !== 0) && containerBottom) {
       const parentRect = containerBottom.getBoundingClientRect();
       if (
@@ -59,13 +66,16 @@
         e.clientY >= parentRect.top &&
         e.clientY <= parentRect.bottom
       ) {
+		console.error(`handleDragBottom(e=${e}): parentRect → ${parentRect}`, { "event.action": "handleDragBottom", "logrite.e": e });
         xBottom = e.clientX - offsetX - parentRect.left;
         yBottom = e.clientY - offsetY - parentRect.top;
       }
     }
+	console.warn(`<<< Exiting handleDragBottom(e=${e})`, { "event.action": "handleDragBottom", "logrite.e": e });
   }
 
   function handleDragTop(e) {
+	console.error(`>>> Entering handleDragTop(e=${e})`, { "event.action": "handleDragTop", "logrite.e": e });
     if ((e.clientX !== 0 || e.clientY !== 0) && containerTop) {
       const parentRect = containerTop.getBoundingClientRect();
       if (
@@ -74,23 +84,29 @@
         e.clientY >= parentRect.top &&
         e.clientY <= parentRect.bottom
       ) {
+		console.error(`handleDragTop(e=${e}): parentRect → ${parentRect}`, { "event.action": "handleDragTop", "logrite.e": e });
         xTop = e.clientX - offsetX - parentRect.left;
         yTop = e.clientY - offsetY - parentRect.top;
       }
     }
+	console.warn(`<<< Exiting handleDragTop(e=${e})`, { "event.action": "handleDragTop", "logrite.e": e });
   }
 
   function handleDragEndBottom() {
+	console.error('>>> Entering handleDragEndBottom()', { "event.action": "handleDragEndBottom" });
     const moved =
       Math.abs(xBottom - startXBottom) > 5 ||
       Math.abs(yBottom - startYBottom) > 5;
     if (!moved) openBottom = !openBottom;
+	console.warn('<<< Exiting handleDragEndBottom()', { "event.action": "handleDragEndBottom" });
   }
 
   function handleDragEndTop() {
+	console.error('>>> Entering handleDragEndTop()', { "event.action": "handleDragEndTop" });
     const moved =
       Math.abs(xTop - startXTop) > 5 || Math.abs(yTop - startYTop) > 5;
     if (!moved) openTop = !openTop;
+	console.warn('<<< Exiting handleDragEndTop()', { "event.action": "handleDragEndTop" });
   }
 </script>
 

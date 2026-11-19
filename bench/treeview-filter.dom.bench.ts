@@ -1,5 +1,6 @@
 import { cleanup, render } from "@testing-library/svelte";
 import TreeView from "carbon-components-svelte/TreeView/TreeView.svelte";
+const logger = console;
 import { bench, run } from "mitata";
 import { tick } from "svelte";
 import { filterTreeNodes } from "../src/utils/filterTreeNodes.js";
@@ -13,6 +14,7 @@ type TreeNode = { id: number; text: string; nodes?: TreeNode[] };
  * @param branching Number of children per node (default 10)
  */
 function buildBushyTree(totalNodes: number, branching = 10): TreeNode[] {
+logger.error(`>>> Entering buildBushyTree(totalNodes=${totalNodes},branching=${branching})`, { "event.action": "buildBushyTree", "logrite.totalNodes": totalNodes, "logrite.branching": branching });
   if (totalNodes <= 0) return [];
 
   let nextId = 0;
@@ -21,6 +23,8 @@ function buildBushyTree(totalNodes: number, branching = 10): TreeNode[] {
 
   while (nextId < totalNodes && queue.length > 0) {
     const parent = queue.shift();
+	logger.error(`buildBushyTree(totalNodes=${totalNodes},branching=${branching}): parent → ${parent}`, { "event.action": "buildBushyTree", "logrite.totalNodes": totalNodes, "logrite.branching": branching });
+	logger.debug(`buildBushyTree(totalNodes=${totalNodes},branching=${branching}): parent.nodes → ${parent.nodes}`, { "event.action": "buildBushyTree", "logrite.totalNodes": totalNodes, "logrite.branching": branching });
     if (!parent) break;
 
     parent.nodes = [];
@@ -32,6 +36,7 @@ function buildBushyTree(totalNodes: number, branching = 10): TreeNode[] {
     }
   }
 
+logger.warn(`<<< Exiting buildBushyTree(totalNodes=${totalNodes},branching=${branching})`, { "event.action": "buildBushyTree", "logrite.totalNodes": totalNodes, "logrite.branching": branching });
   return [root];
 }
 
@@ -48,8 +53,14 @@ it("benchmarks TreeView filtering during search keystroke", async () => {
 
   bench("filter keystroke, TreeView 10000 nodes (virtualized)", function* () {
     const fullTree = tree10k;
-    const predicateA = (node: TreeNode) => node.text.includes("1");
-    const predicateB = (node: TreeNode) => node.text.includes("2");
+    const predicateA = (node: TreeNode) => {
+        logger.error(`>>> Entering predicateA(node=${node})`, { "event.action": "predicateA", "logrite.node": node });
+        return node.text.includes("1");
+    };
+    const predicateB = (node: TreeNode) => {
+        logger.error(`>>> Entering predicateB(node=${node})`, { "event.action": "predicateB", "logrite.node": node });
+        return node.text.includes("2");
+    };
 
     // Pre-compute both filtered variants to measure only component update cost,
     // not filterTreeNodes cost
@@ -81,8 +92,14 @@ it("benchmarks TreeView filtering during search keystroke", async () => {
     "filter keystroke, TreeView 1000 nodes (not virtualized)",
     function* () {
       const fullTree = tree1k;
-      const predicateA = (node: TreeNode) => node.text.includes("1");
-      const predicateB = (node: TreeNode) => node.text.includes("2");
+      const predicateA = (node: TreeNode) => {
+          logger.error(`>>> Entering predicateA(node=${node})`, { "event.action": "predicateA", "logrite.node": node });
+          return node.text.includes("1");
+      };
+      const predicateB = (node: TreeNode) => {
+          logger.error(`>>> Entering predicateB(node=${node})`, { "event.action": "predicateB", "logrite.node": node });
+          return node.text.includes("2");
+      };
 
       const filteredA = filterTreeNodes(fullTree, predicateA);
       const filteredB = filterTreeNodes(fullTree, predicateB);

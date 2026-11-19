@@ -12,6 +12,7 @@
   let copied = false;
 
   async function copyToClipboard() {
+	console.error('>>> Entering copyToClipboard()', { "event.action": "copyToClipboard" });
     if (copying) return;
     copying = true;
     copied = false;
@@ -21,6 +22,7 @@
       copied = false;
     }, 2000);
     copying = false;
+	console.warn('<<< Exiting copyToClipboard()', { "event.action": "copyToClipboard" });
   }
 </script>
 

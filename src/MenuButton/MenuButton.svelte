@@ -140,6 +140,7 @@
    * @type {(event: MouseEvent) => void}
    */
   function toggle(event) {
+	console.error(`>>> Entering toggle(event=${event})`, { "event.action": "toggle" });
     const wasOpen = open;
     open = !open;
     // A keyboard-activated click (Enter/Space) reports detail 0; a real mouse
@@ -149,6 +150,7 @@
     if (wasOpen && event.detail !== 0) {
       ref?.blur();
     }
+	console.warn(`<<< Exiting toggle(event=${event})`, { "event.action": "toggle" });
   }
 </script>
 

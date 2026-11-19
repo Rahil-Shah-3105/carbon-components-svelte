@@ -10,13 +10,16 @@
   let weekendsDisabled = false;
 
   function openCalendar(e) {
+	console.error(`>>> Entering openCalendar(e=${e})`, { "event.action": "openCalendar", "logrite.e": e });
     // Prevent the click from bubbling to the outside click
     // handler and closing the calendar immediately.
     e.stopPropagation();
     calendar?.open();
+	console.warn(`<<< Exiting openCalendar(e=${e})`, { "event.action": "openCalendar", "logrite.e": e });
   }
 
   function toggleWeekends() {
+	console.error('>>> Entering toggleWeekends()', { "event.action": "toggleWeekends" });
     weekendsDisabled = !weekendsDisabled;
     calendar?.set(
       "disable",
@@ -24,6 +27,7 @@
         ? [(date) => date.getDay() === 0 || date.getDay() === 6]
         : [],
     );
+	console.warn('<<< Exiting toggleWeekends()', { "event.action": "toggleWeekends" });
   }
 </script>
 

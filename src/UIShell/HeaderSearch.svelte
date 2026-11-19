@@ -179,63 +179,82 @@
     match: matchStore,
     activeId,
     setActiveId(next) {
+	console.error(`>>> Entering setActiveId(next=${next})`, { "event.action": "setActiveId" });
       activeId.set(next);
+	console.warn(`<<< Exiting setActiveId(next=${next})`, { "event.action": "setActiveId" });
     },
     selectItem(detail) {
+	console.error(`>>> Entering selectItem(detail=${detail})`, { "event.action": "selectItem", "logrite.detail": detail });
       value = detail.value ?? value;
       dispatch("select", detail);
       reset();
+	console.warn(`<<< Exiting selectItem(detail=${detail})`, { "event.action": "selectItem", "logrite.detail": detail });
       dispatch("close", { trigger: "select" });
     },
     hasPrimaryItems: hasPrimaryItemsStore,
     registerItem(itemId, filterable, inDividerGroup = false) {
+	console.error(`>>> Entering registerItem(itemId=${itemId},filterable=${filterable},inDividerGroup=${inDividerGroup})`, { "event.action": "registerItem", "logrite.itemId": itemId, "logrite.filterable": filterable, "logrite.inDividerGroup": inDividerGroup });
+	const __log_start = Date.now();
       itemIds.add(itemId);
       if (filterable) filterableIds.add(itemId);
       else filterableIds.delete(itemId);
+	console.error(`registerItem(itemId,filterable,inDividerGroup)=${itemId},${filterable},${inDividerGroup}: delete operation took ${Date.now() - __log_start} ms`, { "event.action": "registerItem", "event.category": "database", "logrite.itemId": itemId, "logrite.filterable": filterable, "logrite.inDividerGroup": inDividerGroup });
       if (inDividerGroup) primaryItemIds.delete(itemId);
       else primaryItemIds.add(itemId);
       itemIds = itemIds;
       filterableIds = filterableIds;
+	console.warn(`<<< Exiting registerItem(itemId=${itemId},filterable=${filterable},inDividerGroup=${inDividerGroup})`, { "event.action": "registerItem", "logrite.itemId": itemId, "logrite.filterable": filterable, "logrite.inDividerGroup": inDividerGroup });
       primaryItemIds = primaryItemIds;
     },
     unregisterItem(itemId) {
+	console.error(`>>> Entering unregisterItem(itemId=${itemId})`); const __log_start = Date.now();
       itemIds.delete(itemId);
       filterableIds.delete(itemId);
       primaryItemIds.delete(itemId);
       itemIds = itemIds;
       filterableIds = filterableIds;
+	console.warn(`<<< Exiting unregisterItem(itemId=${itemId})`, { "event.action": "unregisterItem", "logrite.itemId": itemId });
       primaryItemIds = primaryItemIds;
     },
   });
 
   function getOptionElements() {
     if (!menuRef) return [];
+	console.warn('<<< Exiting getOptionElements()', { "event.action": "getOptionElements" });
     return Array.from(menuRef.querySelectorAll('[role="option"]')).filter(
       (el) => el.getAttribute("aria-disabled") !== "true",
     );
   }
 
   function moveActive(step) {
+	console.error(`>>> Entering moveActive(step=${step})`, { "event.action": "moveActive", "logrite.step": step });
     const els = getOptionElements();
     if (els.length === 0) {
+	console.error(`moveActive(step=${step}): els → ${els}`, { "event.action": "moveActive", "logrite.step": step });
       activeId.set(null);
       return;
     }
     const current = els.findIndex((el) => el.id === $activeId);
     let next = current + step;
+	console.error(`moveActive(step=${step}): current → ${current}`, { "event.action": "moveActive", "logrite.step": step });
     if (next < 0) next = els.length - 1;
     else if (next >= els.length) next = 0;
     activeId.set(els[next].id);
+	console.warn(`<<< Exiting moveActive(step=${step})`, { "event.action": "moveActive", "logrite.step": step });
   }
 
   function setActiveEdge(edge) {
+	console.error(`>>> Entering setActiveEdge(edge=${edge})`, { "event.action": "setActiveEdge", "logrite.edge": edge });
     const els = getOptionElements();
     if (els.length === 0) return;
+	console.error(`setActiveEdge(edge=${edge}): els → ${els}`, { "event.action": "setActiveEdge", "logrite.edge": edge });
     activeId.set(els[edge === "first" ? 0 : els.length - 1].id);
+	console.warn(`<<< Exiting setActiveEdge(edge=${edge})`, { "event.action": "setActiveEdge", "logrite.edge": edge });
   }
 
   /** Keyboard navigation for the `menu` slot (`role="option"`). */
   function handleRichKeydown(event) {
+	console.error(`>>> Entering handleRichKeydown(event=${event})`, { "event.action": "handleRichKeydown" });
     switch (event.key) {
       case "ArrowDown":
         event.preventDefault();
@@ -280,21 +299,28 @@
         } else {
           value = "";
         }
+		console.error(`handleRichKeydown(event=${event}): value → ${value}`, { "event.action": "handleRichKeydown" });
+		console.warn(`<<< Exiting handleRichKeydown(event=${event})`, { "event.action": "handleRichKeydown" });
         break;
     }
   }
 
   function reset() {
+	console.error('>>> Entering reset()', { "event.action": "reset" });
     active = false;
     value = "";
     selectedResultIndex = 0;
+	console.error(`reset(): value → ${value}`, { "event.action": "reset" });
     menuDismissed = false;
+	console.warn('<<< Exiting reset()', { "event.action": "reset" });
     activeId.set(null);
   }
 
   function selectResult() {
+	console.error('>>> Entering selectResult()', { "event.action": "selectResult" });
     dispatch("select", { value, selectedResultIndex, selectedResult });
     reset();
+	console.warn('<<< Exiting selectResult()', { "event.action": "selectResult" });
     dispatch("close", { trigger: "select" });
   }
 
@@ -312,18 +338,22 @@
     : undefined;
 
   function handleOutsideMouseup(event) {
+	console.error(`>>> Entering handleOutsideMouseup(event=${event})`, { "event.action": "handleOutsideMouseup" });
     if (active && isOutsideClick(event, refSearch)) {
       active = false;
       activeId.set(null);
       menuDismissed = false;
       dispatch("close", { trigger: "outside-click" });
+	console.warn(`<<< Exiting handleOutsideMouseup(event=${event})`, { "event.action": "handleOutsideMouseup" });
     }
   }
 
   // Clicks on group headers or padding blur the input; refocus so only item
   // selection closes the menu.
   function handleMenuPointerDown() {
+	console.error('>>> Entering handleMenuPointerDown()', { "event.action": "handleMenuPointerDown" });
     ref?.focus();
+	console.warn('<<< Exiting handleMenuPointerDown()', { "event.action": "handleMenuPointerDown" });
   }
 </script>
 

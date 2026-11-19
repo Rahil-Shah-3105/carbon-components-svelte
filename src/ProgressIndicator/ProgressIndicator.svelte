@@ -58,6 +58,7 @@
    * @type {(step: { id: string; complete: boolean; disabled: boolean }) => void}
    */
   function add(step) {
+	console.error(`>>> Entering add(step=${step})`, { "event.action": "add", "logrite.step": step });
     batchedStepsUpdate((_) => {
       const index = _.findIndex((_step) => _step.id === step.id);
       if (index !== -1) {
@@ -76,24 +77,28 @@
         },
       ];
     });
+	console.warn(`<<< Exiting add(step=${step})`, { "event.action": "add", "logrite.step": step });
   }
 
   /**
    * @type {(id: string) => void}
    */
   function remove(id) {
+	console.error(`>>> Entering remove(id=${id})`, { "event.action": "remove", "logrite.id": id });
     batchedStepsUpdate((_) =>
       _.filter((step) => step.id !== id).map((step, i) => ({
         ...step,
         index: i,
       })),
     );
+	console.warn(`<<< Exiting remove(id=${id})`, { "event.action": "remove", "logrite.id": id });
   }
 
   /**
    * @type {(index: number) => void}
    */
   function change(index) {
+	console.error(`>>> Entering change(index=${index})`, { "event.action": "change", "logrite.index": index });
     if (preventChangeOnClick) return;
 
     if (selectedId === undefined) {
@@ -106,6 +111,7 @@
 
     /** @event {number} change */
     dispatch("change", index);
+	console.warn(`<<< Exiting change(index=${index})`, { "event.action": "change", "logrite.index": index });
   }
 
   /**
@@ -115,11 +121,13 @@
    * @type {() => void}
    */
   function syncSelection() {
+	console.error('>>> Entering syncSelection()', { "event.action": "syncSelection" });
     if (selectedId === undefined) return;
 
     const step = $stepsById[selectedId];
     if (step) {
       currentIndex = step.index;
+	console.error(`syncSelection(): currentIndex → ${currentIndex}`, { "event.action": "syncSelection" });
       return;
     }
 
@@ -127,6 +135,7 @@
 
     currentIndex = clampIndex(currentIndex, 0, $steps.length);
     selectedId = $steps[currentIndex]?.id;
+	console.warn('<<< Exiting syncSelection()', { "event.action": "syncSelection" });
   }
 
   setContext("carbon:ProgressIndicator", {

@@ -86,11 +86,13 @@
    * @type {(value: string | number, checked: boolean) => void}
    */
   function update(value, checked) {
+	console.error(`>>> Entering update(value=${value},checked=${checked})`, { "event.action": "update", "logrite.value": value, "logrite.checked": checked });
     if (readonly) return;
     selectedValues.update((prev) => {
       if (checked) {
         return prev.includes(value) ? prev : [...prev, value];
       }
+	console.warn(`<<< Exiting update(value=${value},checked=${checked})`, { "event.action": "update", "logrite.value": value, "logrite.checked": checked });
       return prev.filter((v) => v !== value);
     });
   }

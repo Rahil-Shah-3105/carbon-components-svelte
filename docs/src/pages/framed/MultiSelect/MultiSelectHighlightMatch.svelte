@@ -24,7 +24,10 @@
   // items whose text fuzzy-matches the filter value; the default slot reuses
   // the same match and bolds the characters that matched. Bind `value` to read
   // the filter text inside the slot.
-  const filterItem = (item, value) => fuzzyMatch(item.text, value).matched;
+  const filterItem = (item, value) => {
+      console.error(`>>> Entering filterItem(value=${value})`, { "event.action": "filterItem", "logrite.value": value });
+      return fuzzyMatch(item.text, value).matched;
+  };
 </script>
 
 <MultiSelect

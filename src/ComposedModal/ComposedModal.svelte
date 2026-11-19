@@ -66,13 +66,16 @@
   let closeDispatched = false;
 
   function close(trigger) {
+	console.error(`>>> Entering close(trigger=${trigger})`, { "event.action": "close", "logrite.trigger": trigger });
     closeDispatched = true;
     const shouldContinue = dispatch("close", { trigger }, { cancelable: true });
     if (shouldContinue) {
+	console.error(`close(trigger=${trigger}): shouldContinue → ${shouldContinue}`, { "event.action": "close", "logrite.trigger": trigger });
       open = false;
     } else {
       closeDispatched = false;
     }
+	console.warn(`<<< Exiting close(trigger=${trigger})`, { "event.action": "close", "logrite.trigger": trigger });
   }
 
   const outsideDismiss = createOutsideDismiss(() => {
@@ -83,36 +86,46 @@
    * @type {() => void}
    */
   function closeModal() {
+	console.error('>>> Entering closeModal()', { "event.action": "closeModal" });
     close("close-button");
+	console.warn('<<< Exiting closeModal()', { "event.action": "closeModal" });
   }
 
   /**
    * @type {() => void}
    */
   function submit() {
+	console.error('>>> Entering submit()', { "event.action": "submit" });
     dispatch("submit");
     dispatch("click:button--primary");
+	console.warn('<<< Exiting submit()', { "event.action": "submit" });
   }
 
   /**
    * @type {(ref: HTMLButtonElement) => void}
    */
   function declareRef(ref) {
+	console.error(`>>> Entering declareRef(ref=${ref})`, { "event.action": "declareRef", "logrite.ref": ref });
     buttonRef = ref;
+	console.warn(`<<< Exiting declareRef(ref=${ref})`, { "event.action": "declareRef", "logrite.ref": ref });
   }
 
   /**
    * @type {(value: string | undefined) => void}
    */
   function updateLabel(value) {
+	console.error(`>>> Entering updateLabel(value=${value})`, { "event.action": "updateLabel", "logrite.value": value });
     label.set(value);
+	console.warn(`<<< Exiting updateLabel(value=${value})`, { "event.action": "updateLabel", "logrite.value": value });
   }
 
   /**
    * @type {(value: string | undefined) => void}
    */
   function updateTitle(value) {
+	console.error(`>>> Entering updateTitle(value=${value})`, { "event.action": "updateTitle", "logrite.value": value });
     title.set(value);
+	console.warn(`<<< Exiting updateTitle(value=${value})`, { "event.action": "updateTitle", "logrite.value": value });
   }
 
   setContext("carbon:Modal", {});
@@ -129,6 +142,7 @@
   });
 
   function focus(element) {
+	console.error(`>>> Entering focus(element=${element})`, { "event.action": "focus", "logrite.element": element });
     const container = element || innerModal;
     const node = initialFocus({
       container,
@@ -141,6 +155,7 @@
       ],
     });
     node?.focus();
+	console.warn(`<<< Exiting focus(element=${element})`, { "event.action": "focus", "logrite.element": element });
   }
 
   let opened = false;

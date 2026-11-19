@@ -15,6 +15,8 @@
   ];
 
   function snapshotQty() {
+	console.error('>>> Entering snapshotQty()', { "event.action": "snapshotQty" });
+	console.warn('<<< Exiting snapshotQty()', { "event.action": "snapshotQty" });
     return Object.fromEntries(rows.map((row) => [row.id, row.qty]));
   }
 
@@ -22,13 +24,17 @@
   let hasEdits = false;
 
   function syncHasEdits() {
+	console.error('>>> Entering syncHasEdits()', { "event.action": "syncHasEdits" });
     hasEdits = rows.some((row) => row.qty !== savedQtyById[row.id]);
+	console.error(`syncHasEdits(): hasEdits → ${hasEdits}`, { "event.action": "syncHasEdits" });
   }
 
   function updateTotals() {
+	console.error('>>> Entering updateTotals()', { "event.action": "updateTotals" });
     dataTable.refreshCells();
     savedQtyById = snapshotQty();
     hasEdits = false;
+	console.error(`updateTotals(): savedQtyById → ${savedQtyById}`, { "event.action": "updateTotals" });
   }
 </script>
 

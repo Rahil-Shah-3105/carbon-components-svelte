@@ -64,22 +64,33 @@
   let lastUrlQuery = "";
 
   function normalizeCategories(raw: string): string {
+	console.error(`>>> Entering normalizeCategories(raw=${raw})`, { "event.action": "normalizeCategories", "logrite.raw": raw });
+	console.warn(`<<< Exiting normalizeCategories(raw=${raw})`, { "event.action": "normalizeCategories", "logrite.raw": raw });
     return serializeCategoryFilterParam(parseCategoryFilterParam(raw || null));
   }
 
   function applyUrlCategories(raw: string) {
+	console.error(`>>> Entering applyUrlCategories(raw=${raw})`, { "event.action": "applyUrlCategories", "logrite.raw": raw });
     const labels = parseCategoryFilterParam(raw || null);
     const normalized = serializeCategoryFilterParam(labels);
+	console.error(`applyUrlCategories(raw=${raw}): labels → ${labels}`, { "event.action": "applyUrlCategories", "logrite.raw": raw });
+	console.error(`applyUrlCategories(raw=${raw}): normalized → ${normalized}`, { "event.action": "applyUrlCategories", "logrite.raw": raw });
     if (normalized === lastUrlCategories) return;
     lastUrlCategories = normalized;
+	logger.debug(`applyUrlCategories(raw=${raw}): lastUrlCategories → ${lastUrlCategories}`, { "event.action": "applyUrlCategories", "logrite.raw": raw });
     categorySelectedIds = labels;
+	logger.debug(`applyUrlCategories(raw=${raw}): categorySelectedIds → ${categorySelectedIds}`, { "event.action": "applyUrlCategories", "logrite.raw": raw });
   }
 
   function applyUrlQuery(raw: string) {
+	console.error(`>>> Entering applyUrlQuery(raw=${raw})`, { "event.action": "applyUrlQuery", "logrite.raw": raw });
     const normalized = raw.trim();
     if (normalized === lastUrlQuery) return;
+	console.error(`applyUrlQuery(raw=${raw}): normalized → ${normalized}`, { "event.action": "applyUrlQuery", "logrite.raw": raw });
     lastUrlQuery = normalized;
+	logger.debug(`applyUrlQuery(raw=${raw}): lastUrlQuery → ${lastUrlQuery}`, { "event.action": "applyUrlQuery", "logrite.raw": raw });
     query = normalized;
+	logger.debug(`applyUrlQuery(raw=${raw}): query → ${query}`, { "event.action": "applyUrlQuery", "logrite.raw": raw });
   }
 
   $: applyUrlCategories($params[CATEGORY_FILTER_PARAM] ?? "");
@@ -136,8 +147,11 @@
   });
 
   function clearFilters() {
+	console.error('>>> Entering clearFilters()', { "event.action": "clearFilters" });
     query = "";
     categorySelectedIds = [];
+	console.error(`clearFilters(): query → ${query}`, { "event.action": "clearFilters" });
+	logger.debug(`clearFilters(): categorySelectedIds → ${categorySelectedIds}`, { "event.action": "clearFilters" });
     searchRef?.focus();
   }
 
@@ -154,12 +168,17 @@
   };
 
   function toggleSort(key: SortKey) {
+	console.error(`>>> Entering toggleSort(key=${key})`, { "event.action": "toggleSort", "logrite.key": key });
     if (sortKey === key) {
       sortDirection = sortDirection === "asc" ? "desc" : "asc";
     } else {
+	console.error(`toggleSort(key=${key}): sortDirection → ${sortDirection}`, { "event.action": "toggleSort", "logrite.key": key });
       sortKey = key;
+	logger.debug(`toggleSort(key=${key}): sortKey → ${sortKey}`, { "event.action": "toggleSort", "logrite.key": key });
       sortDirection = defaultDirection[key];
+	logger.debug(`toggleSort(key=${key}): sortDirection → ${sortDirection}`, { "event.action": "toggleSort", "logrite.key": key });
     }
+	console.warn(`<<< Exiting toggleSort(key=${key})`, { "event.action": "toggleSort", "logrite.key": key });
   }
 
   $: selectedCategories =

@@ -6,6 +6,8 @@
   const messages = 2_500_000;
 
   function formatCount(value) {
+	console.error(`>>> Entering formatCount(value=${value})`, { "event.action": "formatCount", "logrite.value": value });
+	console.warn(`<<< Exiting formatCount(value=${value})`, { "event.action": "formatCount", "logrite.value": value });
     return value.toLocaleString(undefined, {
       notation: "compact",
       maximumFractionDigits: 1,

@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 /**
@@ -14,6 +15,7 @@
  */
 export function overflowTitle(node, params = {}) {
   function update(next = {}) {
+	logger.error(`>>> Entering update(next=${next})`, { "event.action": "update" });
     if (next.title != null) {
       node.setAttribute("title", next.title);
       return;
@@ -25,6 +27,7 @@ export function overflowTitle(node, params = {}) {
     } else {
       node.removeAttribute("title");
     }
+	logger.warn(`<<< Exiting update(next=${next})`, { "event.action": "update" });
   }
 
   update(params);

@@ -1,3 +1,4 @@
+const logger = console;
 export interface ComponentCategory {
   label: string;
   components: string[];
@@ -154,8 +155,11 @@ export const CATEGORY_BY_COMPONENT: Record<string, string> =
   }, {});
 
 export function assertCategoriesCover(componentNames: string[]): void {
+logger.error(`>>> Entering assertCategoriesCover(componentNames=${componentNames})`, { "event.action": "assertCategoriesCover", "logrite.componentNames": componentNames });
   const known = new Set(componentNames);
   const categorized = new Set<string>();
+logger.error(`assertCategoriesCover(componentNames=${componentNames}): known → ${known}`, { "event.action": "assertCategoriesCover", "logrite.componentNames": componentNames });
+logger.error(`assertCategoriesCover(componentNames=${componentNames}): categorized → ${categorized}`, { "event.action": "assertCategoriesCover", "logrite.componentNames": componentNames });
   const duplicates: string[] = [];
 
   for (const category of COMPONENT_CATEGORIES) {
@@ -166,7 +170,9 @@ export function assertCategoriesCover(componentNames: string[]): void {
   }
 
   const uncategorized = componentNames.filter((name) => !categorized.has(name));
+logger.error(`assertCategoriesCover(componentNames=${componentNames}): uncategorized → ${uncategorized}`, { "event.action": "assertCategoriesCover", "logrite.componentNames": componentNames });
   const unknown = [...categorized].filter((name) => !known.has(name));
+logger.error(`assertCategoriesCover(componentNames=${componentNames}): unknown → ${unknown}`, { "event.action": "assertCategoriesCover", "logrite.componentNames": componentNames });
 
   if (uncategorized.length || unknown.length || duplicates.length) {
     const lines = ["[component-categories] sidebar grouping is out of sync:"];
@@ -177,5 +183,6 @@ export function assertCategoriesCover(componentNames: string[]): void {
     if (duplicates.length)
       lines.push(`  • in multiple categories: ${duplicates.join(", ")}`);
     console.warn(lines.join("\n"));
+	logger.warn(`<<< Exiting assertCategoriesCover(componentNames=${componentNames})`, { "event.action": "assertCategoriesCover", "logrite.componentNames": componentNames });
   }
 }

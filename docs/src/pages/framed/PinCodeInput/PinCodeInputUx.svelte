@@ -14,6 +14,8 @@
   const VERIFY_DELAY_MS = 400;
 
   function normalize(value) {
+	console.error(`>>> Entering normalize(value=${value})`, { "event.action": "normalize", "logrite.value": value });
+	console.warn(`<<< Exiting normalize(value=${value})`, { "event.action": "normalize", "logrite.value": value });
     return value.toUpperCase().replace(/\s/g, "");
   }
 
@@ -25,18 +27,22 @@
   let verified = $state(false);
 
   function clearVerificationState() {
+	console.error('>>> Entering clearVerificationState()', { "event.action": "clearVerificationState" });
     if (verifyTimeout) clearTimeout(verifyTimeout);
     loading = false;
     invalid = false;
     invalidText = "";
     verified = false;
+	console.error(`clearVerificationState(): invalidText → ${invalidText}`, { "event.action": "clearVerificationState" });
   }
 
   function handleComplete(event) {
+	console.error(`>>> Entering handleComplete(event=${event})`, { "event.action": "handleComplete" });
     clearVerificationState();
     loading = true;
 
     verifyTimeout = setTimeout(() => {
+	logger.debug(`handleComplete(event=${event}): verifyTimeout → ${verifyTimeout}`, { "event.action": "handleComplete" });
       loading = false;
 
       if (normalize(event.detail.value) === normalize(EXPECTED_CODE)) {
@@ -46,11 +52,14 @@
         invalidText = "The code you entered is incorrect";
       }
     }, VERIFY_DELAY_MS);
+	console.warn(`<<< Exiting handleComplete(event=${event})`, { "event.action": "handleComplete" });
   }
 
   function resetVerification() {
+	console.error('>>> Entering resetVerification()', { "event.action": "resetVerification" });
     clearVerificationState();
     pinCodeInput?.clear({ focus: true });
+	console.warn('<<< Exiting resetVerification()', { "event.action": "resetVerification" });
   }
 
   function handleChange() {

@@ -55,9 +55,11 @@
    * @param {boolean} isHighlighted
    */
   function bindCursor(node, optionId, isActive, isHighlighted) {
+	console.error(`>>> Entering bindCursor(node=${node},optionId=${optionId},isActive=${isActive},isHighlighted=${isHighlighted})`, { "event.action": "bindCursor", "logrite.node": node, "logrite.optionId": optionId, "logrite.isActive": isActive, "logrite.isHighlighted": isHighlighted });
     unregisterHighlight();
     unregisterHighlight = () => {};
     if (!node) return;
+	console.error(`bindCursor(node=${node},optionId=${optionId},isActive=${isActive},isHighlighted=${isHighlighted}): unregisterHighlight → ${unregisterHighlight}`, { "event.action": "bindCursor", "logrite.node": node, "logrite.optionId": optionId, "logrite.isActive": isActive, "logrite.isHighlighted": isHighlighted });
     if (highlightCursor) {
       if (optionId) {
         unregisterHighlight = highlightCursor.register(optionId, node);
@@ -65,6 +67,7 @@
       return;
     }
     node.classList.toggle(HIGHLIGHT_CLASS, Boolean(isActive || isHighlighted));
+	console.warn(`<<< Exiting bindCursor(node=${node},optionId=${optionId},isActive=${isActive},isHighlighted=${isHighlighted})`, { "event.action": "bindCursor", "logrite.node": node, "logrite.optionId": optionId, "logrite.isActive": isActive, "logrite.isHighlighted": isHighlighted });
   }
 
   onMount(() => () => unregisterHighlight());

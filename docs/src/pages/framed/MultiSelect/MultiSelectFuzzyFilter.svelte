@@ -4,7 +4,10 @@
   // Reuse the built-in fuzzy matcher as the filter predicate. Each typed
   // character must appear in order within the item text, so "bl" matches
   // "Blueberry" and "Blackberry". Only the `matched` boolean is used here.
-  const filterItem = (item, value) => fuzzyMatch(item.text, value).matched;
+  const filterItem = (item, value) => {
+      console.error(`>>> Entering filterItem(value=${value})`, { "event.action": "filterItem", "logrite.value": value });
+      return fuzzyMatch(item.text, value).matched;
+  };
 </script>
 
 <MultiSelect

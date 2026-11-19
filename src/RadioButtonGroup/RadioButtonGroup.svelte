@@ -89,17 +89,21 @@
    * @type {(data: { checked: boolean; value: Value }) => void}
    */
   function add({ checked, value }) {
+	console.error(`>>> Entering add(checked=${checked},value=${value})`, { "event.action": "add", "logrite.checked": checked, "logrite.value": value });
     if (checked) {
       selectedValue.set(value);
     }
+	console.warn(`<<< Exiting add(checked=${checked},value=${value})`, { "event.action": "add", "logrite.checked": checked, "logrite.value": value });
   }
 
   /**
    * @type {(value: Value) => void}
    */
   function update(value) {
+	console.error(`>>> Entering update(value=${value})`, { "event.action": "update", "logrite.value": value });
     if (readonly) return;
     selected = value;
+	console.warn(`<<< Exiting update(value=${value})`, { "event.action": "update", "logrite.value": value });
   }
 
   setContext("carbon:RadioButtonGroup", {

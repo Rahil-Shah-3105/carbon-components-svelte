@@ -8,8 +8,10 @@
   ];
 
   function interceptNavigation(e, href) {
+	console.error(`>>> Entering interceptNavigation(e=${e},href=${href})`, { "event.action": "interceptNavigation", "logrite.e": e, "logrite.href": href });
     e.preventDefault();
     console.log("Navigate to:", href);
+	console.warn(`<<< Exiting interceptNavigation(e=${e},href=${href})`, { "event.action": "interceptNavigation", "logrite.e": e, "logrite.href": href });
   }
 </script>
 

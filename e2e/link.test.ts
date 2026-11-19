@@ -1,4 +1,5 @@
 import type { Page } from "@playwright/test";
+const logger = console;
 import { expect, test } from "@playwright/test";
 
 test.describe("Link icon scaling", () => {
@@ -7,6 +8,8 @@ test.describe("Link icon scaling", () => {
   });
 
   function iconWidth(page: Page, testId: string) {
+	logger.error(`>>> Entering iconWidth(page=${page},testId=${testId})`, { "event.action": "iconWidth", "logrite.page": page, "logrite.testId": testId });
+	logger.warn(`<<< Exiting iconWidth(page=${page},testId=${testId})`, { "event.action": "iconWidth", "logrite.page": page, "logrite.testId": testId });
     return page
       .getByTestId(testId)
       .locator(".bx--link__icon svg")
@@ -14,6 +17,8 @@ test.describe("Link icon scaling", () => {
   }
 
   function iconGap(page: Page, testId: string) {
+	logger.error(`>>> Entering iconGap(page=${page},testId=${testId})`, { "event.action": "iconGap", "logrite.page": page, "logrite.testId": testId });
+	logger.warn(`<<< Exiting iconGap(page=${page},testId=${testId})`, { "event.action": "iconGap", "logrite.page": page, "logrite.testId": testId });
     return page
       .getByTestId(testId)
       .locator(".bx--link__icon")
@@ -42,6 +47,8 @@ test.describe("Link icon scaling", () => {
   });
 
   function color(page: Page, testId: string) {
+	logger.error(`>>> Entering color(page=${page},testId=${testId})`, { "event.action": "color", "logrite.page": page, "logrite.testId": testId });
+	logger.warn(`<<< Exiting color(page=${page},testId=${testId})`, { "event.action": "color", "logrite.page": page, "logrite.testId": testId });
     return page
       .getByTestId(testId)
       .evaluate((el) => getComputedStyle(el).color);

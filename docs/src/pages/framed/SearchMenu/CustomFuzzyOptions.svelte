@@ -18,7 +18,10 @@
   // `threshold` of 0.5 requires a contiguous substring, so a scattered
   // subsequence like "dt" (which the default fuzzy matching accepts for
   // "Data Table") no longer matches.
-  const match = (text, query) => fuzzyMatch(text, query, { threshold: 0.5 });
+  const match = (text, query) => {
+      console.error(`>>> Entering match(text=${text},query=${query})`, { "event.action": "match", "logrite.text": text, "logrite.query": query });
+      return fuzzyMatch(text, query, { threshold: 0.5 });
+  };
 </script>
 
 <SearchMenu bind:value {match} labelText="Search" placeholder="Search...">

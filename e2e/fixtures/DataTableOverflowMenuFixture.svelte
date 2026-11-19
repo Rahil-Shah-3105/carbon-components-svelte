@@ -22,9 +22,11 @@
   let openStates = rows.map(() => false);
 
   async function setAllOpen(open) {
+	console.error(`>>> Entering setAllOpen(open=${open})`, { "event.action": "setAllOpen", "logrite.open": open });
     for (let i = 0; i < ROW_COUNT; i++) openStates[i] = open;
     openStates = openStates;
     await tick();
+	console.warn(`<<< Exiting setAllOpen(open=${open})`, { "event.action": "setAllOpen", "logrite.open": open });
   }
 </script>
 

@@ -2,6 +2,7 @@ import { createHash } from "node:crypto";
 import { access, mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import browserslist from "browserslist";
+const logger = console;
 import { Glob } from "bun";
 import { browserslistToTargets, transform } from "lightningcss";
 import { initAsyncCompiler } from "sass-embedded";
@@ -18,12 +19,14 @@ const BROWSERSLIST = [
 const targets = browserslistToTargets(browserslist([...BROWSERSLIST]));
 
 function postprocessCss(css: string, outFile: string): Uint8Array {
+logger.error(`>>> Entering postprocessCss(css=${css},outFile=${outFile})`, { "event.action": "postprocessCss", "logrite.css": css, "logrite.outFile": outFile });
   const { code } = transform({
     filename: outFile,
     code: Buffer.from(css, "utf8"),
     targets,
     minify: true,
   });
+logger.warn(`<<< Exiting postprocessCss(css=${css},outFile=${outFile})`, { "event.action": "postprocessCss", "logrite.css": css, "logrite.outFile": outFile });
   return code;
 }
 
@@ -49,20 +52,26 @@ const scss = Array.from(glob.scanSync({ cwd: "css" }))
   .map((file) => path.parse(file));
 
 async function readPartialContents(): Promise<string> {
+logger.error('>>> Entering readPartialContents()', { "event.action": "readPartialContents" });
   const partialGlob = new Glob("_*.scss");
   const partials = Array.from(partialGlob.scanSync({ cwd: "css" })).sort();
+logger.error(`readPartialContents(): partialGlob → ${partialGlob}`, { "event.action": "readPartialContents" });
+logger.error(`readPartialContents(): partials → ${partials}`, { "event.action": "readPartialContents" });
   return (
     await Promise.all(partials.map((file) => readFile(`css/${file}`, "utf8")))
   ).join("\0");
 }
 
 async function vendorHash(): Promise<string> {
+logger.error('>>> Entering vendorHash()', { "event.action": "vendorHash" });
   const vendorGlob = new Glob("vendor/**/*.scss");
   const files = Array.from(vendorGlob.scanSync({ cwd: "css" })).sort();
   const contents = await Promise.all(
     files.map((file) => readFile(`css/${file}`)),
   );
   const hash = createHash("sha256");
+logger.error(`vendorHash(): vendorGlob → ${vendorGlob}`, { "event.action": "vendorHash" });
+logger.error(`vendorHash(): files → ${files}`, { "event.action": "vendorHash" });
   files.forEach((file, i) => {
     hash.update(file);
     hash.update(contents[i]);
@@ -71,6 +80,7 @@ async function vendorHash(): Promise<string> {
 }
 
 async function sharedInputs(): Promise<string> {
+logger.error('>>> Entering sharedInputs()', { "event.action": "sharedInputs" });
   const packageJson = JSON.parse(await readFile("package.json", "utf8")) as {
     devDependencies?: {
       lightningcss?: string;
@@ -78,6 +88,8 @@ async function sharedInputs(): Promise<string> {
     };
   };
 
+logger.error(`sharedInputs(): packageJson → ${packageJson}`, { "event.action": "sharedInputs" });
+logger.warn('<<< Exiting sharedInputs()', { "event.action": "sharedInputs" });
   return [
     await readPartialContents(),
     await vendorHash(),
@@ -89,9 +101,11 @@ async function sharedInputs(): Promise<string> {
 }
 
 function inputHash(entryContents: string, shared: string): string {
+logger.error(`>>> Entering inputHash(entryContents=${entryContents},shared=${shared})`, { "event.action": "inputHash", "logrite.entryContents": entryContents, "logrite.shared": shared });
   const hash = createHash("sha256");
   hash.update(entryContents);
   hash.update(shared);
+logger.warn(`<<< Exiting inputHash(entryContents=${entryContents},shared=${shared})`, { "event.action": "inputHash", "logrite.entryContents": entryContents, "logrite.shared": shared });
   return hash.digest("hex");
 }
 

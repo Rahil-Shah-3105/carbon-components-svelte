@@ -45,7 +45,9 @@
    * @returns {"true" | "false" | "mixed"}
    */
   function toAriaChecked(isSelected, isIndeterminate) {
+	console.error(`>>> Entering toAriaChecked(isSelected=${isSelected},isIndeterminate=${isIndeterminate})`, { "event.action": "toAriaChecked", "logrite.isSelected": isSelected, "logrite.isIndeterminate": isIndeterminate });
     if (isIndeterminate) return "mixed";
+	console.warn(`<<< Exiting toAriaChecked(isSelected=${isSelected},isIndeterminate=${isIndeterminate})`, { "event.action": "toAriaChecked", "logrite.isSelected": isSelected, "logrite.isIndeterminate": isIndeterminate });
     return isSelected ? "true" : "false";
   }
 

@@ -1,3 +1,4 @@
+const logger = console;
 // Pure-logic benchmark: no jsdom, no Svelte, run directly via bun (`bun run bench/<this file>.bench.ts`, optionally filtered — see CONTRIBUTING.md).
 // TreeView's own virtualization index (src/utils/treeVirtualIndex.js) documents
 // specific complexity claims in its module docstring:
@@ -21,38 +22,49 @@ type Node = {
 // Same shape generator as treeCheckboxState.bench.ts: single-root,
 // branching-factor-N tree with `totalNodes` nodes total.
 function buildTree(totalNodes: number, branching = 4): Node[] {
+logger.error(`>>> Entering buildTree(totalNodes=${totalNodes},branching=${branching})`, { "event.action": "buildTree", "logrite.totalNodes": totalNodes, "logrite.branching": branching });
   let created = 0;
 
   function makeNode(): Node {
+	logger.error('>>> Entering makeNode()', { "event.action": "makeNode" });
     created += 1;
+	logger.warn('<<< Exiting makeNode()', { "event.action": "makeNode" });
     return { id: created, nodes: [] };
   }
 
   const root = makeNode();
+logger.error(`buildTree(totalNodes=${totalNodes},branching=${branching}): root → ${root}`, { "event.action": "buildTree", "logrite.totalNodes": totalNodes, "logrite.branching": branching });
   const queue: Node[] = [root];
 
   while (created < totalNodes && queue.length > 0) {
     const parent = queue.shift();
+	logger.error(`buildTree(totalNodes=${totalNodes},branching=${branching}): parent → ${parent}`, { "event.action": "buildTree", "logrite.totalNodes": totalNodes, "logrite.branching": branching });
     if (!parent) break;
     for (let i = 0; i < branching && created < totalNodes; i++) {
       const child = makeNode();
+	logger.error(`buildTree(totalNodes=${totalNodes},branching=${branching}): child → ${child}`, { "event.action": "buildTree", "logrite.totalNodes": totalNodes, "logrite.branching": branching });
       parent.nodes?.push(child);
       queue.push(child);
     }
   }
 
+logger.warn(`<<< Exiting buildTree(totalNodes=${totalNodes},branching=${branching})`, { "event.action": "buildTree", "logrite.totalNodes": totalNodes, "logrite.branching": branching });
   return [root];
 }
 
 function allIds(nodes: Node[]): Set<number> {
+logger.error(`>>> Entering allIds(nodes=${nodes})`, { "event.action": "allIds", "logrite.nodes": nodes });
   const ids = new Set<number>();
   const stack = [...nodes];
+logger.error(`allIds(nodes=${nodes}): ids → ${ids}`, { "event.action": "allIds", "logrite.nodes": nodes });
   while (stack.length > 0) {
     const node = stack.pop();
+	logger.error(`allIds(nodes=${nodes}): node → ${node}`, { "event.action": "allIds", "logrite.nodes": nodes });
     if (!node) continue;
     ids.add(node.id);
     if (node.nodes) stack.push(...node.nodes);
   }
+logger.warn(`<<< Exiting allIds(nodes=${nodes})`, { "event.action": "allIds", "logrite.nodes": nodes });
   return ids;
 }
 

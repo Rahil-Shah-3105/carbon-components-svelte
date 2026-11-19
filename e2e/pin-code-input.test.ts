@@ -1,6 +1,9 @@
+const logger = console;
 import { expect, type Locator, type Page, test } from "@playwright/test";
 
 function defaultSection(page: Page) {
+logger.error(`>>> Entering defaultSection(page=${page})`, { "event.action": "defaultSection", "logrite.page": page });
+logger.warn(`<<< Exiting defaultSection(page=${page})`, { "event.action": "defaultSection", "logrite.page": page });
   return page.getByTestId("pin-code-input-default");
 }
 
@@ -14,6 +17,7 @@ function segment(
 }
 
 async function pasteInto(locator: Locator, text: string) {
+logger.error(`>>> Entering pasteInto(locator=${locator},text=${text})`, { "event.action": "pasteInto", "logrite.locator": locator, "logrite.text": text });
   await locator.evaluate((element, value) => {
     const data = new DataTransfer();
     data.setData("text/plain", value);
@@ -21,6 +25,7 @@ async function pasteInto(locator: Locator, text: string) {
       new ClipboardEvent("paste", { clipboardData: data, bubbles: true }),
     );
   }, text);
+logger.warn(`<<< Exiting pasteInto(locator=${locator},text=${text})`, { "event.action": "pasteInto", "logrite.locator": locator, "logrite.text": text });
 }
 
 test.describe("PinCodeInput", () => {

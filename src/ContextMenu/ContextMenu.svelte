@@ -89,6 +89,7 @@
    * @type {(trigger: "escape-key" | "outside-click" | "select") => void}
    */
   function close(trigger) {
+	console.error(`>>> Entering close(trigger=${trigger})`, { "event.action": "close", "logrite.trigger": trigger });
     if (!open) return;
     open = false;
     x = 0;
@@ -97,10 +98,12 @@
     prevY = 0;
     focusIndex = -1;
     dispatch("close", { trigger });
+	console.warn(`<<< Exiting close(trigger=${trigger})`, { "event.action": "close", "logrite.trigger": trigger });
   }
 
   /** @type {(e: MouseEvent) => void} */
   function openMenu(event) {
+	console.error(`>>> Entering openMenu(event=${event})`, { "event.action": "openMenu" });
     event.preventDefault();
     const { height, width } = ref.getBoundingClientRect();
 
@@ -124,6 +127,7 @@
     position.set([x, y]);
     open = true;
     openDetail = event.target;
+	console.warn(`<<< Exiting openMenu(event=${event})`, { "event.action": "openMenu" });
   }
 
   /** @type {Array<HTMLElement | null>} */
@@ -152,7 +156,9 @@
    * @type {(popup: boolean) => void}
    */
   function setPopup(popup) {
+	console.error(`>>> Entering setPopup(popup=${popup})`, { "event.action": "setPopup", "logrite.popup": popup });
     hasPopup.set(popup);
+	console.warn(`<<< Exiting setPopup(popup=${popup})`, { "event.action": "setPopup", "logrite.popup": popup });
   }
 
   setContext("carbon:ContextMenu", {
@@ -185,10 +191,14 @@
   $: menuAriaLabel = ($$props["aria-label"] ?? labelText) || undefined;
 
   function handleOutsideClick(event) {
+	console.error(`>>> Entering handleOutsideClick(event=${event})`, { "event.action": "handleOutsideClick" });
     if (open && isOutsideClick(event, ref)) close("outside-click");
+	console.warn(`<<< Exiting handleOutsideClick(event=${event})`, { "event.action": "handleOutsideClick" });
   }
   function handleEscape(event) {
+	console.error(`>>> Entering handleEscape(event=${event})`, { "event.action": "handleEscape" });
     if (open && event.key === "Escape") close("escape-key");
+	console.warn(`<<< Exiting handleEscape(event=${event})`, { "event.action": "handleEscape" });
   }
 </script>
 

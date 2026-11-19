@@ -1,3 +1,4 @@
+const logger = console;
 // Pure-logic benchmark: no jsdom, no Svelte, run directly via bun (`bun run bench/<this file>.bench.ts`, optionally filtered — see CONTRIBUTING.md).
 // graphemeCount backs TextInput/TextArea character counters — called once
 // per keystroke against the field's current value. The question is
@@ -13,16 +14,19 @@ import { runWithFilter } from "./run-with-filter.js";
 // but 2+ UTF-16 code units) so the count differs meaningfully from
 // value.length, not just a sanity check on ASCII throughput.
 function buildText(length: number): string {
+logger.error(`>>> Entering buildText(length=${length})`, { "event.action": "buildText", "logrite.length": length });
   const words = [
     "The quick brown fox jumps over the lazy dog. ",
     "\u{1F600}\u{1F44D}\u{1F30D} ", // multi-code-point emoji
   ];
   let text = "";
+logger.error(`buildText(length=${length}): text → ${text}`, { "event.action": "buildText", "logrite.length": length });
   let i = 0;
   while (text.length < length) {
     text += words[i % words.length];
     i++;
   }
+logger.warn(`<<< Exiting buildText(length=${length})`, { "event.action": "buildText", "logrite.length": length });
   return text.slice(0, length);
 }
 

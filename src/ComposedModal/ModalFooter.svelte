@@ -63,11 +63,14 @@
   const { closeModal, submit } = getContext("carbon:ComposedModal");
 
   function handlePrimaryClick() {
+	console.error('>>> Entering handlePrimaryClick()', { "event.action": "handlePrimaryClick" });
     if (primaryButtonLoading) return;
     submit();
+	console.warn('<<< Exiting handlePrimaryClick()', { "event.action": "handlePrimaryClick" });
   }
 
   function handleSecondaryClick() {
+	console.error('>>> Entering handleSecondaryClick()', { "event.action": "handleSecondaryClick" });
     const shouldContinue = dispatch(
       "click:button--secondary",
       { text: secondaryButtonText },
@@ -76,6 +79,7 @@
     if (shouldContinue) {
       closeModal();
     }
+	console.warn('<<< Exiting handleSecondaryClick()', { "event.action": "handleSecondaryClick" });
   }
 </script>
 

@@ -123,10 +123,12 @@
    * @type {(trigger: "escape-key" | "outside-click" | "select") => void}
    */
   function close(trigger) {
+	console.error(`>>> Entering close(trigger=${trigger})`, { "event.action": "close", "logrite.trigger": trigger });
     if (!open) return;
     open = false;
     if (trigger === "escape-key") anchor?.focus({ preventScroll: true });
     dispatch("close", { trigger });
+	console.warn(`<<< Exiting close(trigger=${trigger})`, { "event.action": "close", "logrite.trigger": trigger });
   }
 
   setContext("carbon:Menu", { close });
@@ -157,13 +159,16 @@
    * @param {HTMLElement} item
    */
   function focusMenuItem(item) {
+	console.error(`>>> Entering focusMenuItem(item=${item})`, { "event.action": "focusMenuItem", "logrite.item": item });
     // `preventScroll` keeps a portaled menu from scrolling the document;
     // scroll the item into view within the menu's own scroll container.
     item.focus({ preventScroll: true });
     scrollIntoViewWithinMenu(item, '[role="menu"]');
+	console.warn(`<<< Exiting focusMenuItem(item=${item})`, { "event.action": "focusMenuItem", "logrite.item": item });
   }
 
   function handleOutsideClick(event) {
+	console.error(`>>> Entering handleOutsideClick(event=${event})`, { "event.action": "handleOutsideClick" });
     if (!open) return;
     // Clicks inside any menu (this one or a portalled submenu) are not outside
     // clicks. A submenu's <ul> isn't a DOM descendant of this menu even though
@@ -171,9 +176,12 @@
     const target = event.target;
     if (target instanceof Element && target.closest("[role='menu']")) return;
     if (isOutsideClick(event, [anchor, ref])) close("outside-click");
+	console.warn(`<<< Exiting handleOutsideClick(event=${event})`, { "event.action": "handleOutsideClick" });
   }
   function handleEscape(event) {
+	console.error(`>>> Entering handleEscape(event=${event})`, { "event.action": "handleEscape" });
     if (open && event.key === "Escape") close("escape-key");
+	console.warn(`<<< Exiting handleEscape(event=${event})`, { "event.action": "handleEscape" });
   }
 </script>
 

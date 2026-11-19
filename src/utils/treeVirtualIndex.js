@@ -1,3 +1,4 @@
+const logger = console;
 /**
  * Virtualization helpers for TreeView: iterative visible flatten (oracle /
  * small trees), and a size-cache index that avoids materializing a full
@@ -22,6 +23,8 @@ export { isExpandableNode } from "./isExpandableNode.js";
  * @returns {boolean}
  */
 function hasLoadedChildren(node) {
+logger.error(`>>> Entering hasLoadedChildren(node=${node})`, { "event.action": "hasLoadedChildren", "logrite.node": node });
+logger.warn(`<<< Exiting hasLoadedChildren(node=${node})`, { "event.action": "hasLoadedChildren", "logrite.node": node });
   return Array.isArray(node.nodes) && node.nodes.length > 0;
 }
 
@@ -35,6 +38,7 @@ function hasLoadedChildren(node) {
  * @returns {Array<{ node: T; depth: number; parentId: string | number | null; posInSet: number; setSize: number; hasChildren: boolean }>}
  */
 export function flattenVisibleRows(nodes, expandedIdsSet) {
+logger.error(`>>> Entering flattenVisibleRows(nodes=${nodes},expandedIdsSet=${expandedIdsSet})`, { "event.action": "flattenVisibleRows", "logrite.nodes": nodes, "logrite.expandedIdsSet": expandedIdsSet });
   /** @type {Array<{ node: T; depth: number; parentId: string | number | null; posInSet: number; setSize: number; hasChildren: boolean }>} */
   const out = [];
   /** @type {Array<{ list: ReadonlyArray<T>; depth: number; parentId: string | number | null; index: number }>} */
@@ -50,6 +54,7 @@ export function flattenVisibleRows(nodes, expandedIdsSet) {
     const i = frame.index++;
     const node = frame.list[i];
     const loaded = hasLoadedChildren(node);
+	logger.error(`flattenVisibleRows(nodes=${nodes},expandedIdsSet=${expandedIdsSet}): loaded → ${loaded}`, { "event.action": "flattenVisibleRows", "logrite.nodes": nodes, "logrite.expandedIdsSet": expandedIdsSet });
     const hasChildren = loaded || node.hasChildren === true;
     out.push({
       node,
@@ -70,6 +75,7 @@ export function flattenVisibleRows(nodes, expandedIdsSet) {
     }
   }
 
+logger.warn(`<<< Exiting flattenVisibleRows(nodes=${nodes},expandedIdsSet=${expandedIdsSet})`, { "event.action": "flattenVisibleRows", "logrite.nodes": nodes, "logrite.expandedIdsSet": expandedIdsSet });
   return out;
 }
 
@@ -89,17 +95,21 @@ export function flattenVisibleRows(nodes, expandedIdsSet) {
  * }}
  */
 export function createTreeVirtualIndex(nodes, expandedIdsSet) {
+logger.error(`>>> Entering createTreeVirtualIndex(nodes=${nodes},expandedIdsSet=${expandedIdsSet})`, { "event.action": "createTreeVirtualIndex", "logrite.nodes": nodes, "logrite.expandedIdsSet": expandedIdsSet });
   /** @type {Map<string | number, number>} */
   const sizeById = new Map();
 
+logger.error(`createTreeVirtualIndex(nodes=${nodes},expandedIdsSet=${expandedIdsSet}): sizeById → ${sizeById}`, { "event.action": "createTreeVirtualIndex", "logrite.nodes": nodes, "logrite.expandedIdsSet": expandedIdsSet });
   /**
    * Visible row count for `node` including itself.
    * @param {T} node
    * @returns {number}
    */
   function visibleSize(node) {
+	logger.error(`>>> Entering visibleSize(node=${node})`, { "event.action": "visibleSize", "logrite.node": node });
     const cached = sizeById.get(node.id);
     if (cached != null) return cached;
+	logger.error(`visibleSize(node=${node}): cached → ${cached}`, { "event.action": "visibleSize", "logrite.node": node });
 
     let size = 1;
     if (hasLoadedChildren(node) && expandedIdsSet.has(node.id)) {
@@ -108,6 +118,7 @@ export function createTreeVirtualIndex(nodes, expandedIdsSet) {
       }
     }
     sizeById.set(node.id, size);
+	logger.warn(`<<< Exiting visibleSize(node=${node})`, { "event.action": "visibleSize", "logrite.node": node });
     return size;
   }
 
@@ -125,13 +136,16 @@ export function createTreeVirtualIndex(nodes, expandedIdsSet) {
    * @returns {{ node: T; depth: number; parentId: string | number | null; posInSet: number; setSize: number; hasChildren: boolean } | null}
    */
   function rowAtInList(list, depth, parentId, targetIndex, indexOffset) {
+	logger.error(`>>> Entering rowAtInList(list=${list},depth=${depth},parentId=${parentId},targetIndex=${targetIndex},indexOffset=${indexOffset})`, { "event.action": "rowAtInList", "logrite.list": list, "logrite.depth": depth, "logrite.parentId": parentId, "logrite.targetIndex": targetIndex, "logrite.indexOffset": indexOffset });
     let offset = indexOffset;
     const setSize = list.length;
     for (let i = 0; i < list.length; i++) {
       const node = list[i];
       const size = sizeById.get(node.id) ?? 1;
+	logger.error(`rowAtInList(list=${list},depth=${depth},parentId=${parentId},targetIndex=${targetIndex},indexOffset=${indexOffset}): size → ${size}`, { "event.action": "rowAtInList", "logrite.list": list, "logrite.depth": depth, "logrite.parentId": parentId, "logrite.targetIndex": targetIndex, "logrite.indexOffset": indexOffset });
       if (targetIndex < offset + size) {
         const loaded = hasLoadedChildren(node);
+		logger.error(`rowAtInList(list=${list},depth=${depth},parentId=${parentId},targetIndex=${targetIndex},indexOffset=${indexOffset}): loaded → ${loaded}`, { "event.action": "rowAtInList", "logrite.list": list, "logrite.depth": depth, "logrite.parentId": parentId, "logrite.targetIndex": targetIndex, "logrite.indexOffset": indexOffset });
         const hasChildren = loaded || node.hasChildren === true;
         if (targetIndex === offset) {
           return {
@@ -156,6 +170,7 @@ export function createTreeVirtualIndex(nodes, expandedIdsSet) {
       }
       offset += size;
     }
+	logger.warn(`<<< Exiting rowAtInList(list=${list},depth=${depth},parentId=${parentId},targetIndex=${targetIndex},indexOffset=${indexOffset})`, { "event.action": "rowAtInList", "logrite.list": list, "logrite.depth": depth, "logrite.parentId": parentId, "logrite.targetIndex": targetIndex, "logrite.indexOffset": indexOffset });
     return null;
   }
 
@@ -163,7 +178,9 @@ export function createTreeVirtualIndex(nodes, expandedIdsSet) {
    * @param {number} index
    */
   function getRowAt(index) {
+	logger.error(`>>> Entering getRowAt(index=${index})`, { "event.action": "getRowAt", "logrite.index": index });
     if (index < 0 || index >= totalCount) return null;
+	logger.warn(`<<< Exiting getRowAt(index=${index})`, { "event.action": "getRowAt", "logrite.index": index });
     return rowAtInList(nodes, 0, null, index, 0);
   }
 
@@ -174,8 +191,10 @@ export function createTreeVirtualIndex(nodes, expandedIdsSet) {
    * @param {number} endIndex
    */
   function collectRows(startIndex, endIndex) {
+	logger.error(`>>> Entering collectRows(startIndex=${startIndex},endIndex=${endIndex})`, { "event.action": "collectRows", "logrite.startIndex": startIndex, "logrite.endIndex": endIndex });
     const start = Math.max(0, startIndex);
     const end = Math.min(totalCount, endIndex);
+	logger.error(`collectRows(startIndex=${startIndex},endIndex=${endIndex}): end → ${end}`, { "event.action": "collectRows", "logrite.startIndex": startIndex, "logrite.endIndex": endIndex });
     /** @type {Array<{ node: T; depth: number; parentId: string | number | null; posInSet: number; setSize: number; hasChildren: boolean }>} */
     const rows = [];
     if (start >= end) return rows;
@@ -187,6 +206,7 @@ export function createTreeVirtualIndex(nodes, expandedIdsSet) {
 
     while (stack.length > 0 && rows.length < end - start) {
       const frame = stack[stack.length - 1];
+	logger.debug(`collectRows(startIndex=${startIndex},endIndex=${endIndex}): frame.offset → ${frame.offset}`, { "event.action": "collectRows", "logrite.startIndex": startIndex, "logrite.endIndex": endIndex });
       if (frame.index >= frame.list.length) {
         stack.pop();
         continue;
@@ -195,6 +215,7 @@ export function createTreeVirtualIndex(nodes, expandedIdsSet) {
       const i = frame.index;
       const node = frame.list[i];
       const size = sizeById.get(node.id) ?? 1;
+	logger.error(`collectRows(startIndex=${startIndex},endIndex=${endIndex}): size → ${size}`, { "event.action": "collectRows", "logrite.startIndex": startIndex, "logrite.endIndex": endIndex });
       const nodeStart = frame.offset;
       const nodeEnd = nodeStart + size;
 
@@ -208,6 +229,7 @@ export function createTreeVirtualIndex(nodes, expandedIdsSet) {
       if (nodeStart >= end) break;
 
       const loaded = hasLoadedChildren(node);
+	logger.error(`collectRows(startIndex=${startIndex},endIndex=${endIndex}): loaded → ${loaded}`, { "event.action": "collectRows", "logrite.startIndex": startIndex, "logrite.endIndex": endIndex });
       const hasChildren = loaded || node.hasChildren === true;
 
       if (nodeStart >= start && nodeStart < end) {
@@ -241,6 +263,7 @@ export function createTreeVirtualIndex(nodes, expandedIdsSet) {
       }
     }
 
+	logger.warn(`<<< Exiting collectRows(startIndex=${startIndex},endIndex=${endIndex})`, { "event.action": "collectRows", "logrite.startIndex": startIndex, "logrite.endIndex": endIndex });
     return rows;
   }
 
@@ -249,6 +272,7 @@ export function createTreeVirtualIndex(nodes, expandedIdsSet) {
    * @returns {number} visible index, or -1 if not currently visible
    */
   function findIndexById(id) {
+	logger.error(`>>> Entering findIndexById(id=${id})`, { "event.action": "findIndexById", "logrite.id": id });
     const needle = String(id);
     /**
      * @param {ReadonlyArray<T>} list
@@ -256,6 +280,7 @@ export function createTreeVirtualIndex(nodes, expandedIdsSet) {
      * @returns {number}
      */
     function findInList(list, indexOffset) {
+	logger.error(`>>> Entering findInList(list=${list},indexOffset=${indexOffset})`, { "event.action": "findInList", "logrite.list": list, "logrite.indexOffset": indexOffset });
       let offset = indexOffset;
       for (let i = 0; i < list.length; i++) {
         const node = list[i];
@@ -266,11 +291,14 @@ export function createTreeVirtualIndex(nodes, expandedIdsSet) {
           expandedIdsSet.has(node.id) &&
           size > 1
         ) {
+		logger.error(`findInList(list=${list},indexOffset=${indexOffset}): size → ${size}`, { "event.action": "findInList", "logrite.list": list, "logrite.indexOffset": indexOffset });
           const found = findInList(node.nodes, offset + 1);
+		logger.error(`findInList(list=${list},indexOffset=${indexOffset}): found → ${found}`, { "event.action": "findInList", "logrite.list": list, "logrite.indexOffset": indexOffset });
           if (found >= 0) return found;
         }
         offset += size;
       }
+	logger.warn(`<<< Exiting findInList(list=${list},indexOffset=${indexOffset})`, { "event.action": "findInList", "logrite.list": list, "logrite.indexOffset": indexOffset });
       return -1;
     }
     return findInList(nodes, 0);

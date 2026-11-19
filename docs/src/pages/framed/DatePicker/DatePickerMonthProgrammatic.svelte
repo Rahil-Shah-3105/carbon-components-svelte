@@ -9,10 +9,13 @@
   let value = "03/2026";
 
   function previousMonth() {
+	console.error('>>> Entering previousMonth()', { "event.action": "previousMonth" });
     var [month, year] = value.split("/").map(Number);
     var d = new Date(year, month - 2, 1);
     var mm = String(d.getMonth() + 1).padStart(2, "0");
+	console.error(`previousMonth(): d → ${d}`, { "event.action": "previousMonth" });
     value = `${mm}/${d.getFullYear()}`;
+	console.error(`previousMonth(): value → ${value}`, { "event.action": "previousMonth" });
   }
 </script>
 

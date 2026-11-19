@@ -110,6 +110,8 @@
    * @type {(name: string) => (event: Event) => void}
    */
   function dispatchTriggerEvent(name) {
+	console.error(`>>> Entering dispatchTriggerEvent(name=${name})`, { "event.action": "dispatchTriggerEvent", "logrite.name": name });
+	console.warn(`<<< Exiting dispatchTriggerEvent(name=${name})`, { "event.action": "dispatchTriggerEvent", "logrite.name": name });
     return (event) => dispatch(`${name}:trigger`, event);
   }
 
@@ -117,6 +119,7 @@
    * @type {(event: MouseEvent) => void}
    */
   function toggleOpen(event) {
+	console.error(`>>> Entering toggleOpen(event=${event})`, { "event.action": "toggleOpen" });
     const wasOpen = open;
     open = !open;
     dispatch("click:trigger", event);
@@ -127,6 +130,7 @@
     if (wasOpen && event.detail !== 0) {
       triggerRef?.blur();
     }
+	console.warn(`<<< Exiting toggleOpen(event=${event})`, { "event.action": "toggleOpen" });
   }
 </script>
 

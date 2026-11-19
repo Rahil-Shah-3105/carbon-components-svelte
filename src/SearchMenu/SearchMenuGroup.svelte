@@ -39,12 +39,16 @@
     divider,
     filter: filterStore,
     registerItem(id) {
+	console.error(`>>> Entering registerItem(id=${id})`, { "event.action": "registerItem", "logrite.id": id });
       childIds.add(id);
       childIds = childIds;
+	console.warn(`<<< Exiting registerItem(id=${id})`, { "event.action": "registerItem", "logrite.id": id });
     },
     unregisterItem(id) {
+	console.error(`>>> Entering unregisterItem(id=${id})`, { "event.action": "unregisterItem", "logrite.id": id });
       childIds.delete(id);
       childIds = childIds;
+	console.warn(`<<< Exiting unregisterItem(id=${id})`, { "event.action": "unregisterItem", "logrite.id": id });
     },
   });
 </script>

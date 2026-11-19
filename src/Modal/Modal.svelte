@@ -155,6 +155,7 @@
   let mounted = false;
 
   function focus(element) {
+	console.error(`>>> Entering focus(element=${element})`, { "event.action": "focus", "logrite.element": element });
     const container = element || innerModal;
     const node = initialFocus({
       container,
@@ -166,16 +167,20 @@
       ],
     });
     node?.focus();
+	console.warn(`<<< Exiting focus(element=${element})`, { "event.action": "focus", "logrite.element": element });
   }
 
   function close(trigger) {
+	console.error(`>>> Entering close(trigger=${trigger})`, { "event.action": "close", "logrite.trigger": trigger });
     closeDispatched = true;
     const shouldContinue = dispatch("close", { trigger }, { cancelable: true });
     if (shouldContinue) {
+	console.error(`close(trigger=${trigger}): shouldContinue → ${shouldContinue}`, { "event.action": "close", "logrite.trigger": trigger });
       open = false;
     } else {
       closeDispatched = false;
     }
+	console.warn(`<<< Exiting close(trigger=${trigger})`, { "event.action": "close", "logrite.trigger": trigger });
   }
 
   const outsideDismiss = createOutsideDismiss(() => {

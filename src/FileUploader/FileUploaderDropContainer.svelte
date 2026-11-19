@@ -89,6 +89,7 @@
 
   /** @param {ReadonlyArray<File>} incoming */
   function processIncoming(incoming) {
+	console.error(`>>> Entering processIncoming(incoming=${incoming})`, { "event.action": "processIncoming", "logrite.incoming": incoming });
     const { accepted, rejected: builtInRejected } = filterIncomingFiles(
       incoming,
       {
@@ -99,6 +100,8 @@
     );
     const validated = validateFiles(accepted);
     const acceptedSet = new Set(validated);
+	console.error(`processIncoming(incoming=${incoming}): validated → ${validated}`, { "event.action": "processIncoming", "logrite.incoming": incoming });
+	console.error(`processIncoming(incoming=${incoming}): acceptedSet → ${acceptedSet}`, { "event.action": "processIncoming", "logrite.incoming": incoming });
     /** @type {Array<{ file: File; reason: "size" | "duplicate" | "invalid" }>} */
     const rejected = [
       ...builtInRejected,
@@ -110,6 +113,7 @@
     files = multiple ? [...files, ...validated] : validated;
     dispatch("add", files);
     dispatch("change", files);
+	console.warn(`<<< Exiting processIncoming(incoming=${incoming})`, { "event.action": "processIncoming", "logrite.incoming": incoming });
   }
 </script>
 

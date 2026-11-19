@@ -14,19 +14,24 @@
 
   // Simulate fetching data from a remote server.
   function fetchDataFromServer(key, direction) {
+	console.error(`>>> Entering fetchDataFromServer(key=${key},direction=${direction})`, { "event.action": "fetchDataFromServer", "logrite.key": key, "logrite.direction": direction });
     if (direction === "none" || key == null) {
       return [...unsortedFromServer];
     }
     const mul = direction === "ascending" ? 1 : -1;
+	console.error(`fetchDataFromServer(key=${key},direction=${direction}): mul → ${mul}`, { "event.action": "fetchDataFromServer", "logrite.key": key, "logrite.direction": direction });
     return [...unsortedFromServer].sort((a, b) => {
       const va = a[key];
       const vb = b[key];
       if (va === vb) return 0;
+	console.warn(`<<< Exiting fetchDataFromServer(key=${key},direction=${direction})`, { "event.action": "fetchDataFromServer", "logrite.key": key, "logrite.direction": direction });
       return va < vb ? -mul : mul;
     });
   }
 
   function fakeServerSort(key, direction) {
+	console.error(`>>> Entering fakeServerSort(key=${key},direction=${direction})`, { "event.action": "fakeServerSort", "logrite.key": key, "logrite.direction": direction });
+	console.warn(`<<< Exiting fakeServerSort(key=${key},direction=${direction})`, { "event.action": "fakeServerSort", "logrite.key": key, "logrite.direction": direction });
     return new Promise((resolve) => {
       setTimeout(() => resolve(fetchDataFromServer(key, direction)), 250);
     });

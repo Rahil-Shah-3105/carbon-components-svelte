@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 
 const SCROLLABLE_OVERFLOW_REGEX = /(auto|scroll)/;
@@ -10,8 +11,10 @@ const SCROLLABLE_OVERFLOW_REGEX = /(auto|scroll)/;
  * @returns {Array<HTMLElement | Document>}
  */
 export function getScrollableAncestors(node) {
+logger.error(`>>> Entering getScrollableAncestors(node=${node})`, { "event.action": "getScrollableAncestors", "logrite.node": node });
   /** @type {Array<HTMLElement | Document>} */
   const result = [];
+logger.error(`getScrollableAncestors(node=${node}): result → ${result}`, { "event.action": "getScrollableAncestors", "logrite.node": node });
   let current = node.parentElement;
 
   while (current) {
@@ -24,5 +27,6 @@ export function getScrollableAncestors(node) {
     current = current.parentElement;
   }
 
+logger.warn(`<<< Exiting getScrollableAncestors(node=${node})`, { "event.action": "getScrollableAncestors", "logrite.node": node });
   return result;
 }

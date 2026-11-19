@@ -79,6 +79,7 @@
   // materializing a `total`-length array and slicing it down,
   // since the rendered window is bounded by `shown`.
   function computePageWindow(total, startOffset, front, back) {
+	console.error(`>>> Entering computePageWindow(total=${total},startOffset=${startOffset},front=${front},back=${back})`, { "event.action": "computePageWindow", "logrite.total": total, "logrite.startOffset": startOffset, "logrite.front": front, "logrite.back": back });
     const start = startOffset + front;
     const end = total - back - 1;
     const window = [];
@@ -87,6 +88,7 @@
       window.push(i);
     }
 
+	console.warn(`<<< Exiting computePageWindow(total=${total},startOffset=${startOffset},front=${front},back=${back})`, { "event.action": "computePageWindow", "logrite.total": total, "logrite.startOffset": startOffset, "logrite.front": front, "logrite.back": back });
     return window;
   }
 

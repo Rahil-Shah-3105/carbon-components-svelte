@@ -12,24 +12,36 @@
   let subtitle = "An internal server error occurred.";
 
   function showError() {
+	console.error('>>> Entering showError()', { "event.action": "showError" });
     kind = "error";
     title = "Error:";
+	console.error(`showError(): kind → ${kind}`, { "event.action": "showError" });
+	console.error(`showError(): title → ${title}`, { "event.action": "showError" });
     subtitle = "An internal server error occurred.";
     open = true;
+	console.error(`showError(): subtitle → ${subtitle}`, { "event.action": "showError" });
   }
 
   function showSuccess() {
+	console.error('>>> Entering showSuccess()', { "event.action": "showSuccess" });
     kind = "success";
     title = "Success:";
+	console.error(`showSuccess(): kind → ${kind}`, { "event.action": "showSuccess" });
+	console.error(`showSuccess(): title → ${title}`, { "event.action": "showSuccess" });
     subtitle = "Your settings have been saved.";
     open = true;
+	console.error(`showSuccess(): subtitle → ${subtitle}`, { "event.action": "showSuccess" });
   }
 
   function showWarning() {
+	console.error('>>> Entering showWarning()', { "event.action": "showWarning" });
     kind = "warning";
     title = "Warning:";
+	console.error(`showWarning(): kind → ${kind}`, { "event.action": "showWarning" });
+	console.error(`showWarning(): title → ${title}`, { "event.action": "showWarning" });
     subtitle = "Please review your changes before continuing.";
     open = true;
+	console.error(`showWarning(): subtitle → ${subtitle}`, { "event.action": "showWarning" });
   }
 </script>
 

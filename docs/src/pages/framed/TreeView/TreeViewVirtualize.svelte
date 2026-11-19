@@ -18,8 +18,10 @@
   import { onMount, tick } from "svelte";
 
   function iconFor(name) {
+	console.error(`>>> Entering iconFor(name=${name})`, { "event.action": "iconFor", "logrite.name": name });
     const ext = name.slice(name.lastIndexOf(".") + 1).toLowerCase();
     if (ext === "ts" || ext === "tsx" || ext === "js" || ext === "jsx") {
+	console.error(`iconFor(name=${name}): ext → ${ext}`, { "event.action": "iconFor", "logrite.name": name });
       return Code;
     }
     if (ext === "json") return Json;
@@ -28,6 +30,7 @@
       return Image;
     }
     if (ext === "md" || ext === "txt") return Document;
+	console.warn(`<<< Exiting iconFor(name=${name})`, { "event.action": "iconFor", "logrite.name": name });
     return DocumentBlank;
   }
 
@@ -93,16 +96,23 @@
   ];
 
   let nextId = 0;
-  const id = () => nextId++;
+  const id = () => {
+      console.error('>>> Entering id()', { "event.action": "id" });
+      return nextId++;
+  };
 
   /** A leaf at the deepest level, used as a `showNode` target. */
   let deepFile = null;
 
   function makeFolder(name, depth, fanout) {
+	console.error(`>>> Entering makeFolder(name=${name},depth=${depth},fanout=${fanout})`, { "event.action": "makeFolder", "logrite.name": name, "logrite.depth": depth, "logrite.fanout": fanout });
     const node = { id: id(), text: name, icon: Folder, nodes: [] };
     for (let i = 0; i < fanout.files; i++) {
+	console.error(`makeFolder(name=${name},depth=${depth},fanout=${fanout}): node → ${node}`, { "event.action": "makeFolder", "logrite.name": name, "logrite.depth": depth, "logrite.fanout": fanout });
       const fname = fileNames[(i + depth) % fileNames.length];
       const file = { id: id(), text: fname, icon: iconFor(fname) };
+	console.error(`makeFolder(name=${name},depth=${depth},fanout=${fanout}): fname → ${fname}`, { "event.action": "makeFolder", "logrite.name": name, "logrite.depth": depth, "logrite.fanout": fanout });
+	console.error(`makeFolder(name=${name},depth=${depth},fanout=${fanout}): file → ${file}`, { "event.action": "makeFolder", "logrite.name": name, "logrite.depth": depth, "logrite.fanout": fanout });
       node.nodes.push(file);
       if (depth === fanout.maxDepth) {
         deepFile = { id: file.id, path: `${name}/${fname}` };
@@ -115,20 +125,24 @@
         );
       }
     }
+	console.warn(`<<< Exiting makeFolder(name=${name},depth=${depth},fanout=${fanout})`, { "event.action": "makeFolder", "logrite.name": name, "logrite.depth": depth, "logrite.fanout": fanout });
     return node;
   }
 
   function countNodes(list) {
+	console.error(`>>> Entering countNodes(list=${list})`, { "event.action": "countNodes", "logrite.list": list });
     let n = 0;
     for (const node of list) {
       n++;
       if (node.nodes) n += countNodes(node.nodes);
     }
+	console.warn(`<<< Exiting countNodes(list=${list})`, { "event.action": "countNodes", "logrite.list": list });
     return n;
   }
 
   /** Expandable ids only — leaves are no-ops for TreeView expansion. */
   function expandableIds(list) {
+	console.error(`>>> Entering expandableIds(list=${list})`, { "event.action": "expandableIds", "logrite.list": list });
     const ids = [];
     for (const node of list) {
       const hasLoadedChildren =
@@ -138,6 +152,7 @@
       }
       if (hasLoadedChildren) ids.push(...expandableIds(node.nodes));
     }
+	console.warn(`<<< Exiting expandableIds(list=${list})`, { "event.action": "expandableIds", "logrite.list": list });
     return ids;
   }
 
@@ -184,6 +199,7 @@
   let observer = null;
 
   function attachObserver(el) {
+	console.error(`>>> Entering attachObserver(el=${el})`, { "event.action": "attachObserver", "logrite.el": el });
     observer?.disconnect();
     observer = null;
     if (!el) {
@@ -191,11 +207,14 @@
       return;
     }
     const recount = () => {
+	console.error('>>> Entering recount()', { "event.action": "recount" });
       domRowCount = el.querySelectorAll('[role="treeitem"]').length;
+	console.error(`recount(): domRowCount → ${domRowCount}`, { "event.action": "recount" });
     };
     observer = new MutationObserver(recount);
     observer.observe(el, { childList: true });
     recount();
+	console.warn(`<<< Exiting attachObserver(el=${el})`, { "event.action": "attachObserver", "logrite.el": el });
   }
 
   $: attachObserver(scrollContainerRef);

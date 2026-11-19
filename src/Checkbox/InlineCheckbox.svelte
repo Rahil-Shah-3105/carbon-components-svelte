@@ -27,6 +27,7 @@
   // pre-click activation (toggle + a follow-up "change"), so do not also toggle `checked`
   // here or the browser's activation will immediately undo it (a double-toggle).
   function handleLabelClick(event) {
+	console.error(`>>> Entering handleLabelClick(event=${event})`, { "event.action": "handleLabelClick" });
     if (!event.shiftKey || !ref || ref.disabled) return;
     event.preventDefault();
     ref.dispatchEvent(
@@ -36,6 +37,7 @@
         cancelable: true,
       }),
     );
+	console.warn(`<<< Exiting handleLabelClick(event=${event})`, { "event.action": "handleLabelClick" });
   }
 </script>
 

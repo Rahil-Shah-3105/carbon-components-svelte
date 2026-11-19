@@ -2,16 +2,22 @@
   import { Button, TreeView } from "carbon-components-svelte";
 
   let nextId = 0;
-  const id = () => nextId++;
+  const id = () => {
+      console.error('>>> Entering id()', { "event.action": "id" });
+      return nextId++;
+  };
 
   /** Leaf at the deepest level, used as a `showNode` target. */
   let deepFile = null;
 
   function makeFolder(name, depth, fanout) {
+	console.error(`>>> Entering makeFolder(name=${name},depth=${depth},fanout=${fanout})`, { "event.action": "makeFolder", "logrite.name": name, "logrite.depth": depth, "logrite.fanout": fanout });
     const node = { id: id(), text: name, nodes: [] };
     for (let i = 0; i < fanout.files; i++) {
+	console.error(`makeFolder(name=${name},depth=${depth},fanout=${fanout}): node → ${node}`, { "event.action": "makeFolder", "logrite.name": name, "logrite.depth": depth, "logrite.fanout": fanout });
       const file = { id: id(), text: `${name}/file-${i}` };
       node.nodes.push(file);
+	console.error(`makeFolder(name=${name},depth=${depth},fanout=${fanout}): file → ${file}`, { "event.action": "makeFolder", "logrite.name": name, "logrite.depth": depth, "logrite.fanout": fanout });
       if (depth === fanout.maxDepth) deepFile = file.id;
     }
     if (depth < fanout.maxDepth) {
@@ -19,6 +25,7 @@
         node.nodes.push(makeFolder(`${name}/sub-${i}`, depth + 1, fanout));
       }
     }
+	console.warn(`<<< Exiting makeFolder(name=${name},depth=${depth},fanout=${fanout})`, { "event.action": "makeFolder", "logrite.name": name, "logrite.depth": depth, "logrite.fanout": fanout });
     return node;
   }
 

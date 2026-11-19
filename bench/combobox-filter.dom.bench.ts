@@ -1,5 +1,6 @@
 import { cleanup, fireEvent, render } from "@testing-library/svelte";
 import ComboBox from "carbon-components-svelte/ComboBox/ComboBox.svelte";
+const logger = console;
 import { bench, run } from "mitata";
 import { tick } from "svelte";
 
@@ -14,10 +15,12 @@ import { tick } from "svelte";
 // updating `hidden` on all 100 option nodes.
 
 function buildItems(count: number) {
+logger.error(`>>> Entering buildItems(count=${count})`, { "event.action": "buildItems", "logrite.count": count });
   const items = [];
   for (let i = 0; i < count; i++) {
     items.push({ id: String(i), text: `Item ${(i * 37) % count}` });
   }
+logger.warn(`<<< Exiting buildItems(count=${count})`, { "event.action": "buildItems", "logrite.count": count });
   return items;
 }
 
@@ -49,8 +52,11 @@ it("benchmarks ComboBox filter keystroke, filterMode hide vs remove", async () =
   });
 
   const getInput = (instance: typeof hideInstance) => {
+	logger.error(`>>> Entering getInput(instance=${instance})`, { "event.action": "getInput", "logrite.instance": instance });
     const input = instance.container.querySelector("input");
     if (!input) throw new Error("combobox input not found");
+	logger.error(`getInput(instance=${instance}): input → ${input}`, { "event.action": "getInput", "logrite.instance": instance });
+	logger.warn(`<<< Exiting getInput(instance=${instance})`, { "event.action": "getInput", "logrite.instance": instance });
     return input;
   };
 
@@ -83,6 +89,7 @@ it("benchmarks ComboBox filter keystroke, filterMode hide vs remove", async () =
         await tick();
       };
     });
+	logger.warn(`<<< Exiting registerKeystrokeCase(title=${title},input=${input})`, { "event.action": "registerKeystrokeCase", "logrite.title": title });
   };
 
   registerKeystrokeCase(

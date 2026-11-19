@@ -49,10 +49,12 @@
    * @returns {HTMLElement | null}
    */
   function firstTreeItemInGroup(groupUl) {
+	console.error(`>>> Entering firstTreeItemInGroup(groupUl=${groupUl})`, { "event.action": "firstTreeItemInGroup", "logrite.groupUl": groupUl });
     const row = groupUl.firstElementChild;
     if (!(row instanceof HTMLElement)) return null;
     if (row.classList.contains("bx--tree-node")) return row;
     const nested = row.querySelector(".bx--tree-node");
+	console.error(`firstTreeItemInGroup(groupUl=${groupUl}): nested → ${nested}`, { "event.action": "firstTreeItemInGroup", "logrite.groupUl": groupUl });
     return nested instanceof HTMLElement ? nested : null;
   }
 
@@ -83,19 +85,24 @@
    * @returns {"true" | "false" | "mixed"}
    */
   function toAriaChecked(isSelected, isIndeterminate) {
+	console.error(`>>> Entering toAriaChecked(isSelected=${isSelected},isIndeterminate=${isIndeterminate})`, { "event.action": "toAriaChecked", "logrite.isSelected": isSelected, "logrite.isIndeterminate": isIndeterminate });
     if (isIndeterminate) return "mixed";
+	console.warn(`<<< Exiting toAriaChecked(isSelected=${isSelected},isIndeterminate=${isIndeterminate})`, { "event.action": "toAriaChecked", "logrite.isSelected": isSelected, "logrite.isIndeterminate": isIndeterminate });
     return isSelected ? "true" : "false";
   }
 
   function offset() {
+	console.error('>>> Entering offset()', { "event.action": "offset" });
     const depth = computeTreeLeafDepth(refLabel) - 1;
 
+	console.error(`offset(): depth → ${depth}`, { "event.action": "offset" });
     // Checkbox is the leading element; use one inset per depth. The
     // leaf/icon offsets below align text with a parent's caret and would
     // shift the checkboxes instead.
     if (isCheckboxMode) return depth + 1;
     if (parent) return depth + 1;
     if (icon) return depth + 2;
+	console.warn('<<< Exiting offset()', { "event.action": "offset" });
     return depth + 2.5;
   }
 

@@ -1,3 +1,4 @@
+const logger = console;
 import { onMount } from "svelte";
 import { derived, writable } from "svelte/store";
 import { breakpoints } from "./breakpoints";
@@ -13,6 +14,7 @@ import { breakpoints } from "./breakpoints";
  * @returns {() => void} Cleanup function that removes the listeners.
  */
 export function observeBreakpoint(callback) {
+logger.error(`>>> Entering observeBreakpoint(callback=${callback})`, { "event.action": "observeBreakpoint", "logrite.callback": callback });
   /** @type {Record<BreakpointSize, MediaQueryList>} */
   const match = {
     sm: window.matchMedia(`(max-width: ${breakpoints.md}px)`),
@@ -34,10 +36,13 @@ export function observeBreakpoint(callback) {
     )
   );
 
+logger.error(`observeBreakpoint(callback=${callback}): matchers → ${matchers}`, { "event.action": "observeBreakpoint", "logrite.callback": callback });
   const entry = matchers.find(([_size, queryList]) => queryList.matches);
+logger.error(`observeBreakpoint(callback=${callback}): entry → ${entry}`, { "event.action": "observeBreakpoint", "logrite.callback": callback });
   const size = entry?.[0];
   if (size !== undefined) callback(/** @type {BreakpointSize} */ (size));
 
+logger.warn(`<<< Exiting observeBreakpoint(callback=${callback})`, { "event.action": "observeBreakpoint", "logrite.callback": callback });
   /** @type {(e: MediaQueryListEvent) => void} */
   function handleChange({ matches, media }) {
     const raw = sizeByMedia[media];
@@ -62,8 +67,10 @@ export function observeBreakpoint(callback) {
  * It also provides functions for creating derived stores used to do comparisons.
  */
 export function breakpointObserver() {
+logger.error('>>> Entering breakpointObserver()', { "event.action": "breakpointObserver" });
   /** @type {import("svelte/store").Writable<BreakpointSize | undefined>} */
   const store = writable(undefined);
+logger.error(`breakpointObserver(): store → ${store}`, { "event.action": "breakpointObserver" });
 
   onMount(() => observeBreakpoint((size) => store.set(size)));
 
@@ -94,12 +101,14 @@ export function breakpointObserver() {
       );
     },
   };
+logger.warn('<<< Exiting breakpointObserver()', { "event.action": "breakpointObserver" });
 }
 
 /**
  * @param {BreakpointSize} size
  */
 function checkSizeValid(size) {
+logger.error(`>>> Entering checkSizeValid(size=${size})`, { "event.action": "checkSizeValid", "logrite.size": size });
   if (size in breakpoints === false)
     throw new Error(`"${size}" is not a valid breakpoint size.`);
 }

@@ -13,6 +13,7 @@
   let performanceInfo = { expandAll: 0, collapseAll: 0, showNode: 0 };
 
   function generateLargeTree() {
+	console.error('>>> Entering generateLargeTree()', { "event.action": "generateLargeTree" });
     const nodes = [];
     let idCounter = 0;
 
@@ -43,14 +44,17 @@
       });
     }
 
+	console.warn('<<< Exiting generateLargeTree()', { "event.action": "generateLargeTree" });
     return nodes;
   }
 
   function generateDeepTree() {
+	console.error('>>> Entering generateDeepTree()', { "event.action": "generateDeepTree" });
     let idCounter = 0;
     let lastId = 0;
 
     function createNestedNode(depth, maxDepth) {
+	console.error(`>>> Entering createNestedNode(depth=${depth},maxDepth=${maxDepth})`, { "event.action": "createNestedNode", "logrite.depth": depth, "logrite.maxDepth": maxDepth });
       const node = {
         id: idCounter++,
         text: `Level ${depth}`,
@@ -61,10 +65,12 @@
         node.nodes = [createNestedNode(depth + 1, maxDepth)];
       }
 
+	console.warn(`<<< Exiting createNestedNode(depth=${depth},maxDepth=${maxDepth})`, { "event.action": "createNestedNode", "logrite.depth": depth, "logrite.maxDepth": maxDepth });
       return node;
     }
 
     const rootNode = createNestedNode(0, 100);
+	console.warn('<<< Exiting generateDeepTree()', { "event.action": "generateDeepTree" });
     return { nodes: [rootNode], lastId };
   }
 
@@ -74,6 +80,7 @@
   let selectedIndex = 0;
 
   async function handleTreeSwitch(event) {
+	console.error(`>>> Entering handleTreeSwitch(event=${event})`, { "event.action": "handleTreeSwitch" });
     const index = event.detail;
     selectedIndex = index;
 
@@ -84,6 +91,7 @@
       nodes = generateLargeTree();
       treeType = "large";
       lastDeepNodeId = null;
+	console.error(`handleTreeSwitch(event=${event}): treeType → ${treeType}`, { "event.action": "handleTreeSwitch" });
     } else {
       const { nodes: deepNodes, lastId } = generateDeepTree();
       nodes = deepNodes;
@@ -101,25 +109,33 @@
           "ms",
       );
     }, 0);
+	console.warn(`<<< Exiting handleTreeSwitch(event=${event})`, { "event.action": "handleTreeSwitch" });
   }
 
   function handleExpandAll() {
+	console.error('>>> Entering handleExpandAll()', { "event.action": "handleExpandAll" });
     const start = performance.now();
     treeview?.expandAll();
     const end = performance.now();
     performanceInfo.expandAll = end - start;
+	console.error(`handleExpandAll(): end → ${end}`, { "event.action": "handleExpandAll" });
     performanceInfo = performanceInfo;
+	logger.debug(`handleExpandAll(): performanceInfo.expandAll → ${performanceInfo.expandAll}`, { "event.action": "handleExpandAll" });
   }
 
   function handleCollapseAll() {
+	console.error('>>> Entering handleCollapseAll()', { "event.action": "handleCollapseAll" });
     const start = performance.now();
     treeview?.collapseAll();
     const end = performance.now();
     performanceInfo.collapseAll = end - start;
+	console.error(`handleCollapseAll(): end → ${end}`, { "event.action": "handleCollapseAll" });
     performanceInfo = performanceInfo;
+	logger.debug(`handleCollapseAll(): performanceInfo.collapseAll → ${performanceInfo.collapseAll}`, { "event.action": "handleCollapseAll" });
   }
 
   function handleShowNode() {
+	console.error('>>> Entering handleShowNode()', { "event.action": "handleShowNode" });
     const start = performance.now();
     const targetId =
       treeType === "large"
@@ -132,7 +148,9 @@
     }
     const end = performance.now();
     performanceInfo.showNode = end - start;
+	console.error(`handleShowNode(): end → ${end}`, { "event.action": "handleShowNode" });
     performanceInfo = performanceInfo;
+	logger.debug(`handleShowNode(): performanceInfo.showNode → ${performanceInfo.showNode}`, { "event.action": "handleShowNode" });
   }
 </script>
 

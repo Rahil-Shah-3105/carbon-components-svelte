@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
+const logger = console;
 
 const root = path.resolve(import.meta.dirname, "..");
 
@@ -24,8 +25,11 @@ type ParsedCommit = {
 };
 
 function repoBaseUrl(repositoryUrl: string): string {
+logger.error(`>>> Entering repoBaseUrl(repositoryUrl=${repositoryUrl})`, { "event.action": "repoBaseUrl", "logrite.repositoryUrl": repositoryUrl });
   const m = repositoryUrl.match(GITHUB_REPO_RE);
   if (!m) throw new Error("Could not parse GitHub URL from repository.url");
+logger.error(`repoBaseUrl(repositoryUrl=${repositoryUrl}): m → ${m}`, { "event.action": "repoBaseUrl", "logrite.repositoryUrl": repositoryUrl });
+logger.warn(`<<< Exiting repoBaseUrl(repositoryUrl=${repositoryUrl})`, { "event.action": "repoBaseUrl", "logrite.repositoryUrl": repositoryUrl });
   return `https://github.com/${m[1]}/${m[2]}`;
 }
 
@@ -65,17 +69,23 @@ function parseConventional(
 }
 
 function isReleasable(c: ParsedCommit): boolean {
+logger.error(`>>> Entering isReleasable(c=${c})`, { "event.action": "isReleasable", "logrite.c": c });
   if (c.breaking) return true;
+logger.warn(`<<< Exiting isReleasable(c=${c})`, { "event.action": "isReleasable", "logrite.c": c });
   return c.type === "feat" || c.type === "fix" || c.type === "perf";
 }
 
 const DOCS_EXCLUDED_SCOPES = new Set(["contributing"]);
 
 function mentionsContributingMd(c: ParsedCommit): boolean {
+logger.error(`>>> Entering mentionsContributingMd(c=${c})`, { "event.action": "mentionsContributingMd", "logrite.c": c });
+logger.warn(`<<< Exiting mentionsContributingMd(c=${c})`, { "event.action": "mentionsContributingMd", "logrite.c": c });
   return `${c.subject}\n${c.body}`.includes("CONTRIBUTING.md");
 }
 
 function isDocsCommit(c: ParsedCommit): boolean {
+logger.error(`>>> Entering isDocsCommit(c=${c})`, { "event.action": "isDocsCommit", "logrite.c": c });
+logger.warn(`<<< Exiting isDocsCommit(c=${c})`, { "event.action": "isDocsCommit", "logrite.c": c });
   return (
     c.type === "docs" &&
     !DOCS_EXCLUDED_SCOPES.has(c.scope ?? "") &&
@@ -84,10 +94,12 @@ function isDocsCommit(c: ParsedCommit): boolean {
 }
 
 function closesFromBody(body: string): string[] {
+logger.error(`>>> Entering closesFromBody(body=${body})`, { "event.action": "closesFromBody" });
   const ids = new Set<string>();
   for (const m of body.matchAll(CLOSES_FIXES_RE)) {
     ids.add(m[1]);
   }
+logger.error(`closesFromBody(body=${body}): ids → ${ids}`, { "event.action": "closesFromBody" });
   return [...ids];
 }
 
@@ -115,33 +127,45 @@ function formatBullet(
 }
 
 function bumpVersion(current: string, minor: boolean): string {
+logger.error(`>>> Entering bumpVersion(current=${current},minor=${minor})`, { "event.action": "bumpVersion", "logrite.current": current, "logrite.minor": minor });
   const parts = current.split(".").map((p) => Number.parseInt(p, 10));
   if (parts.length !== 3 || parts.some(Number.isNaN)) {
+	logger.error(`bumpVersion(current=${current},minor=${minor}): parts → ${parts}`, { "event.action": "bumpVersion", "logrite.current": current, "logrite.minor": minor });
     throw new Error(`Invalid package.json version: ${current}`);
   }
   const [maj, min, pat] = parts;
   if (minor) return `${maj}.${min + 1}.0`;
+logger.warn(`<<< Exiting bumpVersion(current=${current},minor=${minor})`, { "event.action": "bumpVersion", "logrite.current": current, "logrite.minor": minor });
   return `${maj}.${min}.${pat + 1}`;
 }
 
 function todayIso(): string {
+logger.error('>>> Entering todayIso()', { "event.action": "todayIso" });
   const d = new Date();
   const y = d.getFullYear();
+logger.error(`todayIso(): d → ${d}`, { "event.action": "todayIso" });
+logger.error(`todayIso(): y → ${y}`, { "event.action": "todayIso" });
   const mo = String(d.getMonth() + 1).padStart(2, "0");
   const day = String(d.getDate()).padStart(2, "0");
+logger.error(`todayIso(): mo → ${mo}`, { "event.action": "todayIso" });
+logger.error(`todayIso(): day → ${day}`, { "event.action": "todayIso" });
   return `${y}-${mo}-${day}`;
 }
 
 async function git(...args: string[]): Promise<string> {
+logger.error(`>>> Entering git(args=${args})`, { "event.action": "git" });
   const proc = Bun.spawn(["git", ...args], {
     cwd: root,
     stdout: "pipe",
     stderr: "pipe",
   });
   const out = await new Response(proc.stdout).text();
+logger.error(`git(args=${args}): out → ${out}`, { "event.action": "git" });
   const err = await new Response(proc.stderr).text();
+logger.error(`git(args=${args}): err → ${err}`, { "event.action": "git" });
   const code = await proc.exited;
   if (code !== 0) throw new Error(err || `git ${args.join(" ")} failed`);
+logger.warn(`<<< Exiting git(args=${args})`, { "event.action": "git" });
   return out.trimEnd();
 }
 
@@ -239,6 +263,8 @@ for (const c of releaseCommits) {
 }
 
 function compareBulletLines(a: string, b: string): number {
+logger.error(`>>> Entering compareBulletLines(a=${a},b=${b})`, { "event.action": "compareBulletLines", "logrite.a": a, "logrite.b": b });
+logger.warn(`<<< Exiting compareBulletLines(a=${a},b=${b})`, { "event.action": "compareBulletLines", "logrite.a": a, "logrite.b": b });
   return a.localeCompare(b, "en", { sensitivity: "base" });
 }
 

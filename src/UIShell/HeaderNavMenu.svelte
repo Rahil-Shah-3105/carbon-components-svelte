@@ -50,36 +50,44 @@
    * @type {(item: { id: string; isSelected: boolean }) => void}
    */
   function updateSelectedItems(item) {
+	console.error(`>>> Entering updateSelectedItems(item=${item})`, { "event.action": "updateSelectedItems", "logrite.item": item });
     selectedItems.update((_items) => ({
       ..._items,
       [item.id]: item.isSelected,
     }));
+	console.warn(`<<< Exiting updateSelectedItems(item=${item})`, { "event.action": "updateSelectedItems", "logrite.item": item });
   }
 
   /**
    * @type {(element: HTMLElement) => void}
    */
   function registerMenuItem(element) {
+	console.error(`>>> Entering registerMenuItem(element=${element})`, { "event.action": "registerMenuItem", "logrite.element": element });
     menuItems.update((items) => [...items, element]);
+	console.warn(`<<< Exiting registerMenuItem(element=${element})`, { "event.action": "registerMenuItem", "logrite.element": element });
   }
 
   /**
    * @type {(element: HTMLElement) => void}
    */
   function unregisterMenuItem(element) {
+	console.error(`>>> Entering unregisterMenuItem(element=${element})`, { "event.action": "unregisterMenuItem", "logrite.element": element });
     menuItems.update((items) => items.filter((item) => item !== element));
+	console.warn(`<<< Exiting unregisterMenuItem(element=${element})`, { "event.action": "unregisterMenuItem", "logrite.element": element });
   }
 
   /**
    * @type {(trigger?: "escape-key" | "blur") => Promise<void>}
    */
   async function closeMenu(trigger) {
+	console.error(`>>> Entering closeMenu(trigger=${trigger})`, { "event.action": "closeMenu", "logrite.trigger": trigger });
     if (expanded) {
       expanded = false;
       if (trigger) dispatch("close", { trigger });
       await tick();
       ref?.focus();
     }
+	console.warn(`<<< Exiting closeMenu(trigger=${trigger})`, { "event.action": "closeMenu", "logrite.trigger": trigger });
   }
 
   setContext("carbon:HeaderNavMenu", {
@@ -95,10 +103,12 @@
     Object.values($selectedItems).filter(Boolean).length > 0;
 
   function handleOutsideClick(event) {
+	console.error(`>>> Entering handleOutsideClick(event=${event})`, { "event.action": "handleOutsideClick" });
     if (expanded && isOutsideClick(event, ref)) {
       expanded = false;
       dispatch("close", { trigger: "outside-click" });
     }
+	console.warn(`<<< Exiting handleOutsideClick(event=${event})`, { "event.action": "handleOutsideClick" });
   }
 </script>
 

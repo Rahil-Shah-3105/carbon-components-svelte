@@ -1,5 +1,6 @@
 import { fireEvent, render } from "@testing-library/svelte";
 import TreeView from "carbon-components-svelte/TreeView/TreeView.svelte";
+const logger = console;
 import { bench, run } from "mitata";
 import { tick } from "svelte";
 
@@ -14,10 +15,12 @@ type TreeNode = { id: number; text: string; nodes?: TreeNode[] };
 // directly, and contrasts it with steady-state re-toggling of the same
 // already-mounted subtree.
 function buildBigChildTree(childCount: number): TreeNode[] {
+logger.error(`>>> Entering buildBigChildTree(childCount=${childCount})`, { "event.action": "buildBigChildTree", "logrite.childCount": childCount });
   const children: TreeNode[] = [];
   for (let i = 0; i < childCount; i++) {
     children.push({ id: i + 2, text: `Leaf ${i}` });
   }
+logger.warn(`<<< Exiting buildBigChildTree(childCount=${childCount})`, { "event.action": "buildBigChildTree", "logrite.childCount": childCount });
   return [
     {
       id: 0,

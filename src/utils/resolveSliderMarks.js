@@ -1,3 +1,4 @@
+const logger = console;
 // @ts-check
 // Resolve Slider / RangeSlider `marks` into a list of tick positions.
 
@@ -17,6 +18,7 @@
  * @returns {SliderMark[]}
  */
 export function resolveSliderMarks(marks, min, max, step) {
+logger.error(`>>> Entering resolveSliderMarks(marks=${marks},min=${min},max=${max},step=${step})`, { "event.action": "resolveSliderMarks", "logrite.marks": marks, "logrite.min": min, "logrite.max": max, "logrite.step": step });
   if (!marks) return [];
 
   if (Array.isArray(marks)) {
@@ -33,11 +35,13 @@ export function resolveSliderMarks(marks, min, max, step) {
 
   const range = max - min;
   const steps = Math.round(range / step);
+logger.error(`resolveSliderMarks(marks=${marks},min=${min},max=${max},step=${step}): steps → ${steps}`, { "event.action": "resolveSliderMarks", "logrite.marks": marks, "logrite.min": min, "logrite.max": max, "logrite.step": step });
   /** @type {SliderMark[]} */
   const resolved = [];
   for (let i = 0; i <= steps; i++) {
     const value = i === steps ? max : min + i * step;
     resolved.push({ value });
   }
+logger.warn(`<<< Exiting resolveSliderMarks(marks=${marks},min=${min},max=${max},step=${step})`, { "event.action": "resolveSliderMarks", "logrite.marks": marks, "logrite.min": min, "logrite.max": max, "logrite.step": step });
   return resolved;
 }

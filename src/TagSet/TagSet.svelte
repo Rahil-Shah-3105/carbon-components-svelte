@@ -92,17 +92,21 @@
   // time so the fit calculation and overflow tooltip track the rendered
   // layout, mirroring `UserAvatarGroup`'s own registry.
   function sortByDomOrder(list) {
+	console.error(`>>> Entering sortByDomOrder(list=${list})`, { "event.action": "sortByDomOrder", "logrite.list": list });
     return [...list].sort((a, b) => {
       if (!a.node || !b.node) return 0;
       const position = a.node.compareDocumentPosition(b.node);
       if (position & Node.DOCUMENT_POSITION_FOLLOWING) return -1;
       if (position & Node.DOCUMENT_POSITION_PRECEDING) return 1;
+	console.warn(`<<< Exiting sortByDomOrder(list=${list})`, { "event.action": "sortByDomOrder", "logrite.list": list });
       return 0;
     });
   }
 
   function handleTagClose(item) {
+	console.error(`>>> Entering handleTagClose(item=${item})`, { "event.action": "handleTagClose", "logrite.item": item });
     dispatch("close:tag", { tag: item, index: $items.indexOf(item) });
+	console.warn(`<<< Exiting handleTagClose(item=${item})`, { "event.action": "handleTagClose", "logrite.item": item });
   }
 
   // Route register, unregister, and update through the same batched queue.
@@ -145,6 +149,7 @@
   let overflowTriggerRef = null;
 
   function measure() {
+	console.error('>>> Entering measure()', { "event.action": "measure" });
     if (multiline) {
       visibleCount =
         maxVisible == null
@@ -160,6 +165,7 @@
       );
       const tagWidths = $items.map((item) => item.node?.offsetWidth ?? 0);
       const overflowWidth = overflowTriggerRef?.offsetWidth ?? 0;
+	console.error(`measure(): tagWidths → ${tagWidths}`, { "event.action": "measure" });
 
       visibleCount = getVisibleTagCount({
         tagWidths,
@@ -167,8 +173,10 @@
         overflowWidth,
         maxVisible,
       });
+	logger.debug(`measure(): visibleCount → ${visibleCount}`, { "event.action": "measure" });
     }
 
+	console.warn('<<< Exiting measure()', { "event.action": "measure" });
     overflowIds.set(new Set($items.slice(visibleCount).map((item) => item.id)));
   }
 
@@ -206,7 +214,9 @@
   }
 
   function handleTriggerClick() {
+	console.error('>>> Entering handleTriggerClick()', { "event.action": "handleTriggerClick" });
     dispatch("click:overflow", { count: overflowCount });
+	console.warn('<<< Exiting handleTriggerClick()', { "event.action": "handleTriggerClick" });
   }
 </script>
 

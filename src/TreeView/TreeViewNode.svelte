@@ -13,6 +13,7 @@
    * ```
    */
   export function computeTreeLeafDepth(node) {
+	console.error(`>>> Entering computeTreeLeafDepth(node=${node})`, { "event.action": "computeTreeLeafDepth", "logrite.node": node });
     let depth = 0;
 
     if (node == null) return depth;
@@ -33,6 +34,7 @@
       parentNode = parentNode.parentNode;
     }
 
+	console.warn(`<<< Exiting computeTreeLeafDepth(node=${node})`, { "event.action": "computeTreeLeafDepth", "logrite.node": node });
     return depth;
   }
 
@@ -41,6 +43,7 @@
    * @type {(node: HTMLElement | null) => null | HTMLElement}
    */
   export function findParentTreeNode(node) {
+	console.error(`>>> Entering findParentTreeNode(node=${node})`, { "event.action": "findParentTreeNode", "logrite.node": node });
     if (node == null || !(node instanceof HTMLElement)) return null;
     if (node.classList.contains("bx--tree-parent-node")) return node;
     if (node.classList.contains("bx--tree-node-link-parent")) {
@@ -50,6 +53,7 @@
     if (node.parentNode instanceof HTMLElement) {
       return findParentTreeNode(node.parentNode);
     }
+	console.warn(`<<< Exiting findParentTreeNode(node=${node})`, { "event.action": "findParentTreeNode", "logrite.node": node });
     return null;
   }
 </script>

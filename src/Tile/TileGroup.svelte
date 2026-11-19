@@ -67,17 +67,21 @@
    * @type {(data: { checked: boolean; value: T }) => void}
    */
   function add({ checked, value }) {
+	console.error(`>>> Entering add(checked=${checked},value=${value})`, { "event.action": "add", "logrite.checked": checked, "logrite.value": value });
     if (checked) {
       selectedValue.set(value);
     }
+	console.warn(`<<< Exiting add(checked=${checked},value=${value})`, { "event.action": "add", "logrite.checked": checked, "logrite.value": value });
   }
 
   /**
    * @type {(value: T) => void}
    */
   function update(value) {
+	console.error(`>>> Entering update(value=${value})`, { "event.action": "update", "logrite.value": value });
     selectedValue.set(value);
     dispatch("select", value);
+	console.warn(`<<< Exiting update(value=${value})`, { "event.action": "update", "logrite.value": value });
   }
 
   setContext("carbon:TileGroup", {

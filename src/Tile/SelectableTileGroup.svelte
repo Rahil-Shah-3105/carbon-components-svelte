@@ -57,24 +57,29 @@
    * @type {(data: { selected: boolean; value: T }) => void}
    */
   function add({ selected: isSelected, value }) {
+	console.error(`>>> Entering add(isSelected=${isSelected},value=${value})`, { "event.action": "add", "logrite.isSelected": isSelected, "logrite.value": value });
     if (isSelected && !$selectedValues.includes(value)) {
       selectedValues.update((values) => [...values, value]);
     }
+	console.warn(`<<< Exiting add(isSelected=${isSelected},value=${value})`, { "event.action": "add", "logrite.isSelected": isSelected, "logrite.value": value });
   }
 
   /**
    * @type {(value: T) => void}
    */
   function remove(value) {
+	console.error(`>>> Entering remove(value=${value})`, { "event.action": "remove", "logrite.value": value });
     if ($selectedValues.includes(value)) {
       selectedValues.update((values) => values.filter((v) => v !== value));
     }
+	console.warn(`<<< Exiting remove(value=${value})`, { "event.action": "remove", "logrite.value": value });
   }
 
   /**
    * @type {(data: { value: T; selected: boolean }) => void}
    */
   function update({ value, selected: isSelected }) {
+	console.error(`>>> Entering update(value=${value},isSelected=${isSelected})`, { "event.action": "update", "logrite.value": value, "logrite.isSelected": isSelected });
     if (isSelected) {
       if (!$selectedValues.includes(value)) {
         selectedValues.update((values) => [...values, value]);
@@ -86,6 +91,7 @@
         dispatch("deselect", value);
       }
     }
+	console.warn(`<<< Exiting update(value=${value},isSelected=${isSelected})`, { "event.action": "update", "logrite.value": value, "logrite.isSelected": isSelected });
   }
 
   setContext("carbon:SelectableTileGroup", {

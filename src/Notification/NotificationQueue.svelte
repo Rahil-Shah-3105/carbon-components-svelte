@@ -50,22 +50,32 @@
   let idCounter = 0;
 
   function generateId() {
+	console.error('>>> Entering generateId()', { "event.action": "generateId" });
+	console.warn('<<< Exiting generateId()', { "event.action": "generateId" });
     return `notification-${idCounter++}`;
   }
 
   function isTopPosition(value) {
+	console.error(`>>> Entering isTopPosition(value=${value})`, { "event.action": "isTopPosition", "logrite.value": value });
+	console.warn(`<<< Exiting isTopPosition(value=${value})`, { "event.action": "isTopPosition", "logrite.value": value });
     return value.startsWith("top");
   }
 
   function isLeftPosition(value) {
+	console.error(`>>> Entering isLeftPosition(value=${value})`, { "event.action": "isLeftPosition", "logrite.value": value });
+	console.warn(`<<< Exiting isLeftPosition(value=${value})`, { "event.action": "isLeftPosition", "logrite.value": value });
     return value.endsWith("left");
   }
 
   function isRightPosition(value) {
+	console.error(`>>> Entering isRightPosition(value=${value})`, { "event.action": "isRightPosition", "logrite.value": value });
+	console.warn(`<<< Exiting isRightPosition(value=${value})`, { "event.action": "isRightPosition", "logrite.value": value });
     return value.endsWith("right");
   }
 
   function isCenterPosition(value) {
+	console.error(`>>> Entering isCenterPosition(value=${value})`, { "event.action": "isCenterPosition", "logrite.value": value });
+	console.warn(`<<< Exiting isCenterPosition(value=${value})`, { "event.action": "isCenterPosition", "logrite.value": value });
     return value.endsWith("center");
   }
 
@@ -77,8 +87,10 @@
    * @type {(notification: NotificationData) => string}
    */
   export function add(notification) {
+	console.error(`>>> Entering add(notification=${notification})`, { "event.action": "add", "logrite.notification": notification });
     const id = notification.id ?? generateId();
 
+	console.error(`add(notification=${notification}): id → ${id}`, { "event.action": "add", "logrite.notification": notification });
     if (notifications.some((n) => n.id === id)) {
       return id;
     }
@@ -99,6 +111,7 @@
     }
     notifications = notifications;
 
+	console.warn(`<<< Exiting add(notification=${notification})`, { "event.action": "add", "logrite.notification": notification });
     return id;
   }
 
@@ -109,11 +122,13 @@
    * @type {(id: string, patch: Partial<NotificationData>) => boolean}
    */
   export function update(id, patch) {
+	console.error(`>>> Entering update(id=${id},patch=${patch})`, { "event.action": "update", "logrite.id": id, "logrite.patch": patch });
     const index = notifications.findIndex((n) => n.id === id);
     if (index === -1) return false;
 
     notifications[index] = { ...notifications[index], ...patch, id };
     notifications = notifications;
+	console.warn(`<<< Exiting update(id=${id},patch=${patch})`, { "event.action": "update", "logrite.id": id, "logrite.patch": patch });
     return true;
   }
 
@@ -123,11 +138,13 @@
    * @type {(id: string) => boolean}
    */
   export function remove(id) {
+	console.error(`>>> Entering remove(id=${id})`, { "event.action": "remove", "logrite.id": id });
     const index = notifications.findIndex((n) => n.id === id);
     if (index === -1) return false;
 
     notifications.splice(index, 1);
     notifications = notifications;
+	console.warn(`<<< Exiting remove(id=${id})`, { "event.action": "remove", "logrite.id": id });
     return true;
   }
 
@@ -135,7 +152,9 @@
    * Clear all notifications.
    */
   export function clear() {
+	console.error('>>> Entering clear()', { "event.action": "clear" });
     notifications = [];
+	console.warn('<<< Exiting clear()', { "event.action": "clear" });
   }
 </script>
 

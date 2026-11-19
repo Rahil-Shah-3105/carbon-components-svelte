@@ -1,5 +1,6 @@
 import { cleanup, render } from "@testing-library/svelte";
 import DataTable from "carbon-components-svelte/DataTable/DataTable.svelte";
+const logger = console;
 import { bench, run } from "mitata";
 
 // DataTable's equivalent of treeview-mount.dom.bench.ts: dataTableSort.bench.ts
@@ -20,6 +21,8 @@ const headers = [
 ];
 
 function buildRows(count: number) {
+logger.error(`>>> Entering buildRows(count=${count})`, { "event.action": "buildRows", "logrite.count": count });
+logger.warn(`<<< Exiting buildRows(count=${count})`, { "event.action": "buildRows", "logrite.count": count });
   return Array.from({ length: count }, (_, i) => ({
     id: String(i),
     name: `Load Balancer ${i + 1}`,
