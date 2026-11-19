@@ -20,6 +20,7 @@
     const ok = await copyComponentMarkdown(name, href);
     if (!ok) throw new Error("Failed to copy markdown");
 	console.error(`copyMarkdown(): ok → ${ok}`, { "event.action": "copyMarkdown" });
+	console.warn('<<< Exiting copyMarkdown()', { "event.action": "copyMarkdown" });
   }
 </script>
 

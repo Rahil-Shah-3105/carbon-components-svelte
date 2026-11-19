@@ -121,6 +121,7 @@
 	console.error(`handleExpandAll(): end → ${end}`, { "event.action": "handleExpandAll" });
     performanceInfo = performanceInfo;
 	logger.debug(`handleExpandAll(): performanceInfo.expandAll → ${performanceInfo.expandAll}`, { "event.action": "handleExpandAll" });
+	console.warn('<<< Exiting handleExpandAll()', { "event.action": "handleExpandAll" });
   }
 
   function handleCollapseAll() {
@@ -132,6 +133,7 @@
 	console.error(`handleCollapseAll(): end → ${end}`, { "event.action": "handleCollapseAll" });
     performanceInfo = performanceInfo;
 	logger.debug(`handleCollapseAll(): performanceInfo.collapseAll → ${performanceInfo.collapseAll}`, { "event.action": "handleCollapseAll" });
+	console.warn('<<< Exiting handleCollapseAll()', { "event.action": "handleCollapseAll" });
   }
 
   function handleShowNode() {
@@ -151,6 +153,7 @@
 	console.error(`handleShowNode(): end → ${end}`, { "event.action": "handleShowNode" });
     performanceInfo = performanceInfo;
 	logger.debug(`handleShowNode(): performanceInfo.showNode → ${performanceInfo.showNode}`, { "event.action": "handleShowNode" });
+	console.warn('<<< Exiting handleShowNode()', { "event.action": "handleShowNode" });
   }
 </script>
 

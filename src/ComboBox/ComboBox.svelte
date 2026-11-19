@@ -349,6 +349,7 @@
     highlightedIndex = moveIndex(highlightedIndex, step, navigableItems.length);
     highlightOrigin = "keyboard";
 	console.error(`change(step=${step}): highlightedIndex → ${highlightedIndex}`, { "event.action": "change", "logrite.step": step });
+	console.warn(`<<< Exiting change(step=${step})`, { "event.action": "change", "logrite.step": step });
   }
 
   /**
@@ -361,6 +362,7 @@
     valueBeforeOpen = "";
     value = itemToString(item);
 	console.error(`selectItem(item=${item}): valueBeforeOpen → ${valueBeforeOpen}`, { "event.action": "selectItem", "logrite.item": item });
+	console.warn(`<<< Exiting selectItem(item=${item})`, { "event.action": "selectItem", "logrite.item": item });
   }
 
   /**
@@ -375,6 +377,7 @@
     highlightedIndex = matchIndex;
     highlightOrigin = "pointer";
 	console.error(`highlightItem(item=${item}): highlightOrigin → ${highlightOrigin}`, { "event.action": "highlightItem", "logrite.item": item });
+	console.warn(`<<< Exiting highlightItem(item=${item})`, { "event.action": "highlightItem", "logrite.item": item });
   }
 
   /**

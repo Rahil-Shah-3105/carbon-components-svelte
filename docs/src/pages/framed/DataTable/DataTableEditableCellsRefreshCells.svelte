@@ -27,6 +27,7 @@
 	console.error('>>> Entering syncHasEdits()', { "event.action": "syncHasEdits" });
     hasEdits = rows.some((row) => row.qty !== savedQtyById[row.id]);
 	console.error(`syncHasEdits(): hasEdits → ${hasEdits}`, { "event.action": "syncHasEdits" });
+	console.warn('<<< Exiting syncHasEdits()', { "event.action": "syncHasEdits" });
   }
 
   function updateTotals() {
@@ -35,6 +36,7 @@
     savedQtyById = snapshotQty();
     hasEdits = false;
 	console.error(`updateTotals(): savedQtyById → ${savedQtyById}`, { "event.action": "updateTotals" });
+	console.warn('<<< Exiting updateTotals()', { "event.action": "updateTotals" });
   }
 </script>
 

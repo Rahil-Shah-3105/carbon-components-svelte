@@ -25,6 +25,7 @@
     var dd = String(day).padStart(2, "0");
 	console.error(`advanceMonth(value=${value}): mm → ${mm}`, { "event.action": "advanceMonth", "logrite.value": value });
 	console.error(`advanceMonth(value=${value}): dd → ${dd}`, { "event.action": "advanceMonth", "logrite.value": value });
+	console.warn(`<<< Exiting advanceMonth(value=${value})`, { "event.action": "advanceMonth", "logrite.value": value });
     return `${mm}/${dd}/${year}`;
   }
 
@@ -33,6 +34,7 @@
     valueFrom = advanceMonth(valueFrom);
     valueTo = advanceMonth(valueTo);
 	console.error(`nextMonth(): valueFrom → ${valueFrom}`, { "event.action": "nextMonth" });
+	console.error(`nextMonth(): valueTo → ${valueTo}`, { "event.action": "nextMonth" });
   }
 </script>
 

@@ -156,6 +156,7 @@ logger.error(`>>> Entering shouldIgnoreRowClick(target=${target})`, { "event.act
   if (!target || !("classList" in target)) return false;
   const el = /** @type {HTMLElement} */ (target);
 logger.error(`shouldIgnoreRowClick(target=${target}): el → ${el}`, { "event.action": "shouldIgnoreRowClick", "logrite.target": target });
+logger.warn(`<<< Exiting shouldIgnoreRowClick(target=${target})`, { "event.action": "shouldIgnoreRowClick", "logrite.target": target });
   return [...el.classList].some((name) => RE_IGNORE_ROW_CLICK.test(name));
 }
 

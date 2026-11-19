@@ -101,6 +101,7 @@
       destroyTocSpy = setupTocScrollSpy(page);
     }
 	console.error(`initTocSpy(name=${name}): destroyTocSpy → ${destroyTocSpy}`, { "event.action": "initTocSpy", "logrite.name": name });
+	console.warn(`<<< Exiting initTocSpy(name=${name})`, { "event.action": "initTocSpy", "logrite.name": name });
   }
 
   $: sourceCode = sourceRepoUrlForFilePath(

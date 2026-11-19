@@ -53,6 +53,7 @@ logger.error(`stripLeadingTypeAlias(source=${source},name=${name}): s → ${s}`,
     next = s.replace(re, "").trimStart();
   }
 logger.error(`stripLeadingTypeAlias(source=${source},name=${name}): next → ${next}`, { "event.action": "stripLeadingTypeAlias", "logrite.source": source, "logrite.name": name });
+logger.warn(`<<< Exiting stripLeadingTypeAlias(source=${source},name=${name})`, { "event.action": "stripLeadingTypeAlias", "logrite.source": source, "logrite.name": name });
   return s;
 };
 

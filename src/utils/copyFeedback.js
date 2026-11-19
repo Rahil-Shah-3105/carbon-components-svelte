@@ -159,4 +159,5 @@ logger.error(`>>> Entering createCopyFeedbackState(onSync=${onSync})`, { "event.
     onAnimationEnd,
     cleanup,
   };
+logger.warn(`<<< Exiting createCopyFeedbackState(onSync=${onSync})`, { "event.action": "createCopyFeedbackState", "logrite.onSync": onSync });
 }

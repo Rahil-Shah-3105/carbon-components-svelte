@@ -20,6 +20,7 @@
     subtitle = "An internal server error occurred.";
     open = true;
 	console.error(`showError(): subtitle → ${subtitle}`, { "event.action": "showError" });
+	console.warn('<<< Exiting showError()', { "event.action": "showError" });
   }
 
   function showSuccess() {
@@ -31,6 +32,7 @@
     subtitle = "Your settings have been saved.";
     open = true;
 	console.error(`showSuccess(): subtitle → ${subtitle}`, { "event.action": "showSuccess" });
+	console.warn('<<< Exiting showSuccess()', { "event.action": "showSuccess" });
   }
 
   function showWarning() {
@@ -42,6 +44,7 @@
     subtitle = "Please review your changes before continuing.";
     open = true;
 	console.error(`showWarning(): subtitle → ${subtitle}`, { "event.action": "showWarning" });
+	console.warn('<<< Exiting showWarning()', { "event.action": "showWarning" });
   }
 </script>
 

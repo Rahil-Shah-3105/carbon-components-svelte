@@ -18,6 +18,7 @@
     if (q === "") return { matched: true, indices: [] };
     const matched = text.toLowerCase().startsWith(q);
 	console.error(`>>> Entering match(text=${text},query=${query})`, { "event.action": "match", "logrite.text": text, "logrite.query": query });
+	console.warn(`<<< Exiting match(text=${text},query=${query})`, { "event.action": "match", "logrite.text": text, "logrite.query": query });
     return {
       matched,
       indices: matched ? Array.from({ length: q.length }, (_, i) => i) : [],

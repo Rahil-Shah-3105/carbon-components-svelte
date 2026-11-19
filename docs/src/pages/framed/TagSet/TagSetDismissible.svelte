@@ -12,6 +12,7 @@
 	console.error(`>>> Entering handleTagClose(detail=${detail})`, { "event.action": "handleTagClose", "logrite.detail": detail });
     tags = tags.filter((_, index) => index !== detail.index);
 	console.error(`handleTagClose(detail=${detail}): tags → ${tags}`, { "event.action": "handleTagClose", "logrite.detail": detail });
+	console.warn(`<<< Exiting handleTagClose(detail=${detail})`, { "event.action": "handleTagClose", "logrite.detail": detail });
   }
 </script>
 

@@ -38,6 +38,7 @@ logger.error(`>>> Entering normalizeDigits(raw=${raw})`, { "event.action": "norm
 	logger.error(`normalizeDigits(raw=${raw}): code → ${code}`, { "event.action": "normalizeDigits", "logrite.raw": raw });
   }
 logger.error(`normalizeDigits(raw=${raw}): result → ${result}`, { "event.action": "normalizeDigits", "logrite.raw": raw });
+logger.warn(`<<< Exiting normalizeDigits(raw=${raw})`, { "event.action": "normalizeDigits", "logrite.raw": raw });
   return result;
 }
 
@@ -122,6 +123,7 @@ logger.error(`parseLocaleValue(raw=${raw},groupSeparator=${groupSeparator},decim
   }
   const num = Number(normalizeDigits(normalized));
 logger.error(`parseLocaleValue(raw=${raw},groupSeparator=${groupSeparator},decimalSeparator=${decimalSeparator}): num → ${num}`, { "event.action": "parseLocaleValue", "logrite.raw": raw, "logrite.groupSeparator": groupSeparator, "logrite.decimalSeparator": decimalSeparator });
+logger.warn(`<<< Exiting parseLocaleValue(raw=${raw},groupSeparator=${groupSeparator},decimalSeparator=${decimalSeparator})`, { "event.action": "parseLocaleValue", "logrite.raw": raw, "logrite.groupSeparator": groupSeparator, "logrite.decimalSeparator": decimalSeparator });
   return Number.isNaN(num) ? null : num;
 }
 
@@ -167,5 +169,6 @@ export function roundToStep(value, step) {
 logger.error(`>>> Entering roundToStep(value=${value},step=${step})`, { "event.action": "roundToStep", "logrite.value": value, "logrite.step": step });
   const decimalPlaces = step.toString().split(".")[1]?.length || 0;
 logger.error(`roundToStep(value=${value},step=${step}): decimalPlaces → ${decimalPlaces}`, { "event.action": "roundToStep", "logrite.value": value, "logrite.step": step });
+logger.warn(`<<< Exiting roundToStep(value=${value},step=${step})`, { "event.action": "roundToStep", "logrite.value": value, "logrite.step": step });
   return Number(value.toFixed(decimalPlaces));
 }

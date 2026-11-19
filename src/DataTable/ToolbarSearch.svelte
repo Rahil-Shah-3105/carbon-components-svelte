@@ -116,6 +116,7 @@
     value = "";
     if (!persistent) expanded = false;
 	console.error(`clear(): value → ${value}`, { "event.action": "clear" });
+	console.warn('<<< Exiting clear()', { "event.action": "clear" });
   }
 
   $: if (!persistent) expanded = String(value ?? "").length > 0;

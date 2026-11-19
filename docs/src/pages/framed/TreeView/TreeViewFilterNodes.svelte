@@ -67,6 +67,7 @@
 	logger.debug(`filterByExtension(): filteredNodes → ${filteredNodes}`, { "event.action": "filterByExtension" });
     expandedIds = ["1", "1-1", "1-1-1", "1-2", "1-2-1"];
 	console.error(`filterByExtension(): expandedIds → ${expandedIds}`, { "event.action": "filterByExtension" });
+	console.warn('<<< Exiting filterByExtension()', { "event.action": "filterByExtension" });
   }
 
   function filterLeafNodes() {
@@ -94,6 +95,7 @@
       "3-1-2",
     ];
 	logger.debug(`filterLeafNodes(): expandedIds → ${expandedIds}`, { "event.action": "filterLeafNodes" });
+	console.warn('<<< Exiting filterLeafNodes()', { "event.action": "filterLeafNodes" });
   }
 
   function filterWithChildren() {
@@ -103,6 +105,7 @@
     });
     expandedIds = ["1", "1-1", "1-1-1", "1-1-2", "1-1-3"];
 	console.error(`filterWithChildren(): expandedIds → ${expandedIds}`, { "event.action": "filterWithChildren" });
+	console.warn('<<< Exiting filterWithChildren()', { "event.action": "filterWithChildren" });
   }
 
   function resetFilter() {

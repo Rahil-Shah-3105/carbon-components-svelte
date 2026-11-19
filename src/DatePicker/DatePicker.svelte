@@ -218,6 +218,7 @@
 	console.error(`>>> Entering selectedDatesChanged(atOpen=${atOpen},selectedDates=${selectedDates})`, { "event.action": "selectedDatesChanged", "logrite.atOpen": atOpen, "logrite.selectedDates": selectedDates });
     const atClose = (selectedDates || []).map((date) => date.getTime());
 	console.error(`selectedDatesChanged(atOpen=${atOpen},selectedDates=${selectedDates}): atClose → ${atClose}`, { "event.action": "selectedDatesChanged", "logrite.atOpen": atOpen, "logrite.selectedDates": selectedDates });
+	console.warn(`<<< Exiting selectedDatesChanged(atOpen=${atOpen},selectedDates=${selectedDates})`, { "event.action": "selectedDatesChanged", "logrite.atOpen": atOpen, "logrite.selectedDates": selectedDates });
     return (
       atClose.length !== atOpen.length ||
       atClose.some((time, index) => time !== atOpen[index])
@@ -234,6 +235,7 @@
       date.getTime(),
     );
 	logger.debug(`snapshotCloseBaseline(): selectedDatesAtOpen → ${selectedDatesAtOpen}`, { "event.action": "snapshotCloseBaseline" });
+	console.warn('<<< Exiting snapshotCloseBaseline()', { "event.action": "snapshotCloseBaseline" });
   }
 
   function refreshCloseBaselineOnOpen() {

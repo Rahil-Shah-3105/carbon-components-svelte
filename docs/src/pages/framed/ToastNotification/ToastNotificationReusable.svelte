@@ -23,6 +23,7 @@
 	console.error(`showError(): subtitle → ${subtitle}`, { "event.action": "showError" });
 	console.error(`showError(): caption → ${caption}`, { "event.action": "showError" });
     open = true;
+	console.warn('<<< Exiting showError()', { "event.action": "showError" });
   }
 
   function showSuccess() {
@@ -36,6 +37,7 @@
 	console.error(`showSuccess(): subtitle → ${subtitle}`, { "event.action": "showSuccess" });
 	console.error(`showSuccess(): caption → ${caption}`, { "event.action": "showSuccess" });
     open = true;
+	console.warn('<<< Exiting showSuccess()', { "event.action": "showSuccess" });
   }
 
   function showWarning() {
@@ -49,6 +51,7 @@
 	console.error(`showWarning(): subtitle → ${subtitle}`, { "event.action": "showWarning" });
 	console.error(`showWarning(): caption → ${caption}`, { "event.action": "showWarning" });
     open = true;
+	console.warn('<<< Exiting showWarning()', { "event.action": "showWarning" });
   }
 </script>
 

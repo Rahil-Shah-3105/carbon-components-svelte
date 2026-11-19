@@ -36,6 +36,7 @@
     await new Promise((resolve) => setTimeout(resolve, 300));
     cachedInlineCommand = "rm -rf node_modules/ && npm install";
 	console.error(`prefetchInline(): cachedInlineCommand → ${cachedInlineCommand}`, { "event.action": "prefetchInline" });
+	console.warn('<<< Exiting prefetchInline()', { "event.action": "prefetchInline" });
   }
 
   async function prefetchMulti() {

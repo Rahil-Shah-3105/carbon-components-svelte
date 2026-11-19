@@ -34,6 +34,7 @@
     invalidText = "";
     verified = false;
 	console.error(`clearVerificationState(): invalidText → ${invalidText}`, { "event.action": "clearVerificationState" });
+	console.warn('<<< Exiting clearVerificationState()', { "event.action": "clearVerificationState" });
   }
 
   function handleComplete(event) {

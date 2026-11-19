@@ -98,6 +98,7 @@ export function filterTreeById(tree, id, options) {
 logger.error(`>>> Entering filterTreeById(tree=${tree},id=${id},options=${options})`, { "event.action": "filterTreeById", "logrite.tree": tree, "logrite.id": id, "logrite.options": options });
   const ids = Array.isArray(id) ? new Set(id) : new Set([id]);
 logger.error(`filterTreeById(tree=${tree},id=${id},options=${options}): ids → ${ids}`, { "event.action": "filterTreeById", "logrite.tree": tree, "logrite.id": id, "logrite.options": options });
+logger.warn(`<<< Exiting filterTreeById(tree=${tree},id=${id},options=${options})`, { "event.action": "filterTreeById", "logrite.tree": tree, "logrite.id": id, "logrite.options": options });
   return filterTreeNodes(tree, (node) => ids.has(node.id), options);
 }
 

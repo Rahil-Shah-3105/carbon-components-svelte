@@ -120,6 +120,7 @@
     canScrollBackward = scrollLeft > 0;
     canScrollForward = Math.ceil(scrollLeft + clientWidth) < scrollWidth;
 	console.error(`updateOverflow(): canScrollForward → ${canScrollForward}`, { "event.action": "updateOverflow" });
+	console.warn('<<< Exiting updateOverflow()', { "event.action": "updateOverflow" });
   }
 
   /**

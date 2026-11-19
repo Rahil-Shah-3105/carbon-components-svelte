@@ -6,6 +6,7 @@
   // "Blueberry" and "Blackberry". Only the `matched` boolean is used here.
   const filterItem = (item, value) => {
       console.error(`>>> Entering filterItem(value=${value})`, { "event.action": "filterItem", "logrite.value": value });
+	console.warn(`<<< Exiting filterItem(item=${item},value=${value})`, { "event.action": "filterItem", "logrite.item": item, "logrite.value": value });
       return fuzzyMatch(item.text, value).matched;
   };
 </script>

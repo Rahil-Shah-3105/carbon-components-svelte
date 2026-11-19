@@ -56,6 +56,7 @@ logger.error(`>>> Entering pickCheckedIds(totalNodes=${totalNodes})`, { "event.a
     if (id % 3 === 0) ids.push(id);
   }
 logger.error(`pickCheckedIds(totalNodes=${totalNodes}): id → ${id}`, { "event.action": "pickCheckedIds", "logrite.totalNodes": totalNodes });
+logger.warn(`<<< Exiting pickCheckedIds(totalNodes=${totalNodes})`, { "event.action": "pickCheckedIds", "logrite.totalNodes": totalNodes });
   return ids;
 }
 

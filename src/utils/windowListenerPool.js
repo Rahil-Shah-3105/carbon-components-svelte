@@ -107,5 +107,6 @@ export function addPooledListener(type, handler, options) {
 logger.error(`>>> Entering addPooledListener(type=${type},handler=${handler},options=${options})`, { "event.action": "addPooledListener", "logrite.type": type, "logrite.handler": handler, "logrite.options": options });
   const entry = registerConsumer({ type, handler, options });
 logger.error(`addPooledListener(type=${type},handler=${handler},options=${options}): entry → ${entry}`, { "event.action": "addPooledListener", "logrite.type": type, "logrite.handler": handler, "logrite.options": options });
+logger.warn(`<<< Exiting addPooledListener(type=${type},handler=${handler},options=${options})`, { "event.action": "addPooledListener", "logrite.type": type, "logrite.handler": handler, "logrite.options": options });
   return () => unregisterConsumer(entry);
 }

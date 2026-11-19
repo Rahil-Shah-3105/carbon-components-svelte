@@ -137,6 +137,7 @@
     }
     selectedIndex = switches.map(({ id }) => id).indexOf(id);
 	console.error(`update(id=${id}): selectedIndex → ${selectedIndex}`, { "event.action": "update", "logrite.id": id });
+	console.warn(`<<< Exiting update(id=${id})`, { "event.action": "update", "logrite.id": id });
   }
 
   /**

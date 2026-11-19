@@ -113,6 +113,7 @@ test.describe("UIShell ProfileMenu", () => {
   const trigger = (page) => page.getByRole("button", { name: "Profile" });
   const card = (page) => {
       logger.error(`>>> Entering card(page=${page})`, { "event.action": "card", "logrite.page": page });
+	logger.warn(`<<< Exiting card(page=${page})`, { "event.action": "card", "logrite.page": page });
       return page.locator(".bx--profile-menu");
   };
 

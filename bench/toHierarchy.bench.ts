@@ -39,18 +39,21 @@ function buildFlatNodes(
 // Flat shape: every node is a root (pid null)
 const flatParent = () => {
     logger.error('>>> Entering flatParent()', { "event.action": "flatParent" });
+	logger.warn('<<< Exiting flatParent()', { "event.action": "flatParent" });
     return null;
 };
 
 // Bushy shape: each node's parent is Math.floor((i - 1) / 10), node 0 is root
 const bushyParent = (i: number) => {
     logger.error(`>>> Entering bushyParent(i=${i})`, { "event.action": "bushyParent", "logrite.i": i });
+	logger.warn(`<<< Exiting bushyParent(i=${i})`, { "event.action": "bushyParent", "logrite.i": i });
     return (i === 0 ? null : Math.floor((i - 1) / 10));
 };
 
 // Chain shape: node i's parent is i - 1, node 0 is root
 const chainParent = (i: number) => {
     logger.error(`>>> Entering chainParent(i=${i})`, { "event.action": "chainParent", "logrite.i": i });
+	logger.warn(`<<< Exiting chainParent(i=${i})`, { "event.action": "chainParent", "logrite.i": i });
     return (i === 0 ? null : i - 1);
 };
 

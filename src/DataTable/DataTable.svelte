@@ -681,6 +681,7 @@
       [id]: computeRowCells(row),
     };
 	logger.debug(`refreshRow(id=${id}): tableCellsByRowId → ${tableCellsByRowId}`, { "event.action": "refreshRow", "logrite.id": id });
+	console.warn(`<<< Exiting refreshRow(id=${id})`, { "event.action": "refreshRow", "logrite.id": id });
   }
 
   /**
@@ -697,6 +698,7 @@
 	console.error('>>> Entering refreshCells()', { "event.action": "refreshCells" });
     tableCellsByRowId = buildCellsForPaintedRows(rowsToRender ?? [], {});
 	console.error(`refreshCells(): tableCellsByRowId → ${tableCellsByRowId}`, { "event.action": "refreshCells" });
+	console.warn('<<< Exiting refreshCells()', { "event.action": "refreshCells" });
   }
 
   /**

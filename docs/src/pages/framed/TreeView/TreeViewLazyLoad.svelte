@@ -43,6 +43,7 @@
       n.id === node.id ? { ...n, nodes: children } : n,
     );
 	logger.debug(`handleToggle(event=${event}): nodes → ${nodes}`, { "event.action": "handleToggle" });
+	console.warn(`<<< Exiting handleToggle(event=${event})`, { "event.action": "handleToggle" });
   }
 </script>
 

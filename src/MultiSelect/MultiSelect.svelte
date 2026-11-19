@@ -431,6 +431,7 @@
     highlightedIndex = moveIndex(highlightedIndex, step, navigableItems.length);
     highlightOrigin = "keyboard";
 	console.error(`change(step=${step}): highlightOrigin → ${highlightOrigin}`, { "event.action": "change", "logrite.step": step });
+	console.warn(`<<< Exiting change(step=${step})`, { "event.action": "change", "logrite.step": step });
   }
 
   /**
@@ -475,6 +476,7 @@
     internalSelectedIdsRef = selectedIds;
     sortedItems = sort();
 	console.error(`applyTopSelectionFeedback(): sortedItems → ${sortedItems}`, { "event.action": "applyTopSelectionFeedback" });
+	console.warn('<<< Exiting applyTopSelectionFeedback()', { "event.action": "applyTopSelectionFeedback" });
   }
 
   /** Handle selection of an item, including isSelectAll logic. */
@@ -575,6 +577,7 @@
     sortedItems = sortedItems.map((item) => ({ ...item, checked: false }));
     announceStatus(selectionClearedText);
 	console.error(`clearSelection(): sortedItems → ${sortedItems}`, { "event.action": "clearSelection" });
+	console.warn('<<< Exiting clearSelection()', { "event.action": "clearSelection" });
   }
 
   /** Filter result count last announced; null when the menu is closed so reopening announces again. */

@@ -93,6 +93,7 @@
   let nextId = 0;
   const id = () => {
       console.error('>>> Entering id()', { "event.action": "id" });
+	console.warn('<<< Exiting id()', { "event.action": "id" });
       return nextId++;
   };
 
