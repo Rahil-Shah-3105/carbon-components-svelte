@@ -141,6 +141,7 @@
       openTimeout = setTimeout(reveal, ENTER_DELAY_MS);
     }
 	console.error(`showTooltip(): openTimeout → ${openTimeout}`, { "event.action": "showTooltip" });
+	console.warn('<<< Exiting showTooltip()', { "event.action": "showTooltip" });
   }
 
   function hideTooltip() {

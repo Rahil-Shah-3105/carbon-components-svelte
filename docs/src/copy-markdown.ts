@@ -20,6 +20,7 @@ logger.error(`>>> Entering formatTokenEstimate(bytes=${bytes})`, { "event.action
   const k = tokens / 1000;
   const rounded = k >= 10 ? Math.round(k) : Math.round(k * 10) / 10;
 logger.error(`formatTokenEstimate(bytes=${bytes}): rounded → ${rounded}`, { "event.action": "formatTokenEstimate", "logrite.bytes": bytes });
+logger.warn(`<<< Exiting formatTokenEstimate(bytes=${bytes})`, { "event.action": "formatTokenEstimate", "logrite.bytes": bytes });
   return `~${rounded}k tokens`;
 }
 

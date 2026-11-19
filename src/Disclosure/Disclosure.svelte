@@ -46,6 +46,7 @@
     animation = open ? "expanding" : "collapsing";
     dispatch("toggle", open);
 	console.error(`toggle(): animation → ${animation}`, { "event.action": "toggle" });
+	console.warn('<<< Exiting toggle()', { "event.action": "toggle" });
   }
 </script>
 

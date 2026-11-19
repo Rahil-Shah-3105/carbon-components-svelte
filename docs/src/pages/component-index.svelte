@@ -80,6 +80,7 @@
 	logger.debug(`applyUrlCategories(raw=${raw}): lastUrlCategories → ${lastUrlCategories}`, { "event.action": "applyUrlCategories", "logrite.raw": raw });
     categorySelectedIds = labels;
 	logger.debug(`applyUrlCategories(raw=${raw}): categorySelectedIds → ${categorySelectedIds}`, { "event.action": "applyUrlCategories", "logrite.raw": raw });
+	console.warn(`<<< Exiting applyUrlCategories(raw=${raw})`, { "event.action": "applyUrlCategories", "logrite.raw": raw });
   }
 
   function applyUrlQuery(raw: string) {
@@ -91,6 +92,7 @@
 	logger.debug(`applyUrlQuery(raw=${raw}): lastUrlQuery → ${lastUrlQuery}`, { "event.action": "applyUrlQuery", "logrite.raw": raw });
     query = normalized;
 	logger.debug(`applyUrlQuery(raw=${raw}): query → ${query}`, { "event.action": "applyUrlQuery", "logrite.raw": raw });
+	console.warn(`<<< Exiting applyUrlQuery(raw=${raw})`, { "event.action": "applyUrlQuery", "logrite.raw": raw });
   }
 
   $: applyUrlCategories($params[CATEGORY_FILTER_PARAM] ?? "");
@@ -153,6 +155,7 @@
 	console.error(`clearFilters(): query → ${query}`, { "event.action": "clearFilters" });
 	logger.debug(`clearFilters(): categorySelectedIds → ${categorySelectedIds}`, { "event.action": "clearFilters" });
     searchRef?.focus();
+	console.warn('<<< Exiting clearFilters()', { "event.action": "clearFilters" });
   }
 
   const columns: { key: SortKey; label: string }[] = [

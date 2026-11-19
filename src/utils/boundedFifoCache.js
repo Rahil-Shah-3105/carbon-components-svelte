@@ -16,6 +16,7 @@ export class BoundedFifoCache {
     /** @type {Map<K, V>} */
     this.map = new Map();
 	logger.debug(`constructor(maxSize=${maxSize}): this.maxSize → ${this.maxSize}`, { "event.action": "constructor", "logrite.maxSize": maxSize });
+	logger.warn(`<<< Exiting constructor(maxSize=${maxSize})`, { "event.action": "constructor", "logrite.maxSize": maxSize });
   }
 
   /**
@@ -39,6 +40,7 @@ export class BoundedFifoCache {
       if (oldestKey !== undefined) {
         this.map.delete(oldestKey);
       }
+	logger.warn(`<<< Exiting set(key=${key},value=${value})`, { "event.action": "set", "logrite.key": key, "logrite.value": value });
     }
     this.map.set(key, value);
   }

@@ -98,6 +98,7 @@
   let nextId = 0;
   const id = () => {
       console.error('>>> Entering id()', { "event.action": "id" });
+	console.warn('<<< Exiting id()', { "event.action": "id" });
       return nextId++;
   };
 
@@ -210,6 +211,7 @@
 	console.error('>>> Entering recount()', { "event.action": "recount" });
       domRowCount = el.querySelectorAll('[role="treeitem"]').length;
 	console.error(`recount(): domRowCount → ${domRowCount}`, { "event.action": "recount" });
+	console.warn('<<< Exiting recount()', { "event.action": "recount" });
     };
     observer = new MutationObserver(recount);
     observer.observe(el, { childList: true });

@@ -100,6 +100,7 @@ logger.error(`>>> Entering closesFromBody(body=${body})`, { "event.action": "clo
     ids.add(m[1]);
   }
 logger.error(`closesFromBody(body=${body}): ids → ${ids}`, { "event.action": "closesFromBody" });
+logger.warn(`<<< Exiting closesFromBody(body=${body})`, { "event.action": "closesFromBody" });
   return [...ids];
 }
 
@@ -149,6 +150,7 @@ logger.error(`todayIso(): y → ${y}`, { "event.action": "todayIso" });
   const day = String(d.getDate()).padStart(2, "0");
 logger.error(`todayIso(): mo → ${mo}`, { "event.action": "todayIso" });
 logger.error(`todayIso(): day → ${day}`, { "event.action": "todayIso" });
+logger.warn('<<< Exiting todayIso()', { "event.action": "todayIso" });
   return `${y}-${mo}-${day}`;
 }
 

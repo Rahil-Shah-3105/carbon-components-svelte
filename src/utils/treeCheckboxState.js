@@ -93,6 +93,7 @@ logger.error(`>>> Entering findPath(nodes=${nodes},id=${id})`, { "event.action":
       return path;
     }
   }
+logger.warn(`<<< Exiting findPath(nodes=${nodes},id=${id})`, { "event.action": "findPath", "logrite.nodes": nodes, "logrite.id": id });
   return null;
 }
 
@@ -120,6 +121,7 @@ logger.error(`retainKnownIds(nodes=${nodes},checkedIds=${checkedIds}): knownIds 
     }
   }
 logger.error(`retainKnownIds(nodes=${nodes},checkedIds=${checkedIds}): seen → ${seen}`, { "event.action": "retainKnownIds", "logrite.nodes": nodes, "logrite.checkedIds": checkedIds });
+logger.warn(`<<< Exiting retainKnownIds(nodes=${nodes},checkedIds=${checkedIds})`, { "event.action": "retainKnownIds", "logrite.nodes": nodes, "logrite.checkedIds": checkedIds });
   return retained;
 }
 

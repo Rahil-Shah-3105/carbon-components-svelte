@@ -81,6 +81,7 @@ it("benchmarks ComboBox filter keystroke, filterMode hide vs remove", async () =
     title: string,
     input: HTMLInputElement,
   ): void => {
+	logger.error(`>>> Entering registerKeystrokeCase(title=${title},input=${input})`, { "event.action": "registerKeystrokeCase", "logrite.title": title });
     bench(title, function* () {
       let n = 0;
       yield async () => {

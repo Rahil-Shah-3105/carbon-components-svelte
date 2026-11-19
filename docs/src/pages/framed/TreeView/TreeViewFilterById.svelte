@@ -62,7 +62,9 @@
 	console.error('>>> Entering filterBySingleId()', { "event.action": "filterBySingleId" });
     filteredNodes = filterTreeById(allNodes, "1-1-1");
     expandedIds = ["1", "1-1", "1-1-1"];
+	console.error(`filterBySingleId(): filteredNodes → ${filteredNodes}`, { "event.action": "filterBySingleId" });
 	console.error(`filterBySingleId(): expandedIds → ${expandedIds}`, { "event.action": "filterBySingleId" });
+	console.warn('<<< Exiting filterBySingleId()', { "event.action": "filterBySingleId" });
   }
 
   function filterByMultipleIds() {
@@ -70,6 +72,7 @@
     filteredNodes = filterTreeById(allNodes, ["1-1-1", "1-2-1", "2-1"]);
     expandedIds = ["1", "1-1", "1-1-1", "1-2", "1-2-1", "2", "2-1"];
 	console.error(`filterByMultipleIds(): filteredNodes → ${filteredNodes}`, { "event.action": "filterByMultipleIds" });
+	console.error(`filterByMultipleIds(): expandedIds → ${expandedIds}`, { "event.action": "filterByMultipleIds" });
   }
 
   function resetFilter() {

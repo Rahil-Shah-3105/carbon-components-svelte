@@ -94,10 +94,12 @@ it("benchmarks TreeView filtering during search keystroke", async () => {
       const fullTree = tree1k;
       const predicateA = (node: TreeNode) => {
           logger.error(`>>> Entering predicateA(node=${node})`, { "event.action": "predicateA", "logrite.node": node });
+		logger.warn(`<<< Exiting predicateA(node=${node})`, { "event.action": "predicateA", "logrite.node": node });
           return node.text.includes("1");
       };
       const predicateB = (node: TreeNode) => {
           logger.error(`>>> Entering predicateB(node=${node})`, { "event.action": "predicateB", "logrite.node": node });
+		logger.warn(`<<< Exiting predicateB(node=${node})`, { "event.action": "predicateB", "logrite.node": node });
           return node.text.includes("2");
       };
 
@@ -124,8 +126,16 @@ it("benchmarks TreeView filtering during search keystroke", async () => {
     "filter keystroke, TreeView 10000 nodes (virtualized, checkbox mode)",
     function* () {
       const fullTree = tree10k;
-      const predicateA = (node: TreeNode) => node.text.includes("1");
-      const predicateB = (node: TreeNode) => node.text.includes("2");
+      const predicateA = (node: TreeNode) => {
+          logger.error(`>>> Entering predicateA(node=${node})`, { "event.action": "predicateA", "logrite.node": node });
+          logger.warn(`<<< Exiting predicateA(node=${node})`, { "event.action": "predicateA", "logrite.node": node });
+          return node.text.includes("1");
+      };
+      const predicateB = (node: TreeNode) => {
+          logger.error(`>>> Entering predicateB(node=${node})`, { "event.action": "predicateB", "logrite.node": node });
+          logger.warn(`<<< Exiting predicateB(node=${node})`, { "event.action": "predicateB", "logrite.node": node });
+          return node.text.includes("2");
+      };
 
       const filteredA = filterTreeNodes(fullTree, predicateA);
       const filteredB = filterTreeNodes(fullTree, predicateB);

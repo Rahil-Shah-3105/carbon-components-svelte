@@ -20,6 +20,7 @@ logger.error(`keyBy(items=${items},getKey=${getKey}): key → ${key}`, { "event.
     result[key(item)] = item;
   }
 logger.error(`keyBy(items=${items},getKey=${getKey}): result → ${result}`, { "event.action": "keyBy", "logrite.items": items, "logrite.getKey": getKey });
+logger.warn(`<<< Exiting keyBy(items=${items},getKey=${getKey})`, { "event.action": "keyBy", "logrite.items": items, "logrite.getKey": getKey });
   return result;
 }
 

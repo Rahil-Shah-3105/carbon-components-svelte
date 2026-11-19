@@ -18,6 +18,7 @@
     const start = text.toLowerCase().indexOf(q);
     if (start === -1) return { matched: false, indices: [] };
 	console.error(`>>> Entering match(text=${text},query=${query})`, { "event.action": "match", "logrite.text": text, "logrite.query": query });
+	console.warn(`<<< Exiting match(text=${text},query=${query})`, { "event.action": "match", "logrite.text": text, "logrite.query": query });
     return {
       matched: true,
       indices: Array.from({ length: q.length }, (_, i) => start + i),

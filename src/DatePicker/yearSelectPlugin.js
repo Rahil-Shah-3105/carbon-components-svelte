@@ -68,6 +68,7 @@ logger.warn(`<<< Exiting yearSelectPlugin(pluginConfig=${pluginConfig})`, { "eve
         const wrapper = element.closest(".numInputWrapper") ?? element;
         wrapper.parentNode?.removeChild(wrapper);
 		logger.error(`clearUnnecessaryDOMElements(): wrapper → ${wrapper}`, { "event.action": "clearUnnecessaryDOMElements" });
+		logger.warn('<<< Exiting clearUnnecessaryDOMElements()', { "event.action": "clearUnnecessaryDOMElements" });
       }
     }
 
@@ -192,6 +193,7 @@ logger.warn(`<<< Exiting yearSelectPlugin(pluginConfig=${pluginConfig})`, { "eve
       );
       year?.classList.add("selected");
 	logger.error(`setCurrentlySelected(): targetYear → ${targetYear}`, { "event.action": "setCurrentlySelected" });
+	logger.warn('<<< Exiting setCurrentlySelected()', { "event.action": "setCurrentlySelected" });
     }
 
     /**

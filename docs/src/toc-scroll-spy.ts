@@ -107,6 +107,7 @@ logger.error(`setupTocScrollSpy(page=${page}): currentActiveId → ${currentActi
     for (const link of links) {
       const handler = () => {
           logger.error('>>> Entering handler()', { "event.action": "handler" });
+		logger.warn('<<< Exiting handler()', { "event.action": "handler" });
           return setActive(id);
       };
       link.addEventListener("click", handler);

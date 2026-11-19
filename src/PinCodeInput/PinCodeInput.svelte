@@ -291,6 +291,7 @@
     const firstEmpty = code.findIndex((char) => !char);
     focusInput(firstEmpty === -1 ? count - 1 : firstEmpty);
 	console.error(`fillFromChars(index=${index},chars=${chars}): firstEmpty → ${firstEmpty}`, { "event.action": "fillFromChars", "logrite.index": index, "logrite.chars": chars });
+	console.warn(`<<< Exiting fillFromChars(index=${index},chars=${chars})`, { "event.action": "fillFromChars", "logrite.index": index, "logrite.chars": chars });
   }
 
   /** @type {(index: number, event: Event) => void} */
@@ -430,6 +431,7 @@
     const firstEmpty = code.findIndex((char) => !char);
     focusInput(firstEmpty === -1 ? count - 1 : firstEmpty, options);
 	console.error(`focusNextEmptyInput(options=${options}): firstEmpty → ${firstEmpty}`, { "event.action": "focusNextEmptyInput", "logrite.options": options });
+	console.warn(`<<< Exiting focusNextEmptyInput(options=${options})`, { "event.action": "focusNextEmptyInput", "logrite.options": options });
   }
 
   /**

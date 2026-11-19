@@ -92,6 +92,7 @@ logger.error(`createHighlightCursor(): highlightedId → ${highlightedId}`, { "e
 	logger.warn(`<<< Exiting set(id=${id},scroll=${scroll})`, { "event.action": "set", "logrite.id": id, "logrite.scroll": scroll });
   }
 
+logger.warn('<<< Exiting createHighlightCursor()', { "event.action": "createHighlightCursor" });
   return {
     register,
     set,

@@ -13,6 +13,7 @@
 	console.error('>>> Entering selectCurrentYear()', { "event.action": "selectCurrentYear" });
     value = String(new Date().getFullYear());
 	console.error(`selectCurrentYear(): value → ${value}`, { "event.action": "selectCurrentYear" });
+	console.warn('<<< Exiting selectCurrentYear()', { "event.action": "selectCurrentYear" });
   }
 
   function viewNextDecade() {

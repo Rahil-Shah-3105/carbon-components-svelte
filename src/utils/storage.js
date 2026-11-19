@@ -95,6 +95,7 @@ export function safeBrowserStorage(type) {
         s?.removeItem(key);
       } catch {}
 	logger.error(`Exception in removeItem(key=${key}): (no error binding)`, { "event.action": "removeItem", "event.category": "process", "logrite.key": key });
+	logger.warn(`<<< Exiting removeItem(key=${key})`, { "event.action": "removeItem", "logrite.key": key });
     },
     clear() {
 	logger.error('>>> Entering clear()', { "event.action": "clear" });
@@ -104,6 +105,7 @@ export function safeBrowserStorage(type) {
         s?.clear();
       } catch {}
 	logger.error('Exception in clear()', { "event.action": "clear", "event.category": "process" });
+	logger.warn('<<< Exiting clear()', { "event.action": "clear" });
     },
   };
 }

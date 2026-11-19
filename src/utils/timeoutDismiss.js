@@ -100,4 +100,5 @@ logger.error('>>> Entering createTimeoutDismiss()', { "event.action": "createTim
 	logger.warn('<<< Exiting clear()', { "event.action": "clear" });
     },
   };
+logger.warn('<<< Exiting createTimeoutDismiss()', { "event.action": "createTimeoutDismiss" });
 }

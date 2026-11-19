@@ -182,6 +182,7 @@ logger.error(`>>> Entering renderMarkdownTable(headers=${headers},rows=${rows})`
     (cells: string[]) => `| ${cells.map(escapeTableCell).join(" | ")} |`,
   );
 logger.error(`renderMarkdownTable(headers=${headers},rows=${rows}): sepLine → ${sepLine}`, { "event.action": "renderMarkdownTable", "logrite.rows": rows });
+logger.warn(`<<< Exiting renderMarkdownTable(headers=${headers},rows=${rows})`, { "event.action": "renderMarkdownTable", "logrite.rows": rows });
   return [headerLine, sepLine, ...rowLines].join("\n");
 }
 
@@ -400,6 +401,7 @@ function lineOpensKbdMarkdownHtml(line: string) {
 logger.error(`>>> Entering lineOpensKbdMarkdownHtml(line=${line})`, { "event.action": "lineOpensKbdMarkdownHtml", "logrite.line": line });
   const t = line.trimStart();
 logger.error(`lineOpensKbdMarkdownHtml(line=${line}): t → ${t}`, { "event.action": "lineOpensKbdMarkdownHtml", "logrite.line": line });
+logger.warn(`<<< Exiting lineOpensKbdMarkdownHtml(line=${line})`, { "event.action": "lineOpensKbdMarkdownHtml", "logrite.line": line });
   return MD_LINE_OPENS_KBD_RE.test(t) || MD_LINE_OPENS_KBD_CLOSE_RE.test(t);
 }
 
@@ -782,6 +784,7 @@ logger.error(`>>> Entering generateLlmTxt(componentNames=${componentNames})`, { 
     (name) => `- [${name}](${BASE_URL}/components/${name}.md)`,
   );
 logger.error(`generateLlmTxt(componentNames=${componentNames}): sorted → ${sorted}`, { "event.action": "generateLlmTxt", "logrite.componentNames": componentNames });
+logger.warn(`<<< Exiting generateLlmTxt(componentNames=${componentNames})`, { "event.action": "generateLlmTxt", "logrite.componentNames": componentNames });
   return `# Carbon Components Svelte
 
 ## Docs

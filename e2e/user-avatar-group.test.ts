@@ -64,6 +64,7 @@ test.describe("UserAvatarGroup", () => {
     const avatars = page.getByTestId("cascade").locator(".bx--user-avatar");
     const width = (el: Element) => {
         logger.error(`>>> Entering width(el=${el})`, { "event.action": "width", "logrite.el": el });
+		logger.warn(`<<< Exiting width(el=${el})`, { "event.action": "width", "logrite.el": el });
         return el.getBoundingClientRect().width;
     };
 

@@ -11,5 +11,6 @@ export function isExpandableNode(node) {
 logger.error(`>>> Entering isExpandableNode(node=${node})`, { "event.action": "isExpandableNode", "logrite.node": node });
   const hasLoadedChildren = Array.isArray(node.nodes) && node.nodes.length > 0;
 logger.error(`isExpandableNode(node=${node}): hasLoadedChildren → ${hasLoadedChildren}`, { "event.action": "isExpandableNode", "logrite.node": node });
+logger.warn(`<<< Exiting isExpandableNode(node=${node})`, { "event.action": "isExpandableNode", "logrite.node": node });
   return hasLoadedChildren || node.hasChildren === true;
 }

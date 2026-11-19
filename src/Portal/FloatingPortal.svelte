@@ -212,6 +212,7 @@
       subtree: false,
     });
 	console.error(`observeAnchor(): anchorObserver → ${anchorObserver}`, { "event.action": "observeAnchor" });
+	console.warn('<<< Exiting observeAnchor()', { "event.action": "observeAnchor" });
   }
 
   function unobserveAnchor() {
@@ -240,6 +241,7 @@
     floatingObserver = new ResizeObserver(() => updatePosition());
     floatingObserver.observe(ref);
 	console.error(`observeFloating(): floatingObserver → ${floatingObserver}`, { "event.action": "observeFloating" });
+	console.warn('<<< Exiting observeFloating()', { "event.action": "observeFloating" });
   }
 
   function unobserveFloating() {

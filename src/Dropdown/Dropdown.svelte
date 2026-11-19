@@ -491,6 +491,7 @@
     highlightedIndex = moveIndex(highlightedIndex, step, items.length);
     highlightOrigin = "keyboard";
 	console.error(`change(step=${step}): highlightedIndex → ${highlightedIndex}`, { "event.action": "change", "logrite.step": step });
+	console.warn(`<<< Exiting change(step=${step})`, { "event.action": "change", "logrite.step": step });
   }
 
   function typeaheadSearch(character) {
@@ -509,6 +510,7 @@
 	logger.debug(`typeaheadSearch(character=${character}): highlightedIndex → ${highlightedIndex}`, { "event.action": "typeaheadSearch", "logrite.character": character });
     highlightOrigin = "keyboard";
 	console.error(`typeaheadSearch(character=${character}): highlightOrigin → ${highlightOrigin}`, { "event.action": "typeaheadSearch", "logrite.character": character });
+	console.warn(`<<< Exiting typeaheadSearch(character=${character})`, { "event.action": "typeaheadSearch", "logrite.character": character });
   }
 
   function dispatchSelect() {

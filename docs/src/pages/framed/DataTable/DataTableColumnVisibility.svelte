@@ -67,6 +67,7 @@
         : header,
     );
 	logger.debug(`toggleColumn(key=${key}): headers → ${headers}`, { "event.action": "toggleColumn", "logrite.key": key });
+	console.warn(`<<< Exiting toggleColumn(key=${key})`, { "event.action": "toggleColumn", "logrite.key": key });
   }
 </script>
 

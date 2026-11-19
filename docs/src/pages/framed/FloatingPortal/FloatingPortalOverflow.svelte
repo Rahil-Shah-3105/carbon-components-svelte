@@ -57,6 +57,7 @@
     const moved = Math.abs(x - startX) > 5 || Math.abs(y - startY) > 5;
     if (!moved) open = !open;
 	console.error(`handleDragEnd(): moved → ${moved}`, { "event.action": "handleDragEnd" });
+	console.warn('<<< Exiting handleDragEnd()', { "event.action": "handleDragEnd" });
   }
 </script>
 

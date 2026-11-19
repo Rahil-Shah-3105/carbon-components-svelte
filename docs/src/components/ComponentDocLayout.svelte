@@ -16,6 +16,7 @@
       const top = table.getBoundingClientRect().top;
       node.style.maxHeight = `${Math.max(window.innerHeight - top, 0)}px`;
 	console.error(`sync(): top → ${top}`, { "event.action": "sync" });
+	console.warn('<<< Exiting sync()', { "event.action": "sync" });
     }
 
     function schedule() {
@@ -23,6 +24,7 @@
       cancelAnimationFrame(raf);
       raf = requestAnimationFrame(sync);
 	console.error(`schedule(): raf → ${raf}`, { "event.action": "schedule" });
+	console.warn('<<< Exiting schedule()', { "event.action": "schedule" });
     }
 
     schedule();

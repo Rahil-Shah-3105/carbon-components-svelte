@@ -18,6 +18,7 @@
     if (!value) return true;
     const comparison = value.toLowerCase();
 	console.error(`shouldFilterItem(item=${item},value=${value}): comparison → ${comparison}`, { "event.action": "shouldFilterItem", "logrite.item": item, "logrite.value": value });
+	console.warn(`<<< Exiting shouldFilterItem(item=${item},value=${value})`, { "event.action": "shouldFilterItem", "logrite.item": item, "logrite.value": value });
     return (
       item.key.toLowerCase().includes(comparison) ||
       itemToString(item).toLowerCase().includes(comparison)

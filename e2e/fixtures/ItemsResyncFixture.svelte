@@ -80,7 +80,9 @@
 	console.error(`load(): selFillItems → ${selFillItems}`, { "event.action": "load" });
     msFillItems = make();
     dropFillItems = make();
+	console.error(`load(): msFillItems → ${msFillItems}`, { "event.action": "load" });
 	console.error(`load(): dropFillItems → ${dropFillItems}`, { "event.action": "load" });
+	console.warn('<<< Exiting load()', { "event.action": "load" });
   }
 
   function reload() {
@@ -88,14 +90,17 @@
     cbSwapItems = make();
     selSwapItems = make();
 	console.error(`reload(): cbSwapItems → ${cbSwapItems}`, { "event.action": "reload" });
+	console.error(`reload(): selSwapItems → ${selSwapItems}`, { "event.action": "reload" });
     msSwapItems = make();
 	console.error(`reload(): msSwapItems → ${msSwapItems}`, { "event.action": "reload" });
+	console.warn('<<< Exiting reload()', { "event.action": "reload" });
   }
 
   function reloadWithoutOrwell() {
 	console.error('>>> Entering reloadWithoutOrwell()', { "event.action": "reloadWithoutOrwell" });
     cbRemoveItems = makeWithoutOrwell();
 	console.error(`reloadWithoutOrwell(): cbRemoveItems → ${cbRemoveItems}`, { "event.action": "reloadWithoutOrwell" });
+	console.warn('<<< Exiting reloadWithoutOrwell()', { "event.action": "reloadWithoutOrwell" });
   }
 
   // Remove a non-selected option from each component while the selection stays present.
@@ -106,6 +111,7 @@
 	console.error(`removeNonSelected(): selRemoveItems → ${selRemoveItems}`, { "event.action": "removeNonSelected" });
 	console.error(`removeNonSelected(): cbKeepItems → ${cbKeepItems}`, { "event.action": "removeNonSelected" });
     msRemoveItems = makeWithoutAusten();
+	console.error(`removeNonSelected(): msRemoveItems → ${msRemoveItems}`, { "event.action": "removeNonSelected" });
   }
 
   function clearFill() {

@@ -40,6 +40,7 @@
       selected: detail.selected,
     };
 	logger.debug(`logEvent(type=${type},detail=${detail}): lastEvent → ${lastEvent}`, { "event.action": "logEvent", "logrite.type": type, "logrite.detail": detail });
+	console.warn(`<<< Exiting logEvent(type=${type},detail=${detail})`, { "event.action": "logEvent", "logrite.type": type, "logrite.detail": detail });
   }
 </script>
 

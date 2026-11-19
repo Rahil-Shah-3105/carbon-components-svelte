@@ -70,14 +70,17 @@ logger.warn(`<<< Exiting buildChainTree(totalNodes=${totalNodes})`, { "event.act
 // Predicates (deterministic, used across multiple cases)
 const predicateMatchNone = (n: TreeNode) => {
     logger.error(`>>> Entering predicateMatchNone(n=${n})`, { "event.action": "predicateMatchNone", "logrite.n": n });
+	logger.warn(`<<< Exiting predicateMatchNone(n=${n})`, { "event.action": "predicateMatchNone", "logrite.n": n });
     return n.text.includes("zzz");
 };
 const predicateMatchFew = (n: TreeNode) => {
     logger.error(`>>> Entering predicateMatchFew(n=${n})`, { "event.action": "predicateMatchFew", "logrite.n": n });
+	logger.warn(`<<< Exiting predicateMatchFew(n=${n})`, { "event.action": "predicateMatchFew", "logrite.n": n });
     return n.id % 100 === 0;
 };
 const predicateMatchAll = (_n: TreeNode) => {
     logger.error(`>>> Entering predicateMatchAll(_n=${_n})`, { "event.action": "predicateMatchAll", "logrite._n": _n });
+	logger.warn(`<<< Exiting predicateMatchAll(_n=${_n})`, { "event.action": "predicateMatchAll", "logrite._n": _n });
     return true;
 };
 

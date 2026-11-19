@@ -176,6 +176,7 @@
     clearTimeout(releaseTimeout);
     releaseTimeout = setTimeout(releaseTooltip, 300);
 	console.error(`scheduleRelease(): releaseTimeout → ${releaseTimeout}`, { "event.action": "scheduleRelease" });
+	console.warn('<<< Exiting scheduleRelease()', { "event.action": "scheduleRelease" });
   }
 
   if (userAvatarGroup) {

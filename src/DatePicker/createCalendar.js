@@ -291,5 +291,6 @@ logger.error(`>>> Entering createCalendar(options=${options},base=${base},input=
     ],
   };
 logger.error(`createCalendar(options=${options},base=${base},input=${input},dispatch=${dispatch}): config → ${config}`, { "event.action": "createCalendar", "logrite.options": options, "logrite.base": base, "logrite.dispatch": dispatch });
+logger.warn(`<<< Exiting createCalendar(options=${options},base=${base},input=${input},dispatch=${dispatch})`, { "event.action": "createCalendar", "logrite.options": options, "logrite.base": base, "logrite.dispatch": dispatch });
   return new /** @type {any} */ (flatpickr)(base, config);
 }

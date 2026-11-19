@@ -147,6 +147,7 @@
     // the forward button does not flicker in.
     canScrollForward = Math.ceil(scrollLeft + clientWidth) + 1 < scrollWidth;
 	console.error(`updateOverflow(): canScrollForward → ${canScrollForward}`, { "event.action": "updateOverflow" });
+	console.warn('<<< Exiting updateOverflow()', { "event.action": "updateOverflow" });
   }
 
   /**

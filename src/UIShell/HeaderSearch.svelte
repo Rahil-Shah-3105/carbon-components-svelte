@@ -219,6 +219,7 @@
   });
 
   function getOptionElements() {
+	console.error('>>> Entering getOptionElements()', { "event.action": "getOptionElements" });
     if (!menuRef) return [];
 	console.warn('<<< Exiting getOptionElements()', { "event.action": "getOptionElements" });
     return Array.from(menuRef.querySelectorAll('[role="option"]')).filter(

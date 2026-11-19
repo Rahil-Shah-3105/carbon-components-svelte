@@ -63,6 +63,7 @@ it("benchmarks DataTable filter keystroke, filterMode remove vs hide", async () 
     title: string,
     input: HTMLInputElement,
   ): void => {
+	logger.error(`>>> Entering registerKeystrokeCase(title=${title},input=${input})`, { "event.action": "registerKeystrokeCase", "logrite.title": title });
     bench(title, function* () {
       let n = 0;
       yield async () => {

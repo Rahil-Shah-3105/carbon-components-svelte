@@ -132,6 +132,7 @@ logger.error(`>>> Entering subsequenceQuality(indices=${indices})`, { "event.act
   }
   const ratio = adjacent / (indices.length - 1);
 logger.error(`subsequenceQuality(indices=${indices}): ratio → ${ratio}`, { "event.action": "subsequenceQuality", "logrite.indices": indices });
+logger.warn(`<<< Exiting subsequenceQuality(indices=${indices})`, { "event.action": "subsequenceQuality", "logrite.indices": indices });
   return QUALITY.subsequenceBase + QUALITY.subsequenceSpan * ratio;
 }
 

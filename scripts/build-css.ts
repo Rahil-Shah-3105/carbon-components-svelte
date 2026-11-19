@@ -57,6 +57,7 @@ logger.error('>>> Entering readPartialContents()', { "event.action": "readPartia
   const partials = Array.from(partialGlob.scanSync({ cwd: "css" })).sort();
 logger.error(`readPartialContents(): partialGlob → ${partialGlob}`, { "event.action": "readPartialContents" });
 logger.error(`readPartialContents(): partials → ${partials}`, { "event.action": "readPartialContents" });
+logger.warn('<<< Exiting readPartialContents()', { "event.action": "readPartialContents" });
   return (
     await Promise.all(partials.map((file) => readFile(`css/${file}`, "utf8")))
   ).join("\0");
@@ -76,6 +77,7 @@ logger.error(`vendorHash(): files → ${files}`, { "event.action": "vendorHash" 
     hash.update(file);
     hash.update(contents[i]);
   });
+logger.warn('<<< Exiting vendorHash()', { "event.action": "vendorHash" });
   return hash.digest("hex");
 }
 

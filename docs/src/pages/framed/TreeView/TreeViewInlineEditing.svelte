@@ -69,6 +69,7 @@
 		console.error(`>>> Entering update(text=${text})`, { "event.action": "update", "logrite.text": text });
         if (document.activeElement !== element) {
           element.textContent = text;
+		console.warn(`<<< Exiting update(text=${text})`, { "event.action": "update", "logrite.text": text });
         }
 		logger.debug(`update(text=${text}): element.textContent → ${element.textContent}`, { "event.action": "update", "logrite.text": text });
       },
